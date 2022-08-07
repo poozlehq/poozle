@@ -12,21 +12,24 @@ export abstract class AbstractExtension extends BaseExtension {
   }
 
   do(
-    command_key: string,
+    callback_id: string,
     authentication: Authentication | undefined,
     params: DoParams | undefined,
   ): Surface {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const getClassWithAction: any = this.get_commands().find(
+    let action: any;
+    this.get_commands().forEach(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (command: any) => command.key === command_key,
+      (command: any) => {
+        action = command.getActionWithKey(callback_id);
+      },
     );
 
-    if (getClassWithAction) {
-      return getClassWithAction.doController(params, authentication);
+    if (action) {
+      return action.run(params, authentication);
     }
 
-    throw new Error(`${command_key} does not exist`);
+    throw new Error(`${callback_id} does not exist`);
   }
 
   fetchData(

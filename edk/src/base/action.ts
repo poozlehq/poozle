@@ -18,5 +18,5 @@ export abstract class BaseAction {
 
 export abstract class HTTPAction extends BaseAction {
   abstract baseUrl: string;
-  abstract authentication: AxiosRequestHeaders;
+  abstract defaultHeaders: AxiosRequestHeaders;
 }

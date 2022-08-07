@@ -1,4 +1,4 @@
-import { PoozleDto, Surface } from '../builder';
+import { PoozleDto } from '../builder';
 import { Authentication, Command, DoParams } from '../types';
 
 export abstract class AbstractCommand {
@@ -22,6 +22,12 @@ export abstract class AbstractCommand {
     return !!this.getActions<any>().find((action) => action.key === key);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getActionWithKey(key: string): any {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return this.getActions<any>().find((action) => action.key === key);
+  }
+
   get(): Command {
     return {
       key: this.key,
@@ -32,11 +38,6 @@ export abstract class AbstractCommand {
   }
 
   abstract getActions<TCommandClass>(): TCommandClass[];
-
-  abstract doController(
-    params: DoParams | undefined,
-    authentication: Authentication | undefined,
-  ): Promise<Surface> | Surface | undefined;
 
   abstract fetchDataController(
     action_id: string,
