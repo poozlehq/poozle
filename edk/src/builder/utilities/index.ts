@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 
 import { BlockDto, PoozleDto } from '../internal/dto';
-import { Builder } from '../internal/lib';
+import { Builder } from '../internal/build_lib';
 
 import type { BlockBuilder, Appendable } from '../internal/types';
 import type { OptionBuilder, OptionGroupBuilder } from '../bits';

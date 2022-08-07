@@ -3,6 +3,6 @@ export * from './constants';
 export * from './dto';
 export * from './exception';
 export * from './helpers';
-export * from './lib';
+export * from './build_lib';
 export * from './methods';
 export * from './types';

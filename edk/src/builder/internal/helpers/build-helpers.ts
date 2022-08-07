@@ -1,4 +1,4 @@
-import { Builder } from '../lib';
+import { Builder } from '../build_lib';
 
 import type { ObjectLiteral, Undefinable } from '../types';
 
