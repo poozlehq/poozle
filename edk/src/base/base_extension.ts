@@ -35,12 +35,6 @@ export abstract class BaseExtension {
     params: DoParams | undefined,
   ): Promise<Surface> | Surface;
 
-  abstract callback(
-    callback_id: string,
-    authentication: Authentication | undefined,
-    params: DoParams | undefined,
-  ): Promise<Surface> | Surface;
-
   abstract fetchData(
     action_id: string,
     authentication: Authentication | undefined,
@@ -86,29 +80,6 @@ export abstract class BaseExtension {
           } else {
             logRecord(
               Record(CommandType.Do, (doResponse as Surface).buildToJSON()),
-            );
-          }
-
-          break;
-
-        case CommandType.Callback:
-          // eslint-disable-next-line no-case-declarations
-          const callbackReponse = this.callback(
-            getOptionValues(process.argv, 'callback'),
-            getAuthentication(process.argv),
-            getParams(process.argv),
-          );
-
-          if (isPromise(callbackReponse)) {
-            (callbackReponse as Promise<Surface>).then((data: any) =>
-              logRecord(Record(CommandType.Callback, data.buildToJSON())),
-            );
-          } else {
-            logRecord(
-              Record(
-                CommandType.Callback,
-                (callbackReponse as Surface).buildToJSON(),
-              ),
             );
           }
 

@@ -8,22 +8,18 @@ export abstract class AbstractCommand {
   abstract icon: string;
 
   abstract fetchDataKeys: Array<string> | undefined;
-  abstract callbackKeys: Array<string> | undefined;
 
   getFetchDataKeys(): Array<string> {
     return this.fetchDataKeys ? [...this.fetchDataKeys, this.key] : [];
   }
 
-  getCallbackKeys(): Array<string> {
-    return this.callbackKeys ? [...this.callbackKeys, this.key] : [];
-  }
-
-  hasCallbackKey(key: string): boolean {
-    return this.getCallbackKeys().includes(key);
-  }
-
   hasFetchDataKey(key: string): boolean {
     return this.getFetchDataKeys().includes(key);
+  }
+
+  hasDoKey(key: string): boolean {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return !!this.getActions<any>().find((action) => action.key === key);
   }
 
   get(): Command {
@@ -35,6 +31,8 @@ export abstract class AbstractCommand {
     };
   }
 
+  abstract getActions<TCommandClass>(): TCommandClass[];
+
   abstract doController(
     params: DoParams | undefined,
     authentication: Authentication | undefined,
@@ -45,10 +43,4 @@ export abstract class AbstractCommand {
     params: DoParams | undefined,
     authentication: Authentication | undefined,
   ): Readonly<PoozleDto> | Promise<Readonly<PoozleDto>> | undefined;
-
-  abstract callbackController(
-    callback_id: string,
-    params: DoParams | undefined,
-    authentication: Authentication | undefined,
-  ): Promise<Surface> | Surface | undefined;
 }

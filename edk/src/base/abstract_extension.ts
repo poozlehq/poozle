@@ -11,28 +11,6 @@ export abstract class AbstractExtension extends BaseExtension {
     return this.get_commands().map((command: any) => command.get());
   }
 
-  callback(
-    callback_id: string,
-    authentication: Authentication | undefined,
-    params: DoParams | undefined,
-  ): Surface {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const getClassWithAction: any = this.get_commands().find(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (command: any) => command.hasCallbackKey(callback_id),
-    );
-
-    if (getClassWithAction) {
-      return getClassWithAction.callbackController(
-        callback_id,
-        params,
-        authentication,
-      );
-    }
-
-    throw new Error(`${callback_id} does not exist`);
-  }
-
   do(
     command_key: string,
     authentication: Authentication | undefined,
