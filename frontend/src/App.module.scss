@@ -1,0 +1,10 @@
+.App {
+  width: 100%;
+
+  :global {
+    .mantine-Spotlight-spotlight {
+      box-shadow: none;
+      border-bottom: 1px solid var(--mantine-color-dark-4);
+    }
+  }
+}

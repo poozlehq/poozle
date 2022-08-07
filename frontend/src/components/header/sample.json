@@ -1,0 +1,4 @@
+{
+  "type": "do",
+  "record": "{\"blocks\":[{\"label\":{\"text\":\"Repository Name\"},\"element\":{\"fetch_data_id\":\"repository_name\",\"action_id\":\"repository_name\",\"type\":\"select\"},\"type\":\"input\"},{\"blocks\":[{\"label\":{\"text\":\"Issue Title\"},\"element\":{\"placeholder\":{\"text\":\"Enter the issue title\"},\"action_id\":\"issue_title\",\"type\":\"plain_text_input\"},\"type\":\"input\"},{\"label\":{\"text\":\"Issue Description\"},\"element\":{\"placeholder\":{\"text\":\"Enter the issue description\"},\"action_id\":\"issue_description\",\"type\":\"plain_text_input\"},\"type\":\"input\"}],\"type\":\"section\"}],\"type\":\"Form\"}"
+}

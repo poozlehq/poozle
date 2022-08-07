@@ -1,0 +1,47 @@
+{
+  "name": "@poozle/edk",
+  "version": "0.1.1",
+  "description": "A util to build extensions for poozle",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "engines": {
+    "node": ">= 16.13 <17"
+  },
+  "devDependencies": {
+    "@types/jest": "~27.5",
+    "@types/node": "~16",
+    "@typescript-eslint/eslint-plugin": "~5.26",
+    "@typescript-eslint/parser": "~5.26",
+    "eslint": "~8.16",
+    "eslint-config-prettier": "~8.5",
+    "eslint-plugin-jest": "~26.2",
+    "jest": "~28.1",
+    "prettier": "~2.6",
+    "rimraf": "~3.0",
+    "ts-jest": "~28.0",
+    "tsutils": "~3.21",
+    "typedoc": "^0.23.7",
+    "typescript": "~4.7"
+  },
+  "scripts": {
+    "start": "node build/src/index.js",
+    "clean": "rimraf coverage build tmp",
+    "prebuild": "yarn lint",
+    "build": "tsc -p tsconfig.json && tsc -p tsconfig-esm.json",
+    "build:watch": "tsc -w -p tsconfig.json",
+    "build:release": "yarn clean && tsc -p tsconfig.json && tsc -p tsconfig-esm.json",
+    "lint": "eslint . --ext .ts --ext .mts",
+    "test": "jest --coverage",
+    "prettier": "prettier --config .prettierrc --write .",
+    "test:watch": "jest --watch"
+  },
+  "author": "Harshith Mullapudi <harshithmullapudi@gmail.com>",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "tslib": "~2.4"
+  },
+  "volta": {
+    "node": "16.13.0"
+  }
+}

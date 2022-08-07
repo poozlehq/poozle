@@ -1,0 +1,32 @@
+.action {
+  display: flex;
+  align-items: center;
+  border-radius: var(--mantine-radius-sm);
+  gap: var(--mantine-spacing-md);
+  color: white;
+
+  &:hover {
+    background: var(--mantine-color-dark-4);
+  }
+}
+
+.description {
+  font-size: var(--mantine-font-size-sm);
+  color: var(--mantine-color-dark-1);
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+}
+
+.action {
+  padding: var(--mantine-spacing-sm);
+}
+
+.details {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: var(--mantine-spacing-sm);
+}

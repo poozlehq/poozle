@@ -1,0 +1,56 @@
+@font-face {
+  font-weight: normal;
+  font-family: Metropolis;
+  src: url('/fonts/Metropolis-Regular.otf') format('opentype');
+}
+
+@font-face {
+  font-weight: 300;
+  font-family: Metropolis;
+  src: url('/fonts/Metropolis-Thin.otf') format('opentype');
+}
+
+@font-face {
+  font-weight: 500;
+  font-family: Metropolis;
+  src: url('/fonts/Metropolis-SemiBold.otf') format('opentype');
+}
+
+@font-face {
+  font-weight: bold;
+  font-family: Metropolis;
+  src: url('/fonts/Metropolis-Bold.otf') format('opentype');
+}
+
+:root {
+  color-scheme: light dark;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+  font-family: Metropolis;
+  border-radius: var(--mantine-radius-lg);
+
+  --mantine-spacing-xss: 5px;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  background-color: var(--mantine-color-dark-6) !important;
+  border-radius: var(--mantine-radius-lg);
+}
+
+#root {
+  width: 100%;
+}
+
+.mantine-Spotlight-spotlight {
+  box-shadow: none;
+  border-bottom: 1px solid var(--mantine-color-dark-4);
+  border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
+}
