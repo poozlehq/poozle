@@ -76,6 +76,7 @@ name = "app"
 version = "0.1.0"
 dependencies = [
  "diesel",
+ "diesel_migrations",
  "dotenv",
  "serde",
  "serde_json",
@@ -601,6 +602,17 @@ dependencies = [
  "proc-macro2",
  "quote 1.0.20",
  "syn 1.0.98",
+]
+
+[[package]]
+name = "diesel_migrations"
+version = "2.0.0-rc.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "af3e284b00439e362c3f55849a103f38b4c5a9918ae3cf34fca2268b6eb52fef"
+dependencies = [
+ "diesel",
+ "migrations_internals",
+ "migrations_macros",
 ]
 
 [[package]]
@@ -1607,6 +1619,27 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5aa361d4faea93603064a027415f07bd8e1d5c88c9fbf68bf56a285428fd79ce"
 dependencies = [
  "autocfg",
+]
+
+[[package]]
+name = "migrations_internals"
+version = "2.0.0-rc.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e03913f1a1c044aa53b37c8f34011599bbf98914092a0444081555e9ca35022c"
+dependencies = [
+ "serde",
+ "toml",
+]
+
+[[package]]
+name = "migrations_macros"
+version = "2.0.0-rc.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "9ccfa634200e9de9fe6497f568d54951e933e9e0ddf61058e52e24bda896de48"
+dependencies = [
+ "migrations_internals",
+ "proc-macro2",
+ "quote 1.0.20",
 ]
 
 [[package]]

@@ -1,7 +1,7 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable max-len */
 
-import { Builder } from '../lib';
+import { Builder } from '../build_lib';
 import { Prop } from '../constants';
 
 import type { Settable } from '../types';
