@@ -44,7 +44,7 @@ export abstract class CallbackId extends Builder {
 }
 
 export abstract class ConditionalCheck extends Builder {
-  public conditionalCheck(conditionalCheck: Settable<string>): this {
+  public conditionalCheck(conditionalCheck: Settable<Array<string>>): this {
     return this.set(conditionalCheck, Prop.ConditionalCheck);
   }
 }

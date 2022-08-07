@@ -1,5 +1,5 @@
 import { AbstractExtension, Builder } from '@poozle/edk';
-import { NewIssue } from './commands/new_issue';
+import { NewIssueCommand } from './commands/new_issue';
 
 const { Form, Input, TextInput } = Builder;
 
@@ -20,8 +20,9 @@ export class GithubExtension extends AbstractExtension {
     );
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get_commands(): any {
-    return [new NewIssue()];
+    return [new NewIssueCommand()];
   }
 }
 

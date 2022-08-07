@@ -15,7 +15,7 @@ import {
 export interface SectionParams {
   blockId?: string;
   text?: string;
-  conditionalCheck?: string;
+  conditionalCheck?: Array<string>;
 }
 
 export interface SectionBuilder

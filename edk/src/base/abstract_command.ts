@@ -25,7 +25,13 @@ export abstract class AbstractCommand {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getActionWithKey(key: string): any {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return this.getActions<any>().find((action) => action.key === key);
+    return this.getActions<any>().find((action) => {
+      if (typeof action.key === 'object') {
+        return action.key.test(key);
+      }
+
+      return action.key === key;
+    });
   }
 
   get(): Command {

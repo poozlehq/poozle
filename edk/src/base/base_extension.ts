@@ -73,14 +73,16 @@ export abstract class BaseExtension {
             getParams(process.argv),
           );
 
-          if (isPromise(doResponse)) {
-            (doResponse as Promise<Surface>).then((data: any) =>
-              logRecord(Record(CommandType.Do, data.buildToJSON())),
-            );
-          } else {
-            logRecord(
-              Record(CommandType.Do, (doResponse as Surface).buildToJSON()),
-            );
+          if (doResponse) {
+            if (isPromise(doResponse)) {
+              (doResponse as Promise<Surface>).then((data: any) =>
+                logRecord(Record(CommandType.Do, data.buildToJSON())),
+              );
+            } else {
+              logRecord(
+                Record(CommandType.Do, (doResponse as Surface).buildToJSON()),
+              );
+            }
           }
 
           break;

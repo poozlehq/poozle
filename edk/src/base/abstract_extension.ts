@@ -26,7 +26,7 @@ export abstract class AbstractExtension extends BaseExtension {
     );
 
     if (action) {
-      return action.run(params, authentication);
+      return action.run(callback_id, params, authentication);
     }
 
     throw new Error(`${callback_id} does not exist`);
