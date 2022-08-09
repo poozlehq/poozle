@@ -5,3 +5,14 @@ export type Repo = {
     avatar_url: string;
   };
 };
+
+
+export type Issue = {
+  url: string;
+  id: BigInteger;
+  title: string;
+  body: string;
+  user: {
+    avatar_url: string;
+  };
+};

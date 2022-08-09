@@ -14,7 +14,7 @@ export class NewIssueAction extends HTTPAction {
   async run(
     callback_id: string,
     params: ActionParams,
-    spec: Spec,
+    spec: any,
   ): Promise<Builder.Surface> | undefined {
     if (callback_id === 'new-issue') {
       return Form()

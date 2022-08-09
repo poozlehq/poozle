@@ -8,6 +8,8 @@ import {
   GetBlocks,
   CallbackId,
   Placeholder,
+  ActionId,
+  FetchDataId,
 } from '../internal/methods';
 
 import type { BlockDto } from '../internal/dto';
@@ -25,6 +27,8 @@ export interface SearchBuilder
     BuildToJSON,
     BuildToObject<FormDto>,
     Placeholder,
+    ActionId,
+    FetchDataId,
     GetBlocks {}
 
 export class SearchBuilder extends SurfaceBuilderBase {
@@ -42,5 +46,7 @@ applyMixins(SearchBuilder, [
   BuildToObject,
   GetBlocks,
   CallbackId,
+  ActionId,
+  FetchDataId,
   Placeholder,
 ]);

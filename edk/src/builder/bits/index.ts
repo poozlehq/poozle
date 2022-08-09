@@ -2,12 +2,15 @@
 
 import { OptionBuilder, OptionParams } from './option';
 import { OptionGroupBuilder, OptionGroupParams } from './option-group';
+import { SearchResultBuilder, SearchResultParam } from './search-result';
 
 export type {
   OptionBuilder,
   OptionParams,
   OptionGroupBuilder,
   OptionGroupParams,
+  SearchResultParam,
+  SearchResultBuilder,
 };
 
 export function Option(params?: OptionParams): OptionBuilder {
@@ -21,13 +24,18 @@ export function Option(params?: OptionParams): OptionBuilder {
  * {@link https://api.slack.com/reference/block-kit/composition-objects#option_group|View in Slack API Documentation}
  */
 
-export function OptionGroup(params?: OptionGroupParams): OptionGroupBuilder {
+export function OptionGroup(params?: OptionGroupBuilder): OptionGroupBuilder {
   return new OptionGroupBuilder(params);
+}
+
+export function SearchResult(params?: SearchResultParam): SearchResultBuilder {
+  return new SearchResultBuilder(params);
 }
 
 const bits = {
   Option,
   OptionGroup,
+  SearchResult,
 };
 
 // Strange export. I know. For IDE highlighting purposes.
