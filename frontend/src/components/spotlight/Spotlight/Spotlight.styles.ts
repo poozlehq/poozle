@@ -19,7 +19,7 @@ export default createStyles(
     spotlight: {
       position: 'relative',
       zIndex: 2,
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
+      backgroundColor: 'transparent',
       borderRadius: theme.fn.radius(radius),
       width: '100%',
       maxWidth,
@@ -45,7 +45,7 @@ export default createStyles(
       border: 0,
       borderBottomRightRadius: 0,
       borderBottomLeftRadius: 0,
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
+      backgroundColor: 'transparent',
     },
-  })
+  }),
 );

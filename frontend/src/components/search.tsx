@@ -2,7 +2,7 @@ import { SpotlightAction } from '@mantine/spotlight';
 import { useContext } from 'react';
 
 import { CommandsContext } from '../context/commands_context';
-import { Command, ExtensionCommand } from '../utils/commands';
+import { Command } from '../utils/commands';
 
 import Spotlight from './spotlight';
 
@@ -11,20 +11,9 @@ type Props = {
 };
 
 function Search({ onCommandSelect }: Props) {
-  const extentionCommands = useContext(CommandsContext);
-
-  function flatAllCommands() {
-    let totalCommands: Command[] = [];
-    extentionCommands.forEach((extentionCommand: ExtensionCommand) => {
-      totalCommands = totalCommands.concat(extentionCommand.commands);
-    });
-
-    return totalCommands;
-  }
+  const allCommands = useContext(CommandsContext);
 
   function getActions(): SpotlightAction[] {
-    const allCommands = flatAllCommands();
-
     return allCommands.map(
       (command: Command) =>
         ({

@@ -4,7 +4,7 @@ import { CommandsContext } from './context/commands_context';
 import { CommandContext } from './context/command_context';
 
 import { registerAppWindow } from './utils/application';
-import { Command, ExtensionCommand, getAllCommands } from './utils/commands';
+import { Command, getAllCommands } from './utils/commands';
 
 import CommandView from './views/command_view/command_view';
 import Search from './components/search';
@@ -12,7 +12,7 @@ import Search from './components/search';
 import styles from './App.module.scss';
 
 function App() {
-  const [commands, setCommands] = useState<ExtensionCommand[]>([]);
+  const [commands, setCommands] = useState<Command[]>([]);
   const [currentCommand, setCurrentCommand] = useState<Command>();
 
   useEffect(() => {

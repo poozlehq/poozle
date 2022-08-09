@@ -1,16 +1,16 @@
-import { Authentication, CommandType, DoParams } from '../types';
+import { Spec, CommandType, DoParams } from '../types';
 
 export function getCommand(argv: Array<string>): CommandType {
   return argv[2] as CommandType;
 }
 
-export function getAuthentication(argv: Array<string>): Authentication {
+export function getSpec(argv: Array<string>): Spec {
   try {
-    const authOptionKey = argv.findIndex((arg) => arg === '-a');
-    if (authOptionKey) {
-      const authJSON = JSON.parse(argv[authOptionKey + 1]);
+    const specOptionKey = argv.findIndex((arg) => arg === '-s');
+    if (specOptionKey) {
+      const specJSON = JSON.parse(argv[specOptionKey + 1]);
 
-      return authJSON as Authentication;
+      return specJSON as Spec;
     }
 
     return {};

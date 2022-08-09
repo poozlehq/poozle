@@ -1,6 +1,6 @@
 import { AxiosRequestHeaders } from 'axios';
 import { Surface } from '../builder';
-import { Authentication } from '../types';
+import { Spec } from '../types';
 
 export enum ActionType {
   HTTP = 'http',
@@ -22,7 +22,7 @@ export abstract class BaseAction {
   abstract run(
     key: string,
     params: ActionParams,
-    authentication: Authentication,
+    spec: Spec,
   ): Promise<Surface> | Surface | undefined;
 }
 

@@ -13,6 +13,7 @@ import {
   InitialOption,
   Label,
   Options,
+  Placeholder,
 } from '../internal/methods';
 
 import type { PoozleDto } from '../internal/dto';
@@ -28,6 +29,7 @@ export interface SelectBuilder
     End,
     InitialOption,
     Options,
+    Placeholder,
     Label,
     FetchDataId {}
 
@@ -50,6 +52,7 @@ applyMixins(SelectBuilder, [
   End,
   InitialOption,
   Options,
+  Placeholder,
   FetchDataId,
   Label,
 ]);

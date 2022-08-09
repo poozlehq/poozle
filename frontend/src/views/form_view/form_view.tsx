@@ -1,14 +1,14 @@
 import { useContext } from 'react';
-import { useForm } from '@mantine/form';
 
 import Header from '../../components/header/header';
-import InputWrapper from '../../components/input_wrapper/input_wrapper';
-import { CommandContext } from '../../context/command_context';
 
-import { Block } from '../../types/block';
-import { SubmitButton } from '../../ui/button/button';
-import { Command } from '../../utils/commands';
+import Form, { FormHelpers, FormValues } from '../../components/form/form';
+
 import { CommandViewType } from '../command_view/types';
+import { Command, ExtensionSpecDataType, getCommandView } from '../../utils/commands';
+
+import { CommandContext } from '../../context/command_context';
+import { SpecContext } from '../../context/spec_context';
 
 import styles from './form_view.module.scss';
 
@@ -18,42 +18,36 @@ type Props = {
 };
 
 function FormView({ resetCommand, formData }: Props) {
-  const command = useContext(CommandContext) as Command;
-  const form = useForm({
-    initialValues: {
-      repository_name: '',
-      issue_title: '',
-      issue_description: '',
-    },
-  });
+  const currentCommand = useContext(CommandContext) as Command;
+  const specData = useContext(SpecContext) as ExtensionSpecDataType;
 
   const getBlocks = () => {
     return formData.blocks;
+  };
+
+  const onSubmit = async (values: FormValues, { setLoading }: FormHelpers) => {
+    try {
+      const response = await getCommandView(
+        currentCommand.extension_path,
+        formData.callback_id,
+        specData,
+        JSON.stringify(values),
+      );
+
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+      setLoading(false);
+    }
   };
 
   return (
     <div className={styles.formView}>
       <Header onBack={resetCommand} />
 
-      <form onSubmit={form.onSubmit((values) => console.log(values))}>
-        <div className={styles.formContainer}>
-          {formData &&
-            getBlocks().map((block: Block) => (
-              <div className={styles.input}>
-                <InputWrapper
-                  block={block}
-                  inputProps={form.getInputProps(block.element.action_id)}
-                />
-              </div>
-            ))}
-
-          <div className={styles.actions}>
-            <SubmitButton size="sm" className={styles.submitButton}>
-              {command.name}
-            </SubmitButton>
-          </div>
-        </div>
-      </form>
+      <div className={styles.formContainer}>
+        <Form blocks={getBlocks() ?? []} onSubmit={onSubmit} />
+      </div>
     </div>
   );
 }

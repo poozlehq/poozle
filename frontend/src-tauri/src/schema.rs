@@ -1,12 +1,4 @@
 table! {
-    authentication (id) {
-        id -> Integer,
-        data -> Text,
-        extension_id -> Text,
-    }
-}
-
-table! {
     commands (id) {
         id -> Integer,
         key -> Text,
@@ -19,7 +11,15 @@ table! {
     }
 }
 
+table! {
+    spec (id) {
+        id -> Integer,
+        data -> Text,
+        extension_id -> Text,
+    }
+}
+
 allow_tables_to_appear_in_same_query!(
-    authentication,
     commands,
+    spec,
 );

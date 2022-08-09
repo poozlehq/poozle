@@ -393,14 +393,6 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
-"@look-dev/sdk@0.2.19":
-  version "0.2.19"
-  resolved "https://registry.yarnpkg.com/@look-dev/sdk/-/sdk-0.2.19.tgz#6026f0e567c8b468bf299dfad9d4d2339d36ad11"
-  integrity sha512-QEzFlPqpQfXhkgLvKcDilb8b9/c7Jtt08KRpgj9MDwY6uIf1R0PDIJsiKc6IjhZXueLgeG6zq2H1fPqFkOwaiQ==
-  dependencies:
-    axios "^0.27.2"
-    tslib "~2.4"
-
 "@mantine/core@^5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@mantine/core/-/core-5.0.0.tgz#a1602bb59f0652532c6856ac31d594c55a1219a2"
@@ -472,6 +464,14 @@
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.0.0.tgz#576ebab6b0980b996ecb70b277f4ea378dcfb474"
   integrity sha512-Fy9BdxWvrXkplWua8ZKmsBQODo24QB8OPn6BEmvXUt4O+3qoP27VaAWQVea4opWZsy+L5dtEe/kOXY/Q/kC2qg==
+
+"@poozle/edk@^0.1.8":
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.8.tgz#fd764505ce0d3e6e8899e26a1ade2fe3cc54fd57"
+  integrity sha512-V/JS9vbrzkQbiNpeaY49aVnhF898ihXMoE1c/ahPVKvTH1XiPwuazZ7+drfmtQhmVBaHxsi+GmRDPDsm3OFfzA==
+  dependencies:
+    axios "^0.27.2"
+    tslib "~2.4"
 
 "@radix-ui/number@1.0.0":
   version "1.0.0"

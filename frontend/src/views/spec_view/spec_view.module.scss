@@ -10,22 +10,14 @@
 }
 
 .form {
-  padding: 0 var(--mantine-spacing-lg);
-  width: 500px;
-}
-
-.formContainer {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: var(--mantine-spacing-lg);
 }
 
-.actions {
-  margin-top: var(--mantine-spacing-lg);
-  display: flex;
-  justify-content: flex-end;
-}
+$width: 500px;
 
-.submitButton {
-  font-weight: 500;
+.innerContainer {
+  width: $width;
 }

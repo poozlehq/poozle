@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 
 import Loader from '../components/loader/loader';
 import SpecView from '../views/spec_view/spec_view';
+import { SpecContext } from '../context/spec_context';
 
-import { Extension, ExtensionSpecDataType, getExtensionSpecData, Command } from '../utils/commands';
+import { ExtensionSpecDataType, getExtensionSpecData, Command } from '../utils/commands';
 
 type Props = {
   command: Command;
@@ -21,8 +22,13 @@ export function specChecker(Component: React.FC<any>) {
     }, []);
 
     async function getSpecData() {
-      const specData = await getExtensionSpecData(command.extension);
-      setSpecData(specData);
+      try {
+        const specData = await getExtensionSpecData(command.extension_id);
+        setSpecData(specData);
+      } catch (e) {
+        console.log(e);
+        setSpecData(undefined);
+      }
       setLoading(false);
     }
 
@@ -36,7 +42,9 @@ export function specChecker(Component: React.FC<any>) {
 
     return (
       <>
-        <Component {...props} />
+        <SpecContext.Provider value={specData}>
+          <Component {...props} />
+        </SpecContext.Provider>
       </>
     );
   };

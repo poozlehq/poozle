@@ -1,4 +1,4 @@
-export type Authentication =
+export type Spec =
   | {
       bearer_token: string;
     }

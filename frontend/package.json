@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
-    "@look-dev/sdk": "0.2.19",
     "@mantine/core": "^5.0.0",
     "@mantine/dates": "^5.0.0",
     "@mantine/form": "^5.0.3",
@@ -20,6 +19,7 @@
     "@mantine/notifications": "^5.0.0",
     "@mantine/nprogress": "^5.0.0",
     "@mantine/spotlight": "^5.0.0",
+    "@poozle/edk": "^0.1.8",
     "@tabler/icons": "^1.78.1",
     "@tauri-apps/api": "^1.0.2",
     "@tauri-apps/tauri-forage": "^1.0.0-beta.2",

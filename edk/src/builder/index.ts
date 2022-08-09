@@ -17,3 +17,5 @@ export type {
   ViewBlockBuilder,
   FilterString,
 } from './internal';
+
+export { BlockType, SurfaceType, ElementType } from './internal';

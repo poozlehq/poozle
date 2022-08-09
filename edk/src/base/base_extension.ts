@@ -1,19 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  getAuthentication,
-  getCommand,
-  getOptionValues,
-  getParams,
-} from '../utils/cli';
+import { getSpec, getCommand, getOptionValues, getParams } from '../utils/cli';
 import { logRecord, Record } from '../utils';
 
-import {
-  About,
-  Authentication,
-  Command,
-  CommandType,
-  DoParams,
-} from '../types';
+import { About, Spec, Command, CommandType, DoParams } from '../types';
 import { Surface } from '../builder';
 
 function isPromise(value: any) {
@@ -31,13 +20,13 @@ export abstract class BaseExtension {
 
   abstract do(
     command_key: string,
-    authentication: Authentication | undefined,
+    spec: Spec | undefined,
     params: DoParams | undefined,
   ): Promise<Surface> | Surface;
 
   abstract fetchData(
     action_id: string,
-    authentication: Authentication | undefined,
+    spec: Spec | undefined,
     params: DoParams | undefined,
   ): Promise<any> | any;
 
@@ -69,7 +58,7 @@ export abstract class BaseExtension {
           // eslint-disable-next-line no-case-declarations
           const doResponse = this.do(
             getOptionValues(process.argv),
-            getAuthentication(process.argv),
+            getSpec(process.argv),
             getParams(process.argv),
           );
 
@@ -91,7 +80,7 @@ export abstract class BaseExtension {
           // eslint-disable-next-line no-case-declarations
           const fetchResponse = this.fetchData(
             getOptionValues(process.argv, 'fetchData'),
-            getAuthentication(process.argv),
+            getSpec(process.argv),
             getParams(process.argv),
           );
 

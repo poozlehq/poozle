@@ -8,7 +8,7 @@ import {
 
 import styles from './select.module.scss';
 
-type SelectProps = {
+export type SelectProps = {
   label?: string;
   value: string;
   name?: string;
@@ -36,10 +36,8 @@ function Select(props: SelectProps) {
     className,
     ...restProps
   } = props;
-  console.log(props);
 
   const onChange = (value: string) => {
-    console.log('here');
     if ($onChange) $onChange(value);
   };
 
@@ -60,7 +58,7 @@ function Select(props: SelectProps) {
         id={name}
         value={value}
         onChange={onChange}
-        className={classnames(styles.input, className)}
+        className={classnames(styles.select, className)}
         {...restProps}
       />
     </MantineInput.Wrapper>

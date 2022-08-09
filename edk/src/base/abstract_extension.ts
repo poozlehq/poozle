@@ -1,5 +1,5 @@
 import { Surface } from '../builder';
-import { Authentication, Command, DoParams } from '../types';
+import { Spec, Command, DoParams } from '../types';
 
 import { BaseExtension } from './base_extension';
 
@@ -13,7 +13,7 @@ export abstract class AbstractExtension extends BaseExtension {
 
   do(
     callback_id: string,
-    authentication: Authentication | undefined,
+    spec: Spec | undefined,
     params: DoParams | undefined,
   ): Surface {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,7 +26,7 @@ export abstract class AbstractExtension extends BaseExtension {
     );
 
     if (action) {
-      return action.run(callback_id, params, authentication);
+      return action.run(callback_id, params, spec);
     }
 
     throw new Error(`${callback_id} does not exist`);
@@ -34,7 +34,7 @@ export abstract class AbstractExtension extends BaseExtension {
 
   fetchData(
     action_id: string,
-    authentication: Authentication | undefined,
+    spec: Spec | undefined,
     params: DoParams | undefined,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ): any {
@@ -44,11 +44,7 @@ export abstract class AbstractExtension extends BaseExtension {
     );
 
     if (getClassWithAction) {
-      return getClassWithAction.fetchDataController(
-        action_id,
-        params,
-        authentication,
-      );
+      return getClassWithAction.fetchDataController(action_id, params, spec);
     }
 
     throw new Error(`${action_id} does not exist`);

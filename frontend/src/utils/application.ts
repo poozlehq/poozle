@@ -1,7 +1,5 @@
 import { appWindow } from '@tauri-apps/api/window';
 
-import { ExtensionCommand } from './commands';
-
 type setCurrentCommandType = () => void;
 
 export function registerAppWindow(setCurrentCommand: setCurrentCommandType) {

@@ -1,73 +1,65 @@
-import { Block } from '../../types/block';
 import { UseFormReturnType } from '@mantine/form';
 
-import styles from './input_wrapper.module.scss';
 import SelectWithFetch from '../../ui/select/select_with_fetch';
 import Input from '../../ui/input/input';
 
+import { Block, ElementType } from '../../types/form';
+
+import styles from './input_wrapper.module.scss';
+
 export type Props = {
-  type: string;
-  label: string;
-  text?: string;
-  element: {
-    action_id: string;
-    placeholder?: string;
-    type: string;
-    fetch_data_id?: string;
-  };
-  data?: any[];
-  key?: string;
-  blocks?: Block[];
-  inputProps: any;
+  block: Block;
+  inputProps: { [x: string]: any };
+  key?: number;
 };
 
 function InputWrapper(props: Props) {
-  const { element, label, data, type, key, blocks, inputProps } = props;
+  const { type, element, label } = props.block;
   let Component: React.ReactElement = <></>;
-  console.log(inputProps);
 
   if (type === 'input') {
-    // if (element.type == 'select') {
-    //   Component = (
-    //     <SelectWithFetch
-    //       label={label}
-    //       name={element.action_id}
-    //       placeholder={element.placeholder}
-    //       fetchDataId={element.fetch_data_id}
-    //       required
-    //       data={data}
-    //     />
-    //   );
-    // }
-
-    if (element.type == 'plain_text_input') {
+    if (element.type == 'select') {
       Component = (
-        <Input label={label} name={element.action_id} placeholder={element.placeholder} required />
+        <SelectWithFetch
+          label={label}
+          name={element.action_id}
+          placeholder={element.placeholder}
+          fetchDataId={element.fetch_data_id}
+          required
+          data={element.data}
+          value={props.inputProps.value}
+          {...props.inputProps}
+        />
+      );
+    }
+
+    if (element.type === ElementType.TextInput) {
+      Component = (
+        <Input
+          label={label}
+          name={element.action_id}
+          placeholder={element.placeholder}
+          required
+          {...props.inputProps}
+        />
       );
     }
   }
 
-  if (type === 'section') {
-    Component = (
-      <>
-        {blocks &&
-          blocks.map((block: Block) => (
-            <div className={styles.input}>
-              <InputWrapper
-                label={block.label}
-                element={block.element}
-                type={block.type}
-                key={block.label}
-                inputProps={{}}
-                {...block}
-              />
-            </div>
-          ))}
-      </>
-    );
-  }
+  // if (type === 'section') {
+  //   Component = (
+  //     <>
+  //       {blocks &&
+  //         blocks.map((block: Block) => (
+  //           <div className={styles.input}>
+  //             <InputWrapper block={block} />
+  //           </div>
+  //         ))}
+  //     </>
+  //   );
+  // }
 
-  return <div key={key}>{Component}</div>;
+  return <div key={props.key}>{Component}</div>;
 }
 
 export default InputWrapper;

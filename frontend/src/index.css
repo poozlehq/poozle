@@ -41,7 +41,7 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
-  background-color: var(--mantine-color-dark-6) !important;
+  background-color: var(--mantine-color-dark-7) !important;
   border-radius: var(--mantine-radius-lg);
 }
 

@@ -1,16 +1,13 @@
 import { useEffect, useState } from 'react';
-import { Formik, Form, FormikValues } from 'formik';
 
 import Loader from '../../components/loader/loader';
 import Header from '../../components/header/header';
 import { Image } from '../../components/image';
-import InputWrapper from '../../components/input_wrapper/input_wrapper';
+import Form, { FormValues } from '../../components/form/form';
 
 import { Command, getCommandSpec, setExtensionSpecData } from '../../utils/commands';
-import { Block } from '../../types/block';
 
 import styles from './spec_view.module.scss';
-import { SubmitButton } from '../../ui/button/button';
 
 type Props = {
   command: Command;
@@ -19,12 +16,7 @@ type Props = {
 };
 
 function SpecView(props: Props) {
-  const {
-    command: { extension },
-    command,
-    getSpecData,
-    resetCommand,
-  } = props;
+  const { command, getSpecData, resetCommand } = props;
   const [specData, setSpecData] = useState<any>(undefined);
   const [loading, setLoading] = useState(true);
 
@@ -33,13 +25,13 @@ function SpecView(props: Props) {
   }, []);
 
   async function getSpec() {
-    const specData = await getCommandSpec(extension);
+    const specData = await getCommandSpec(command.extension_path);
     setSpecData(specData);
     setLoading(false);
   }
 
-  const onSubmit = async (values: FormikValues) => {
-    await setExtensionSpecData(extension, JSON.stringify(values));
+  const onSubmit = async (values: FormValues) => {
+    await setExtensionSpecData(command.extension_id, JSON.stringify(values));
     getSpecData();
   };
 
@@ -58,28 +50,12 @@ function SpecView(props: Props) {
       <div className={styles.logo}>
         <Image src={command.icon} html_renderer className={styles.icon} />
       </div>
-      <Formik initialValues={{}} onSubmit={onSubmit}>
-        <div className={styles.formContainer}>
-          <Form className={styles.form}>
-            {specData &&
-              getBlocks().map((block: Block) => (
-                <InputWrapper
-                  label={block.label}
-                  element={block.element}
-                  type={block.type}
-                  key={block.label}
-                  {...block}
-                />
-              ))}
 
-            <div className={styles.actions}>
-              <SubmitButton size="sm" className={styles.submitButton}>
-                Connect
-              </SubmitButton>
-            </div>
-          </Form>
+      <div className={styles.form}>
+        <div className={styles.innerContainer}>
+          <Form blocks={getBlocks() ?? []} onSubmit={onSubmit} />
         </div>
-      </Formik>
+      </div>
     </div>
   );
 }

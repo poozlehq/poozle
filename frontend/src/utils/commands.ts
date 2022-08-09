@@ -1,101 +1,91 @@
 import { invoke } from '@tauri-apps/api';
 import { readDir, BaseDirectory, readBinaryFile } from '@tauri-apps/api/fs';
-import { Command as CommandType } from '@look-dev/sdk';
+import { Command as CommandType } from '@poozle/edk';
 
 import { getData, setData } from './storage';
+import { appDir } from '@tauri-apps/api/path';
 
 export type Extension = {
   name: string;
   path: string;
 };
 
-export type ExtensionSpecDataType = { [x: string]: string };
-
-export type ExtensionCommand = {
-  commands: Command[];
-  icon: string;
-};
+export type ExtensionSpecDataType = { extensionId: string; data: any };
 
 export type Command = {
-  extension: Extension;
+  extension_id: string;
+  extension_path: string;
 } & CommandType;
 
 export const COMMAND_STORAGE_KEY = 'command';
 export const EXTENSION_STORAGE_KEY = 'extension_';
-
-export async function getAllExtensions(): Promise<Extension[]> {
-  return (await readDir('extensions', { dir: BaseDirectory.App, recursive: true })) as Extension[];
-}
-
-export async function getCommandForExtension(extension: Extension): Promise<Command[]> {
-  const commands = (await invoke('command_controller', { path: extension.path })) as string;
-  const parsedCommands = JSON.parse(commands).record as Command[];
-
-  return Promise.all(
-    parsedCommands.map(async (command) => {
-      return {
-        ...command,
-        icon: await getImage(command.icon),
-        extension,
-      };
-    }),
-  );
-}
 
 export async function getImage(path: string): Promise<string> {
   const contents = await readBinaryFile(`icons/${path}`, { dir: BaseDirectory.App });
   return new TextDecoder('utf-8').decode(contents);
 }
 
-export async function getAllCommands(): Promise<ExtensionCommand[]> {
-  // const storedCommands = await getData(COMMAND_STORAGE_KEY);
-
-  // if (!storedCommands) {
-  const allExtensions = await getAllExtensions();
-  const commands = await Promise.all(
-    allExtensions.map(async (extension) => ({
-      commands: await getCommandForExtension(extension),
-      icon: await getImage(`${extension.name}.svg`),
-      name: extension.name,
-    })),
-  );
-
-  await setData(COMMAND_STORAGE_KEY, commands);
-  return commands;
-  // }
-
-  // return JSON.parse(storedCommands) as ExtensionCommand[];
+export async function getAllCommands(): Promise<Command[]> {
+  const response = await invoke('get_all_commands');
+  const commands = JSON.parse(response as string) as Command[];
+  if (commands.length > 0) {
+    return Promise.all(
+      commands.map(async (command: Command) => ({
+        ...command,
+        icon: await getImage(command.icon),
+      })),
+    );
+  } else {
+    const baseAppPath = await appDir();
+    await invoke('prefill_all_commands', { basePath: baseAppPath });
+    return getAllCommands();
+  }
 }
 
-export async function getCommandSpec(extension: Extension) {
+export async function getCommandSpec(extensionPath: string) {
   const commandView = (await invoke('spec_controller', {
-    path: extension.path,
+    path: extensionPath,
   })) as string;
 
   return JSON.parse(commandView);
 }
 
-export async function getCommandView(extension: Extension, actionId: string) {
+export async function getCommandView(
+  extensionPath: String,
+  callbackId: string,
+  specData: any,
+  params?: string,
+) {
   const commandView = (await invoke('get_action_data', {
-    path: extension.path,
-    actionId,
+    path: extensionPath,
+    callbackId,
+    params: params ? params : '',
+    specData: JSON.stringify(specData.data),
   })) as string;
 
   return JSON.parse(commandView);
 }
 
 export async function getExtensionSpecData(
-  extension: Extension,
+  extensionId: string,
 ): Promise<ExtensionSpecDataType | undefined> {
-  const storageData = await getData(`${EXTENSION_STORAGE_KEY}${extension.name}`);
+  const storageData: any = await invoke('get_spec', {
+    extensionId,
+  });
 
   if (storageData) {
-    return JSON.parse(storageData);
+    return {
+      data: JSON.parse(storageData.data),
+      extensionId: storageData.extension_id,
+    };
   }
 
   return undefined;
 }
 
-export async function setExtensionSpecData(extension: Extension, data: string) {
-  await setData(`${EXTENSION_STORAGE_KEY}${extension.name}`, data);
+export async function setExtensionSpecData(extensionId: string, data: string) {
+  await invoke('save_spec', {
+    spec: data,
+    extensionId,
+  });
 }

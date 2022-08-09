@@ -1,9 +1,4 @@
-import {
-  AbstractCommand,
-  Authentication,
-  DoParams,
-  Builder,
-} from '@poozle/edk';
+import { AbstractCommand, Spec, DoParams, Builder } from '@poozle/edk';
 
 import { NewIssueAction } from '../actions';
 
@@ -28,15 +23,11 @@ export class NewIssueCommand extends AbstractCommand {
     return [new NewIssueAction()];
   }
 
-  async fetchDataController(
-    key: string,
-    params: DoParams,
-    authentication: Authentication,
-  ) {
+  async fetchDataController(key: string, params: DoParams, spec: Spec) {
     if (key === 'repository_name') {
       const repos: Repo[] = await api(
         `https://api.github.com/user/repos`,
-        authentication.bearer_token,
+        spec.api_key,
       );
 
       return repos.map((repo: Repo) => {

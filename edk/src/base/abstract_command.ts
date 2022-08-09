@@ -1,5 +1,5 @@
 import { PoozleDto } from '../builder';
-import { Authentication, Command, DoParams } from '../types';
+import { Spec, Command, DoParams } from '../types';
 
 export abstract class AbstractCommand {
   abstract key: string;
@@ -48,6 +48,6 @@ export abstract class AbstractCommand {
   abstract fetchDataController(
     action_id: string,
     params: DoParams | undefined,
-    authentication: Authentication | undefined,
+    spec: Spec | undefined,
   ): Readonly<PoozleDto> | Promise<Readonly<PoozleDto>> | undefined;
 }

@@ -2,7 +2,7 @@ import Loader from '../../components/loader/loader';
 
 import useFetchData from '../../utils/fetch_data';
 
-import FormikSelect, { SelectProps } from './formik_select';
+import Select, { SelectProps } from './select';
 
 export type SelectWithFetchProps = Omit<SelectProps, 'data'> & {
   fetchDataId?: string;
@@ -10,11 +10,11 @@ export type SelectWithFetchProps = Omit<SelectProps, 'data'> & {
 };
 
 function SelectWithFetch(props: SelectWithFetchProps) {
-  const { fetchDataId, data } = props;
+  const { fetchDataId, data, ...restProps } = props;
   const selectData = useFetchData(fetchDataId, data);
 
   if (selectData) {
-    return <FormikSelect {...props} data={selectData} />;
+    return <Select {...restProps} data={selectData} />;
   }
 
   return <Loader />;

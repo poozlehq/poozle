@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { Notification } from '@mantine/core';
 
 import Header from '../../components/header/header';
 import Loader from '../../components/loader/loader';
 
-import { Command, getCommandView } from '../../utils/commands';
+import { Command, ExtensionSpecDataType, getCommandView } from '../../utils/commands';
 import { specChecker } from '../../wrapper/spec_checker';
+import { SpecContext } from '../../context/spec_context';
 
 import { ViewType, CommandViewType } from './types';
 import FormView from '../form_view/form_view';
@@ -22,13 +24,14 @@ function CommandView({ command, resetCommand }: Props) {
   );
   const [currentView, setCurrentView] = useState<ViewType | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
+  const specData = useContext(SpecContext) as ExtensionSpecDataType;
 
   useEffect(() => {
     getCommandResponse();
   }, []);
 
   const getCommandResponse = async () => {
-    const commandView = await getCommandView(command.extension, command.key);
+    const commandView = await getCommandView(command.extension_path, command.key, specData);
     const record = JSON.parse(commandView.record);
     setCurrentCommandView(record);
     setCurrentView(record.type as ViewType);

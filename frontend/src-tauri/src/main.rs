@@ -9,32 +9,16 @@
 extern crate diesel;
 extern crate diesel_migrations;
 
-use diesel::prelude::*;
-use std::sync::Mutex;
-use tauri::{RunEvent, SystemTray};
+use tauri::{Manager, RunEvent, SystemTray};
+use window_shadows::set_shadow;
 
 mod command;
 mod db;
 mod schema;
-mod seed;
 mod system_tray;
 
-pub struct AppState {
-    count: Mutex<i64>,
-    conn: Mutex<SqliteConnection>,
-}
-
-pub fn run() -> AppState {
-    let state = AppState {
-        count: Default::default(),
-        conn: Mutex::new(db::establish_connection()),
-    };
-
-    return state;
-}
-
 fn main() {
-    let state = run();
+    let state = command::commands::run();
 
     #[allow(unused_mut)]
     let mut app = tauri::Builder::default()
@@ -42,13 +26,23 @@ fn main() {
         .on_system_tray_event(system_tray::on_system_tray_event)
         .manage(state)
         .invoke_handler(tauri::generate_handler![
-            command::command_controller,
-            command::get_action_data,
-            command::fetch_data_for_id,
-            command::spec_controller
+            command::cli::command_controller,
+            command::cli::get_action_data,
+            command::cli::fetch_data_for_id,
+            command::cli::spec_controller,
+            // Below are commands to fetch data from database
+            command::commands::get_all_commands,
+            command::commands::prefill_all_commands,
+            command::commands::save_spec,
+            command::commands::get_spec
         ])
         .build(tauri::generate_context!())
         .expect("error while running tauri application");
+
+    let window = app.get_window("main").unwrap();
+
+    #[cfg(target_os = "macos")]
+    set_shadow(&window, true).expect("Unsupported platform!");
 
     #[cfg(target_os = "macos")]
     app.set_activation_policy(tauri::ActivationPolicy::Accessory);
