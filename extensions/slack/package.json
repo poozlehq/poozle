@@ -1,0 +1,67 @@
+{
+  "name": "look_dev_github",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "harshithmullapudi",
+  "license": "MIT",
+  "bin": {
+    "github": "dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "node dist/index.js",
+    "watch": "tsc -w",
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint --ext .ts --ext .js src tests",
+    "prepublish": "yarn build",
+    "smooth-release": "smooth-release",
+    "precommit": "lint-staged",
+    "package": "pkg . --targets node16-macos-x64 --output github"
+  },
+  "devDependencies": {
+    "@types/chalk": "^2.2.0",
+    "@types/jest": "^20.0.4",
+    "@types/node": "^18.6.2",
+    "@types/node-emoji": "^1.4.0",
+    "@types/yargs": "^17.0.10",
+    "@typescript-eslint/eslint-plugin": "~5.26",
+    "@typescript-eslint/parser": "~5.26",
+    "eslint": "^8.20.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-jest": "~26.2",
+    "jest": "^28.1.3",
+    "lint-staged": "^13.0.3",
+    "prettier": "~2.6",
+    "test": "^3.1.0",
+    "ts-jest": "^28.0.7",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "@poozle/edk": "^0.1.4",
+    "@tauri-apps/tauri-forage": "^1.0.0-beta.2",
+    "axios": "^0.27.2",
+    "husky": "^8.0.1"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "prettier --single-quote=true --write",
+      "git add"
+    ]
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+    },
+    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(tsx?|jsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json",
+      "jsx"
+    ]
+  }
+}
