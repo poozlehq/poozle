@@ -2,7 +2,7 @@ import { ActionParams, Spec, HTTPAction, Builder } from '@poozle/edk';
 
 import { apiPost } from '../utils/api';
 
-const { Input, Form, TextInput, Section, Select } = Builder;
+const { Input, Form, TextInput, Select } = Builder;
 
 export class NewIssueAction extends HTTPAction {
   defaultHeaders = {};

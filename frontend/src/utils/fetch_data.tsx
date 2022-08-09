@@ -26,6 +26,8 @@ function useFetchData(fetchDataId: string | undefined, defaultData?: any[]) {
       specData: JSON.stringify(specData.data),
     });
 
+    console.log(dataFromExtension);
+
     const response = JSON.parse(dataFromExtension as string);
     const parsedData = response.record.map((record: any) => ({
       ...record,

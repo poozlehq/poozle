@@ -19,6 +19,7 @@ export type FormHelpers = {
 type FormProps = {
   blocks: Block[];
   onSubmit: (values: FormValues, helpers: FormHelpers) => void;
+  submitText?: string;
 };
 
 export function getInputWrapperFromBlocks(blocks: Block[], form: any): React.ReactElement {
@@ -47,7 +48,7 @@ function getInitialValues(blocks: Block[]) {
   return initialValues;
 }
 
-function Form({ blocks, onSubmit }: FormProps) {
+function Form({ blocks, onSubmit, submitText }: FormProps) {
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
@@ -64,7 +65,7 @@ function Form({ blocks, onSubmit }: FormProps) {
       {getInputWrapperFromBlocks(blocks, form)}
       <div className={styles.actions}>
         <SubmitButton size="sm" className={styles.submitButton} loading={loading}>
-          Connect
+          {submitText ? submitText : 'Submit'}
         </SubmitButton>
       </div>
     </form>

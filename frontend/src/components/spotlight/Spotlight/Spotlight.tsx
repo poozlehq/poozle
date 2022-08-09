@@ -138,7 +138,7 @@ export function Spotlight({
   const [IMEOpen, setIMEOpen] = useState(false);
   const { classes, cx } = useStyles(
     { centered, maxWidth, topOffset, radius, zIndex },
-    { classNames, styles, name: 'Spotlight' }
+    { classNames, styles, name: 'Spotlight' },
   );
 
   const [, lockScroll] = useScrollLock();
@@ -212,18 +212,7 @@ export function Spotlight({
         onExited={() => lockScroll(false)}
         onEntered={() => lockScroll(true)}
         mounted={opened}
-        transitions={{
-          spotlight: {
-            duration: transitionDuration,
-            transition,
-            timingFunction: 'ease',
-          },
-          overlay: {
-            duration: transitionDuration / 2,
-            transition: 'fade',
-            timingFunction: 'ease',
-          },
-        }}
+        transitions={{}}
       >
         {(transitionStyles) => (
           <div className={cx(classes.root, className)} {...others}>
@@ -251,7 +240,7 @@ export function Spotlight({
                 <ActionsWrapper>
                   <ActionsList
                     highlightQuery={highlightQuery}
-                    highlightColor={highlightColor}
+                    highlightColor={''}
                     actions={groupedWithLabels}
                     actionComponent={actionComponent}
                     hovered={hovered}

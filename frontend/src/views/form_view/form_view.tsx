@@ -46,7 +46,7 @@ function FormView({ resetCommand, formData }: Props) {
       <Header onBack={resetCommand} />
 
       <div className={styles.formContainer}>
-        <Form blocks={getBlocks() ?? []} onSubmit={onSubmit} />
+        <Form blocks={getBlocks() ?? []} onSubmit={onSubmit} submitText={currentCommand.name} />
       </div>
     </div>
   );
