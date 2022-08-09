@@ -71,6 +71,10 @@ export class FormDto extends PoozleDto {
   public readonly blocks?: BlockDto[];
 }
 
+export class SearchDto extends PoozleDto {
+  public readonly blocks?: BlockDto[];
+}
+
 export class BlockDto extends PoozleDto {
   // @ts-ignore -- Dynamically created class
   public readonly type: BlockType;

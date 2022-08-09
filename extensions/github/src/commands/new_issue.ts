@@ -4,7 +4,7 @@ import { NewIssueAction } from '../actions';
 
 import { Repo } from '../types';
 
-import { api } from '../utils/api';
+import { apiGet } from '../utils/api';
 
 const { Option } = Builder;
 export class NewIssueCommand extends AbstractCommand {
@@ -23,9 +23,9 @@ export class NewIssueCommand extends AbstractCommand {
     return [new NewIssueAction()];
   }
 
-  async fetchDataController(key: string, params: DoParams, spec: Spec) {
+  async fetchDataController(key: string, params: DoParams, spec: any) {
     if (key === 'repository_name') {
-      const repos: Repo[] = await api(
+      const repos: Repo[] = await apiGet(
         `https://api.github.com/user/repos`,
         spec.api_key,
       );

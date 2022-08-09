@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Repo } from '../types';
+import { Repo, Issue } from '../types';
 
-export async function api(path: string, bearerToken: string): Promise<Repo[]> {
+export async function apiGet<T>(path: string, bearerToken: string): Promise<T> {
   const headers = {
     Accept: 'application/vnd.github+json',
     Authorization: `token ${bearerToken}`,
