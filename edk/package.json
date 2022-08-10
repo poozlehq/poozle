@@ -1,6 +1,6 @@
 {
   "name": "@poozle/edk",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "A util to build extensions for poozle",
   "main": "./lib/cjs/index.js",
   "module": "./lib/esm/index.js",
