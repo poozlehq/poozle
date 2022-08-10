@@ -40,7 +40,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@poozle/edk": "^0.1.8",
+    "@poozle/edk": "^0.1.11",
     "@tauri-apps/tauri-forage": "^1.0.0-beta.2",
     "axios": "^0.27.2",
     "husky": "^8.0.1"

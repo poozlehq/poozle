@@ -8,6 +8,7 @@
   align-items: center;
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
   border-bottom: 1px solid var(--mantine-color-dark-4);
+  background: transparent;
 }
 
 .iconContainer {
@@ -17,8 +18,7 @@
 }
 
 .tooltip {
-  padding: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-xs);
   font-size: var(--mantine-size-sm);
-  background: var(--mantine-color-dark-4);
   border-radius: var(--mantine-radius-md);
 }

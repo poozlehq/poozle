@@ -4,6 +4,7 @@ import { Command as CommandType } from '@poozle/edk';
 
 import { getData, setData } from './storage';
 import { appDir } from '@tauri-apps/api/path';
+import { Command as ShellCommand } from '@tauri-apps/api/shell';
 
 export type Extension = {
   name: string;
@@ -16,9 +17,6 @@ export type Command = {
   extension_id: string;
   extension_path: string;
 } & CommandType;
-
-export const COMMAND_STORAGE_KEY = 'command';
-export const EXTENSION_STORAGE_KEY = 'extension_';
 
 export async function getImage(path: string): Promise<string> {
   const contents = await readBinaryFile(`icons/${path}`, { dir: BaseDirectory.App });
@@ -43,6 +41,8 @@ export async function getAllCommands(): Promise<Command[]> {
 }
 
 export async function getCommandSpec(extensionPath: string) {
+  const specCommand = new ShellCommand(extensionPath, ['spec']);
+  console.log(specCommand.execute());
   const commandView = (await invoke('spec_controller', {
     path: extensionPath,
   })) as string;

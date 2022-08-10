@@ -1,8 +1,10 @@
-import Loader from '../../components/loader/loader';
+import { Input, Skeleton } from '@mantine/core';
 
 import useFetchData from '../../utils/fetch_data';
 
 import Select, { SelectProps } from './select';
+
+import styles from './select.module.scss';
 
 export type SelectWithFetchProps = Omit<SelectProps, 'data'> & {
   fetchDataId?: string;
@@ -17,7 +19,11 @@ function SelectWithFetch(props: SelectWithFetchProps) {
     return <Select {...restProps} data={selectData} />;
   }
 
-  return <Loader />;
+  return (
+    <Input.Wrapper label={restProps.label} description={restProps.description}>
+      <Skeleton height={30} mt={6} width="100%" radius="xl" className={styles.skeleton} />
+    </Input.Wrapper>
+  );
 }
 
 export default SelectWithFetch;

@@ -1,5 +1,1 @@
-export type Spec =
-  | {
-      bearer_token: string;
-    }
-  | { [x: string]: string };
+export type Spec = { [x: string]: string };

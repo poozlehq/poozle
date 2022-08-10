@@ -16,10 +16,6 @@ function App() {
   const [currentCommand, setCurrentCommand] = useState<Command>();
 
   useEffect(() => {
-    if (document) {
-      registerAppWindow(resetCommand);
-    }
-
     getCommands();
   }, []);
 
@@ -44,7 +40,7 @@ function App() {
             <CommandView command={currentCommand} resetCommand={resetCommand} />
           </CommandContext.Provider>
         ) : (
-          <Search onCommandSelect={onCommandSelect} />
+          <Search onCommandSelect={onCommandSelect} resetCommand={resetCommand} />
         )}
       </CommandsContext.Provider>
     </div>

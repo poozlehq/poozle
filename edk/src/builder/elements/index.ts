@@ -7,6 +7,7 @@ import { RadioButtonsBuilder, RadioButtonsParams } from './radio-buttons';
 import { TextInputBuilder, TextInputParams } from './text-input';
 import { TimePickerBuilder, TimePickerParams } from './timepicker';
 import { SelectBuilder, SelectParams } from './select';
+import { TextEditorBuilder, TextEditorParams } from './text-editor';
 
 export type {
   CheckboxesBuilder,
@@ -19,6 +20,8 @@ export type {
   RadioButtonsParams,
   TextInputBuilder,
   TextInputParams,
+  TextEditorBuilder,
+  TextEditorParams,
   TimePickerBuilder,
   TimePickerParams,
   SelectBuilder,
@@ -43,6 +46,10 @@ export function RadioButtons(params?: RadioButtonsParams): RadioButtonsBuilder {
 
 export function TextInput(params?: TextInputParams): TextInputBuilder {
   return new TextInputBuilder(params);
+}
+
+export function TextEditor(params?: TextEditorParams): TextEditorBuilder {
+  return new TextEditorBuilder(params);
 }
 
 export function TimePicker(params?: TimePickerParams): TimePickerBuilder {

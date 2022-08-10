@@ -5,3 +5,9 @@
     }
   }
 }
+
+.skeleton {
+  &:after {
+    border-radius: var(--mantine-radius-md);
+  }
+}

@@ -22,3 +22,25 @@ export function registerAppWindow(setCurrentCommand: setCurrentCommandType) {
   //   appWindow.hide();
   // });
 }
+
+type setLastCommandType = () => void;
+
+export function registerEsc(setLastCommand: setLastCommandType) {
+  document.onkeydown = function (evt) {
+    evt = evt || window.event;
+    var isEscape = false;
+    if ('key' in evt) {
+      isEscape = evt.key === 'Escape' || evt.key === 'Esc';
+    } else {
+      isEscape = evt.keyCode === 27;
+    }
+    if (isEscape) {
+      setLastCommand();
+    }
+  };
+
+  // Close the window when tauri is blurred
+  // appWindow.listen('tauri://blur', () => {
+  //   appWindow.hide();
+  // });
+}

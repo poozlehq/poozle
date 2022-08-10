@@ -10,9 +10,8 @@ type Props = {
 function Header({ onBack }: Props) {
   const backElement = (
     <div className={styles.tooltip}>
-      <Kbd>Esc</Kbd> to go back <Kbd>Cmd</Kbd>
-      <Kbd>+</Kbd>
-      <Kbd>Esc</Kbd> to root search
+      <Kbd>Esc</Kbd> to go back <Kbd>Cmd + Esc</Kbd>
+      to root search
     </div>
   );
 

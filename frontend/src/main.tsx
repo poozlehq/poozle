@@ -16,12 +16,8 @@ register('Cmd+L', async () => {
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <div>
-      <div>
-        <ThemeProvider>
-          <App />
-        </ThemeProvider>
-      </div>
-    </div>
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>,
 );

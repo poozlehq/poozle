@@ -1,17 +1,25 @@
 import { SpotlightAction } from '@mantine/spotlight';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 
 import { CommandsContext } from '../context/commands_context';
+import { registerAppWindow } from '../utils/application';
 import { Command } from '../utils/commands';
 
 import Spotlight from './spotlight';
 
 type Props = {
   onCommandSelect: (command: Command) => void;
+  resetCommand: () => void;
 };
 
-function Search({ onCommandSelect }: Props) {
+function Search({ onCommandSelect, resetCommand }: Props) {
   const allCommands = useContext(CommandsContext);
+
+  useEffect(() => {
+    if (document) {
+      registerAppWindow(resetCommand);
+    }
+  }, []);
 
   function getActions(): SpotlightAction[] {
     return allCommands.map(

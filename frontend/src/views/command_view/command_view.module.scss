@@ -1,4 +1,54 @@
 .commandView {
   background-color: transparent;
   border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
+  height: 100%;
+}
+
+.formView {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.form {
+  flex-grow: 1;
+}
+
+.footer {
+  padding: var(--mantine-spacing-sm);
+  border-top: 1px solid var(--mantine-color-dark-4);
+  display: flex;
+  align-items: center;
+  font-size: var(--mantine-font-size-xs);
+  width: 100%;
+  justify-content: space-between;
+  color: var(--mantine-color-dark-2);
+}
+
+.icon {
+  margin-right: var(--mantine-spacing-xs);
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.commandTree {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  label {
+    font-size: var(--mantine-font-size-xs);
+  }
+}
+
+.rightArrowIcon {
+  color: var(--mantine-color-dark-2);
+}
+
+.active label {
+  background-color: var(--mantine-color-dark-2) !important;
+  color: var(--mantine-color-dark-9);
 }

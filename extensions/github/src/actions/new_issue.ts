@@ -2,7 +2,7 @@ import { ActionParams, Spec, HTTPAction, Builder } from '@poozle/edk';
 
 import { apiPost } from '../utils/api';
 
-const { Input, Form, TextInput, Select } = Builder;
+const { Input, Form, TextInput, Select, TextEditor } = Builder;
 
 export class NewIssueAction extends HTTPAction {
   defaultHeaders = {};
@@ -33,11 +33,7 @@ export class NewIssueAction extends HTTPAction {
           ),
           Input({
             label: 'Issue Description',
-          }).element(
-            TextInput({
-              placeholder: 'Enter the issue description',
-            }).actionId('issue_description'),
-          ),
+          }).element(TextEditor().actionId('issue_description')),
         )
         .callbackId('new-issue-submitted');
     }

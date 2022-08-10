@@ -2,10 +2,13 @@ import { UseFormReturnType } from '@mantine/form';
 
 import SelectWithFetch from '../../ui/select/select_with_fetch';
 import Input from '../../ui/input/input';
+import RTE from '../../ui/rte/rte';
 
 import { Block, ElementType } from '../../types/form';
 
 import styles from './input_wrapper.module.scss';
+import { Delta, Sources } from 'quill';
+import { UnprivilegedEditor } from 'react-quill';
 
 export type Props = {
   block: Block;
@@ -16,6 +19,14 @@ export type Props = {
 function InputWrapper(props: Props) {
   const { type, element, label } = props.block;
   let Component: React.ReactElement = <></>;
+
+  const onChange = (e: any) => {
+    if (element.type === ElementType.TextEditor) {
+      props.inputProps.onChange(e);
+    }
+
+    props.inputProps.onChange(e);
+  };
 
   if (type === 'input') {
     if (element.type == 'select') {
@@ -29,6 +40,7 @@ function InputWrapper(props: Props) {
           data={element.data}
           value={props.inputProps.value}
           {...props.inputProps}
+          onChange={onChange}
         />
       );
     }
@@ -41,6 +53,21 @@ function InputWrapper(props: Props) {
           placeholder={element.placeholder}
           required
           {...props.inputProps}
+          onChange={onChange}
+        />
+      );
+    }
+
+    if (element.type === ElementType.TextEditor) {
+      Component = (
+        <RTE
+          label={label}
+          name={element.action_id}
+          placeholder={element.placeholder}
+          required
+          value={props.inputProps.value}
+          {...props.inputProps}
+          onChange={onChange}
         />
       );
     }

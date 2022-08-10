@@ -4,6 +4,7 @@ import type {
   ImgBuilder,
   RadioButtonsBuilder,
   TextInputBuilder,
+  TextEditorBuilder,
   TimePickerBuilder,
 } from '../../elements';
 import type {
@@ -32,6 +33,7 @@ export type InputElementBuilder =
   | DatePickerBuilder
   | RadioButtonsBuilder
   | TextInputBuilder
+  | TextEditorBuilder
   | TimePickerBuilder;
 
 export type ContextElement = ImgBuilder | string;

@@ -1,9 +1,12 @@
-import { Ref } from 'react';
+import { forwardRef, Ref } from 'react';
 import classnames from 'classnames';
 import {
   Select as MantineSelect,
   Input as MantineInput,
   SelectProps as MSelectProps,
+  Group,
+  Text,
+  Avatar,
 } from '@mantine/core';
 
 import styles from './select.module.scss';
@@ -41,6 +44,23 @@ function Select(props: SelectProps) {
     if ($onChange) $onChange(value);
   };
 
+  const SelectItem = forwardRef<HTMLDivElement, any>(
+    ({ image, label, description, ...others }: any, ref) => (
+      <div ref={ref} {...others}>
+        <Group noWrap>
+          <Avatar src={image} size="xs" />
+
+          <div>
+            <Text size="sm">{label}</Text>
+            <Text size="xs" color="dimmed">
+              {description}
+            </Text>
+          </div>
+        </Group>
+      </div>
+    ),
+  );
+
   return (
     <MantineInput.Wrapper
       id={name}
@@ -54,6 +74,7 @@ function Select(props: SelectProps) {
         ref={ref}
         size={size}
         searchable={searchable}
+        itemComponent={SelectItem}
         selectOnBlur={selectOnBlur}
         id={name}
         value={value}
