@@ -1,15 +1,11 @@
-import classnames from 'classnames';
 import { useContext, useEffect, useState } from 'react';
-import { IconArrowRightCircle } from '@tabler/icons';
-import { Chip } from '@mantine/core';
 
 import Header from '../../components/header/header';
 import Loader from '../../components/loader/loader';
-import { Image } from '../../components/image';
 import FormView from '../form_view/form_view';
+import CommandFooter from './command_footer';
 
 import { Command, ExtensionSpecDataType, getCommandView } from '../../utils/commands';
-import { capitalizeFirstLetter } from '../../utils/common';
 import { specChecker } from '../../wrapper/spec_checker';
 import { registerEsc } from '../../utils/application';
 
@@ -78,35 +74,14 @@ function CommandView({ command, resetCommand }: Props) {
       }}
     >
       <div className={styles.commandView}>
-        {currentCommand.record.type === ViewType.Form && (
-          <div className={styles.formView}>
-            <div className={styles.form}>
+        <div className={styles.viewType}>
+          {currentCommand.record.type === ViewType.Form && (
+            <div className={styles.formView}>
               <FormView formData={currentCommand.record} resetCommand={resetCommand} />
             </div>
-            <div className={styles.footer}>
-              <div className={styles.icon}>
-                <Image src={command.icon} html_renderer />
-              </div>
-              <div className={styles.commandTree}>
-                <Chip size="xs" checked={false}>
-                  {capitalizeFirstLetter(command.extension_id)}
-                </Chip>
-                {commandTree.map((treeNode, index) => (
-                  <>
-                    <IconArrowRightCircle className={styles.rightArrowIcon} />
-                    <Chip
-                      size="xs"
-                      checked={false}
-                      className={classnames({ [styles.active]: index === commandTree.length - 1 })}
-                    >
-                      {treeNode.command.name}
-                    </Chip>
-                  </>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
+        <CommandFooter command={command} currentCommand={currentCommand} />
       </div>
     </CommandTreeContext.Provider>
   );

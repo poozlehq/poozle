@@ -1,0 +1,29 @@
+.footer {
+  padding: var(--mantine-spacing-sm);
+  border-top: 1px solid var(--mantine-color-dark-4);
+  display: flex;
+  align-items: center;
+  font-size: var(--mantine-font-size-xs);
+  width: 100%;
+  justify-content: space-between;
+  color: var(--mantine-color-dark-2);
+}
+
+.icon {
+  margin-right: var(--mantine-spacing-xs);
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.commandTree {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  label {
+    font-size: var(--mantine-font-size-xs);
+  }
+}

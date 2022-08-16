@@ -3,11 +3,10 @@ import { useEffect, useState } from 'react';
 import { CommandsContext } from './context/commands_context';
 import { CommandContext } from './context/command_context';
 
-import { registerAppWindow } from './utils/application';
 import { Command, getAllCommands } from './utils/commands';
 
 import CommandView from './views/command_view/command_view';
-import Search from './components/search';
+import Search from './components/search/search';
 
 import styles from './App.module.scss';
 

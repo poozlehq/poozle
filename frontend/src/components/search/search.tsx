@@ -1,11 +1,11 @@
 import { SpotlightAction } from '@mantine/spotlight';
 import { useContext, useEffect } from 'react';
 
-import { CommandsContext } from '../context/commands_context';
-import { registerAppWindow } from '../utils/application';
-import { Command } from '../utils/commands';
+import { CommandsContext } from '../../context/commands_context';
+import { registerAppWindow } from '../../utils/application';
+import { Command } from '../../utils/commands';
 
-import Spotlight from './spotlight';
+import Spotlight from '../spotlight';
 
 type Props = {
   onCommandSelect: (command: Command) => void;
