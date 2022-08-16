@@ -10,7 +10,7 @@ Airbyte is on a mission to make data integration pipelines a commodity.
 
 # Getting started
 - Install extension
-- Read the introduction and viewpoint
+- Here is a step-by-step guide showing you how to use extension, all on your computer.
 
 # Contributing
 We love contributions to Poozle, big or small.
