@@ -44,6 +44,7 @@ function CommandView({ command, resetCommand }: Props) {
 
   const getCommandResponse = async () => {
     const commandView = await getCommandView(command.extension_path, command.key, specData);
+    console.log(commandView);
     const record = JSON.parse(commandView.record);
 
     setCommandTree([

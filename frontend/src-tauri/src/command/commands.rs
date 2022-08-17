@@ -24,11 +24,13 @@ pub fn run() -> AppState {
 
 pub fn create_new_command(con: &SqliteConnection, extension_id: &String, extension_path: &String) {
     let file_path = extension_path.to_owned() + "/" + extension_id;
+    println!("{:?}", file_path);
     let output = Command::new(file_path.to_owned())
         .arg("commands")
         .output()
         .expect("failed to execute process");
 
+    println!("{:?}", output);
     let string = String::from_utf8_lossy(&output.stdout).to_string();
     let values: Value = serde_json::from_str(&string).unwrap();
     let records = &values["record"].as_array().unwrap();

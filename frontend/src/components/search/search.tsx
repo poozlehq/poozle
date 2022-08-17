@@ -14,6 +14,7 @@ type Props = {
 
 function Search({ onCommandSelect, resetCommand }: Props) {
   const allCommands = useContext(CommandsContext);
+  console.log(allCommands)
 
   useEffect(() => {
     if (document) {
