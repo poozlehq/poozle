@@ -32,3 +32,7 @@ export abstract class HTTPAction extends BaseAction {
   defaultHeaders: AxiosRequestHeaders = {};
   type = ActionType.HTTP;
 }
+
+export abstract class ScriptAction extends BaseAction {
+  type = ActionType.SCRIPT;
+}
