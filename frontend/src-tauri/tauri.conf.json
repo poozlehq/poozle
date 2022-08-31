@@ -20,6 +20,7 @@
         "all": true,
         "scope": [
           "$APP/extensions",
+          "$APP/extensions/*",
           "$APP/icons/*"
         ]
       },

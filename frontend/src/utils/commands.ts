@@ -26,6 +26,7 @@ export async function getImage(path: string): Promise<string> {
 export async function getAllCommands(): Promise<Command[]> {
   const response = await invoke('get_all_commands');
   const commands = JSON.parse(response as string) as Command[];
+  console.log(commands);
   if (commands.length > 0) {
     return Promise.all(
       commands.map(async (command: Command) => ({
@@ -63,6 +64,7 @@ export async function getCommandView(
     specData: JSON.stringify(specData.data),
   })) as string;
 
+  console.log(commandView);
   return JSON.parse(commandView);
 }
 

@@ -594,10 +594,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@poozle/edk@^0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.11.tgz#bda84f5f56e8112ec2326c543baf0c8e9f087b7a"
-  integrity sha512-yhYXcBzFnoa4jfeaciV9InKL3y1vqhCuOvHdnIbhSptUxJEbilOnRyREKn0/lNe2hGVVKOpSOW6iuLVQwNWqjw==
+"@poozle/edk@^0.1.13":
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.13.tgz#47cc7cfd100f1e1d8dadb545c22cbed6a09d5c4b"
+  integrity sha512-7pPWJhMxkSCdkj0B7dfZditjOIKYmFgciywHCtFFh1tDTSXR2GMBWIpLVNVm08JdlI//YJITJXXddoWwrM6o6g==
   dependencies:
     axios "^0.27.2"
     tslib "~2.4"
