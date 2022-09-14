@@ -82,3 +82,10 @@ export type Fn<T, R> = (arg: T) => R;
 export type BlockBuilderReturnableFn<T> = Fn<T, Appendable<BlockBuilder>>;
 
 export type StringReturnableFn<T> = Fn<T, string>;
+
+export enum QuickActionTypeEnum {
+  COPY = 'copy',
+  OPEN = 'open',
+}
+
+export type QuickActionValueType = Map<any, any> | string

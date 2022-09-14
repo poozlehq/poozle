@@ -42,4 +42,6 @@ export enum Prop {
   TitleUrl = 'titleUrl',
   VideoUrl = 'videoUrl',
   FetchDataId = 'fetchDataId',
+  QuickActionType = 'quickActionType',
+  searchDataId = 'searchDataId',
 }

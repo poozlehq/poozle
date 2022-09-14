@@ -14,6 +14,7 @@ import {
   Label,
   Options,
   Placeholder,
+  SearchDataId,
 } from '../internal/methods';
 
 import type { PoozleDto } from '../internal/dto';
@@ -22,6 +23,7 @@ export interface SelectParams {
   label?: string;
   actionId?: string;
   fetchDataId?: string;
+  searchDataId?: SearchDataId;
 }
 
 export interface SelectBuilder
@@ -31,7 +33,8 @@ export interface SelectBuilder
     Options,
     Placeholder,
     Label,
-    FetchDataId {}
+    FetchDataId,
+    SearchDataId {}
 
 export class SelectBuilder extends ElementBuilderBase {
   /** @internal */
@@ -55,4 +58,5 @@ applyMixins(SelectBuilder, [
   Placeholder,
   FetchDataId,
   Label,
+  SearchDataId,
 ]);

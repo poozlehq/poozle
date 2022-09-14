@@ -1,12 +1,13 @@
 import { BitBuilderBase } from '../internal/base';
 import { PoozleDto } from '../internal/dto';
 import { applyMixins } from '../internal/helpers';
-import { Description, Icon, Text } from '../internal/methods';
+import { Description, Icon, Text, Url } from '../internal/methods';
 
 export interface SearchResultParam {
   description?: string;
   text?: string;
   icon?: string;
+  url?: string;
 }
 
 export interface SearchResultBuilder extends Description, Text, Icon {}
@@ -22,4 +23,4 @@ export class SearchResultBuilder extends BitBuilderBase {
   }
 }
 
-applyMixins(SearchResultBuilder, [Description, Text, Icon]);
+applyMixins(SearchResultBuilder, [Description, Text, Icon, Url]);

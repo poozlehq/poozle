@@ -4,7 +4,7 @@
 import { Builder } from '../build_lib';
 import { Prop } from '../constants';
 
-import type { Settable } from '../types';
+import type { QuickActionTypeEnum, QuickActionValueType, Settable } from '../types';
 import { OptionBuilder } from '../../bits';
 
 export abstract class ActionId extends Builder {
@@ -139,6 +139,19 @@ export abstract class Title extends Builder {
   }
 }
 
+export abstract class QuickActionType extends Builder {
+  public quickActionType(quickActionType: Settable<QuickActionTypeEnum>): this {
+    return this.set(quickActionType, Prop.QuickActionType);
+  }
+}
+
+export abstract class QuickActionValue extends Builder {
+  public value(value: Settable<QuickActionValueType>): this {
+    return this.set(value, Prop.Value);
+  }
+}
+
+
 export abstract class TitleUrl extends Builder {
   public titleUrl(titleUrl: Settable<string>): this {
     return this.set(titleUrl, Prop.TitleUrl);
@@ -166,5 +179,11 @@ export abstract class VideoUrl extends Builder {
 export abstract class FetchDataId extends Builder {
   public fetchDataId(fetchDataId: Settable<string>): this {
     return this.set(fetchDataId, Prop.FetchDataId);
+  }
+}
+
+export abstract class SearchDataId extends Builder {
+  public searchDataId(searchDataId : Settable<string>): this {
+    return this.set(searchDataId, Prop.searchDataId);
   }
 }

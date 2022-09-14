@@ -1,4 +1,5 @@
 import { FormBuilder, FormParams } from './form';
+import { QuickActionBuilder, QuickActionParams } from './quickActions';
 import { SearchBuilder, SearchParams } from './search';
 
 export function Form(params?: FormParams): FormBuilder {
@@ -9,4 +10,8 @@ export function Search(params?: SearchParams): SearchBuilder {
   return new SearchBuilder(params);
 }
 
-export type Surface = FormBuilder | SearchBuilder;
+export function QuickAction(params?: QuickActionParams): QuickActionBuilder {
+  return new QuickActionBuilder(params);
+}
+
+export type Surface = FormBuilder | SearchBuilder | QuickActionBuilder;

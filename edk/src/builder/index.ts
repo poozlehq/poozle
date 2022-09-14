@@ -19,3 +19,5 @@ export type {
 } from './internal';
 
 export { BlockType, SurfaceType, ElementType } from './internal';
+
+export * from './internal/types';

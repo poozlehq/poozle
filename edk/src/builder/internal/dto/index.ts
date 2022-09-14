@@ -71,6 +71,11 @@ export class FormDto extends PoozleDto {
   public readonly blocks?: BlockDto[];
 }
 
+export class QuickActionDto extends PoozleDto {
+
+}
+
+
 export class SearchDto extends PoozleDto {
   public readonly blocks?: BlockDto[];
 }
