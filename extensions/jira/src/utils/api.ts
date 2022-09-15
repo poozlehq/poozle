@@ -35,13 +35,9 @@ export async function apiPost<T>(
     'Content-Type': 'application/json',
   };
 
-  console.log(path, values);
   const response = await axios.post(path, values, {
     headers,
   });
 
-  // console.log(response.data);
-
-  // return response.data;
-  return undefined;
+  return response.data;
 }

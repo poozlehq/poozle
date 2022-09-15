@@ -84,7 +84,7 @@ export class NewIssueAction extends HTTPAction {
                 type: 'paragraph',
                 content: [
                   {
-                    text: params.description,
+                    text: params.issue_description,
                     type: 'text',
                   },
                 ],

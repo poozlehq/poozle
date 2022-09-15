@@ -1,11 +1,11 @@
 {
-  "name": "look_dev_github",
+  "name": "look_dev_jira",
   "version": "1.0.0",
   "main": "index.js",
   "author": "harshithmullapudi",
   "license": "MIT",
   "bin": {
-    "github": "dist/index.js"
+    "jira": "dist/index.js"
   },
   "files": [
     "dist"
@@ -19,7 +19,7 @@
     "prepublish": "yarn build",
     "smooth-release": "smooth-release",
     "precommit": "lint-staged",
-    "package": "pkg . --targets node16-macos-x64 --output github"
+    "package": "pkg . --targets node16-macos-x64 --output jira"
   },
   "devDependencies": {
     "@types/chalk": "^2.2.0",
