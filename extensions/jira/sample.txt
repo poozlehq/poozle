@@ -1,0 +1,14 @@
+yarn run v1.22.18
+$ node dist/index.js do new-issue-submitted -s '{"jira_domain":"gelocity","email_id":"manoj@velocity.in","api_key":"YsOW1yweYllvT1ouLKvb99AA"}' -p '{"project_key":"10011","issue_name":"Create a document for GST","issue_type_key":"10024","issue_description":"write all flows","parent_key":"VD-130","assignee_key":"6123a69dda0c1a00686fd8a5"}'
+https://gelocity.atlassian.net/rest/api/3/issue {
+  update: {},
+  fields: {
+    summary: 'Create a document for GST',
+    parent: { key: 'VD-130' },
+    issuetype: { id: '10024' },
+    project: { id: '10011' },
+    description: { type: 'doc', version: 1, content: [Array] },
+    assignee: { id: '6123a69dda0c1a00686fd8a5' }
+  }
+}
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

@@ -13,7 +13,6 @@ export async function apiGet<T>(
     )}`,
   };
 
-
   const response = await axios.get(path, {
     headers,
     params: params,
@@ -33,11 +32,16 @@ export async function apiPost<T>(
     Authorization: `Basic ${Buffer.from(`${emailID}:${apiKey}`).toString(
       'base64',
     )}`,
+    'Content-Type': 'application/json',
   };
 
+  console.log(path, values);
   const response = await axios.post(path, values, {
     headers,
   });
 
-  return response.data;
+  // console.log(response.data);
+
+  // return response.data;
+  return undefined;
 }

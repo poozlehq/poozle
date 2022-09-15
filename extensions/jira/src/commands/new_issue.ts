@@ -1,5 +1,4 @@
-import { AbstractCommand, Spec, DoParams, Builder } from '@poozle/edk';
-import { SearchResult } from '@poozle/edk/lib/cjs/builder';
+import { AbstractCommand, DoParams, Builder } from '@poozle/edk';
 
 import { NewIssueAction } from '../actions';
 

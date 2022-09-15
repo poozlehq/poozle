@@ -1,6 +1,4 @@
 import { ActionParams, Spec, HTTPAction, Builder } from '@poozle/edk';
-import { SectionBuilder } from '@poozle/edk/lib/cjs/builder';
-
 import { apiPost } from '../utils/api';
 
 const { Input, Form, TextInput, Select, TextEditor, Section } = Builder;
@@ -55,7 +53,7 @@ export class NewIssueAction extends HTTPAction {
               Input({
                 label: 'Assignee',
               }).element(
-                Select().fetchDataId('assignee').actionId('assinee_key'),
+                Select().fetchDataId('assignee').actionId('assignee_key'),
               ),
             )
             .conditionalCheck(['project_key']),
@@ -64,19 +62,19 @@ export class NewIssueAction extends HTTPAction {
     }
 
     if (callback_id === 'new-issue-submitted') {
-      const path = `${this.baseUrl}/${params.repository_name}/issues`;
+      const path = `https://${spec.jira_domain}.atlassian.net/rest/api/3/issue`;
       const values = {
         update: {},
         fields: {
-          summary: 'Main order flow broken',
+          summary: params.issue_name,
           parent: {
-            key: 'PROJ-123',
+            key: params.parent_key,
           },
           issuetype: {
-            id: '10000',
+            id: params.issue_type_key,
           },
           project: {
-            id: '10000',
+            id: params.project_key,
           },
           description: {
             type: 'doc',
@@ -86,16 +84,15 @@ export class NewIssueAction extends HTTPAction {
                 type: 'paragraph',
                 content: [
                   {
-                    text: 'Order entry fails when selecting supplier.',
+                    text: params.description,
                     type: 'text',
                   },
                 ],
               },
             ],
           },
-          duedate: '2019-05-11',
           assignee: {
-            id: '5b109f2e9729b51b54dc274d',
+            id: params.assignee_key,
           },
         },
       };

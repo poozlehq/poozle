@@ -37,7 +37,7 @@ export class JiraExtension extends AbstractExtension {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get_commands(): any {
-    return [new NewIssueCommand(), new SearchIssueCommand()];
+    return [new SearchIssueCommand(), new NewIssueCommand()];
   }
 }
 
