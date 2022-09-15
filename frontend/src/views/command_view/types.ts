@@ -1,13 +1,15 @@
+import { Surface } from '../../types/common';
 import { Command } from '../../utils/commands';
 
-export enum ViewType {
+export enum CommandViewType {
   Form = 'Form',
   Search = 'Search',
 }
 
-export type CommandRecordType = { [x: string]: any };
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type CommandRecordType = Record<string, any>;
 
-export type CommandTreeRecord = {
+export interface CommandTreeRecord {
   command: Command;
-  record: CommandRecordType;
-};
+  record: Surface;
+}

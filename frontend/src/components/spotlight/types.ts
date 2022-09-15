@@ -23,5 +23,6 @@ export interface SpotlightAction {
   onTrigger(action: SpotlightAction): void;
 
   /** Any other properties that will be consumed by SpotlightProvider */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }

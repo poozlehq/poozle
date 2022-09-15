@@ -1,16 +1,24 @@
-import React from 'react';
-import { DefaultProps, Selectors, Text, MantineNumberSize, MantineColor } from '@mantine/core';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { SpotlightAction } from '../types';
-import type { DefaultActionProps, DefaultActionStylesNames } from '../DefaultAction/DefaultAction';
-import useStyles from './ActionsList.styles';
 
-export type ActionsListStylesNames = Selectors<typeof useStyles> | DefaultActionStylesNames;
-type GetGroupOptionsItem<T extends any[]> = { type: 'item'; item: T[number]; index: number };
-type GetGroupOptionsLabel = { type: 'label'; label: string };
+import { Text, MantineNumberSize, MantineColor } from '@mantine/core';
+import React from 'react';
 
-export interface ActionsListProps extends DefaultProps<ActionsListStylesNames> {
-  actions: (GetGroupOptionsItem<SpotlightAction[]> | GetGroupOptionsLabel)[];
-  actionComponent?: React.FC<DefaultActionProps>;
+import styles from './ActionsList.module.scss';
+
+interface GetGroupOptionsItem<T extends any[]> {
+  type: 'item';
+  item: T[number];
+  index: number;
+}
+interface GetGroupOptionsLabel {
+  type: 'label';
+  label: string;
+}
+
+export interface ActionsListProps {
+  actions: Array<GetGroupOptionsItem<SpotlightAction[]> | GetGroupOptionsLabel>;
+  actionComponent?: any;
   hovered: number;
   query: string;
   nothingFoundMessage?: React.ReactNode;
@@ -21,10 +29,8 @@ export interface ActionsListProps extends DefaultProps<ActionsListStylesNames> {
   radius: MantineNumberSize;
 }
 
-export function ActionsList({
+export const ActionsList = ({
   actions,
-  styles,
-  classNames,
   actionComponent: Action,
   hovered,
   onActionHover,
@@ -34,9 +40,7 @@ export function ActionsList({
   highlightQuery,
   highlightColor,
   radius,
-}: ActionsListProps) {
-  const { classes } = useStyles(null, { classNames, styles, name: 'Spotlight' });
-
+}: ActionsListProps) => {
   const items = actions.map((item) => {
     if (item.type === 'item') {
       return (
@@ -46,7 +50,6 @@ export function ActionsList({
           action={item.item}
           hovered={item.index === hovered}
           onMouseEnter={() => onActionHover(item.index)}
-          classNames={classNames}
           styles={styles}
           radius={radius}
           onTrigger={() => onActionTrigger(item.item)}
@@ -57,7 +60,7 @@ export function ActionsList({
     }
 
     return (
-      <Text className={classes.actionsGroup} color="dimmed" key={item.label}>
+      <Text className={styles.actionsGroup} color="dimmed" key={item.label}>
         {item.label}
       </Text>
     );
@@ -69,11 +72,11 @@ export function ActionsList({
   return (
     <>
       {shouldRenderActions && (
-        <div className={classes.actions}>
+        <div className={styles.actions}>
           {items.length > 0 ? (
             items
           ) : (
-            <Text color="dimmed" className={classes.nothingFound} align="center" size="lg" py="md">
+            <Text color="dimmed" align="center" size="lg" py="md">
               {nothingFoundMessage}
             </Text>
           )}
@@ -81,6 +84,6 @@ export function ActionsList({
       )}
     </>
   );
-}
+};
 
 ActionsList.displayName = '@mantine/spotlight/ActionsList';

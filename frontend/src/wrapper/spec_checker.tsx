@@ -1,27 +1,23 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import Loader from '../components/loader/loader';
-import SpecView from '../views/spec_view/spec_view';
 import { SpecContext } from '../context/spec_context';
-
 import { ExtensionSpecDataType, getExtensionSpecData, Command } from '../utils/commands';
+import SpecView from '../views/spec_view/spec_view';
 
-type Props = {
+interface Props {
   command: Command;
   resetCommand: () => void;
-};
+}
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function specChecker(Component: React.FC<any>) {
   return (props: Props) => {
     const { command, resetCommand } = props;
     const [loading, setLoading] = useState(true);
     const [specData, setSpecData] = useState<ExtensionSpecDataType | undefined>(undefined);
 
-    useEffect(() => {
-      getSpecData();
-    }, []);
-
-    async function getSpecData() {
+    const getSpecData = useCallback(async () => {
       try {
         const specData = await getExtensionSpecData(command.extension_id);
         setSpecData(specData);
@@ -30,7 +26,11 @@ export function specChecker(Component: React.FC<any>) {
         setSpecData(undefined);
       }
       setLoading(false);
-    }
+    }, [command.extension_id]);
+
+    useEffect(() => {
+      getSpecData();
+    }, []);
 
     if (loading) {
       return <Loader />;
@@ -41,11 +41,9 @@ export function specChecker(Component: React.FC<any>) {
     }
 
     return (
-      <>
-        <SpecContext.Provider value={specData}>
-          <Component {...props} />
-        </SpecContext.Provider>
-      </>
+      <SpecContext.Provider value={specData}>
+        <Component {...props} />
+      </SpecContext.Provider>
     );
   };
 }

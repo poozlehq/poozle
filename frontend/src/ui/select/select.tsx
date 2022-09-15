@@ -1,5 +1,4 @@
-import { forwardRef, Ref } from 'react';
-import classnames from 'classnames';
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Select as MantineSelect,
   Input as MantineInput,
@@ -8,6 +7,8 @@ import {
   Text,
   Avatar,
 } from '@mantine/core';
+import classnames from 'classnames';
+import { forwardRef, Ref } from 'react';
 
 import styles from './select.module.scss';
 
@@ -23,7 +24,7 @@ export type SelectProps = {
   className?: string;
 } & MSelectProps;
 
-function Select(props: SelectProps) {
+const Select = (props: SelectProps) => {
   const {
     name,
     label,
@@ -41,7 +42,9 @@ function Select(props: SelectProps) {
   } = props;
 
   const onChange = (value: string) => {
-    if ($onChange) $onChange(value);
+    if ($onChange) {
+      $onChange(value);
+    }
   };
 
   const SelectItem = forwardRef<HTMLDivElement, any>(
@@ -68,7 +71,6 @@ function Select(props: SelectProps) {
       label={label}
       error={error}
       description={description}
-      className={styles.inputWrapper}
     >
       <MantineSelect
         ref={ref}
@@ -84,6 +86,6 @@ function Select(props: SelectProps) {
       />
     </MantineInput.Wrapper>
   );
-}
+};
 
 export default Select;

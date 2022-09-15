@@ -1,5 +1,3 @@
-import type { SpotlightAction } from '../../types';
-
 function getKeywords(keywords: string | string[]) {
   if (Array.isArray(keywords)) {
     return keywords
@@ -16,9 +14,11 @@ function getKeywords(keywords: string | string[]) {
   return '';
 }
 
-export function filterActions(_query: string, actions: SpotlightAction[]) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function filterActions(_query: string, actions: any[]) {
   const query = _query.trim().toLowerCase();
-  const priorityMatrix = [[], []];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const priorityMatrix: any = [[], []];
   actions.forEach((action) => {
     if (action.title?.toLowerCase().includes(query)) {
       priorityMatrix[0].push(action);

@@ -1,25 +1,20 @@
-import { UseFormReturnType } from '@mantine/form';
-
-import SelectWithFetch from '../../ui/select/select_with_fetch';
+import { Block, ElementType } from '../../types/common';
 import Input from '../../ui/input/input';
 import RTE from '../../ui/rte/rte';
+import SelectWithFetch from '../../ui/select/select_with_fetch';
 
-import { Block, ElementType } from '../../types/form';
-
-import styles from './input_wrapper.module.scss';
-import { Delta, Sources } from 'quill';
-import { UnprivilegedEditor } from 'react-quill';
-
-export type Props = {
+export interface Props {
   block: Block;
-  inputProps: { [x: string]: any };
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  inputProps: Record<string, any>;
   key?: number;
-};
+}
 
-function InputWrapper(props: Props) {
+const InputWrapper = (props: Props) => {
   const { type, element, label } = props.block;
-  let Component: React.ReactElement = <></>;
+  let Component: React.ReactElement | null = null;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onChange = (e: any) => {
     if (element.type === ElementType.TextEditor) {
       props.inputProps.onChange(e);
@@ -29,7 +24,7 @@ function InputWrapper(props: Props) {
   };
 
   if (type === 'input') {
-    if (element.type == 'select') {
+    if (element.type === 'select') {
       Component = (
         <SelectWithFetch
           label={label}
@@ -87,6 +82,6 @@ function InputWrapper(props: Props) {
   // }
 
   return <div key={props.key}>{Component}</div>;
-}
+};
 
 export default InputWrapper;

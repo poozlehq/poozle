@@ -1,11 +1,13 @@
-import React, { useState, useRef } from 'react';
+import type { SpotlightAction } from './types';
+
 import { useDidUpdate, useDisclosure } from '@mantine/hooks';
+import React, { useState, useRef } from 'react';
+
+import { useSpotlightEvents } from './events';
+import { SpotlightContext } from './Spotlight.context';
+import { Spotlight, InnerSpotlightProps } from './Spotlight/Spotlight';
 import { useActionsState } from './use-actions-state/use-actions-state';
 import { useSpotlightShortcuts } from './use-spotlight-shortcuts/use-spotlight-shortcuts';
-import { Spotlight, InnerSpotlightProps } from './Spotlight/Spotlight';
-import { useSpotlightEvents } from './events';
-import type { SpotlightAction } from './types';
-import { SpotlightContext } from './Spotlight.context';
 
 export interface SpotlightProviderProps extends InnerSpotlightProps {
   /** Actions list */
@@ -24,13 +26,13 @@ export interface SpotlightProviderProps extends InnerSpotlightProps {
   onQueryChange?(query: string): void;
 
   /** Keyboard shortcut or list of shortcuts to trigger spotlight */
-  shortcut?: string | string[] | null;
+  shortcut?: string | string[];
 
   /** Should search be cleared when spotlight closes */
   cleanQueryOnClose?: boolean;
 }
 
-export function SpotlightProvider({
+export const SpotlightProvider = ({
   actions: initialActions,
   children,
   shortcut = 'mod + K',
@@ -40,7 +42,7 @@ export function SpotlightProvider({
   cleanQueryOnClose = true,
   transitionDuration = 150,
   ...others
-}: SpotlightProviderProps) {
+}: SpotlightProviderProps) => {
   const timeoutRef = useRef<number>(-1);
   const [query, setQuery] = useState('');
   const [actions, { registerActions, updateActions, removeActions, triggerAction }] =
@@ -99,6 +101,6 @@ export function SpotlightProvider({
       {children}
     </SpotlightContext.Provider>
   );
-}
+};
 
 SpotlightProvider.displayName = '@mantine/spotlight/SpotlightProvider';

@@ -1,42 +1,54 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { invoke } from '@tauri-apps/api';
-import { useContext, useEffect, useState } from 'react';
-
-import { Command, ExtensionSpecDataType } from './commands';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 
 import { CommandContext } from '../context/command_context';
 import { SpecContext } from '../context/spec_context';
+import { Command, ExtensionSpecDataType } from './commands';
 
-function useFetchData(fetchDataId: string | undefined, defaultData?: any[]) {
+const useFetchData = (fetchDataId: string | undefined, defaultData?: any[], params?: any) => {
   const [data, setData] = useState<any>(undefined);
+  const [loading, setLoading] = useState(true);
   const currentCommand = useContext(CommandContext) as Command;
   const specData = useContext(SpecContext) as ExtensionSpecDataType;
 
+  const getDataFromExtension = useCallback(
+    async (params: any) => {
+      const dataFromExtension = await invoke('fetch_data_for_id', {
+        path: currentCommand.extension_path,
+        fetchDataId,
+        specData: JSON.stringify(specData.data),
+        params: params ? JSON.stringify(params) : '',
+      });
+
+      const response = JSON.parse(dataFromExtension as string);
+      const parsedData = response.record.map((record: any) => ({
+        ...record,
+        label: record.text,
+        image: record.icon,
+      }));
+      setLoading(false);
+      setData(parsedData);
+    },
+    [currentCommand.extension_path, fetchDataId, specData.data],
+  );
+
   useEffect(() => {
     if (fetchDataId) {
-      getDataFromExtension();
+      setLoading(true);
+      getDataFromExtension(params);
     } else {
       setData(defaultData);
+      setLoading(false);
     }
   }, [fetchDataId]);
 
-  async function getDataFromExtension() {
-    const dataFromExtension = await invoke('fetch_data_for_id', {
-      path: currentCommand.extension_path,
-      fetchDataId: fetchDataId,
-      specData: JSON.stringify(specData.data),
-    });
+  const refetch = (newParams: any) => {
+    setLoading(true);
+    getDataFromExtension(newParams);
+  };
 
-    const response = JSON.parse(dataFromExtension as string);
-    const parsedData = response.record.map((record: any) => ({
-      ...record,
-      label: record.text,
-      image: record.icon,
-    }));
-    console.log(parsedData);
-    setData(parsedData);
-  }
-
-  return data;
-}
+  return { data, loading, refetch };
+};
 
 export default useFetchData;

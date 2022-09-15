@@ -13,6 +13,12 @@
   "tauri": {
     "allowlist": {
       "all": true,
+      "notification": {
+        "all": true
+      },
+      "dialog": {
+        "all": true
+      },
       "globalShortcut": {
         "all": true
       },
@@ -35,9 +41,9 @@
       "category": "DeveloperTool",
       "copyright": "",
       "deb": {
-        "depends": []
+        "depends": [ ]
       },
-      "externalBin": [],
+      "externalBin": [ ],
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -45,16 +51,16 @@
         "icons/icon.icns",
         "icons/icon.ico"
       ],
-      "identifier": "com.tauri.dev",
+      "identifier": "com.poozlehq.dev",
       "longDescription": "",
       "macOS": {
         "entitlements": null,
         "exceptionDomain": "",
-        "frameworks": [],
+        "frameworks": [ ],
         "providerShortName": null,
         "signingIdentity": null
       },
-      "resources": [],
+      "resources": [ ],
       "shortDescription": "",
       "targets": "all",
       "windows": {
@@ -80,7 +86,7 @@
         "transparent": true,
         "resizable": false,
         "width": 800,
-        "height": 600,
+        "height": 1280,
         "alwaysOnTop": true,
         "skipTaskbar": true,
         "center": true,

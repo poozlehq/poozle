@@ -1,17 +1,18 @@
-import { invoke } from '@tauri-apps/api';
-import { readDir, BaseDirectory, readBinaryFile } from '@tauri-apps/api/fs';
 import { Command as CommandType } from '@poozle/edk';
-
-import { getData, setData } from './storage';
+import { invoke } from '@tauri-apps/api';
+import { BaseDirectory, readBinaryFile } from '@tauri-apps/api/fs';
 import { appDir } from '@tauri-apps/api/path';
-import { Command as ShellCommand } from '@tauri-apps/api/shell';
 
-export type Extension = {
+export interface Extension {
   name: string;
   path: string;
-};
+}
 
-export type ExtensionSpecDataType = { extensionId: string; data: any };
+export interface ExtensionSpecDataType {
+  extensionId: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data: any;
+}
 
 export type Command = {
   extension_id: string;
@@ -33,16 +34,13 @@ export async function getAllCommands(): Promise<Command[]> {
         icon: await getImage(command.icon),
       })),
     );
-  } else {
-    const baseAppPath = await appDir();
-    await invoke('prefill_all_commands', { basePath: baseAppPath });
-    return getAllCommands();
   }
+  const baseAppPath = await appDir();
+  await invoke('prefill_all_commands', { basePath: baseAppPath });
+  return getAllCommands();
 }
 
 export async function getCommandSpec(extensionPath: string) {
-  const specCommand = new ShellCommand(extensionPath, ['spec']);
-  console.log(specCommand.execute());
   const commandView = (await invoke('spec_controller', {
     path: extensionPath,
   })) as string;
@@ -51,8 +49,9 @@ export async function getCommandSpec(extensionPath: string) {
 }
 
 export async function getCommandView(
-  extensionPath: String,
+  extensionPath: string,
   callbackId: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   specData: any,
   params?: string,
 ) {
@@ -63,12 +62,14 @@ export async function getCommandView(
     specData: JSON.stringify(specData.data),
   })) as string;
 
+  console.log(commandView);
   return JSON.parse(commandView);
 }
 
 export async function getExtensionSpecData(
   extensionId: string,
 ): Promise<ExtensionSpecDataType | undefined> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const storageData: any = await invoke('get_spec', {
     extensionId,
   });

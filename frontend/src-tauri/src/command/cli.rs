@@ -48,12 +48,15 @@ pub fn fetch_data_for_id(
     path: String,
     fetch_data_id: String,
     spec_data: String,
+    params: String,
 ) -> Result<String, String> {
     let output = Command::new(path)
         .arg("fetchData")
         .arg(fetch_data_id)
         .arg("-s")
         .arg(spec_data)
+        .arg("-p")
+        .arg(params)
         .output()
         .expect("failed to execute process");
     let json_string = String::from_utf8_lossy(&output.stdout);

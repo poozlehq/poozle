@@ -1,16 +1,13 @@
 import { useEffect, useState } from 'react';
 
-import { CommandsContext } from './context/commands_context';
-import { CommandContext } from './context/command_context';
-
-import { Command, getAllCommands } from './utils/commands';
-
-import CommandView from './views/command_view/command_view';
-import Search from './components/search/search';
-
 import styles from './App.module.scss';
+import Search from './components/search/search';
+import { CommandContext } from './context/command_context';
+import { CommandsContext } from './context/commands_context';
+import { Command, getAllCommands } from './utils/commands';
+import CommandView from './views/command_view/command_view';
 
-function App() {
+const App = () => {
   const [commands, setCommands] = useState<Command[]>([]);
   const [currentCommand, setCurrentCommand] = useState<Command>();
 
@@ -32,7 +29,7 @@ function App() {
   };
 
   return (
-    <div className={styles.App}>
+    <div className={styles.app}>
       <CommandsContext.Provider value={commands}>
         {currentCommand ? (
           <CommandContext.Provider value={currentCommand}>
@@ -44,6 +41,6 @@ function App() {
       </CommandsContext.Provider>
     </div>
   );
-}
+};
 
 export default App;

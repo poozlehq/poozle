@@ -1,22 +1,23 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import React, { ReactElement } from 'react';
 import { InputBaseProps as MantineInputProps } from '@mantine/core';
 import { FieldProps } from 'formik';
+import React, { ReactElement } from 'react';
 
-import Input from './input';
 import Field from '../field/field';
+import Input from './input';
 
-type FormikInputProps = {
+interface FormikInputProps {
   name: string;
   placeholder?: string;
   description?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   validate?: any;
   label?: string;
   fast?: boolean;
   type?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-};
+}
 
 type InputProps = FormikInputProps & MantineInputProps;
 
@@ -40,11 +41,14 @@ const FormikInput = React.forwardRef(
         form,
       } = props;
       const { touched, errors } = form;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const error = (touched[name] && errors[name]) as any;
 
       const change = (event: React.ChangeEvent<HTMLInputElement>) => {
         onChange(event);
-        if ($onChange) $onChange(event);
+        if ($onChange) {
+          $onChange(event);
+        }
       };
 
       const blur = (event: React.ChangeEvent<HTMLInputElement>) => {

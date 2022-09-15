@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
-import { randomId } from '@mantine/hooks';
 import type { SpotlightAction } from '../types';
+
+import { randomId } from '@mantine/hooks';
+import { useState, useEffect } from 'react';
 
 function prepareAction(action: SpotlightAction) {
   return { ...action, id: action.id || randomId() };
 }
 
 function filterDuplicateActions(actions: SpotlightAction[]) {
-  const ids = [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const ids: any[] = [];
 
   return actions
     .reduceRight<SpotlightAction[]>((acc, action) => {
@@ -27,17 +29,17 @@ function prepareActions(initialActions: SpotlightAction[]) {
 
 export function useActionsState(
   initialActions: SpotlightAction[] | ((query: string) => SpotlightAction[]),
-  query: string
+  query: string,
 ) {
   const [actions, setActions] = useState(
-    prepareActions(typeof initialActions === 'function' ? initialActions(query) : initialActions)
+    prepareActions(typeof initialActions === 'function' ? initialActions(query) : initialActions),
   );
 
   useEffect(() => {
     if (typeof initialActions === 'function') {
       setActions(prepareActions(initialActions(query)));
     }
-  }, [query]);
+  }, [initialActions, query]);
 
   const updateActions = (payload: SpotlightAction[] | ((query: string) => SpotlightAction[])) =>
     setActions(prepareActions(typeof payload === 'function' ? payload(query) : payload));
@@ -46,7 +48,8 @@ export function useActionsState(
     setActions((current) => prepareActions([...current, ...payload]));
 
   const removeActions = (ids: string[]) =>
-    setActions((current) => current.filter((action) => !ids.includes(action.id)));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setActions((current) => current.filter((action: any) => !ids.includes(action.id)));
 
   const triggerAction = (id: string) => {
     const action = actions.find((item) => item.id === id);

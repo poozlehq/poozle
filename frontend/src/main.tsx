@@ -1,10 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
 import { register } from '@tauri-apps/api/globalShortcut';
 import { appWindow } from '@tauri-apps/api/window';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 
-import ThemeProvider from './theme/provider';
 import App from './App';
+import ThemeProvider from './theme/provider';
 
 import './index.css';
 
@@ -15,9 +15,7 @@ register('Cmd+L', async () => {
 });
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <ThemeProvider>
-      <App />
-    </ThemeProvider>
-  </React.StrictMode>,
+  <ThemeProvider>
+    <App />
+  </ThemeProvider>,
 );

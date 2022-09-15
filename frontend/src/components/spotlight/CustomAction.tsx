@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Center, createStyles, Group, UnstyledButton, Text } from '@mantine/core';
 import { SpotlightActionProps } from '@mantine/spotlight';
 
@@ -31,20 +30,21 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function CustomAction({
+export const CustomAction = ({
   action,
   styles,
   classNames,
   hovered,
   onTrigger,
   ...others
-}: SpotlightActionProps) {
+}: SpotlightActionProps) => {
   const { classes, cx } = useStyles(null, { styles, classNames, name: 'Spotlight' });
 
   return (
     <UnstyledButton
       className={cx(classes.action, { [classes.actionHovered]: hovered })}
       tabIndex={-1}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onMouseDown={(event: any) => event.preventDefault()}
       onClick={onTrigger}
       {...others}
@@ -70,4 +70,4 @@ export function CustomAction({
       </Group>
     </UnstyledButton>
   );
-}
+};

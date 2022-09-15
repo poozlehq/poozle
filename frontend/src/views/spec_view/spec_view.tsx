@@ -1,34 +1,35 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import Loader from '../../components/loader/loader';
-import Header from '../../components/header/header';
-import { Image } from '../../components/image';
-import Form, { FormValues } from '../../components/form/form';
+import Form, { FormValues } from 'components/form/form';
+import Header from 'components/header/header';
+import { Image } from 'components/image';
+import Loader from 'components/loader/loader';
 
-import { Command, getCommandSpec, setExtensionSpecData } from '../../utils/commands';
+import { Command, getCommandSpec, setExtensionSpecData } from 'utils/commands';
 
 import styles from './spec_view.module.scss';
 
-type Props = {
+interface Props {
   command: Command;
   getSpecData: () => void;
   resetCommand: () => void;
-};
+}
 
-function SpecView(props: Props) {
+const SpecView = (props: Props) => {
   const { command, getSpecData, resetCommand } = props;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [specData, setSpecData] = useState<any>(undefined);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    getSpec();
-  }, []);
-
-  async function getSpec() {
+  const getSpec = useCallback(async () => {
     const specData = await getCommandSpec(command.extension_path);
     setSpecData(specData);
     setLoading(false);
-  }
+  }, [command.extension_path]);
+
+  useEffect(() => {
+    getSpec();
+  }, [getSpec]);
 
   const onSubmit = async (values: FormValues) => {
     await setExtensionSpecData(command.extension_id, JSON.stringify(values));
@@ -36,7 +37,13 @@ function SpecView(props: Props) {
   };
 
   if (loading) {
-    return <Loader />;
+    return (
+      <div className={styles.container}>
+        <div className={styles.specView}>
+          <Loader />
+        </div>
+      </div>
+    );
   }
 
   const getBlocks = () => {
@@ -44,20 +51,22 @@ function SpecView(props: Props) {
   };
 
   return (
-    <div className={styles.specView}>
-      <Header onBack={resetCommand} />
+    <div className={styles.container}>
+      <div className={styles.specView}>
+        <Header onBack={resetCommand} />
 
-      <div className={styles.logo}>
-        <Image src={command.icon} html_renderer className={styles.icon} />
-      </div>
+        <div className={styles.logo}>
+          <Image src={command.icon} html_renderer />
+        </div>
 
-      <div className={styles.form}>
-        <div className={styles.innerContainer}>
-          <Form blocks={getBlocks() ?? []} onSubmit={onSubmit} />
+        <div className={styles.form}>
+          <div className={styles.innerContainer}>
+            <Form blocks={getBlocks() ?? []} onSubmit={onSubmit} />
+          </div>
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default SpecView;

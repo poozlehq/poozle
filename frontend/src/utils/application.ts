@@ -5,7 +5,7 @@ type setCurrentCommandType = () => void;
 export function registerAppWindow(setCurrentCommand: setCurrentCommandType) {
   document.onkeydown = function (evt) {
     evt = evt || window.event;
-    var isEscape = false;
+    let isEscape = false;
     if ('key' in evt) {
       isEscape = evt.key === 'Escape' || evt.key === 'Esc';
     } else {
@@ -25,16 +25,20 @@ export function registerAppWindow(setCurrentCommand: setCurrentCommandType) {
 
 type setLastCommandType = () => void;
 
-export function registerEsc(setLastCommand: setLastCommandType) {
+export function registerEsc(setLastCommand: setLastCommandType, moveForBackspace = false) {
   document.onkeydown = function (evt) {
     evt = evt || window.event;
-    var isEscape = false;
+    let isEscape = false;
+    let isBackspace = false;
+
     if ('key' in evt) {
       isEscape = evt.key === 'Escape' || evt.key === 'Esc';
+      isBackspace = evt.key === 'Backspace';
     } else {
       isEscape = evt.keyCode === 27;
+      isBackspace = evt.keyCode === 8;
     }
-    if (isEscape) {
+    if (isEscape || (moveForBackspace && isBackspace)) {
       setLastCommand();
     }
   };

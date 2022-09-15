@@ -19,6 +19,7 @@ mod system_tray;
 
 fn main() {
     let state = command::commands::run();
+    fix_path_env::fix();
 
     #[allow(unused_mut)]
     let mut app = tauri::Builder::default()

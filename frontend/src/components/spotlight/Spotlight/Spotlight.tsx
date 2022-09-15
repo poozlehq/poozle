@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import type { SpotlightAction } from '../types';
+
 import {
-  OptionalPortal,
   GroupedTransition,
   MantineTransition,
   Overlay,
@@ -13,15 +13,16 @@ import {
   MantineNumberSize,
   MantineColor,
 } from '@mantine/core';
-import { getGroupedOptions } from '@mantine/utils';
 import { useScrollLock, useFocusTrap, useDidUpdate, useFocusReturn } from '@mantine/hooks';
+import { getGroupedOptions } from '@mantine/utils';
+import React, { useState } from 'react';
+
+import { ActionsList } from '../ActionsList/ActionsList';
 import { DefaultAction, DefaultActionProps } from '../DefaultAction/DefaultAction';
-import { ActionsList, ActionsListStylesNames } from '../ActionsList/ActionsList';
-import type { SpotlightAction } from '../types';
 import { filterActions } from './filter-actions/filter-actions';
 import useStyles from './Spotlight.styles';
 
-export type SpotlightStylesNames = Selectors<typeof useStyles> | ActionsListStylesNames;
+export type SpotlightStylesNames = Selectors<typeof useStyles>;
 
 export interface InnerSpotlightProps
   extends DefaultProps<SpotlightStylesNames>,
@@ -65,6 +66,9 @@ export interface InnerSpotlightProps
   /** Search input icon */
   searchIcon?: React.ReactNode;
 
+  /** Prefix input component */
+  prefixInputComponent?: React.ReactNode;
+
   /** Function used to determine how actions will be filtered based on user input */
   filter?(query: string, actions: SpotlightAction[]): SpotlightAction[];
 
@@ -101,13 +105,13 @@ interface SpotlightProps extends InnerSpotlightProps {
   onQueryChange(query: string): void;
 }
 
-export function Spotlight({
+export const Spotlight = ({
   query,
   onQueryChange,
   actions,
   onClose,
   opened,
-  withinPortal,
+
   transition = 'pop',
   transitionDuration,
   classNames,
@@ -127,18 +131,19 @@ export function Spotlight({
   searchPlaceholder,
   searchIcon,
   filter = filterActions,
+  prefixInputComponent,
   nothingFoundMessage,
   limit = 10,
   actionComponent = DefaultAction,
   actionsWrapperComponent: ActionsWrapper = 'div',
   zIndex = getDefaultZIndex('max'),
   ...others
-}: SpotlightProps) {
+}: SpotlightProps) => {
   const [hovered, setHovered] = useState(-1);
   const [IMEOpen, setIMEOpen] = useState(false);
   const { classes, cx } = useStyles(
     { centered, maxWidth, topOffset, radius, zIndex },
-    { classNames, styles, name: 'Spotlight' },
+    { classNames, name: 'Spotlight' },
   );
 
   const [, lockScroll] = useScrollLock();
@@ -207,23 +212,24 @@ export function Spotlight({
   };
 
   return (
-    <OptionalPortal withinPortal={withinPortal}>
-      <GroupedTransition
-        onExited={() => lockScroll(false)}
-        onEntered={() => lockScroll(true)}
-        mounted={opened}
-        transitions={{}}
-      >
-        {(transitionStyles) => (
-          <div className={cx(classes.root, className)} {...others}>
-            <div className={classes.inner} ref={focusTrapRef}>
-              <Paper
-                style={transitionStyles.spotlight}
-                className={classes.spotlight}
-                shadow={shadow}
-                radius={radius}
-                onMouseLeave={resetHovered}
-              >
+    <GroupedTransition
+      onExited={() => lockScroll(false)}
+      onEntered={() => lockScroll(true)}
+      mounted={opened}
+      transitions={{}}
+    >
+      {(transitionStyles) => (
+        <div className={cx(classes.root, className)} {...others}>
+          <div className={classes.inner} ref={focusTrapRef}>
+            <Paper
+              style={transitionStyles.spotlight}
+              className={classes.spotlight}
+              shadow={shadow}
+              radius={radius}
+              onMouseLeave={resetHovered}
+            >
+              <div style={{ display: 'flex' }}>
+                {prefixInputComponent && prefixInputComponent}
                 <TextInput
                   value={query}
                   onChange={handleInputChange}
@@ -237,43 +243,41 @@ export function Spotlight({
                   onMouseEnter={resetHovered}
                   autoComplete="chrome-please-just-do-not-show-it-thanks"
                 />
-                <ActionsWrapper>
-                  <ActionsList
-                    highlightQuery={highlightQuery}
-                    highlightColor={''}
-                    actions={groupedWithLabels}
-                    actionComponent={actionComponent}
-                    hovered={hovered}
-                    query={query}
-                    nothingFoundMessage={nothingFoundMessage}
-                    onActionHover={setHovered}
-                    onActionTrigger={(action) => {
-                      action.onTrigger(action);
-                      closeOnActionTrigger && handleClose();
-                    }}
-                    styles={styles}
-                    classNames={classNames}
-                    radius={radius}
-                  />
-                </ActionsWrapper>
-              </Paper>
-
-              <div style={transitionStyles.overlay}>
-                <Overlay
-                  className={classes.overlay}
-                  zIndex={1}
-                  onMouseDown={handleClose}
-                  color={overlayColor}
-                  opacity={overlayOpacity}
-                  blur={overlayBlur}
-                />
               </div>
+              <ActionsWrapper>
+                <ActionsList
+                  highlightQuery={highlightQuery}
+                  highlightColor=""
+                  actions={groupedWithLabels}
+                  actionComponent={actionComponent}
+                  hovered={hovered}
+                  query={query}
+                  nothingFoundMessage={nothingFoundMessage}
+                  onActionHover={setHovered}
+                  onActionTrigger={(action) => {
+                    action.onTrigger(action);
+                    closeOnActionTrigger && handleClose();
+                  }}
+                  radius={radius}
+                />
+              </ActionsWrapper>
+            </Paper>
+
+            <div style={transitionStyles.overlay}>
+              <Overlay
+                className={classes.overlay}
+                zIndex={1}
+                onMouseDown={handleClose}
+                color={overlayColor}
+                opacity={overlayOpacity}
+                blur={overlayBlur}
+              />
             </div>
           </div>
-        )}
-      </GroupedTransition>
-    </OptionalPortal>
+        </div>
+      )}
+    </GroupedTransition>
   );
-}
+};
 
 Spotlight.displayName = '@mantine/spotlight/Spotlight';

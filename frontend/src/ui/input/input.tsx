@@ -1,6 +1,6 @@
-import { Ref } from 'react';
-import classnames from 'classnames';
 import { Input as MantineInput, InputBaseProps } from '@mantine/core';
+import classnames from 'classnames';
+import { Ref } from 'react';
 
 import styles from './input.module.scss';
 
@@ -8,8 +8,10 @@ type InputProps = {
   label?: string;
   value?: string;
   name?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error?: any;
   placeholder?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   description?: any;
   ref?: Ref<HTMLInputElement>;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -17,7 +19,7 @@ type InputProps = {
   className?: string;
 } & InputBaseProps;
 
-function Input(props: InputProps) {
+const Input = (props: InputProps) => {
   const {
     name,
     label,
@@ -35,10 +37,14 @@ function Input(props: InputProps) {
   } = props;
 
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if ($onChange) $onChange(event);
+    if ($onChange) {
+      $onChange(event);
+    }
   };
   const onBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if ($onBlur) $onBlur(event);
+    if ($onBlur) {
+      $onBlur(event);
+    }
   };
 
   return (
@@ -63,6 +69,6 @@ function Input(props: InputProps) {
       />
     </MantineInput.Wrapper>
   );
-}
+};
 
 export default Input;

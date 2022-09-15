@@ -1,23 +1,22 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import React, { ReactElement } from 'react';
 import { SelectProps as MantineSelectProps } from '@mantine/core';
 import { FieldProps } from 'formik';
+import React, { ReactElement } from 'react';
 
-import Select from './select';
 import Field from '../field/field';
-import useFetchData from '../../utils/fetch_data';
-import Loader from '../../components/loader/loader';
+import Select from './select';
 
-type FormikSelectProps = {
+interface FormikSelectProps {
   name: string;
   placeholder?: string;
   description?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   validate?: any;
   label?: string;
   fast?: boolean;
   type?: string;
   onChange?: (value: string) => void;
-};
+}
 
 export type SelectProps = FormikSelectProps & MantineSelectProps;
 
@@ -40,12 +39,14 @@ const FormikSelect = React.forwardRef(
         form,
       } = props;
       const { touched, errors } = form;
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const error = (touched[name] && errors[name]) as any;
 
       const change = (value: string) => {
-        console.log(value);
         onChange(value);
-        if ($onChange) $onChange(value);
+        if ($onChange) {
+          $onChange(value);
+        }
       };
 
       return (

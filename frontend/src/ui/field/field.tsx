@@ -1,10 +1,10 @@
 import { Field as FormikField, FastField } from 'formik';
-import React from 'react';
 
-type FieldProps = {
+interface FieldProps {
   fast: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [x: string]: any;
-};
+}
 
 export const Field = ({ fast, children, component, ...restProps }: FieldProps) => {
   if (fast) {

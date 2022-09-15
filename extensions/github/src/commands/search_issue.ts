@@ -3,7 +3,7 @@ import { SearchResult } from '@poozle/edk/lib/cjs/builder';
 
 import { SearchIssueAction } from '../actions';
 
-import { Repo,  Issue } from '../types';
+import { Repo, Issue } from '../types';
 
 import { apiGet } from '../utils/api';
 
@@ -24,7 +24,7 @@ export class SearchIssueCommand extends AbstractCommand {
     return [new SearchIssueAction()];
   }
 
-  async fetchDataController(key: string, params: DoParams, spec: any) {
+  async fetchDataController(key: string, params: DoParams, spec: Spec) {
     if (key === 'repository_name') {
       const repos: Repo[] = await apiGet<Repo[]>(
         `https://api.github.com/user/repos`,
@@ -38,12 +38,15 @@ export class SearchIssueCommand extends AbstractCommand {
           value: repo.full_name,
         }).build();
       });
-    }
+    } else if (key === 'search_issue') {
+      const path = `https://api.github.com/search/issues?q=${encodeURIComponent(
+        `is:issue ${params.issue_name} repo:${params.repository_name}`,
+      )}`;
 
-    else if (key === "search_issue") {
-      const path = `https://api.github.com/search/issues?q=${encodeURIComponent(`is:issue ${params.issue_name} repo:${params.repository_name}`)}`;
-
-      const issues: {items: Issue[]}= await apiGet<{items: Issue[]}>(path, spec.api_key);
+      const issues: { items: Issue[] } = await apiGet<{ items: Issue[] }>(
+        path,
+        spec.api_key,
+      );
 
       return issues.items.map((issue: Issue) => {
         return SearchResult({
@@ -52,7 +55,6 @@ export class SearchIssueCommand extends AbstractCommand {
           description: issue.body,
         }).build();
       });
-
     }
   }
 }

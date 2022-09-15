@@ -1,27 +1,26 @@
 import { useForm } from '@mantine/form';
 import React, { useState } from 'react';
 
-import { SubmitButton } from '../../ui/button/button';
-import InputWrapper from '../input_wrapper/input_wrapper';
+import InputWrapper from 'components/input_wrapper/input_wrapper';
 
-import { Block } from '../../types/form';
+import { Block } from 'types/common';
+import { SubmitButton } from 'ui/button/button';
 
 import styles from './form.module.scss';
 
-export type FormValues = {
-  [x: string]: string;
-};
+export type FormValues = Record<string, string>;
 
-export type FormHelpers = {
+export interface FormHelpers {
   setLoading: (value: boolean) => void;
-};
+}
 
-type FormProps = {
+interface FormProps {
   blocks: Block[];
   onSubmit: (values: FormValues, helpers: FormHelpers) => void;
   submitText?: string;
-};
+}
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getInputWrapperFromBlocks(blocks: Block[], form: any): React.ReactElement {
   return (
     <>
@@ -39,8 +38,10 @@ export function getInputWrapperFromBlocks(blocks: Block[], form: any): React.Rea
 }
 
 function getInitialValues(blocks: Block[]) {
-  let initialValues: { [x: string]: any } = {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const initialValues: Record<string, any> = {};
 
+  // eslint-disable-next-line array-callback-return
   blocks.map((block) => {
     initialValues[block.element.action_id] = '';
   });
@@ -48,7 +49,7 @@ function getInitialValues(blocks: Block[]) {
   return initialValues;
 }
 
-function Form({ blocks, onSubmit, submitText }: FormProps) {
+const Form = ({ blocks, onSubmit, submitText }: FormProps) => {
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
@@ -64,12 +65,12 @@ function Form({ blocks, onSubmit, submitText }: FormProps) {
     >
       {getInputWrapperFromBlocks(blocks, form)}
       <div className={styles.actions}>
-        <SubmitButton size="sm" className={styles.submitButton} loading={loading}>
+        <SubmitButton size="sm" loading={loading}>
           {submitText ? submitText : 'Submit'}
         </SubmitButton>
       </div>
     </form>
   );
-}
+};
 
 export default Form;

@@ -1,18 +1,16 @@
 import { Chip } from '@mantine/core';
 
 import { Image } from '../../components/image';
-
 import { Command } from '../../utils/commands';
+import styles from './command_footer.module.scss';
 import { CommandTreeRecord } from './types';
 
-import styles from './command_footer.module.scss';
-
-type CommandFooterProps = {
+interface CommandFooterProps {
   command: Command;
   currentCommand: CommandTreeRecord;
-};
+}
 
-function CommandFooter({ command, currentCommand }: CommandFooterProps) {
+const CommandFooter = ({ command, currentCommand }: CommandFooterProps) => {
   return (
     <div className={styles.footer}>
       <div className={styles.icon}>
@@ -25,6 +23,6 @@ function CommandFooter({ command, currentCommand }: CommandFooterProps) {
       </div>
     </div>
   );
-}
+};
 
 export default CommandFooter;

@@ -2,6 +2,7 @@ export function getAssetURL(path: string): string {
   return `https://poozle-assets.s3.ap-south-1.amazonaws.com/${path}`;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isEmpty(value: any): boolean {
   return (
     value === undefined ||

@@ -2,7 +2,7 @@ import { useHotkeys, HotkeyItem } from '@mantine/hooks';
 
 export function getHotkeysPayload(
   shortcuts: string | string[],
-  onToggle: () => void
+  onToggle: () => void,
 ): HotkeyItem[] {
   if (shortcuts === null) {
     return [];

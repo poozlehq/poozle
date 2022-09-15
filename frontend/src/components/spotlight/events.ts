@@ -1,14 +1,15 @@
-import { createUseExternalEvents } from '@mantine/utils';
 import type { SpotlightAction } from './types';
 
-export type SpotlightEvents = {
+import { createUseExternalEvents } from '@mantine/utils';
+
+export interface SpotlightEvents {
   open(): void;
   close(): void;
   toggle(): void;
   triggerAction(id: string): void;
   registerActions(actions: SpotlightAction[]): void;
   removeActions(ids: string[]): void;
-};
+}
 
 export const [useSpotlightEvents, createEvent] =
   createUseExternalEvents<SpotlightEvents>('mantine-spotlight');

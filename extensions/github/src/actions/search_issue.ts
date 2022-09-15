@@ -1,9 +1,6 @@
 import { ActionParams, Spec, HTTPAction, Builder } from '@poozle/edk';
-import { Issue } from '../types';
 
-import { apiGet } from '../utils/api';
-
-const { Search, Input, Select, TextInput, SearchResult } = Builder;
+const { Search, Input, Select, TextInput } = Builder;
 
 export class SearchIssueAction extends HTTPAction {
   defaultHeaders = {};
@@ -15,25 +12,18 @@ export class SearchIssueAction extends HTTPAction {
   async run(
     callback_id: string,
     params: ActionParams,
-    spec: any,
+    spec: Spec,
   ): Promise<Builder.Surface> | undefined {
     if (callback_id === 'search-issue') {
       return Search()
-      .blocks(
-        Input({
-          label: 'Repository Name',
-        }).element(
-          Select().fetchDataId('repository_name').actionId('repository_name'),
-        ),
-        Input({
-          label: 'Issue',
-        }).element(
-          TextInput({ placeholder: 'Search any issue' }).actionId(
-            'issue_name',
+        .blocks(
+          Input({
+            label: 'Repository Name',
+          }).element(
+            Select().fetchDataId('repository_name').actionId('repository_name'),
           ),
-        ),
-      ).fetchDataId('search_issue');
-        
+        )
+        .fetchDataId('search_issue');
     }
 
     return undefined;

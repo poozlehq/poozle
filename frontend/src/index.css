@@ -24,15 +24,15 @@
 
 :root {
   color-scheme: light dark;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   font-family: Metropolis;
-  border-radius: var(--mantine-radius-lg);
+  border-radius: var(--mantine-radius-md);
   height: 100%;
+  background: transparent;
 
   --mantine-spacing-xss: 5px;
 }
@@ -42,16 +42,45 @@ body {
   display: flex;
   height: 100%;
   min-width: 320px;
-  background-color: var(--mantine-color-dark-7) !important;
-  border-radius: var(--mantine-radius-lg);
+  background-color: transparent !important;
+  border-radius: var(--mantine-radius-md);
+  overflow: hidden;
 }
 
 #root {
   width: 100%;
 }
 
+.mantine-Spotlight-root {
+  width: 800px;
+  height: 600px;
+  position: relative !important;
+  align-self: center;
+  background: var(--mantine-color-dark-7) !important;
+  border-radius: var(--mantine-radius-lg);
+}
+
 .mantine-Spotlight-spotlight {
   box-shadow: none;
-  border-bottom: 1px solid var(--mantine-color-dark-4);
-  border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
+  border-bottom: none;
+  border-radius: var(--mantine-radius-md) var(--mantine-radius-md) 0 0;
+}
+
+.mantine-Spotlight-actions {
+  height: calc(100vh - 50px);
+  border-bottom: 0;
+}
+
+.mantine-InputWrapper-root {
+  width: 100%;
+}
+
+.mantine-TextInput-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.mantine-TextInput-icon {
+  position: relative;
+  pointer-events: auto;
 }

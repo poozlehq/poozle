@@ -1,4 +1,5 @@
-import React from 'react';
+import type { SpotlightAction } from '../types';
+
 import {
   DefaultProps,
   Selectors,
@@ -10,7 +11,8 @@ import {
   MantineNumberSize,
   MantineColor,
 } from '@mantine/core';
-import type { SpotlightAction } from '../types';
+import React from 'react';
+
 import useStyles from './DefaultAction.styles';
 
 export type DefaultActionStylesNames = Selectors<typeof useStyles>;
@@ -25,9 +27,11 @@ export interface DefaultActionProps
   highlightColor: MantineColor;
   query: string;
   radius: MantineNumberSize;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  styles: any;
 }
 
-export function DefaultAction({
+export const DefaultAction = ({
   action,
   styles,
   classNames,
@@ -38,14 +42,15 @@ export function DefaultAction({
   query,
   radius,
   ...others
-}: DefaultActionProps) {
+}: DefaultActionProps) => {
   const { classes, cx } = useStyles({ radius }, { styles, classNames, name: 'Spotlight' });
 
   return (
     <UnstyledButton
       className={cx(classes.action, { [classes.actionHovered]: hovered })}
       tabIndex={-1}
-      onMouseDown={(event) => event.preventDefault()}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onMouseDown={(event: any) => event.preventDefault()}
       onClick={onTrigger}
       {...others}
     >
@@ -53,7 +58,7 @@ export function DefaultAction({
         {action.icon && <Center className={classes.actionIcon}>{action.icon}</Center>}
 
         <div className={classes.actionBody}>
-          <Highlight highlightColor={highlightColor} highlight={highlightQuery ? query : null}>
+          <Highlight highlightColor={highlightColor} highlight={[]}>
             {action.title}
           </Highlight>
 
@@ -66,6 +71,6 @@ export function DefaultAction({
       </Group>
     </UnstyledButton>
   );
-}
+};
 
 DefaultAction.displayName = '@mantine/spotlight/DefaultAction';

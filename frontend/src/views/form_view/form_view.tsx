@@ -1,23 +1,21 @@
 import { useContext } from 'react';
 
-import Header from '../../components/header/header';
+import Form, { FormHelpers, FormValues } from 'components/form/form';
+import Header from 'components/header/header';
 
-import Form, { FormHelpers, FormValues } from '../../components/form/form';
+import { CommandContext } from 'context/command_context';
+import { SpecContext } from 'context/spec_context';
+import { Surface } from 'types/common';
 
-import { CommandViewType } from '../command_view/types';
 import { Command, ExtensionSpecDataType, getCommandView } from '../../utils/commands';
-
-import { CommandContext } from '../../context/command_context';
-import { SpecContext } from '../../context/spec_context';
-
 import styles from './form_view.module.scss';
 
-type Props = {
-  formData: CommandViewType;
+interface Props {
+  formData: Surface;
   resetCommand: () => void;
-};
+}
 
-function FormView({ resetCommand, formData }: Props) {
+const FormView = ({ formData }: Props) => {
   const currentCommand = useContext(CommandContext) as Command;
   const specData = useContext(SpecContext) as ExtensionSpecDataType;
 
@@ -42,14 +40,14 @@ function FormView({ resetCommand, formData }: Props) {
   };
 
   return (
-    <div className={styles.formView}>
-      <Header onBack={resetCommand} />
+    <div>
+      <Header />
 
       <div className={styles.formContainer}>
         <Form blocks={getBlocks() ?? []} onSubmit={onSubmit} submitText={currentCommand.name} />
       </div>
     </div>
   );
-}
+};
 
 export default FormView;

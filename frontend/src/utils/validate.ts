@@ -5,21 +5,21 @@ const emailRegex =
   /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 const validate: any = {
-  name: function (name: string): boolean {
+  name(name: string): boolean {
     return !!(name && name.length > 1);
   },
-  email: function (email: string): boolean {
+  email(email: string): boolean {
     return !!(email && emailRegex.test(email));
   },
-  password: function (password: string): boolean {
+  password(password: string): boolean {
     return !!(password && password.length >= 6);
   },
-  //Rgex to check only for numbers
-  numeric: function (value: string): boolean {
+  // Rgex to check only for numbers
+  numeric(value: string): boolean {
     const regex = /(^$)|(^\d+$)/;
     return !!(value && regex.test(value));
   },
-  url: function (value: string): boolean {
+  url(value: string): boolean {
     const urlRegEx = /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w.-]+)+[\w\-._~:/?#[\]@!{0}'()*+,;=.]+$/;
     const validURLRegex = new RegExp(urlRegEx, 'i');
     return !!(value && validURLRegex.test(value));
@@ -27,7 +27,7 @@ const validate: any = {
   /**
    * Returns true only if a value is not empty
    */
-  required: function (val: string): boolean {
+  required(val: string): boolean {
     if (Array.isArray(val)) {
       return !!val.length;
     }
@@ -40,7 +40,7 @@ const validate: any = {
         return !!val;
     }
   },
-  phoneNumber: function (val: string): boolean {
+  phoneNumber(val: string): boolean {
     /**
       Regex resource: https://regex101.com/r/B56uoR/2
      */

@@ -1,5 +1,16 @@
+.container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
 .specView {
-  border-radius: var(--mantine-radius-sm);
+  width: 800px;
+  height: 600px;
+  background: var(--mantine-color-dark-7);
+  border-radius: var(--mantine-radius-lg);
 }
 
 .logo {

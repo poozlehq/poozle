@@ -1,5 +1,6 @@
-import { createContext, useContext } from 'react';
 import type { SpotlightAction } from './types';
+
+import { createContext, useContext } from 'react';
 
 export interface SpotlightContextValue {
   /** Opens spotlight */
@@ -30,7 +31,7 @@ export interface SpotlightContextValue {
   query: string;
 }
 
-export const SpotlightContext = createContext<SpotlightContextValue>(null);
+export const SpotlightContext = createContext<SpotlightContextValue | null>(null);
 
 export function useSpotlight() {
   const ctx = useContext(SpotlightContext);

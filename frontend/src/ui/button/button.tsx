@@ -1,11 +1,12 @@
-import { Button as MantineButton, ButtonProps } from '@mantine/core';
+import { Button as MantineButton } from '@mantine/core';
 import classnames from 'classnames';
 
 import styles from './button.module.scss';
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Props = any;
 
-function Button(props: Props) {
+const Button = (props: Props) => {
   const { className, size = 'md', radius = 'sm', ...restProps } = props;
 
   return (
@@ -17,9 +18,9 @@ function Button(props: Props) {
       {...restProps}
     />
   );
-}
+};
 
-function SubmitButton({ Component = Button, className, disabled, loading, ...props }: Props) {
+const SubmitButton = ({ Component = Button, className, disabled, loading, ...props }: Props) => {
   return (
     <Component
       htmltype="submit"
@@ -34,7 +35,7 @@ function SubmitButton({ Component = Button, className, disabled, loading, ...pro
       {...props}
     />
   );
-}
+};
 
 export { SubmitButton };
 

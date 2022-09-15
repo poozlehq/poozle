@@ -34,7 +34,7 @@ export interface SearchBuilder
 export class SearchBuilder extends SurfaceBuilderBase {
   public build(): Readonly<FormDto> {
     return this.getResult(FormDto, {
-      type: SurfaceType.Form,
+      type: SurfaceType.Search,
       filters: getBuilderResults<BlockDto>(this.props.blocks),
     });
   }
