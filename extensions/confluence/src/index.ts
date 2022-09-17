@@ -1,6 +1,5 @@
 import { AbstractExtension, Builder } from '@poozle/edk';
-import { NewIssueCommand } from './commands/new_issue';
-import { SearchContentCommand } from './commands/search_content';
+import { GetMentionsCommand, SearchContentCommand } from './commands';
 
 const { Form, Input, TextInput } = Builder;
 
@@ -37,7 +36,7 @@ export class ConfluenceExtension extends AbstractExtension {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get_commands(): any {
-    return [new SearchContentCommand(), new NewIssueCommand()];
+    return [new SearchContentCommand(), new GetMentionsCommand()];
   }
 }
 

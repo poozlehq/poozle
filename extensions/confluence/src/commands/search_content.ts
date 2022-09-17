@@ -3,9 +3,9 @@ import { SearchResult } from '@poozle/edk/lib/cjs/builder';
 
 import { SearchContentAction } from '../actions';
 
-import { Space, Spaces, Issue, Issues, Content, Contents } from '../types';
+import { Space, Spaces, Content, Contents } from '../types';
 
-import { apiGet, apiPost } from '../utils/api';
+import { apiGet } from '../utils/api';
 
 const { Option } = Builder;
 export class SearchContentCommand extends AbstractCommand {
