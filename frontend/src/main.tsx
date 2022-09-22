@@ -1,6 +1,5 @@
 import { register } from '@tauri-apps/api/globalShortcut';
 import { appWindow } from '@tauri-apps/api/window';
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 
 import App from './App';

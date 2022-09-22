@@ -11,7 +11,7 @@ pub struct Command {
     pub icon: String,
     pub data: String,
     pub extension_id: String,
-    pub extension_path: String,
+    pub command_type: String,
 }
 
 #[derive(Insertable, Serialize, Debug, Clone)]
@@ -24,7 +24,7 @@ pub struct NewCommand<'a> {
     pub icon: &'a str,
     pub data: &'a str,
     pub extension_id: &'a str,
-    pub extension_path: &'a str,
+    pub command_type: &'a str,
 }
 
 #[derive(Queryable, Serialize, Debug)] // these annotation adds extra functionality to objects of this struct, Debug is for printing in console `dbg!(todo)`

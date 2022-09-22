@@ -7,5 +7,6 @@ CREATE TABLE commands (
   icon TEXT NOT NULL,
   data TEXT NOT NULL,
   extension_id TEXT NOT NULL,
-  extension_path TEXT NOT NULL
+  command_type TEXT NOT NULL,
+  CONSTRAINT unique_constraint UNIQUE (key, extension_id)
 )

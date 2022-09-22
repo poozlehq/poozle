@@ -7,7 +7,7 @@ table! {
         icon -> Text,
         data -> Text,
         extension_id -> Text,
-        extension_path -> Text,
+        command_type -> Text,
     }
 }
 

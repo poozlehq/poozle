@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { invoke } from '@tauri-apps/api';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 
 import { CommandContext } from '../context/command_context';
 import { SpecContext } from '../context/spec_context';
@@ -41,7 +41,7 @@ const useFetchData = (fetchDataId: string | undefined, defaultData?: any[], para
       setData(defaultData);
       setLoading(false);
     }
-  }, [fetchDataId]);
+  }, [defaultData, fetchDataId, getDataFromExtension, params]);
 
   const refetch = (newParams: any) => {
     setLoading(true);

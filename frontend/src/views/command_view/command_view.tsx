@@ -60,7 +60,9 @@ const CommandView = ({ command, resetCommand }: Props) => {
   useEffect(() => {
     getCommandResponse();
     registerEsc(setLastView);
-  }, [getCommandResponse]);
+    // TODO (harshith) this is causing infinite loop in case the ex deps are added
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (loading || commandTree.length === 0) {
     return (

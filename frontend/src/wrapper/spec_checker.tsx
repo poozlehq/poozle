@@ -30,7 +30,7 @@ export function specChecker(Component: React.FC<any>) {
 
     useEffect(() => {
       getSpecData();
-    }, []);
+    }, [getSpecData]);
 
     if (loading) {
       return <Loader />;

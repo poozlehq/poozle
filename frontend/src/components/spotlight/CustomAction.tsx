@@ -1,48 +1,21 @@
-import { Center, createStyles, Group, UnstyledButton, Text } from '@mantine/core';
+import { Center, Group, UnstyledButton, Text } from '@mantine/core';
 import { SpotlightActionProps } from '@mantine/spotlight';
+import classnames from 'classnames';
 
 import { Image } from '../image';
-
-const useStyles = createStyles((theme) => ({
-  action: {
-    position: 'relative',
-    display: 'block',
-    width: '100%',
-    padding: '10px 12px',
-    borderRadius: theme.radius.sm,
-  },
-
-  actionHovered: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[1],
-  },
-
-  actionBody: {
-    flex: 1,
-    display: 'flex',
-    alignItems: 'center',
-    gap: '10px',
-  },
-
-  actionType: {
-    display: 'flex',
-    alignItems: 'center',
-    fontSize: 12,
-  },
-}));
+import styles from './CustomAction.module.scss';
 
 export const CustomAction = ({
   action,
-  styles,
+
   classNames,
   hovered,
   onTrigger,
   ...others
 }: SpotlightActionProps) => {
-  const { classes, cx } = useStyles(null, { styles, classNames, name: 'Spotlight' });
-
   return (
     <UnstyledButton
-      className={cx(classes.action, { [classes.actionHovered]: hovered })}
+      className={classnames(styles.action, { [styles.actionHovered]: hovered })}
       tabIndex={-1}
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onMouseDown={(event: any) => event.preventDefault()}
@@ -56,7 +29,7 @@ export const CustomAction = ({
           </Center>
         )}
 
-        <div className={classes.actionBody}>
+        <div className={styles.actionBody}>
           <Text>{action.title}</Text>
 
           {action.description && (
@@ -66,7 +39,7 @@ export const CustomAction = ({
           )}
         </div>
 
-        <div className={classes.actionType}>{action.type}</div>
+        <div className={styles.actionType}>{action.type}</div>
       </Group>
     </UnstyledButton>
   );

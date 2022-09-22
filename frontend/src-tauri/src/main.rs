@@ -9,6 +9,7 @@
 extern crate diesel;
 extern crate diesel_migrations;
 
+use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
 use tauri::{Manager, RunEvent, SystemTray};
 use window_shadows::set_shadow;
 
@@ -18,14 +19,17 @@ mod schema;
 mod system_tray;
 
 fn main() {
-    let state = command::commands::run();
+    pub const MIGRATIONS: EmbeddedMigrations = embed_migrations!();
+    let mut conn = db::establish_connection();
+
+    conn.run_pending_migrations(MIGRATIONS).unwrap();
+
     fix_path_env::fix();
 
     #[allow(unused_mut)]
     let mut app = tauri::Builder::default()
         .system_tray(SystemTray::new().with_menu(system_tray::get_system_tray_menu()))
         .on_system_tray_event(system_tray::on_system_tray_event)
-        .manage(state)
         .invoke_handler(tauri::generate_handler![
             command::cli::command_controller,
             command::cli::get_action_data,
@@ -33,9 +37,10 @@ fn main() {
             command::cli::spec_controller,
             // Below are commands to fetch data from database
             command::commands::get_all_commands,
-            command::commands::prefill_all_commands,
+            command::commands::create_command,
             command::commands::save_spec,
-            command::commands::get_spec
+            command::commands::get_spec,
+            command::commands::download_extension
         ])
         .build(tauri::generate_context!())
         .expect("error while running tauri application");

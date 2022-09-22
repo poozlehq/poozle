@@ -7,7 +7,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "look-dev",
+    "productName": "poozle",
     "version": "0.1.0"
   },
   "tauri": {
@@ -25,6 +25,7 @@
       "fs": {
         "all": true,
         "scope": [
+          "$APP/extensions/*",
           "$APP/extensions",
           "$APP/icons/*"
         ]
@@ -33,7 +34,12 @@
         "all": true,
         "execute": true,
         "sidecar": true,
-        "open": true
+        "open": true,
+        "scope": [ {
+            "name": "run-sh",
+            "cmd": "sh",
+            "args": [ { "validator": "\\S+" } ]
+          } ]
       }
     },
     "bundle": {

@@ -1,15 +1,15 @@
-extern crate dotenv;
-
 pub mod models;
 pub mod query;
 use diesel::prelude::*;
-use dotenv::dotenv;
-use std::env;
 
 pub fn establish_connection() -> SqliteConnection {
-    dotenv().ok();
+    let data_dir = tauri::api::path::data_dir()
+        .unwrap()
+        .into_os_string()
+        .into_string()
+        .unwrap();
 
-    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+    let database_url = data_dir + "/com.poozlehq.dev/" + "mydb.mysqlite3";
     SqliteConnection::establish(&database_url)
         .expect(&format!("Error connecting to {}", database_url))
 }

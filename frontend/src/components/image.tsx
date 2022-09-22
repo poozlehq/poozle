@@ -1,3 +1,7 @@
+import classNames from 'classnames';
+
+import styles from './image.module.scss';
+
 export const Image = ({
   src,
   html_renderer = false,
@@ -5,7 +9,8 @@ export const Image = ({
   className,
   alt = 'component',
 }: {
-  src: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  src: any;
   html_renderer?: boolean;
   className?: string;
   base64?: boolean;
@@ -14,7 +19,7 @@ export const Image = ({
   if (html_renderer) {
     return (
       <div
-        className={className}
+        className={classNames(className, styles.imageContainer)}
         dangerouslySetInnerHTML={{ __html: src }}
         style={{ display: 'flex' }}
       />

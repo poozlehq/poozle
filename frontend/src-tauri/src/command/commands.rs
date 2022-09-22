@@ -1,85 +1,96 @@
-use std::{fs, process::Command, sync::Mutex};
+extern crate reqwest;
 
-use diesel::SqliteConnection;
+use std::{
+    fs::{self, File},
+    io::{Cursor, Error},
+    process::Command,
+};
+
 use serde_json::Value;
+use std::io::copy;
 
 use crate::db::{
     self,
     models::{NewCommand, NewSpec, Spec},
 };
 
-pub struct AppState {
-    count: Mutex<i64>,
-    conn: Mutex<SqliteConnection>,
+pub async fn download_file() -> Result<(), Error> {
+    println!("{}", "Running");
+    let data_dir = tauri::api::path::data_dir()
+        .unwrap()
+        .into_os_string()
+        .into_string()
+        .unwrap();
+    let database_url = data_dir + "/com.poozlehq.dev/";
+
+    let target = "https://poozle-temp.s3.ap-south-1.amazonaws.com/test/getapps.tar.gz?response-content-disposition=inline&X-Amz-Security-Token=IQoJb3JpZ2luX2VjEMz%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCmFwLXNvdXRoLTEiRjBEAiAyXdr7usGVfRfH25jBbiiWFNo%2BQPUdu85hpDsQwyGHJQIgYjuUY2n8%2FRwFSk7LYbtZs6J9ZlOplDu7iAT5kPj1K7Mq%2BwIIdhABGgw3MjI5NjY1NDA3NzMiDGgRseRtYk%2F3Ocl49SrYAiCK2A23mXQSb9RyNybVQ3WQYGsaedKPhrAczww%2Fvq%2FEVZgQp5rSqq8F92XQaIAs421k8Idg1tF%2FgjcY58E3KcCxOaeSWaQS8DZJRJvEN9pG0tiOnPSDC1nyyfHcUoHeQ7qCQ5ux1Os9YaevtSns1wmbSMpe%2FKA4ZhiEoikK4x8XnCvNQeH%2FJAxfrOuzrCFVCGwCgOYp9ri91QqG%2BGU%2Bfmaj7Jxe9Bx2PkzDBqGaMLUIuk6qiFLKwRmlnmqVidnm5uATj27dpvpKXlYMbD0ayVO4hm3mffwjBChdh18LoxCPjb8blSDIQ6qVO20ifrZ5%2FPlEcN2o3NVI%2BjIHBkywlQUJ9npLMTS7bb8NeNruuAGNbSOUDqYX12FqQPOuydN%2BadVnCKizCuE4rsOQJm2M5tzAwc70B8OrIGHoaIHDaoj2f2KjH07PXTIpwIka5xCzFB2CV7Yva%2B4fMKmGrJkGOrQCzcghr3WlWJ1beBNI3v7ORv%2BBp3JSdiA6G%2BJMMqvSdq9260K7wFMIjGSsOo1FRiyc%2BHmMUF%2FwfCjqNvwTb9QuBRePzngOsJBPB9eZqhxtAxabpwBg%2BwKUpjbR%2FlWKB3eQ3EyahYQU9QF95jjUZwBJZnmxfJvozVYi6Kp7qCTjEra1gisKXMzpm%2FnMKU8bz6fOjVXjLCqDhPKnlXpH3BKranMnRri45PYoDdVttLKDmd1MbG7FPUibH3TawivXiWdxwFtKLmcE7nk%2BHQuILpxdoKjNCCwXj2AADy%2BQEGvDli62IY8vg4AfmCAWG1G5WQfBI%2BiLMRif8vHGafqEwzZRgkYprt2BvxBiCinw7vTVnUs2IdCJk1qb288tNZWyzKEtpYkiqWMsfVAnJpFcgubM9DWnJE0%3D&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Date=20220921T131125Z&X-Amz-SignedHeaders=host&X-Amz-Expires=43200&X-Amz-Credential=ASIA2QVBJ6HS5KR4A7WQ%2F20220921%2Fap-south-1%2Fs3%2Faws4_request&X-Amz-Signature=fc9cd934cdfad03a03f4e8bea4ac7a2b731bc9fd0111839ae3f3db85fb09377a";
+
+    let response = reqwest::get(target).await.unwrap();
+
+    let mut dest = {
+        let fname = response
+            .url()
+            .path_segments()
+            .and_then(|segments| segments.last())
+            .and_then(|name| if name.is_empty() { None } else { Some(name) })
+            .unwrap_or("tmp.bin");
+
+        println!("file to download: '{}'", fname);
+        println!("will be located under: '{:?}'", fname);
+        File::create(database_url + "getapps.tar.gz")?
+    };
+    let contents = response.bytes().await.unwrap();
+    let mut content = Cursor::new(contents);
+    copy(&mut content, &mut dest)?;
+    Ok(())
 }
 
-pub fn run() -> AppState {
-    let state = AppState {
-        count: Default::default(),
-        conn: Mutex::new(db::establish_connection()),
+#[tauri::command]
+pub fn get_all_commands() -> String {
+    db::query::commands_list()
+}
+
+#[tauri::command]
+pub fn create_command(
+    command_key: String,
+    extension_id: String,
+    name: String,
+    description: String,
+    icon: String,
+    data: String,
+    command_type: String,
+) {
+    let new_command = NewCommand {
+        key: command_key.as_str(),
+        name: name.as_str(),
+        description: description.as_str(),
+        icon: icon.as_str(),
+        data: data.as_str(),
+        command_type: command_type.as_str(),
+        extension_id: extension_id.as_str(),
     };
 
-    return state;
-}
-
-pub fn create_new_command(con: &SqliteConnection, extension_id: &String, extension_path: &String) {
-    let file_path = extension_path.to_owned() + "/" + extension_id;
-    let output = Command::new(file_path.to_owned())
-        .arg("commands")
-        .output()
-        .expect("failed to execute process");
-
-    let string = String::from_utf8_lossy(&output.stdout).to_string();
-    let values: Value = serde_json::from_str(&string).unwrap();
-    let records = &values["record"].as_array().unwrap();
-    for record in records.iter() {
-        let record_object = record.as_object().unwrap();
-        let new_command = NewCommand {
-            key: record_object["key"].as_str().unwrap(),
-            name: record_object["name"].as_str().unwrap(),
-            description: record_object["description"].as_str().unwrap(),
-            icon: record_object["icon"].as_str().unwrap(),
-            data: "",
-            extension_path: &file_path,
-            extension_id: &extension_id,
-        };
-
-        db::query::create_command(&con, new_command);
-    }
+    db::query::create_command(new_command);
 }
 
 #[tauri::command]
-pub fn get_all_commands(state: tauri::State<AppState>) -> String {
-    let con = state.conn.lock().unwrap();
-    db::query::commands_list(&con)
-}
-
-#[tauri::command]
-pub fn prefill_all_commands(state: tauri::State<AppState>, base_path: String) {
-    let con = state.conn.lock().unwrap();
-    let extension_path = base_path + "extensions";
-    let paths = fs::read_dir(&extension_path).unwrap();
-
-    for path in paths {
-        let extension_id = path.unwrap().file_name().into_string().unwrap();
-        create_new_command(&con, &extension_id, &extension_path);
-    }
-}
-
-#[tauri::command]
-pub fn save_spec(state: tauri::State<AppState>, spec: String, extension_id: String) {
-    let con = state.conn.lock().unwrap();
+pub fn save_spec(spec: String, extension_id: String) {
     let new_spec = NewSpec {
         data: spec.as_str(),
         extension_id: &extension_id,
     };
 
-    db::query::create_spec(&con, new_spec);
+    db::query::create_spec(new_spec);
 }
 
 #[tauri::command]
-pub fn get_spec(state: tauri::State<AppState>, extension_id: String) -> Result<Spec, String> {
-    let con = state.conn.lock().unwrap();
+pub fn get_spec(extension_id: String) -> Result<Spec, String> {
+    db::query::get_spec(&extension_id)
+}
 
-    db::query::get_spec(&con, &extension_id)
+#[tauri::command]
+pub async fn download_extension(extension_id: String) {
+    println!("{}", "Running");
+
+    download_file().await;
 }

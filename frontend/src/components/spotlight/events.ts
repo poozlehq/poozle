@@ -11,8 +11,8 @@ export interface SpotlightEvents {
   removeActions(ids: string[]): void;
 }
 
-export const [useSpotlightEvents, createEvent] =
-  createUseExternalEvents<SpotlightEvents>('mantine-spotlight');
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const [useSpotlightEvents, createEvent] = createUseExternalEvents<any>('mantine-spotlight');
 
 export const openSpotlight = createEvent('open');
 export const closeSpotlight = createEvent('close');

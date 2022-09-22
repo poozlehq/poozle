@@ -46,12 +46,11 @@ const SearchView = ({ searchData }: Props) => {
   }, [selectData]);
 
   useEffect(() => {
-    console.log('i am here');
-    // refetch({
-    //   repository_name: 'airbytehq/airbyte',
-    //   issue_name: issueName,
-    // });
-  }, []);
+    refetch({
+      repository_name: 'airbytehq/airbyte',
+      issue_name: issueName,
+    });
+  }, [issueName, refetch]);
 
   const onQuery = (query: string) => {
     setIssueName(query);

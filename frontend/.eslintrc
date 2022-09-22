@@ -47,18 +47,6 @@
     "prefer-template": "warn",
     "spaced-comment": ["warn", "always", { "markers": ["/"] }],
     "yoda": "warn",
-    "import/resolver": {
-      "alias": {
-        "map": [
-          ["components", "./src/components"],
-          ["utils", "./src/utils"],
-          ["context", "./src/context"],
-          ["ui", "./src/ui"],
-          ["wrapper", "./src/wrapper"]
-        ],
-        "extensions": [".tsx", ".ts", ".js", ".jsx", ".json"]
-      }
-    },
     "import/order": [
       "warn",
       {
