@@ -1,0 +1,15 @@
+.backAction {
+  padding: var(--mantine-spacing-md);
+}
+
+.iconContainer {
+  display: flex;
+  background: var(--mantine-color-dark-4);
+  border-radius: var(--mantine-radius-sm);
+}
+
+.tooltip {
+  padding: var(--mantine-spacing-xs);
+  font-size: var(--mantine-size-sm);
+  border-radius: var(--mantine-radius-md);
+}

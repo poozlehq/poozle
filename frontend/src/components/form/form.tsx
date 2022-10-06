@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 
 import InputWrapper from 'components/input_wrapper/input_wrapper';
 
-import { Block } from 'types/common';
+import { FormBlock } from 'types/form';
 import { SubmitButton } from 'ui/button/button';
 
 import styles from './form.module.scss';
@@ -15,35 +15,31 @@ export interface FormHelpers {
 }
 
 interface FormProps {
-  blocks: Block[];
+  blocks: FormBlock[];
   onSubmit: (values: FormValues, helpers: FormHelpers) => void;
   submitText?: string;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getInputWrapperFromBlocks(blocks: Block[], form: any): React.ReactElement {
+export function getInputWrapperFromBlocks(blocks: FormBlock[], form: any): React.ReactElement {
   return (
     <>
-      {blocks.map((block: Block, index: number) => (
+      {blocks.map((block: FormBlock, index: number) => (
         <div className={styles.input}>
-          <InputWrapper
-            block={block}
-            inputProps={form.getInputProps(block.element.action_id)}
-            key={index}
-          />
+          <InputWrapper block={block} inputProps={form.getInputProps(block.key)} key={index} />
         </div>
       ))}
     </>
   );
 }
 
-function getInitialValues(blocks: Block[]) {
+function getInitialValues(blocks: FormBlock[]) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialValues: Record<string, any> = {};
 
   // eslint-disable-next-line array-callback-return
   blocks.map((block) => {
-    initialValues[block.element.action_id] = '';
+    initialValues[block.key] = '';
   });
 
   return initialValues;

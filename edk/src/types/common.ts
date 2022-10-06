@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export enum CommandType {
+export declare enum CommandType {
   Spec = 'spec',
   Commands = 'commands',
   About = 'about',
@@ -8,6 +7,4 @@ export enum CommandType {
   FetchData = 'fetchData',
 }
 
-export type DoParams = {
-  [x: string]: any;
-};
+export type DoParams = Record<string, any>;

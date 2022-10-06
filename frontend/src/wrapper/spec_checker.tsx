@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { Command } from 'types/common';
+
+import { ExtensionSpecDataType } from '../../../edk/src';
 import Loader from '../components/loader/loader';
 import { SpecContext } from '../context/spec_context';
-import { ExtensionSpecDataType, getExtensionSpecData, Command } from '../utils/commands';
+import { getExtensionSpecData } from '../utils/extension';
 import SpecView from '../views/spec_view/spec_view';
 
 interface Props {

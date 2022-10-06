@@ -5,7 +5,8 @@ import Header from 'components/header/header';
 import { Image } from 'components/image';
 import Loader from 'components/loader/loader';
 
-import { Command, getCommandSpec, setExtensionSpecData } from 'utils/commands';
+import { Command } from 'types/common';
+import { getCommandSpec, setExtensionSpecData } from 'utils/extension';
 
 import styles from './spec_view.module.scss';
 
@@ -22,10 +23,10 @@ const SpecView = (props: Props) => {
   const [loading, setLoading] = useState(true);
 
   const getSpec = useCallback(async () => {
-    const specData = await getCommandSpec(command.extension_path);
+    const specData = await getCommandSpec(command.extension_id);
     setSpecData(specData);
     setLoading(false);
-  }, [command.extension_path]);
+  }, [command.extension_id]);
 
   useEffect(() => {
     getSpec();
@@ -46,10 +47,6 @@ const SpecView = (props: Props) => {
     );
   }
 
-  const getBlocks = () => {
-    return JSON.parse(specData.record).blocks;
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.specView}>
@@ -61,7 +58,7 @@ const SpecView = (props: Props) => {
 
         <div className={styles.form}>
           <div className={styles.innerContainer}>
-            <Form blocks={getBlocks() ?? []} onSubmit={onSubmit} />
+            {specData && <Form blocks={specData} onSubmit={onSubmit} />}
           </div>
         </div>
       </div>

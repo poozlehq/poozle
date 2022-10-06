@@ -2,46 +2,85 @@
   "name": "@poozle/edk",
   "version": "0.1.13",
   "description": "A util to build extensions for poozle",
-  "main": "./lib/cjs/index.js",
-  "module": "./lib/esm/index.js",
-  "engines": {
-    "node": ">= 16.13 <17"
+  "exports": {
+    ".": {
+      "types": "./edk",
+      "import": "./edk/index.es.js",
+      "require": "./dist/index.js"
+    }
   },
-  "devDependencies": {
-    "@types/jest": "~27.5",
-    "@types/node": "~16",
-    "@typescript-eslint/eslint-plugin": "~5.26",
-    "@typescript-eslint/parser": "~5.26",
-    "eslint": "~8.16",
-    "eslint-config-prettier": "~8.5",
-    "eslint-plugin-jest": "~26.2",
-    "jest": "~28.1",
-    "prettier": "~2.6",
-    "rimraf": "~3.0",
-    "ts-jest": "~28.0",
-    "tsutils": "~3.21",
-    "typedoc": "^0.23.7",
-    "typescript": "~4.7"
-  },
+  "main": "./dist/index.js",
+  "module": "./edk/index.es.js",
+  "browser": "./dist/index.umd.js",
+  "types": "./edk",
+  "files": [
+    "edk"
+  ],
   "scripts": {
-    "start": "node build/src/index.js",
-    "clean": "rimraf coverage build tmp",
-    "prebuild": "yarn lint",
-    "build": "tsc -p tsconfig.json && tsc -p tsconfig-esm.json",
-    "build:watch": "tsc -w -p tsconfig.json",
-    "build:release": "yarn clean && tsc -p tsconfig.json && tsc -p tsconfig-esm.json",
+    "build": "rimraf edk && npm run build:js",
+    "build:js": "rollup -c",
+    "build:types": "tsc --emitDeclarationOnly",
     "lint": "eslint . --ext .ts --ext .mts",
     "test": "jest --coverage",
+    "prebuild": "yarn lint",
     "prettier": "prettier --config .prettierrc --write .",
     "test:watch": "jest --watch"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.17.12",
+    "@rollup/plugin-babel": "5.3.1",
+    "@rollup/plugin-commonjs": "^22.0.0",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@types/jest": "~27.5",
+    "@types/node": "~16",
+    "@types/react": "^18.0.20",
+    "@typescript-eslint/eslint-plugin": "~5.26",
+    "@typescript-eslint/parser": "~5.26",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-css-modules": "^2.11.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^27.0.4",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "jest": "~28.1",
+    "node-sass": "^7.0.3",
+    "postcss": "^8.4.16",
+    "prettier": "^2.6.2",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.74.1",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.34.0",
+    "sass-loader": "^13.0.2",
+    "ts-jest": "~28.0",
+    "tsutils": "~3.21",
+    "typescript": "^4.8.3"
   },
   "author": "Harshith Mullapudi <harshithmullapudi@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
+    "@mantine/core": "^5.4.1",
+    "@mantine/dates": "^5.4.1",
+    "@mantine/form": "^5.4.1",
+    "@mantine/hooks": "^5.4.1",
+    "@mantine/modals": "^5.4.1",
+    "@mantine/notifications": "^5.4.1",
+    "@mantine/spotlight": "^5.4.2",
+    "@tabler/icons": "^1.100.0",
     "axios": "^0.27.2",
-    "tslib": "~2.4"
-  },
-  "volta": {
-    "node": "16.13.0"
+    "classnames": "^2.3.2",
+    "dayjs": "^1.11.5"
   }
 }

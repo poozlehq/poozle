@@ -2,11 +2,13 @@ import { appDir } from '@tauri-apps/api/path';
 import { Command } from '@tauri-apps/api/shell';
 import { useEffect, useState } from 'react';
 
+import { Command as CommandType } from 'types/common';
+
 import styles from './App.module.scss';
 import Search from './components/search/search';
 import { CommandContext } from './context/command_context';
 import { CommandsContext } from './context/commands_context';
-import { Command as CommandType, getAllCommands } from './utils/commands';
+import { getAllCommands } from './utils/extension';
 import CommandView from './views/command_view/command_view';
 
 const App = () => {

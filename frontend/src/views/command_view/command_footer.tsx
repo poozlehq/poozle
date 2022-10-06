@@ -1,7 +1,7 @@
 import { Chip } from '@mantine/core';
 
 import { Image } from '../../components/image';
-import { Command } from '../../utils/commands';
+import { Command } from '../../utils/extension';
 import styles from './command_footer.module.scss';
 import { CommandTreeRecord } from './types';
 

@@ -1,5 +1,5 @@
 import { Surface } from '../../types/common';
-import { Command } from '../../utils/commands';
+import { Command } from '../../utils/extension';
 
 export enum CommandViewType {
   Form = 'Form',

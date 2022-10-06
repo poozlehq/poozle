@@ -1,85 +1,54 @@
-import { Block, ElementType } from '../../types/common';
+// import { Block, ElementType } from '../../types/common';
+import { FormBlock } from 'types/form';
+import Select from 'ui/select/select';
+
+import { InputBlockType } from '../../../../edk/src';
 import Input from '../../ui/input/input';
-import RTE from '../../ui/rte/rte';
-import SelectWithFetch from '../../ui/select/select_with_fetch';
 
 export interface Props {
-  block: Block;
+  block: FormBlock;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   inputProps: Record<string, any>;
   key?: number;
 }
 
 const InputWrapper = (props: Props) => {
-  const { type, element, label } = props.block;
+  const { type, name, key, description } = props.block;
   let Component: React.ReactElement | null = null;
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onChange = (e: any) => {
-    if (element.type === ElementType.TextEditor) {
-      props.inputProps.onChange(e);
-    }
-
     props.inputProps.onChange(e);
   };
 
-  if (type === 'input') {
-    if (element.type === 'select') {
-      Component = (
-        <SelectWithFetch
-          label={label}
-          name={element.action_id}
-          placeholder={element.placeholder}
-          fetchDataId={element.fetch_data_id}
-          required
-          data={element.data}
-          value={props.inputProps.value}
-          {...props.inputProps}
-          onChange={onChange}
-        />
-      );
-    }
-
-    if (element.type === ElementType.TextInput) {
-      Component = (
-        <Input
-          label={label}
-          name={element.action_id}
-          placeholder={element.placeholder}
-          required
-          {...props.inputProps}
-          onChange={onChange}
-        />
-      );
-    }
-
-    if (element.type === ElementType.TextEditor) {
-      Component = (
-        <RTE
-          label={label}
-          name={element.action_id}
-          placeholder={element.placeholder}
-          required
-          value={props.inputProps.value}
-          {...props.inputProps}
-          onChange={onChange}
-        />
-      );
-    }
+  if (type === InputBlockType.SELECT) {
+    Component = (
+      <Select
+        label={name}
+        name={key}
+        placeholder={description}
+        required
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        data={props.block.data as any}
+        value={props.inputProps.value}
+        {...props.inputProps}
+        onChange={onChange}
+      />
+    );
   }
 
-  // if (type === 'section') {
-  //   Component = (
-  //     <>
-  //       {blocks &&
-  //         blocks.map((block: Block) => (
-  //           <div className={styles.input}>
-  //             <InputWrapper block={block} />
-  //           </div>
-  //         ))}
-  //     </>
-  //   );
-  // }
+  if (type === InputBlockType.INPUT) {
+    Component = (
+      <Input
+        label={name}
+        name={key}
+        placeholder={description}
+        required
+        {...props.inputProps}
+        onChange={onChange}
+      />
+    );
+  }
 
   return <div key={props.key}>{Component}</div>;
 };

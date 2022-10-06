@@ -3,8 +3,8 @@ import { SpotlightAction } from '@mantine/spotlight';
 import { useCallback, useContext, useEffect, useState } from 'react';
 
 import { CommandsContext } from 'context/commands_context';
+import { Command } from 'types/common';
 import { registerAppWindow, registerEsc } from 'utils/application';
-import { Command } from 'utils/commands';
 import { capitalizeFirstLetter } from 'utils/common';
 
 import { Image } from '../image';
