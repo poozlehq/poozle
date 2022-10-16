@@ -8,6 +8,8 @@ import postcss from 'rollup-plugin-postcss';
 
 import pkg from './package.json';
 
+import typescriptOptions from './tsconfig.json';
+
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
 const plugins = [
@@ -21,14 +23,14 @@ const plugins = [
     presets: ['@babel/preset-react', '@babel/preset-typescript', '@babel/preset-env'],
   }),
   terser(),
-  typescript(),
+  typescript(typescriptOptions),
   postcss({ modules: true }),
 ];
 
 export default [
   {
     input: 'src/index.ts',
-    external: ['react', 'react-dom'],
+    external: pkg.peerDependencies,
     output: [
       {
         file: pkg.module,

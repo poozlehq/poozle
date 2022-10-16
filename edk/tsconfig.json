@@ -27,11 +27,13 @@
     "noFallthroughCasesInSwitch": true,
     "useUnknownInCatchVariables": false,
     "paths": {
-      "internal": ["src/internal/*"],
-      "components": ["src/components/*"],
-      "types": ["src/types/*"],
-      "ui": ["src/ui/*"]
+      "internal/*": ["internal/*"],
+      "components/*": ["components/*"],
+      "types/*": ["types/*"],
+      "ui/*": ["ui/*"]
     }
   },
+  "exclude": ["node_modules", "build", "dist", "scripts", "acceptance-tests", "webpack", "jest"],
+  "types": ["typePatches"],
   "include": ["src"]
 }

@@ -1,7 +1,7 @@
 import { useForm } from '@mantine/form';
 import React, { useState } from 'react';
 
-import FormBlock from 'types/form';
+import { FormBlock } from 'types/form';
 
 import { InputWrapper } from 'internal/input_wrapper';
 import { SubmitButton } from 'ui/button';

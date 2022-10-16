@@ -1,6 +1,6 @@
 import { invoke } from '@tauri-apps/api';
 
-import { ExtensionCommand, ExtensionSpecDataType, ExtensionSpec } from '../../../edk/src';
+import { ExtensionCommand, ExtensionSpecDataType, ExtensionSpec } from '@poozle/edk';
 
 export async function getCommandsFromBackend(): Promise<string> {
   return await invoke('get_all_commands');

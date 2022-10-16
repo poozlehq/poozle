@@ -15,7 +15,7 @@ import {
 
 import { Command } from 'types/common';
 
-import { ExtensionSpec } from '../../../edk/src';
+import { ExtensionSpec } from '@poozle/edk';
 
 const specFileName = 'spec.json';
 

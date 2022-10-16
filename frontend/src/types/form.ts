@@ -1,4 +1,4 @@
-import { InputBlockType, SelectItem } from '../../../edk/src';
+import { InputBlockType, SelectItem } from '@poozle/edk';
 
 export interface FormBlock {
   name: string;

@@ -12,16 +12,20 @@ export interface SearchViewProps {
   placeholder: string;
 }
 
-const SearchView = (): React.ReactElement => {
+const SearchView = ({
+  actions,
+  placeholder,
+  CustomAction,
+}: SearchViewProps): React.ReactElement => {
   return (
     <div className={styles.mainContainer}>
-      {/* <Spotlight
+      <Spotlight
         actions={actions}
         placeholder={placeholder}
         withinPortal
         prefixInputComponent={<BackButton />}
         actionComponent={CustomAction}
-      /> */}
+      />
     </div>
   );
 };

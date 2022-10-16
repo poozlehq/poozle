@@ -2,7 +2,7 @@
 import { FormBlock } from 'types/form';
 import Select from 'ui/select/select';
 
-import { InputBlockType } from '../../../../edk/src';
+import { InputBlockType } from '@poozle/edk';
 import Input from '../../ui/input/input';
 
 export interface Props {

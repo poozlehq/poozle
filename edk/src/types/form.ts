@@ -8,4 +8,4 @@ interface FormBlock {
   data?: SelectItem;
 }
 
-export default FormBlock;
+export type { FormBlock };

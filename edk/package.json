@@ -6,12 +6,12 @@
     ".": {
       "types": "./edk",
       "import": "./edk/index.es.js",
-      "require": "./dist/index.js"
+      "require": "./edk/index.js"
     }
   },
-  "main": "./dist/index.js",
+  "main": "./edk/index.js",
   "module": "./edk/index.es.js",
-  "browser": "./dist/index.umd.js",
+  "browser": "./edk/index.umd.js",
   "types": "./edk",
   "files": [
     "edk"
@@ -71,6 +71,7 @@
   "author": "Harshith Mullapudi <harshithmullapudi@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
+    "@emotion/react": "^11.10.4",
     "@mantine/core": "^5.4.1",
     "@mantine/dates": "^5.4.1",
     "@mantine/form": "^5.4.1",
