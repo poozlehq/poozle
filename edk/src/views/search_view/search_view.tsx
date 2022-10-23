@@ -1,8 +1,8 @@
 import * as React from 'react';
 
 import Spotlight from 'ui/spotlight';
-import { SpotlightAction } from 'ui/spotlight/types';
 
+import { SpotlightAction } from '../../ui/spotlight/types';
 import { BackButton } from './back_button';
 import styles from './search_view.module.scss';
 

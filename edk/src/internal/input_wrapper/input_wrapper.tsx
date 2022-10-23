@@ -1,5 +1,5 @@
 import { InputBlockType } from 'types/extension';
-import FormBlock from 'types/form';
+import { FormBlock } from 'types/form';
 
 import { Input } from 'ui/input';
 import { Select } from 'ui/select';

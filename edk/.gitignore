@@ -30,3 +30,6 @@ lib/
 .DS_Store
 
 edk/
+
+**/*.d.ts
+tsconfig.tsbuildinfo

@@ -5,6 +5,7 @@ import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import { terser } from 'rollup-plugin-terser';
 import postcss from 'rollup-plugin-postcss';
+import dts from "rollup-plugin-dts";
 
 import pkg from './package.json';
 
@@ -44,4 +45,10 @@ export default [
     ],
     plugins,
   },
+  {
+    input: "edk/types/index.d.ts",
+    output: [{ file: "edk/index.d.ts", format: "esm" }],
+    external: [/\.scss$/],
+    plugins: [dts()],
+  }
 ];
