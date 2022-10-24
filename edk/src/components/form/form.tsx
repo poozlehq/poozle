@@ -1,11 +1,10 @@
 import { useForm } from '@mantine/form';
 import React, { useState } from 'react';
 
-import { FormBlock } from 'types/form';
-
 import { InputWrapper } from 'internal/input_wrapper';
 import { SubmitButton } from 'ui/button';
 
+import { FormBlock } from '../../types/form';
 import styles from './form.module.scss';
 
 export type FormValues = Record<string, string>;
@@ -45,7 +44,7 @@ function getInitialValues(blocks: FormBlock[]) {
   return initialValues;
 }
 
-const Form = ({ blocks, onSubmit, submitText }: FormProps) => {
+export const Form = ({ blocks, onSubmit, submitText }: FormProps) => {
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
@@ -68,5 +67,3 @@ const Form = ({ blocks, onSubmit, submitText }: FormProps) => {
     </form>
   );
 };
-
-export default Form;

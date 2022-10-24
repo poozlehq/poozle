@@ -1,4 +1,4 @@
-import { invoke } from '@tauri-apps/api';
+import { ExtensionSpec } from '@poozle/edk';
 import {
   BaseDirectory,
   FileEntry,
@@ -14,8 +14,6 @@ import {
 } from 'service/backend';
 
 import { Command } from 'types/common';
-
-import { ExtensionSpec } from '@poozle/edk';
 
 const specFileName = 'spec.json';
 

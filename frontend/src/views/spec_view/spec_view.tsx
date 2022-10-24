@@ -1,6 +1,6 @@
+import { Form, FormValues } from '@poozle/edk';
 import { useCallback, useEffect, useState } from 'react';
 
-import Form, { FormValues } from 'components/form/form';
 import Header from 'components/header/header';
 import { Image } from 'components/image';
 import Loader from 'components/loader/loader';

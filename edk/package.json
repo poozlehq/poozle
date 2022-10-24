@@ -1,25 +1,24 @@
 {
   "name": "@poozle/edk",
-  "version": "0.1.13",
+  "version": "0.1.16",
   "description": "A util to build extensions for poozle",
   "exports": {
     ".": {
       "types": "./edk",
-      "import": "./edk/index.es.js",
-      "require": "./edk/index.js"
+      "import": "./edk/es",
+      "require": "./edk/main/index.js"
     }
   },
-  "main": "./edk/index.js",
-  "module": "./edk/index.es.js",
-  "browser": "./edk/index.umd.js",
+  "main": "./edk/main/index.js",
+  "module": "./edk/es",
   "types": "./edk",
   "files": [
-    "edk"
+    "edk/*"
   ],
+  "type": "module",
   "scripts": {
-    "build": "rimraf edk && yarn tsc && yarn run build:js && yarn run build:types && cp package.json ./edk",
+    "build": "rimraf edk && yarn tsc && yarn run build:js && rimraf edk/types",
     "build:js": "rollup -c",
-    "build:types": "tsc --emitDeclarationOnly",
     "lint": "eslint . --ext .ts --ext .mts",
     "test": "jest --coverage",
     "prebuild": "yarn lint",
@@ -36,11 +35,11 @@
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.17.12",
     "@microsoft/api-extractor": "^7.33.4",
-    "@rollup/plugin-babel": "5.3.1",
-    "@rollup/plugin-commonjs": "^22.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.3.0",
-    "@types/jest": "~27.5",
+    "@rollup/plugin-babel": "6.0.2",
+    "@rollup/plugin-commonjs": "^23.0.2",
+    "@rollup/plugin-json": "^5.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@types/jest": "~29.2.0",
     "@types/node": "~16",
     "@types/react": "^18.0.20",
     "@typescript-eslint/eslint-plugin": "~5.26",
@@ -60,7 +59,7 @@
     "postcss": "^8.4.16",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
-    "rollup": "^2.74.1",
+    "rollup": "^3.2.3",
     "rollup-plugin-dts": "^5.0.0",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-terser": "^7.0.2",
@@ -80,6 +79,7 @@
     "@mantine/hooks": "^5.4.1",
     "@mantine/modals": "^5.4.1",
     "@mantine/notifications": "^5.4.1",
+    "@mantine/rte": "^5.6.1",
     "@mantine/spotlight": "^5.4.2",
     "@tabler/icons": "^1.100.0",
     "axios": "^0.27.2",

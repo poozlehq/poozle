@@ -1,10 +1,10 @@
 import { useForm } from '@mantine/form';
+import { SubmitButton } from '@poozle/edk';
 import React, { useState } from 'react';
 
 import InputWrapper from 'components/input_wrapper/input_wrapper';
 
 import { FormBlock } from 'types/form';
-import { SubmitButton } from 'ui/button/button';
 
 import styles from './form.module.scss';
 

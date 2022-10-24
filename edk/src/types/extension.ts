@@ -17,7 +17,7 @@ export interface ExtensionSpecDataType {
   data: any;
 }
 
-export declare enum InputBlockType {
+const enum InputBlockType {
   INPUT = 'input',
   SELECT = 'select',
 }
@@ -46,3 +46,5 @@ export interface ExtensionSpec {
   commands: ExtensionCommand[];
   inputBlocks: ExtensionInputBlock[];
 }
+
+export { InputBlockType };
