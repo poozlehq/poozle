@@ -1,12 +1,13 @@
 import { Button as MantineButton } from '@mantine/core';
 import classnames from 'classnames';
+import * as React from 'react';
 
 import styles from './button.module.scss';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Props = any;
 
-const Button = (props: Props) => {
+const Button = (props: Props): React.ReactElement => {
   const { className, size = 'md', radius = 'sm', ...restProps } = props;
 
   return (

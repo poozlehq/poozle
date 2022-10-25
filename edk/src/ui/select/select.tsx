@@ -9,6 +9,7 @@ import {
 } from '@mantine/core';
 import classnames from 'classnames';
 import { forwardRef, Ref } from 'react';
+import * as React from 'react';
 
 import styles from './select.module.scss';
 
@@ -24,7 +25,7 @@ export type SelectProps = {
   className?: string;
 } & MSelectProps;
 
-const Select = (props: SelectProps) => {
+const Select = (props: SelectProps): React.ReactElement => {
   const {
     name,
     label,

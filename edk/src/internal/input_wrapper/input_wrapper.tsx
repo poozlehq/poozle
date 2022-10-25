@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 import { InputBlockType } from 'types/extension';
 
 import { Input } from 'ui/input';

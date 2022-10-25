@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import * as React from 'react';
 
 import styles from './image.module.scss';
 
@@ -15,7 +16,7 @@ export const Image = ({
   className?: string;
   base64?: boolean;
   alt?: string;
-}) => {
+}): React.ReactElement => {
   if (html_renderer) {
     return (
       <div

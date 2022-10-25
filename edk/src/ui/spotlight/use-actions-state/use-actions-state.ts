@@ -1,7 +1,7 @@
 import type { SpotlightAction } from '../types';
 
 import { randomId } from '@mantine/hooks';
-import { useState, useEffect } from 'react';
+import * as React from 'react';
 
 function prepareAction(action: SpotlightAction) {
   return { ...action, id: action.id || randomId() };
@@ -31,11 +31,11 @@ export function useActionsState(
   initialActions: SpotlightAction[] | ((query: string) => SpotlightAction[]),
   query: string,
 ) {
-  const [actions, setActions] = useState(
+  const [actions, setActions] = React.useState(
     prepareActions(typeof initialActions === 'function' ? initialActions(query) : initialActions),
   );
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (typeof initialActions === 'function') {
       setActions(prepareActions(initialActions(query)));
     }

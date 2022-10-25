@@ -8,7 +8,7 @@ import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 
 import pkg from './package.json' assert { type: 'json' };
-import typescriptOptions from './tsconfig.json' assert { type: 'json' }; 
+import typescriptOptions from './tsconfig.json' assert { type: 'json' };
 
 const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 

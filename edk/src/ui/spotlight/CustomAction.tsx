@@ -1,6 +1,7 @@
 import { Center, Group, UnstyledButton, Text } from '@mantine/core';
 import { SpotlightActionProps } from '@mantine/spotlight';
 import classnames from 'classnames';
+import * as React from 'react';
 
 import { Image } from '../image';
 import styles from './CustomAction.module.scss';
@@ -12,7 +13,7 @@ export const CustomAction = ({
   hovered,
   onTrigger,
   ...others
-}: SpotlightActionProps) => {
+}: SpotlightActionProps): React.ReactElement => {
   return (
     <UnstyledButton
       className={classnames(styles.action, { [styles.actionHovered]: hovered })}

@@ -1,5 +1,6 @@
 import { Input as MantineInput } from '@mantine/core';
 import { RichTextEditor, RichTextEditorProps } from '@mantine/rte';
+import * as React from 'react';
 
 type RTEProps = {
   label?: string;
@@ -13,7 +14,15 @@ type RTEProps = {
   className?: string;
 } & RichTextEditorProps;
 
-const RTE = ({ name, required, label, value, error, description, onChange }: RTEProps) => {
+const RTE = ({
+  name,
+  required,
+  label,
+  value,
+  error,
+  description,
+  onChange,
+}: RTEProps): React.ReactElement => {
   return (
     <MantineInput.Wrapper
       id={name}

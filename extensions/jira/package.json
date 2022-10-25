@@ -50,7 +50,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@poozle/edk": "^0.1.16",
+    "@poozle/edk": "^0.1.17",
     "react-select": "^5.4.0",
     "styled-components": "^5.0.1"
   }

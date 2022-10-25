@@ -1,6 +1,7 @@
 import { Input as MantineInput, InputBaseProps } from '@mantine/core';
 import classnames from 'classnames';
 import { Ref } from 'react';
+import * as React from 'react';
 
 import styles from './input.module.scss';
 
@@ -19,7 +20,7 @@ type InputProps = {
   className?: string;
 } & InputBaseProps;
 
-const Input = (props: InputProps) => {
+const Input = (props: InputProps): React.ReactElement => {
   const {
     name,
     label,

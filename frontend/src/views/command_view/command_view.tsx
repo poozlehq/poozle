@@ -43,11 +43,9 @@ const CommandView = ({ command, resetCommand }: Props) => {
 
   const getCommandView = useCallback(async () => {
     const appDirPath = await appDir();
-    console.log(command.extension_id);
-    const path = `${appDirPath}extensions/${command.extension_id}/index.jsx`;
-    console.log(path);
-    const module = await import(path);
-    console.log(module.default);
+    const module = await import(
+      `/Users/harshithmullapudi/Library/Application Support/com.poozlehq.dev/extensions/${command.extension_id}.jsx`
+    );
     setCommandComponent(module.default);
   }, [command]);
 
