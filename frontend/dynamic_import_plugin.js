@@ -123,7 +123,6 @@ function toLooseGlob(glob) {
   return glob + tail;
 }
 function mappingPath(paths, alias) {
-  console.log(paths);
   const maps = {};
   for (const p of paths) {
     let importee = p;
@@ -182,6 +181,7 @@ class Resolve {
   }
   tryResolveBare(importee, importer) {
     const { importee: ipte, importeeRaw = ipte } = this.parseImportee(importee);
+    // eslint-disable-next-line no-useless-escape
     if (/^[\.\/]/.test(ipte)) {
       return;
     }
@@ -219,6 +219,7 @@ class Resolve {
   }
   resolveAlias(importee, importer, alias) {
     const { find, replacement } = alias;
+    // eslint-disable-next-line prefer-const
     let { importee: ipte, importeeRaw = ipte, startQuotation = '' } = this.parseImportee(importee);
     if (replacement.startsWith('.')) {
       ipte = ipte.replace(find, replacement);
@@ -248,6 +249,7 @@ class Resolve {
     return result;
   }
 }
+// eslint-disable-next-line no-template-curly-in-string
 const example = 'For example: import(`./foo/${bar}.js`).';
 function sanitizeString(str) {
   if (str.includes('*')) {
@@ -413,7 +415,6 @@ function dynamicImport(options = {}) {
             const maps = mappingPath(files, mapAlias);
             const runtimeName = `__variableDynamicImportRuntime${dynamicImportIndex++}__`;
             const runtimeFn = generateDynamicImportRuntime(maps, runtimeName);
-            console.log(runtimeFn);
             ms.overwrite(node.start, node.end, `${runtimeName}(${importeeRaw})`);
             runtimeFunctions.push(runtimeFn);
           }
@@ -477,14 +478,12 @@ async function globFiles(node, code, importer, resolve, extensions, loose = true
   return { files, resolved };
 }
 function generateDynamicImportRuntime(maps, name) {
-  console.log(maps, name);
   const groups = Object.entries(maps).map(([localFile, importeeList]) =>
     importeeList
       .map((importee) => `    case '${importee.replace('./', '')}':`)
       .concat(`      return import('${localFile.replace('./', '')}');`),
   );
   return `function ${name}(path) {
-  return import(path);
   switch (path) {
 ${groups.flat().join('\n')}
     default: return new Promise(function(resolve, reject) {

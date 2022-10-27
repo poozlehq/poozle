@@ -4,13 +4,11 @@ import React from 'react';
 
 import Loader from 'components/loader/loader';
 
-import { CommandTreeContext } from 'context/command_tree_context';
 import { Command } from 'types/common';
 import { registerEsc } from 'utils/application';
 import { specChecker } from 'wrapper/spec_checker';
 
 import styles from './command_view.module.scss';
-import { CommandTreeRecord } from './types';
 
 interface Props {
   command: Command;
@@ -18,8 +16,8 @@ interface Props {
 }
 
 const CommandView = ({ command, resetCommand }: Props) => {
-  const [commandTree, setCommandTree] = useState<CommandTreeRecord[]>([]);
-  const [CommandComponent, setCommandComponent] = useState<React.FC | undefined>();
+  const [commandTree, setCommandTree] = useState<any[]>([]);
+  const [CommandComponent, setCommandComponent] = useState<any | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
 
   const setLastView = useCallback(
@@ -43,9 +41,11 @@ const CommandView = ({ command, resetCommand }: Props) => {
 
   const getCommandView = useCallback(async () => {
     const appDirPath = await appDir();
+    const userName = appDirPath.split('/')[2];
     const module = await import(
-      `/Users/harshithmullapudi/Library/Application Support/com.poozlehq.dev/extensions/${command.extension_id}.jsx`
+      `/Users/${userName}/Library/Application Support/com.poozlehq.dev/extensions/${command.extension_id}/index.jsx`
     );
+    console.log(module);
     setCommandComponent(module.default);
   }, [command]);
 
@@ -68,13 +68,12 @@ const CommandView = ({ command, resetCommand }: Props) => {
   }
 
   const currentCommand = commandTree[commandTree.length - 1];
-  console.log(CommandComponent);
 
   const childrenWithProps = React.Children.map(CommandComponent, (child) => {
     // Checking isValidElement is the safe way and avoids a
     // typescript error too.
     if (React.isValidElement(child)) {
-      return React.cloneElement(child, { happy: 'here' });
+      return React.cloneElement(child, { happy: 'here' } as any);
     }
     return child;
   });
@@ -82,20 +81,12 @@ const CommandView = ({ command, resetCommand }: Props) => {
   console.log(childrenWithProps);
 
   return (
-    <CommandTreeContext.Provider
-      value={{
-        setCommandTree,
-        commandTree,
-        setLastView,
-      }}
-    >
-      <div className={styles.commandView}>
-        <div className={styles.commandViewContainer}>
-          {CommandComponent && childrenWithProps}
-          {/* <CommandFooter command={command} currentCommand={currentCommand} /> */}
-        </div>
+    <div className={styles.commandView}>
+      <div className={styles.commandViewContainer}>
+        {CommandComponent && childrenWithProps}
+        {/* <CommandFooter command={command} currentCommand={currentCommand} /> */}
       </div>
-    </CommandTreeContext.Provider>
+    </div>
   );
 };
 

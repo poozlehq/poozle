@@ -1,8 +1,6 @@
 import { Kbd, Tooltip, UnstyledButton } from '@mantine/core';
 import { IconArrowNarrowLeft } from '@tabler/icons';
-import { useContext } from 'react';
 
-import { CommandTreeContext } from '../../context/command_tree_context';
 import styles from './header.module.scss';
 
 interface Props {
@@ -10,13 +8,7 @@ interface Props {
 }
 
 export const BackButton = ({ onBack: onBackParent }: Props) => {
-  const contextValue = useContext(CommandTreeContext);
-
   const onBack = () => {
-    if (contextValue?.setLastView) {
-      contextValue?.setLastView();
-    }
-
     if (onBackParent) {
       onBackParent();
     }

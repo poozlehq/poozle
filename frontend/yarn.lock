@@ -1734,10 +1734,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@poozle/edk@^0.1.16":
-  version "0.1.16"
-  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.16.tgz#cf34cd54f2542920813cedf96be13a29f613498a"
-  integrity sha512-KumfoI2RAeWbCZk/BWiYfKLrR/cvpXMVQKlspZ5YIArfUTpDAPqY/KXPDs4vF4vdVs02XOuhENUzbR1BtwGGmg==
+"@poozle/edk@^0.1.17":
+  version "0.1.17"
+  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.17.tgz#a05a1e9de003e514862874d8ce3ab9fc44e08347"
+  integrity sha512-FEsvdjzelVlLBtQ3yRiAmlwWT/wSJF8JNj9SViY3TpVbWFarHv3regItf46jOPuKt6rCDgs8aNFk2/1kCdE9UQ==
   dependencies:
     "@emotion/react" "^11.10.4"
     "@mantine/core" "^5.4.1"
