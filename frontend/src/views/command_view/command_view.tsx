@@ -5,9 +5,9 @@ import React from 'react';
 import Loader from 'components/loader/loader';
 
 import { Command } from 'types/common';
-import { registerEsc } from 'utils/application';
 import { specChecker } from 'wrapper/spec_checker';
 
+import CommandFooter from './command_footer';
 import styles from './command_view.module.scss';
 
 interface Props {
@@ -15,49 +15,41 @@ interface Props {
   resetCommand: () => void;
 }
 
+export interface AppProps {
+  commandKey: string;
+  resetCommand: () => void;
+}
+
+
 const CommandView = ({ command, resetCommand }: Props) => {
-  const [commandTree, setCommandTree] = useState<any[]>([]);
-  const [CommandComponent, setCommandComponent] = useState<any | undefined>();
+  const [CommandComponent, setCommandComponent] = useState<
+    React.LazyExoticComponent<React.ComponentType<AppProps>> | undefined
+  >();
   const [loading, setLoading] = useState<boolean>(false);
 
-  const setLastView = useCallback(
-    (completeReset = false): void => {
-      if (completeReset) {
-        resetCommand();
-        return;
-      }
-
-      const newCommandTree = [...commandTree];
-      newCommandTree.pop();
-
-      if (newCommandTree.length === 0) {
-        resetCommand();
-      } else {
-        setCommandTree(newCommandTree);
-      }
-    },
-    [commandTree, resetCommand],
-  );
-
   const getCommandView = useCallback(async () => {
+    setLoading(true);
     const appDirPath = await appDir();
+    // Get the username from the path
     const userName = appDirPath.split('/')[2];
-    const module = await import(
-      `/Users/${userName}/Library/Application Support/com.poozlehq.dev/extensions/${command.extension_id}/index.jsx`
+    // Dynamically import the app from the extensions folder
+    const module = React.lazy(
+      () =>
+        import(
+          `/Users/${userName}/Library/Application Support/com.poozlehq.dev/extensions/${command.extension_id}/index.jsx`
+        ),
     );
-    console.log(module);
-    setCommandComponent(module.default);
+    setCommandComponent(module);
+    setLoading(false);
   }, [command]);
 
   useEffect(() => {
-    // getCommandResponse()
     getCommandView();
-    registerEsc(setLastView);
     // TODO (harshith) this is causing infinite loop in case the ex deps are added
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading) {
+  if (loading || !CommandComponent) {
     return (
       <div className={styles.commandView}>
         <div className={styles.commandViewContainer}>
@@ -67,24 +59,13 @@ const CommandView = ({ command, resetCommand }: Props) => {
     );
   }
 
-  const currentCommand = commandTree[commandTree.length - 1];
-
-  const childrenWithProps = React.Children.map(CommandComponent, (child) => {
-    // Checking isValidElement is the safe way and avoids a
-    // typescript error too.
-    if (React.isValidElement(child)) {
-      return React.cloneElement(child, { happy: 'here' } as any);
-    }
-    return child;
-  });
-
-  console.log(childrenWithProps);
-
   return (
     <div className={styles.commandView}>
       <div className={styles.commandViewContainer}>
-        {CommandComponent && childrenWithProps}
-        {/* <CommandFooter command={command} currentCommand={currentCommand} /> */}
+        <div className={styles.commandReactContainer}>
+          <CommandComponent commandKey={command.key} resetCommand={resetCommand} />
+        </div>
+        <CommandFooter command={command} />
       </div>
     </div>
   );

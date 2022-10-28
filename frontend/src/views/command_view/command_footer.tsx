@@ -1,26 +1,19 @@
-import { Chip } from '@mantine/core';
+import { Command } from '@poozle/edk';
 
 import { Image } from '../../components/image';
-import { Command } from '../../utils/extension';
 import styles from './command_footer.module.scss';
-import { CommandTreeRecord } from './types';
 
 interface CommandFooterProps {
   command: Command;
-  currentCommand: CommandTreeRecord;
 }
 
-const CommandFooter = ({ command, currentCommand }: CommandFooterProps) => {
+const CommandFooter = ({ command }: CommandFooterProps) => {
   return (
     <div className={styles.footer}>
       <div className={styles.icon}>
         <Image src={command.icon} html_renderer />
       </div>
-      <div className={styles.commandTree}>
-        <Chip size="xs" checked={false}>
-          {currentCommand.command.name}
-        </Chip>
-      </div>
+      <div className={styles.commandTree} />
     </div>
   );
 };

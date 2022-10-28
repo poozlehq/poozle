@@ -1,22 +1,17 @@
-import React from 'react'
-// import Select from 'react-select'
-import { Select } from '@poozle/edk';
 
-const options = [
-  { value: 'chocolate', label: 'Chocolate' },
-  { value: 'strawberry', label: 'Strawberry' },
-  { value: 'vanilla', label: 'Vanilla' },
-]
+ import * as React from 'react';
+ import ReactDOM from 'react-dom/client';
+ 
+ 
+ import App from './app/index';
+ 
+ const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement,
+);
 
-import styles from './index.module.scss'
-
-function Hello() {
-  return (
-    <>
-      <Select data={options} value={''} />
-      <h1 className={styles.heading}>This is me</h1>
-    </>
-  )
-}
-
-export default Hello
+ root.render(
+   <App commandKey="create_issue" resetCommand={function (): void {
+     throw new Error('Function not implemented.');
+   } } />
+ );
+ 

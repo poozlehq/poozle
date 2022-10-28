@@ -5,7 +5,7 @@
   "exports": {
     ".": {
       "types": "./jira",
-      "import": "./jira/index.js"
+      "import": "./jira/index.jsx"
     }
   },
   "module": "./jira/index.jsx",
@@ -13,11 +13,12 @@
   "files": [
     "jira"
   ],
+  "type": "module",
   "scripts": {
-    "build": "rimraf jira && npm run build:js && npm run copy:spec",
+    "build": "rimraf jira && yarn tsc && npm run build:js && npm run copy:spec && rimraf jira/types",
     "build:js": "rollup -c",
-    "build:types": "tsc --emitDeclarationOnly",
-    "copy:spec": "cp spec.json jira/"
+    "copy:spec": "cp spec.json jira/",
+    "dev": "react-scripts start"
   },
   "peerDependencies": {
     "react": "^18.2.0",
@@ -28,17 +29,21 @@
     "@babel/preset-env": "^7.18.2",
     "@babel/preset-react": "^7.18.6",
     "@babel/preset-typescript": "^7.17.12",
-    "@rollup/plugin-babel": "5.3.1",
-    "@rollup/plugin-commonjs": "^22.0.0",
-    "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@rollup/plugin-babel": "6.0.2",
+    "@rollup/plugin-commonjs": "^23.0.2",
+    "@rollup/plugin-json": "^5.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
     "@types/react": "^18.0.20",
     "@types/styled-components": "^5.1.26",
     "node-sass": "^7.0.3",
     "postcss": "^8.4.16",
     "prettier": "^2.6.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
     "rimraf": "^3.0.2",
-    "rollup": "^2.74.1",
+    "rollup": "^3.2.3",
+    "rollup-plugin-dts": "^5.0.0",
     "rollup-plugin-postcss": "^4.0.2",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.34.0",
@@ -50,8 +55,21 @@
     "access": "public"
   },
   "dependencies": {
-    "@poozle/edk": "^0.1.17",
+    "@poozle/edk": "^0.1.18",
+    "@types/react-dom": "^18.0.8",
     "react-select": "^5.4.0",
     "styled-components": "^5.0.1"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
   }
 }

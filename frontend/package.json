@@ -23,7 +23,7 @@
     "@mantine/nprogress": "^5.0.0",
     "@mantine/rte": "^5.1.1",
     "@mantine/spotlight": "^5.3.0",
-    "@poozle/edk": "^0.1.17",
+    "@poozle/edk": "^0.1.18",
     "@tabler/icons": "^1.78.1",
     "@tauri-apps/api": "^1.0.2",
     "@tauri-apps/tauri-forage": "^1.0.0-beta.2",
