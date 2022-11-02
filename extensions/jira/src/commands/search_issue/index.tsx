@@ -35,8 +35,6 @@ const SearchIssue = ({ specData, resetCommand }: CommandProps): React.ReactEleme
     );
   });
 
-  console.log(data);
-
   const mappedResult =
     isLoading || !data
       ? []
@@ -54,8 +52,6 @@ const SearchIssue = ({ specData, resetCommand }: CommandProps): React.ReactEleme
           },
           linkText: `${issue.key}: ${issue.fields.summary}`,
         }));
-
-  console.log(mappedResult);
 
   return (
     <div>

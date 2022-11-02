@@ -74,7 +74,7 @@
     "@mantine/hooks": "^5.6.3",
     "@mantine/modals": "^5.6.3",
     "@mantine/notifications": "^5.6.3",
-    "@poozle/edk": "^0.1.27",
+    "@poozle/edk": "^0.1.35",
     "@tauri-apps/api": "^1.1.0",
     "dayjs": "^1.11.6",
     "react-query": "^3.39.2"

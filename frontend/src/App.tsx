@@ -1,3 +1,4 @@
+import { appWindow } from '@tauri-apps/api/window';
 import { useEffect, useState } from 'react';
 
 import { Command as CommandType } from 'types/common';
@@ -24,9 +25,9 @@ const App = () => {
 
   const registerForBlur = () => {
     // Close the window when tauri is blurred
-    // appWindow.listen('tauri://blur', () => {
-    //   appWindow.hide();
-    // });
+    appWindow.listen('tauri://blur', () => {
+      appWindow.hide();
+    });
   };
 
   async function getCommands() {

@@ -20,7 +20,7 @@ interface Props {
   onQuery?: (query: string) => void;
   noFilter?: boolean;
   withinPortal?: boolean;
-  onClose?: () => void;
+  onClose(): void;
 }
 
 function filter(_query: string, actions: SpotlightAction[]) {
@@ -40,16 +40,27 @@ const SpotlightComponent = ({
 }: Props) => {
   const [query, setQuery] = useState('');
 
-  React.useEffect(() => {
-    // This ensure the behaviour of the ESC functionality
-    registerAppWindow((_appWindow: WebviewWindow) => {
+  const close = React.useCallback(
+    (_appWindow: WebviewWindow) => {
+      // TODO (harshith) This will not call the onQuerychange thus the data won't change 
       if (query) {
         setQuery('');
-      } else if (onClose) {
-        onClose();
+      } else {
+        // eslint-disable-next-line no-lonely-if
+        if (onClose) {
+          onClose();
+        }
       }
-    });
-  }, [onClose, query]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [query],
+  );
+
+  React.useEffect(() => {
+    // This ensure the behaviour of the ESC functionality
+    registerAppWindow(close);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
 
   const ActionComponent = loading ? CustomActionWithLoader : actionComponent;
   const finalActions = loading ? [{ title: 'loading', onTrigger: () => null }] : actions;
@@ -93,9 +104,7 @@ const SpotlightComponent = ({
         centered={false}
         searchIcon={searchIcon}
         prefixInputComponent={prefixInputComponent}
-        onClose={function (): void {
-          throw new Error('Function not implemented.');
-        }}
+        onClose={() => null}
         query={query}
         onQueryChange={function (query: string): void {
           if (onQuery) {

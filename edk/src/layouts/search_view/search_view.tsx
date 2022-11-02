@@ -12,7 +12,7 @@ export interface SearchViewProps {
   loading?: boolean;
   onQuery?: (query: string) => void;
   placeholder: string;
-  onClose?: () => void;
+  onClose(): void;
 }
 
 const SearchView = ({
@@ -21,6 +21,7 @@ const SearchView = ({
   CustomAction,
   onQuery,
   loading,
+  onClose,
 }: SearchViewProps): React.ReactElement => {
   const ActionComponent = CustomAction ?? DefaultCustomAction;
 
@@ -32,9 +33,10 @@ const SearchView = ({
         loading={loading}
         placeholder={placeholder}
         withinPortal
-        prefixInputComponent={<BackButton />}
+        prefixInputComponent={<BackButton onBack={() => onClose()} />}
         actionComponent={ActionComponent}
         onQuery={onQuery}
+        onClose={onClose}
       />
     </div>
   );

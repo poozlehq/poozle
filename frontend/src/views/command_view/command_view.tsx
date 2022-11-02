@@ -18,6 +18,7 @@ interface Props {
 export interface AppProps {
   commandKey: string;
   resetCommand: () => void;
+  specData: ExtensionSpecDataType;
 }
 
 const CommandView = ({ command, resetCommand }: Props) => {
@@ -69,7 +70,11 @@ const CommandView = ({ command, resetCommand }: Props) => {
     <div className={styles.commandView}>
       <div className={styles.commandViewContainer}>
         <div className={styles.commandReactContainer}>
-          <CommandComponent commandKey={command.key} resetCommand={resetCommand} />
+          <CommandComponent
+            commandKey={command.key}
+            resetCommand={resetCommand}
+            specData={specData}
+          />
         </div>
         <CommandFooter command={command} />
       </div>
