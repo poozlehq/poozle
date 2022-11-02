@@ -1,10 +1,10 @@
+import { ExtensionSpecDataType, Loader } from '@poozle/edk';
 import { appDir } from '@tauri-apps/api/path';
 import { useCallback, useEffect, useState } from 'react';
 import React from 'react';
 
-import Loader from 'components/loader/loader';
-
 import { Command } from 'types/common';
+import { getExtensionSpecData } from 'utils/extension';
 import { specChecker } from 'wrapper/spec_checker';
 
 import CommandFooter from './command_footer';
@@ -20,12 +20,17 @@ export interface AppProps {
   resetCommand: () => void;
 }
 
-
 const CommandView = ({ command, resetCommand }: Props) => {
   const [CommandComponent, setCommandComponent] = useState<
     React.LazyExoticComponent<React.ComponentType<AppProps>> | undefined
   >();
+  const [specData, setSpecData] = useState<ExtensionSpecDataType | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const getSpecData = useCallback(async () => {
+    const specData = await getExtensionSpecData(command.extension_id);
+    setSpecData(specData);
+  }, [command.extension_id]);
 
   const getCommandView = useCallback(async () => {
     setLoading(true);
@@ -40,8 +45,9 @@ const CommandView = ({ command, resetCommand }: Props) => {
         ),
     );
     setCommandComponent(module);
+    getSpecData();
     setLoading(false);
-  }, [command]);
+  }, [command, getSpecData]);
 
   useEffect(() => {
     getCommandView();
@@ -49,7 +55,7 @@ const CommandView = ({ command, resetCommand }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading || !CommandComponent) {
+  if (loading || !CommandComponent || !specData) {
     return (
       <div className={styles.commandView}>
         <div className={styles.commandViewContainer}>

@@ -1,14 +1,15 @@
-import { babel } from '@rollup/plugin-babel'
-import commonjs from '@rollup/plugin-commonjs'
-import typescript from 'rollup-plugin-typescript2'
-import json from '@rollup/plugin-json'
-import resolve from '@rollup/plugin-node-resolve'
-import { terser } from 'rollup-plugin-terser'
+import { babel } from '@rollup/plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
+import json from '@rollup/plugin-json';
+import resolve from '@rollup/plugin-node-resolve';
 import dts from 'rollup-plugin-dts';
-import postcss from 'rollup-plugin-postcss'
+import postcss from 'rollup-plugin-postcss';
+import { terser } from 'rollup-plugin-terser';
+import typescript from 'rollup-plugin-typescript2';
+
 import pkg from './package.json' assert { type: 'json' };
 
-const extensions = ['.js', '.jsx', '.ts', '.tsx']
+const extensions = ['.js', '.jsx', '.ts', '.tsx'];
 
 const plugins = [
   json(),
@@ -23,8 +24,9 @@ const plugins = [
   }),
   terser(),
   postcss({ modules: true }),
-]
+];
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default [
   {
     input: 'src/app/index.tsx',
@@ -41,9 +43,9 @@ export default [
     plugins,
   },
   {
-    input: 'jira/types/index.d.ts',
+    input: 'jira/types/app/index.d.ts',
     output: [{ file: 'jira/index.d.ts', format: 'esm' }],
     external: [/\.scss$/],
     plugins: [dts()],
   },
-]
+];

@@ -17,6 +17,8 @@
   "scripts": {
     "build": "rimraf jira && yarn tsc && npm run build:js && npm run copy:spec && rimraf jira/types",
     "build:js": "rollup -c",
+    "lint": "eslint . --ext .ts --ext .mts",
+    "prettier": "prettier --config .prettierrc --write .",
     "copy:spec": "cp spec.json jira/",
     "dev": "react-scripts start"
   },
@@ -34,7 +36,18 @@
     "@rollup/plugin-json": "^5.0.1",
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@types/react": "^18.0.20",
+    "@types/react-dom": "^18.0.8",
     "@types/styled-components": "^5.1.26",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-css-modules": "^2.11.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^27.0.4",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-unused-imports": "^2.0.0",
     "node-sass": "^7.0.3",
     "postcss": "^8.4.16",
     "prettier": "^2.6.2",
@@ -55,10 +68,16 @@
     "access": "public"
   },
   "dependencies": {
-    "@poozle/edk": "^0.1.18",
-    "@types/react-dom": "^18.0.8",
-    "react-select": "^5.4.0",
-    "styled-components": "^5.0.1"
+    "@mantine/core": "^5.6.3",
+    "@mantine/dates": "^5.6.3",
+    "@mantine/form": "^5.6.3",
+    "@mantine/hooks": "^5.6.3",
+    "@mantine/modals": "^5.6.3",
+    "@mantine/notifications": "^5.6.3",
+    "@poozle/edk": "^0.1.27",
+    "@tauri-apps/api": "^1.1.0",
+    "dayjs": "^1.11.6",
+    "react-query": "^3.39.2"
   },
   "browserslist": {
     "production": [

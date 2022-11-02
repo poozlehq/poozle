@@ -1,10 +1,15 @@
-import * as React from 'react'
+import { AppProps } from '@poozle/edk';
+import SearchIssue from 'commands/search_issue';
+import * as React from 'react';
 
-import CreateIssue from '../commands/create_issue'
+const App = ({ commandKey, specData, resetCommand }: AppProps): React.ReactElement => {
+  switch (commandKey) {
+    case 'search_issue':
+      return <SearchIssue specData={specData} resetCommand={resetCommand} />;
+  }
 
-function App(props: any) {
-  console.log(props);
-  return <CreateIssue />
-}
+  // eslint-disable-next-line react/jsx-no-useless-fragment
+  return <></>;
+};
 
-export default App
+export default App;

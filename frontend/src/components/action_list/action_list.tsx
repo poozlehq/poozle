@@ -1,6 +1,6 @@
+import { Image } from '@poozle/edk';
 import { useEffect } from 'react';
 
-import { Image } from '../image';
 import styles from './action_list.module.scss';
 
 export interface Action {

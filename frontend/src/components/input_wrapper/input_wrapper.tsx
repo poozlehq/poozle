@@ -1,9 +1,6 @@
-import { InputBlockType } from '@poozle/edk';
-import { Select } from '@poozle/edk';
+import { Select, Input, InputBlockType } from '@poozle/edk';
 
 import { FormBlock } from 'types/form';
-
-import Input from '../../ui/input/input';
 
 export interface Props {
   block: FormBlock;

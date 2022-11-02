@@ -1,9 +1,8 @@
-import { ExtensionSpecDataType } from '@poozle/edk';
+import { ExtensionSpecDataType, Loader } from '@poozle/edk';
 import { useCallback, useEffect, useState } from 'react';
 
 import { Command } from 'types/common';
 
-import Loader from '../components/loader/loader';
 import { SpecContext } from '../context/spec_context';
 import { getExtensionSpecData } from '../utils/extension';
 import SpecView from '../views/spec_view/spec_view';

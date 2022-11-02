@@ -51,12 +51,12 @@
             "group": "internal"
           },
           {
-            "pattern": "types{/**,}",
+            "pattern": "declarations{/**,}",
             "group": "internal",
             "position": "after"
           },
           {
-            "pattern": "+(types|internal|ui){/**,}",
+            "pattern": "+(internal|ui){/**,}",
             "group": "internal",
             "position": "after"
           }

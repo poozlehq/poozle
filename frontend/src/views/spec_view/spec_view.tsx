@@ -1,9 +1,8 @@
-import { Form, FormValues } from '@poozle/edk';
+import { Image, Loader } from '@poozle/edk';
 import { useCallback, useEffect, useState } from 'react';
 
+import { FormValues, Form } from 'components/form';
 import Header from 'components/header/header';
-import { Image } from 'components/image';
-import Loader from 'components/loader/loader';
 
 import { Command } from 'types/common';
 import { getCommandSpec, setExtensionSpecData } from 'utils/extension';

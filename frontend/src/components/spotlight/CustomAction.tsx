@@ -1,8 +1,8 @@
 import { Center, Group, UnstyledButton, Text } from '@mantine/core';
 import { SpotlightActionProps } from '@mantine/spotlight';
+import { Image } from '@poozle/edk';
 import classnames from 'classnames';
 
-import { Image } from '../image';
 import styles from './CustomAction.module.scss';
 
 export const CustomAction = ({

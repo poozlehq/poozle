@@ -1,6 +1,5 @@
-import { Command } from '@poozle/edk';
+import { Command, Image } from '@poozle/edk';
 
-import { Image } from '../../components/image';
 import styles from './command_footer.module.scss';
 
 interface CommandFooterProps {

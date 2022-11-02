@@ -45,7 +45,7 @@ function getInitialValues(blocks: FormBlock[]) {
   return initialValues;
 }
 
-const Form = ({ blocks, onSubmit, submitText }: FormProps) => {
+export const Form = ({ blocks, onSubmit, submitText }: FormProps) => {
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
@@ -68,5 +68,3 @@ const Form = ({ blocks, onSubmit, submitText }: FormProps) => {
     </form>
   );
 };
-
-export default Form;

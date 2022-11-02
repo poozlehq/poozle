@@ -1,13 +1,14 @@
 import { Chip } from '@mantine/core';
 import { SpotlightAction } from '@mantine/spotlight';
+import { Image } from '@poozle/edk';
+import { WebviewWindow } from '@tauri-apps/api/window';
 import { useCallback, useContext, useEffect, useState } from 'react';
 
 import { CommandsContext } from 'context/commands_context';
 import { Command } from 'types/common';
-import { registerAppWindow, registerEsc } from 'utils/application';
+import { registerAppWindow } from 'utils/application';
 import { capitalizeFirstLetter } from 'utils/common';
 
-import { Image } from '../image';
 import Spotlight from '../spotlight';
 import { CustomAction } from '../spotlight/CustomAction';
 import styles from './search.module.scss';
@@ -35,10 +36,15 @@ const Search = ({ onCommandSelect, resetCommand }: Props) => {
 
   useEffect(() => {
     if (document) {
-      registerAppWindow(resetCommand);
-      registerEsc(() => selectExtension(undefined));
+      registerAppWindow((appWindow: WebviewWindow) => {
+        if (selectedExtension) {
+          selectExtension(undefined);
+        } else {
+          appWindow.hide();
+        }
+      });
     }
-  }, [resetCommand]);
+  }, [resetCommand, selectedExtension]);
 
   const getAllExtensions = useCallback((): Extension[] => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

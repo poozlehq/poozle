@@ -1,6 +1,5 @@
 import { Center } from '@mantine/core';
-
-import Loader from '../loader/loader';
+import { Loader } from '@poozle/edk';
 
 export const CustomActionWithLoader = () => {
   return (

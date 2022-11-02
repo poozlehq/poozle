@@ -1,0 +1,38 @@
+.mainContainer {
+  width: 100%;
+
+  :global {
+    .mantine-Spotlight-root {
+      width: 800px;
+      height: 600px;
+      position: relative !important;
+      align-self: center;
+      background: var(--mantine-color-dark-7) !important;
+      border-radius: var(--mantine-radius-lg);
+      border: 1px solid var(--mantine-color-dark-4);
+    }
+    
+    .mantine-Spotlight-spotlight {
+      box-shadow: none;
+      border-bottom: none;
+      border-radius: var(--mantine-radius-md) var(--mantine-radius-md) 0 0;
+    }
+
+    .mantine-InputWrapper-root {
+      flex-grow: 1;
+    }
+    
+    .mantine-Spotlight-actions {
+      height: calc(100vh - 50px);
+      border-bottom: 0;
+    }
+
+    .mantine-Spotlight-searchInput {
+      padding-left: 0;
+      // To match the left side back button
+      height: 56px;
+      width: 100%;
+      color: var(--mantine-color-dark-0);
+    }
+  }
+}

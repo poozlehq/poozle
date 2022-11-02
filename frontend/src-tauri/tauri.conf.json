@@ -19,6 +19,11 @@
       "dialog": {
         "all": true
       },
+      "http": {
+        "all": true,
+        "request": true,
+        "scope": [ "https://**" ]
+      },
       "globalShortcut": {
         "all": true
       },
@@ -93,7 +98,7 @@
         "transparent": true,
         "resizable": false,
         "width": 800,
-        "height": 1280,
+        "height": 720,
         "alwaysOnTop": true,
         "skipTaskbar": true,
         "center": true,

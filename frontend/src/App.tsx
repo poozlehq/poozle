@@ -1,5 +1,3 @@
-import { appDir } from '@tauri-apps/api/path';
-import { Command } from '@tauri-apps/api/shell';
 import { useEffect, useState } from 'react';
 
 import { Command as CommandType } from 'types/common';
@@ -17,11 +15,18 @@ const App = () => {
 
   useEffect(() => {
     getCommands();
-    // runbulbul();
+    registerForBlur();
   }, []);
 
   const resetCommand = () => {
     setCurrentCommand(undefined);
+  };
+
+  const registerForBlur = () => {
+    // Close the window when tauri is blurred
+    // appWindow.listen('tauri://blur', () => {
+    //   appWindow.hide();
+    // });
   };
 
   async function getCommands() {
@@ -32,26 +37,6 @@ const App = () => {
   const onCommandSelect = (command: CommandType) => {
     setCurrentCommand(command);
   };
-
-  async function runbulbul() {
-    // const response = await invoke('download_extension', { extensionId: 'asdf' });
-    const appDirPath = await appDir();
-    const commandResponse = new Command('run-sh', [`${appDirPath}/getApps.sh`]);
-    commandResponse.spawn();
-    commandResponse.on('error', (error) => console.error(`command error: "${error}"`));
-    commandResponse.stdout.on('data', (line) => console.log(`command stdout: "${line}"`));
-    commandResponse.stderr.on('data', (line) => console.log(`command stderr: "${line}"`));
-
-    console.log(commandResponse);
-  }
-
-  // async function runbulbuljs() {
-  //   const module = await import(
-  //     '/Users/harshithmullapudi/Library/Application Support/com.poozlehq.dev/sample_extension/index.jsx'
-  //   );
-  //   console.log(module.default);
-  //   setCurrentComponent(module.default);
-  // }
 
   return (
     <div className={styles.app}>

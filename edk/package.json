@@ -1,6 +1,6 @@
 {
   "name": "@poozle/edk",
-  "version": "0.1.18",
+  "version": "0.1.27",
   "description": "A util to build extensions for poozle",
   "exports": {
     ".": {
@@ -82,6 +82,7 @@
     "@mantine/rte": "^5.6.1",
     "@mantine/spotlight": "^5.4.2",
     "@tabler/icons": "^1.100.0",
+    "@tauri-apps/api": "^1.1.0",
     "axios": "^0.27.2",
     "classnames": "^2.3.2",
     "dayjs": "^1.11.5"

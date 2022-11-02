@@ -1,22 +1,38 @@
-import * as React from 'react'
+import { TextInput, Checkbox, Button, Group } from '@mantine/core';
+import { useForm } from '@mantine/form';
+import * as React from 'react';
 
+const CreateIssue = (): React.ReactElement => {
+  const form = useForm({
+    initialValues: {
+      email: '',
+    },
 
-function CreateIssue(): React.ReactElement {
-  React.useEffect(() => {
-    getPost()
-  }, [])
-
-  async function getPost() {
-    const response = await fetch('https://gorest.co.in/public/v2/posts')
-    const data  = await response.json();
-    console.log(data)
-  }
+    validate: {
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+    },
+  });
 
   return (
-    <div>
-      <h2>asdasdfasdffasdf</h2>
-    </div>
-  )
-}
+    <form onSubmit={form.onSubmit((values) => console.log(values))}>
+      <TextInput
+        withAsterisk
+        label="Email"
+        placeholder="your@email.com"
+        {...form.getInputProps('email')}
+      />
 
-export default CreateIssue
+      <Checkbox
+        mt="md"
+        label="I agree to sell my privacy"
+        {...form.getInputProps('termsOfService', { type: 'checkbox' })}
+      />
+
+      <Group position="right" mt="md">
+        <Button type="submit">Submit</Button>
+      </Group>
+    </form>
+  );
+};
+
+export default CreateIssue;
