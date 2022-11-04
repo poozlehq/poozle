@@ -1734,10 +1734,22 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@poozle/edk@^0.1.27":
-  version "0.1.27"
-  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.27.tgz#97d0e0571eb05a09ece29e46629b4a4ac43b7a8b"
-  integrity sha512-KdXRpSamwKLRaNj61LdU1sTi/MNr3VBnhJp8wdVaN9zEmzv0yRNvsfhA6E6UAj5/lsbryRY/ozq2mYrSA02WAw==
+"@paciolan/remote-component@^2.12.1":
+  version "2.12.1"
+  resolved "https://registry.yarnpkg.com/@paciolan/remote-component/-/remote-component-2.12.1.tgz#5d286349f3796cc10e0d4ee54de19e410643749b"
+  integrity sha512-UPU2ApOo2nYaFE9+uPJQXLzQizMGPcwP559c7iK5tJaaI5SHKtfBqh45bFWsQzJB8mOKxUv+REZe8qxa4eqcYw==
+  dependencies:
+    "@paciolan/remote-module-loader" "^3.0.2"
+
+"@paciolan/remote-module-loader@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@paciolan/remote-module-loader/-/remote-module-loader-3.0.2.tgz#e07a24d5c8e80b6e02f978f9dc3290d5382aa559"
+  integrity sha512-1mL9xTkdp/M1TlRBYWsK5k8Lo7ErpWGkxTlMg1oqEnEn/lSNLqRR7Ah2QK9dGjQnxiKlQ+TkJk9gg21A7Y1W0w==
+
+"@poozle/edk@^0.1.35":
+  version "0.1.35"
+  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.35.tgz#ee5df6a4cf42523b2e1415f9f7d5c90c19c65be2"
+  integrity sha512-BiifkTCHeeo4/Esa7r8EjDg9TPt2QbAbDZoh6fUT2RWI32Nc2M8vmu768vF2oxKGF/QqhqOvsHcjkKjqROvj3g==
   dependencies:
     "@emotion/react" "^11.10.4"
     "@mantine/core" "^5.4.1"

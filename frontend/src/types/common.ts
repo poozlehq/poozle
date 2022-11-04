@@ -6,3 +6,9 @@ export interface Command {
   icon: string;
   extension_id: string;
 }
+
+export interface ExtensionInformation {
+  currentVersion: string;
+}
+
+export type ExtensionMapping = Record<string, ExtensionInformation>;

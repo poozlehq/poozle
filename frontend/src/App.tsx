@@ -23,7 +23,7 @@ const App = () => {
     setCurrentCommand(undefined);
   };
 
-  const registerForBlur = () => {
+  const registerForBlur = async () => {
     // Close the window when tauri is blurred
     appWindow.listen('tauri://blur', () => {
       appWindow.hide();

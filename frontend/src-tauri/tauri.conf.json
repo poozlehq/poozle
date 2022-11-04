@@ -30,9 +30,16 @@
       "fs": {
         "all": true,
         "scope": [
+          "$RESOURCE/extensions/*",
+          "$RESOURCE/extensions/**",
+          "$RESOURCE/extensions/**/*",
+          "$RESOURCE/extensions",
+          "$RESOURCE/**",
           "$APP/extensions/*",
+          "$APP/extensions/**",
           "$APP/extensions/**/*",
           "$APP/extensions",
+          "$APP/**",
           "$APP/icons/*"
         ]
       },

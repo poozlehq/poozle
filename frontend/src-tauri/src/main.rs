@@ -10,8 +10,7 @@ extern crate diesel;
 extern crate diesel_migrations;
 
 use diesel_migrations::{embed_migrations, EmbeddedMigrations, MigrationHarness};
-use tauri::{Manager, RunEvent, SystemTray};
-use window_shadows::set_shadow;
+use tauri::{ RunEvent, SystemTray};
 
 mod command;
 mod db;
@@ -40,15 +39,14 @@ fn main() {
             command::commands::create_command,
             command::commands::save_spec,
             command::commands::get_spec,
-            command::commands::download_extension
         ])
         .build(tauri::generate_context!())
         .expect("error while running tauri application");
 
-    let window = app.get_window("main").unwrap();
+    // let window = app.get_window("main").unwrap();
 
-    #[cfg(target_os = "macos")]
-    set_shadow(&window, true).expect("Unsupported platform!");
+    // #[cfg(target_os = "macos")]
+    // set_shadow(&window, true).expect("Unsupported platform!");
 
     #[cfg(target_os = "macos")]
     app.set_activation_policy(tauri::ActivationPolicy::Accessory);

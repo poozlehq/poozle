@@ -3,8 +3,6 @@ import path from 'path';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
-import dynamicImport from './dynamic_import_plugin';
-
 // https://vitejs.dev/config/
 export default defineConfig({
   resolve: {
@@ -18,5 +16,5 @@ export default defineConfig({
       service: path.resolve(__dirname, './src/service'),
     },
   },
-  plugins: [react(), dynamicImport()],
+  plugins: [react()],
 });

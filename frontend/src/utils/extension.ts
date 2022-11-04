@@ -1,11 +1,5 @@
 import { ExtensionSpec } from '@poozle/edk';
-import {
-  BaseDirectory,
-  FileEntry,
-  readBinaryFile,
-  readDir,
-  readTextFile,
-} from '@tauri-apps/api/fs';
+import { BaseDirectory, readTextFile } from '@tauri-apps/api/fs';
 import {
   createCommands,
   getCommandsFromBackend,
@@ -13,15 +7,19 @@ import {
   setExtensionSpecDataInBackend,
 } from 'service/backend';
 
-import { Command } from 'types/common';
+import { Command, ExtensionMapping } from 'types/common';
 
 const specFileName = 'spec.json';
+const extensionMapping = 'extensionMapping.json';
+const indexViewFile = 'index.js';
 
-export async function getImage(extension_id: string, path: string): Promise<string> {
-  const contents = await readBinaryFile(`extensions/${extension_id}/${path}`, {
-    dir: BaseDirectory.App,
-  });
-  return new TextDecoder('utf-8').decode(contents);
+const extensionRemoteURL = 'https://raw.githubusercontent.com/poozlehq/extensions/main/';
+
+export async function getImage(extension_id: string): Promise<string> {
+  const contents = await fetch(`${extensionRemoteURL}/icons/${extension_id}.svg`).then((res) =>
+    res.text(),
+  );
+  return contents;
 }
 
 export async function getAllCommands(): Promise<Command[]> {
@@ -31,7 +29,7 @@ export async function getAllCommands(): Promise<Command[]> {
     return Promise.all(
       commands.map(async (command: Command) => ({
         ...command,
-        icon: await getImage(command.extension_id, command.icon),
+        icon: await getImage(command.extension_id),
       })),
     );
   }
@@ -42,12 +40,29 @@ export async function getAllCommands(): Promise<Command[]> {
   return await getAllCommands();
 }
 
-export async function getCommandSpec(extensionId: string) {
-  const specContent = await readTextFile(`extensions/${extensionId}/${specFileName}`, {
+export async function getExtensionSpec(extensionId: string): Promise<ExtensionSpec> {
+  const mapping = await getExtensionMapping();
+  const currentVersion = mapping[extensionId].currentVersion;
+  const contents: ExtensionSpec = await fetch(
+    `${extensionRemoteURL}/${extensionId}/${currentVersion}/${specFileName}`,
+  ).then((res) => res.json());
+
+  return contents;
+}
+
+export async function getExtensionMapping() {
+  const mapping = await readTextFile(extensionMapping, {
     dir: BaseDirectory.App,
   });
 
-  return (JSON.parse(specContent) as ExtensionSpec).inputBlocks;
+  return JSON.parse(mapping) as ExtensionMapping;
+}
+
+export async function getExtensionViewURL(extensionId: string) {
+  const mapping = await getExtensionMapping();
+  const currentVersion = mapping[extensionId].currentVersion;
+
+  return `${extensionRemoteURL}/${extensionId}/${currentVersion}/${indexViewFile}`;
 }
 
 export async function getExtensionSpecData(extensionId: string) {
@@ -58,21 +73,13 @@ export async function setExtensionSpecData(extensionId: string, data: string) {
 }
 
 export async function prefillCommands() {
-  const entries: FileEntry[] = await readDir('extensions', {
-    dir: BaseDirectory.App,
-    recursive: true,
-  });
+  const mapping = await getExtensionMapping();
+  const extensions = Object.keys(mapping);
 
   await Promise.all(
-    entries.map(async (entry: FileEntry) => {
-      const specPath = entry.children?.filter((file) => file.name === specFileName)[0];
-      if (specPath) {
-        const specContent = await readTextFile(specPath.path);
-        const spec: ExtensionSpec = JSON.parse(specContent) as ExtensionSpec;
-        return await createCommands(spec);
-      }
-
-      return null;
+    extensions.map(async (extension: string) => {
+      const spec = await getExtensionSpec(extension);
+      return await createCommands(spec);
     }),
   );
 }

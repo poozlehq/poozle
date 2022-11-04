@@ -5,7 +5,7 @@ import { FormValues, Form } from 'components/form';
 import Header from 'components/header/header';
 
 import { Command } from 'types/common';
-import { getCommandSpec, setExtensionSpecData } from 'utils/extension';
+import { getExtensionSpec, setExtensionSpecData } from 'utils/extension';
 
 import styles from './spec_view.module.scss';
 
@@ -22,8 +22,8 @@ const SpecView = (props: Props) => {
   const [loading, setLoading] = useState(true);
 
   const getSpec = useCallback(async () => {
-    const specData = await getCommandSpec(command.extension_id);
-    setSpecData(specData);
+    const specData = await getExtensionSpec(command.extension_id);
+    setSpecData(specData.inputBlocks);
     setLoading(false);
   }, [command.extension_id]);
 
