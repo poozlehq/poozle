@@ -7,6 +7,7 @@ import {
   Text,
   Avatar,
   MantineProvider,
+  Loader,
 } from '@mantine/core';
 import classnames from 'classnames';
 import { theme } from 'config/defaultTheme';
@@ -25,6 +26,7 @@ export type SelectProps = {
   onChange?: (value: string) => void;
   searchable?: boolean;
   className?: string;
+  loading?: boolean;
 } & MSelectProps;
 
 const Select = (props: SelectProps): React.ReactElement => {
@@ -40,6 +42,7 @@ const Select = (props: SelectProps): React.ReactElement => {
     searchable = true,
     size = 'sm',
     description,
+    loading,
     className,
     ...restProps
   } = props;
@@ -54,7 +57,7 @@ const Select = (props: SelectProps): React.ReactElement => {
     ({ image, label, description, ...others }: any, ref) => (
       <div ref={ref} {...others}>
         <Group noWrap>
-          <Avatar src={image} size="xs" />
+          {image && <Avatar src={image} size="xs" />}
 
           <div>
             <Text size="sm">{label}</Text>
@@ -92,6 +95,7 @@ const Select = (props: SelectProps): React.ReactElement => {
           value={value}
           onChange={onChange}
           className={classnames(styles.select, className)}
+          rightSection={loading ? <Loader size={16} /> : null}
           {...restProps}
         />
       </MantineInput.Wrapper>
