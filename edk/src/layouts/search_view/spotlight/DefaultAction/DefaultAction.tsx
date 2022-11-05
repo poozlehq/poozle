@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import type { SpotlightAction } from '../types';
 
 import {
@@ -27,7 +29,7 @@ export interface DefaultActionProps
   highlightColor: MantineColor;
   query: string;
   radius: MantineNumberSize;
-  
+
   styles: any;
 }
 
@@ -49,7 +51,6 @@ export const DefaultAction = ({
     <UnstyledButton
       className={cx(classes.action, { [classes.actionHovered]: hovered })}
       tabIndex={-1}
-      
       onMouseDown={(event: any) => event.preventDefault()}
       onClick={onTrigger}
       {...others}

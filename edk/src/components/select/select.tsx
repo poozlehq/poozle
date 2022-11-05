@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Select as MantineSelect,
@@ -10,7 +12,7 @@ import {
   Loader,
 } from '@mantine/core';
 import classnames from 'classnames';
-import { theme } from 'config/defaultTheme';
+import { defaultColorScheme, theme } from 'config/defaultTheme';
 import { forwardRef, Ref } from 'react';
 import * as React from 'react';
 
@@ -72,7 +74,7 @@ const Select = (props: SelectProps): React.ReactElement => {
 
   return (
     <MantineProvider
-      theme={theme('dark')}
+      theme={theme(defaultColorScheme)}
       inherit
       withCSSVariables
       withGlobalStyles

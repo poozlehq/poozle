@@ -1,2 +1,4 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 export * from './provider';
 export * from './defaultTheme';

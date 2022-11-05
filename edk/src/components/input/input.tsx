@@ -1,6 +1,8 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { Input as MantineInput, InputBaseProps, MantineProvider } from '@mantine/core';
 import classnames from 'classnames';
-import { theme } from 'config/defaultTheme';
+import { defaultColorScheme, theme } from 'config/defaultTheme';
 import { Ref } from 'react';
 import * as React from 'react';
 
@@ -51,7 +53,7 @@ const Input = (props: InputProps): React.ReactElement => {
 
   return (
     <MantineProvider
-      theme={theme('dark')}
+      theme={theme(defaultColorScheme)}
       inherit
       withCSSVariables
       withGlobalStyles

@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { appWindow, WebviewWindow } from '@tauri-apps/api/window';
 
 type WhenEscPressedProps = (appWindow: WebviewWindow) => void;

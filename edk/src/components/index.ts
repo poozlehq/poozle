@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 export * from './button';
 export * from './input';
 export * from './loader';

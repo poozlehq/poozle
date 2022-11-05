@@ -1,4 +1,6 @@
-.actionsGroup {
+/*
+ * Copyright (c) 2022, Poozle, all rights reserved.
+ */.actionsGroup {
   text-transform: 'uppercase';
   font-size: var(--mantine-spacing-xs);
   font-weight: 700;
@@ -9,6 +11,7 @@
 .actions {
   padding: var(--mantine-spacing-xs);
   border-top: 1px solid var(--mantine-color-dark-4);
+
   // TODO (harshith) this will break with multiple screen heights, fix it with relative height
   height: calc(600px - 56px);
   overflow: auto; 

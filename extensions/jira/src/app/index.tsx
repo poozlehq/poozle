@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { AppProps } from '@poozle/edk';
 import CreateIssue from 'commands/create_issue';
 import SearchIssue from 'commands/search_issue';

@@ -1,8 +1,10 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import type { SpotlightAction, SpotlightActionProps } from '@mantine/spotlight';
 
 import { MantineProvider } from '@mantine/core';
 import { WebviewWindow } from '@tauri-apps/api/window';
-import { theme } from 'config';
+import { defaultColorScheme, theme } from 'config';
 import * as React from 'react';
 import { useState } from 'react';
 import { registerAppWindow } from 'utils/app_window';
@@ -42,7 +44,7 @@ const SpotlightComponent = ({
 
   const close = React.useCallback(
     (_appWindow: WebviewWindow) => {
-      // TODO (harshith) This will not call the onQuerychange thus the data won't change 
+      // TODO (harshith) This will not call the onQuerychange thus the data won't change
       if (query) {
         setQuery('');
       } else {
@@ -73,7 +75,7 @@ const SpotlightComponent = ({
 
   return (
     <MantineProvider
-      theme={theme('dark')}
+      theme={theme(defaultColorScheme)}
       inherit
       withCSSVariables
       withGlobalStyles

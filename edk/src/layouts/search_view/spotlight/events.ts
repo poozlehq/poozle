@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import type { SpotlightAction } from './types';
 
 import { createUseExternalEvents } from '@mantine/utils';

@@ -7,7 +7,7 @@
     "plugin:css-modules/recommended",
     "plugin:jsx-a11y/recommended"
   ],
-  "plugins": ["react", "prettier", "unused-imports", "css-modules", "jsx-a11y"],
+  "plugins": ["react", "prettier", "unused-imports", "css-modules", "jsx-a11y", "notice"],
   "parserOptions": {
     "ecmaVersion": 2020,
     "sourceType": "module",
@@ -74,7 +74,14 @@
     "react/jsx-curly-brace-presence": "warn",
     "react/jsx-fragments": "warn",
     "react/jsx-no-useless-fragment": ["warn", { "allowExpressions": true }],
-    "react/self-closing-comp": "warn"
+    "react/self-closing-comp": "warn",
+    "notice/notice": [
+      "error",
+      {
+        "mustMatch": "Copyright \\(c\\) [0-9]{0,4}, Poozle, all rights reserved.",
+        "template": "/** Copyright (c) <%= YEAR %>, Poozle, all rights reserved. **/\n\n"
+      }
+    ]
   },
   "parser": "@typescript-eslint/parser",
   "overrides": [

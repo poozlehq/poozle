@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { Center, Group, UnstyledButton, Text } from '@mantine/core';
 import { SpotlightActionProps } from '@mantine/spotlight';
 import classnames from 'classnames';

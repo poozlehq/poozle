@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { useClipboard, useDebouncedState } from '@mantine/hooks';
 import { SearchView, getHTTPApiClient, ResponseType, ExtensionSpecDataType } from '@poozle/edk';
 import { open } from '@tauri-apps/api/shell';

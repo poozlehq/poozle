@@ -1,6 +1,8 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { Button as MantineButton, MantineProvider } from '@mantine/core';
 import classnames from 'classnames';
-import { theme } from 'config/defaultTheme';
+import { defaultColorScheme, theme } from 'config/defaultTheme';
 import * as React from 'react';
 
 import styles from './button.module.scss';
@@ -13,7 +15,7 @@ const Button = (props: Props): React.ReactElement => {
 
   return (
     <MantineProvider
-      theme={theme('dark')}
+      theme={theme(defaultColorScheme)}
       inherit
       withCSSVariables
       withGlobalStyles

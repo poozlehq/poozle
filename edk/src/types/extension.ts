@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 export interface ExtensionCommand {
   key: string;
   description: string;

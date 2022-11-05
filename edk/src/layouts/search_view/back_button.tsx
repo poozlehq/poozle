@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { Kbd, Tooltip, UnstyledButton } from '@mantine/core';
 import { IconArrowNarrowLeft } from '@tabler/icons';
 import * as React from 'react';

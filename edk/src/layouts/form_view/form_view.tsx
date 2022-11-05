@@ -1,6 +1,10 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { MantineProvider } from '@mantine/core';
-import { theme } from 'config';
+import { useFocusTrap } from '@mantine/hooks';
+import { defaultColorScheme, theme } from 'config';
 import * as React from 'react';
+import { registerAppWindow } from 'utils/app_window';
 
 import styles from './form_view.module.scss';
 import { Header } from './header';
@@ -11,9 +15,14 @@ export interface FormViewProps {
 }
 
 const FormView = ({ onClose, children }: FormViewProps): React.ReactElement => {
+  React.useEffect(() => {
+    registerAppWindow(onClose);
+  }, [onClose]);
+  const focusTrapRef = useFocusTrap();
+
   return (
     <MantineProvider
-      theme={theme('dark')}
+      theme={theme(defaultColorScheme)}
       inherit
       withCSSVariables
       withGlobalStyles
@@ -21,7 +30,9 @@ const FormView = ({ onClose, children }: FormViewProps): React.ReactElement => {
     >
       <div className={styles.formContainer}>
         <Header onClose={onClose} />
-        <div className={styles.content}>{children}</div>
+        <div className={styles.content} ref={focusTrapRef}>
+          {children}
+        </div>
       </div>
     </MantineProvider>
   );

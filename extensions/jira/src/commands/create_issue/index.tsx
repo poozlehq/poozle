@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { useForm } from '@mantine/form';
 import { showNotification } from '@mantine/notifications';
 import { Body, Button, ExtensionSpecDataType, getHTTPApiClient, Input } from '@poozle/edk';

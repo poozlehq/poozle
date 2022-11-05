@@ -1,6 +1,8 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { Input as MantineInput, MantineProvider } from '@mantine/core';
 import { RichTextEditor, RichTextEditorProps } from '@mantine/rte';
-import { theme } from 'config';
+import { defaultColorScheme, theme } from 'config';
 import * as React from 'react';
 
 type RTEProps = {
@@ -26,7 +28,7 @@ const RTE = ({
 }: RTEProps): React.ReactElement => {
   return (
     <MantineProvider
-      theme={theme('dark')}
+      theme={theme(defaultColorScheme)}
       inherit
       withCSSVariables
       withGlobalStyles

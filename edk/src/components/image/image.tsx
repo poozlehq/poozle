@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import classNames from 'classnames';
 import * as React from 'react';
 

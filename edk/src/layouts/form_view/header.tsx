@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import * as React from 'react';
 
 import { BackButton } from '../search_view/back_button';

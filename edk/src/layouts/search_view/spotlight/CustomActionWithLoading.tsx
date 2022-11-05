@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { Center } from '@mantine/core';
 import * as React from 'react';
 

@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import type { SpotlightAction } from '../types';
 
 import {
@@ -237,6 +239,7 @@ export const Spotlight = ({
                   onCompositionStart={() => setIMEOpen(true)}
                   onCompositionEnd={() => setIMEOpen(false)}
                   classNames={{ input: classes.searchInput }}
+                  data-autofocus
                   size="lg"
                   placeholder={searchPlaceholder}
                   icon={searchIcon}

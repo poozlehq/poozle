@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 function getKeywords(keywords: string | string[]) {
   if (Array.isArray(keywords)) {
     return keywords

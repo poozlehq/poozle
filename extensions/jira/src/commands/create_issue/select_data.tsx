@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { getHTTPApiClient, ResponseType, Select, SelectItem } from '@poozle/edk';
 import { useQuery } from 'react-query';
 

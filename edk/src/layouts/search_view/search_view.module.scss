@@ -1,4 +1,6 @@
-.mainContainer {
+/*
+ * Copyright (c) 2022, Poozle, all rights reserved.
+ */.mainContainer {
   width: 100%;
 
   :global {
@@ -29,6 +31,7 @@
 
     .mantine-Spotlight-searchInput {
       padding-left: 0;
+
       // To match the left side back button
       height: 56px;
       width: 100%;
