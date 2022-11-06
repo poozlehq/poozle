@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { Chip } from '@mantine/core';
 import { SpotlightAction } from '@mantine/spotlight';
 import { Image } from '@poozle/edk';

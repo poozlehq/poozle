@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { ExtensionSpecDataType, Loader } from '@poozle/edk';
 import { useCallback, useEffect, useState } from 'react';
 

@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { createRemoteComponent, createRequires } from '@paciolan/remote-component';
 
 import { resolve } from '../remote-component.config';

@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { Image } from '@poozle/edk';
 import { useEffect } from 'react';
 

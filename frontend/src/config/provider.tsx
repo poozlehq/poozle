@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import type { ColorScheme } from '@mantine/core';
 
 import { MantineProvider, ColorSchemeProvider } from '@mantine/core';

@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { createStyles, MantineNumberSize } from '@mantine/core';
 
 export interface DefaultActionStylesParams {

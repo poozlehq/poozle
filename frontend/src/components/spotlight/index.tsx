@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import type { SpotlightAction, SpotlightActionProps } from '@mantine/spotlight';
 
 import { useState } from 'react';

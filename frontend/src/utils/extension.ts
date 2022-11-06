@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { ExtensionSpec } from '@poozle/edk';
 import { BaseDirectory, readTextFile } from '@tauri-apps/api/fs';
 import {

@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { Command, Image } from '@poozle/edk';
 
 import styles from './command_footer.module.scss';

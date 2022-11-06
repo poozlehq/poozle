@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { ExtensionCommand, ExtensionSpecDataType, ExtensionSpec } from '@poozle/edk';
 import { invoke } from '@tauri-apps/api';
 

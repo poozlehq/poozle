@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 /* eslint-disable jest/no-export */
 /* eslint-disable jest/valid-title */
 /* eslint-disable @typescript-eslint/no-explicit-any */

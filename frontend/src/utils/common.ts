@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 export function getAssetURL(path: string): string {
   return `https://poozle-assets.s3.ap-south-1.amazonaws.com/${path}`;
 }

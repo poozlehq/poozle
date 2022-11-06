@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { Select, Input, InputBlockType } from '@poozle/edk';
 
 import { FormBlock } from 'types/form';

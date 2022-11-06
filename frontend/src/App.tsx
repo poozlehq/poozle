@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { appWindow } from '@tauri-apps/api/window';
 import { useEffect, useState } from 'react';
 

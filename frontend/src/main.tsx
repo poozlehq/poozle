@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { register } from '@tauri-apps/api/globalShortcut';
 import { appWindow } from '@tauri-apps/api/window';
 import ReactDOM from 'react-dom/client';

@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import { useForm } from '@mantine/form';
 import { SubmitButton } from '@poozle/edk';
 import React, { useState } from 'react';
