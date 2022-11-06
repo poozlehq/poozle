@@ -8,5 +8,6 @@ CREATE TABLE commands (
   data TEXT NOT NULL,
   extension_id TEXT NOT NULL,
   command_type TEXT NOT NULL,
+  has_quick_action BOOLEAN NOT NULL DEFAULT 0,
   CONSTRAINT unique_constraint UNIQUE (key, extension_id)
 )

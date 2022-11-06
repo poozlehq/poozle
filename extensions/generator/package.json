@@ -1,25 +1,24 @@
 {
-  "name": "@poozle/jira",
+  "name": "@poozle/generator",
   "version": "0.1.0",
-  "description": "Jira extension for Poozle",
+  "description": "generator extension for Poozle",
   "exports": {
     ".": {
-      "types": "./jira",
-      "require": "./jira/index.js"
+      "types": "./generator",
+      "require": "./generator/index.js"
     }
   },
-  "package": "./jira/index.js",
-  "types": "./jira",
+  "package": "./generator/index.js",
+  "types": "./generator",
   "files": [
-    "jira"
+    "generator"
   ],
   "scripts": {
-    "build": "rimraf jira && npm run build:js && npm run copy:spec",
+    "build": "rimraf generator && npm run build:js && npm run copy:spec",
     "build:js": "rollup -c",
-    "lint": "eslint --ext js,ts,tsx src",
-    "stylelint": "stylelint \"**/*.{css,scss}\"",
+    "lint": "eslint . --ext .ts --ext .mts",
     "prettier": "prettier --config .prettierrc --write .",
-    "copy:spec": "cp spec.json jira/",
+    "copy:spec": "cp spec.json generator/",
     "dev": "react-scripts start"
   },
   "peerDependencies": {
@@ -39,6 +38,7 @@
     "@types/react": "^18.0.20",
     "@types/react-dom": "^18.0.8",
     "@types/styled-components": "^5.1.26",
+    "@types/uuid": "^8.3.4",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-config-react-app": "^7.0.1",
@@ -47,7 +47,6 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^27.0.4",
     "eslint-plugin-jsx-a11y": "^6.6.1",
-    "eslint-plugin-notice": "^0.9.10",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-unused-imports": "^2.0.0",
     "node-sass": "^7.0.3",
@@ -62,12 +61,6 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.34.0",
     "sass-loader": "^13.0.2",
-    "stylelint": "^14.11.0",
-    "stylelint-config-css-modules": "^4.1.0",
-    "stylelint-config-prettier-scss": "^0.0.1",
-    "stylelint-config-standard": "^28.0.0",
-    "stylelint-config-standard-scss": "^5.0.0",
-    "stylelint-copyright": "^2.2.0",
     "typescript": "^4.7.2",
     "typescript-plugin-css-modules": "^3.4.0"
   },
@@ -82,8 +75,9 @@
     "@mantine/modals": "^5.6.3",
     "@mantine/notifications": "^5.6.3",
     "@poozle/edk": "^0.1.41",
-    "dayjs": "^1.11.6",
-    "react-query": "^3.39.2"
+    "@tabler/icons": "^1.110.0",
+    "pw-simplified": "^0.2.0",
+    "uuid": "^9.0.0"
   },
   "browserslist": {
     "production": [

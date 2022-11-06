@@ -6,30 +6,15 @@ import { theme } from '@poozle/edk';
 import ReactDOM from 'react-dom/client';
 
 import App from './app/index';
+import styles from './index.module.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
 const colorScheme = 'dark';
 
 root.render(
-  <div
-    style={{
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      height: '100vh',
-      width: '100%',
-      position: 'fixed',
-    }}
-  >
-    <div
-      style={{
-        background: '#1A1B1E',
-        width: '800px',
-        height: '800px',
-        borderRadius: '8px',
-      }}
-    >
+  <div className={styles.rootContainer}>
+    <div className={styles.innerContainer}>
       <ColorSchemeProvider
         colorScheme={colorScheme}
         toggleColorScheme={() => console.log('changed')}
@@ -42,10 +27,11 @@ root.render(
         >
           <NotificationsProvider>
             <App
-              commandKey="create_issue"
+              commandKey="generate_uuid"
               resetCommand={function (): void {
                 throw new Error('Function not implemented.');
               }}
+              specData={undefined}
             />
           </NotificationsProvider>
         </MantineProvider>

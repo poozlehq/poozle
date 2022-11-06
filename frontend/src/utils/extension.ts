@@ -4,6 +4,7 @@ import { ExtensionSpec } from '@poozle/edk';
 import { BaseDirectory, readTextFile } from '@tauri-apps/api/fs';
 import {
   createCommands,
+  deleteCommandsForExtension,
   getCommandsFromBackend,
   getExtensionSpecDataFromBackend,
   setExtensionSpecDataInBackend,
@@ -72,6 +73,16 @@ export async function getExtensionSpecData(extensionId: string) {
 }
 export async function setExtensionSpecData(extensionId: string, data: string) {
   return await setExtensionSpecDataInBackend(extensionId, data);
+}
+
+export async function refetchCommandsForExtension(extensionId: string) {
+  await deleteCommandsForExtension(extensionId);
+  return await prefillCommandsForExtesion(extensionId);
+}
+
+export async function prefillCommandsForExtesion(extensionId: string) {
+  const spec = await getExtensionSpec(extensionId);
+  return await createCommands(spec);
 }
 
 export async function prefillCommands() {

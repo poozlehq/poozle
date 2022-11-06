@@ -11,15 +11,15 @@ import styles from './index.module.scss';
 import { SelectData } from './select_data';
 
 interface CommandProps {
-  specData: ExtensionSpecDataType;
+  specData?: ExtensionSpecDataType;
   resetCommand: () => void;
 }
 
 const queryClient = new QueryClient();
 
 const CreateIssue = ({ specData }: CommandProps): React.ReactElement => {
-  const domain = specData.data.jira_domain;
-  const token = btoa(`${specData.data.email}:${specData.data.api_key}`);
+  const domain = specData?.data.jira_domain;
+  const token = btoa(`${specData?.data.email}:${specData?.data.api_key}`);
 
   const form = useForm({
     initialValues: {

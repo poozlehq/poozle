@@ -26,6 +26,15 @@ pub fn create_command(new_command: NewCommand) -> String {
     command_json
 }
 
+pub fn delete_commands(extension_id: String) {
+    let connection = &mut db::establish_connection();
+
+    diesel::delete(commands::table)
+        .filter(commands::extension_id.eq(extension_id.as_str()))
+        .execute(connection)
+        .expect("Error deleting commands");
+}
+
 pub fn create_spec(new_spec: NewSpec) -> String {
     let connection = &mut db::establish_connection();
 

@@ -13,6 +13,7 @@ const CommandFooter = ({ command }: CommandFooterProps) => {
     <div className={styles.footer}>
       <div className={styles.icon}>
         <Image src={command.icon} html_renderer />
+        <div className={styles.commandName}>{command.name}</div>
       </div>
       <div className={styles.commandTree} />
     </div>

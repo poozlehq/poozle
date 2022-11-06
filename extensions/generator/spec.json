@@ -1,0 +1,23 @@
+{
+  "name": "Generator extension",
+  "key": "generator",
+  "description": "Generate HMAC, Hash, Password, Placeholder etc",
+  "icon": "generator.svg",
+  "commands": [
+    {
+      "name": "Generate password",
+      "key": "generate_password",
+      "description": "Generate strong unique passwords or random character sequences.",
+      "command_type": "react",
+      "has_quick_action": true
+    },
+    {
+      "name": "Generate UUID",
+      "key": "generate_uuid",
+      "description": "Generate UUID.",
+      "command_type": "react",
+      "has_quick_action": true
+    }
+  ],
+  "inputBlocks": []
+}

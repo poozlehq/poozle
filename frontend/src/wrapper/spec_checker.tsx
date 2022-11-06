@@ -1,12 +1,12 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { ExtensionSpecDataType, Loader } from '@poozle/edk';
+import { ExtensionSpec, ExtensionSpecDataType, Loader } from '@poozle/edk';
 import { useCallback, useEffect, useState } from 'react';
 
 import { Command } from 'types/common';
+import { getExtensionSpec, getExtensionSpecData } from 'utils/extension';
 
 import { SpecContext } from '../context/spec_context';
-import { getExtensionSpecData } from '../utils/extension';
 import SpecView from '../views/spec_view/spec_view';
 
 interface Props {
@@ -20,10 +20,13 @@ export function specChecker(Component: React.FC<any>) {
     const { command, resetCommand } = props;
     const [loading, setLoading] = useState(true);
     const [specData, setSpecData] = useState<ExtensionSpecDataType | undefined>(undefined);
+    const [spec, setSpec] = useState<ExtensionSpec | undefined>(undefined);
 
     const getSpecData = useCallback(async () => {
       try {
+        const spec = await getExtensionSpec(command.extension_id);
         const specData = await getExtensionSpecData(command.extension_id);
+        setSpec(spec);
         setSpecData(specData);
       } catch (e) {
         console.log(e);
@@ -36,11 +39,12 @@ export function specChecker(Component: React.FC<any>) {
       getSpecData();
     }, [getSpecData]);
 
-    if (loading) {
+    if (loading || !spec) {
       return <Loader />;
     }
 
-    if (!specData) {
+    // If input is not needed for the extension don't show spec view.
+    if (!specData && spec?.inputBlocks.length > 0) {
       return <SpecView command={command} getSpecData={getSpecData} resetCommand={resetCommand} />;
     }
 

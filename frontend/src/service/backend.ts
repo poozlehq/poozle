@@ -19,6 +19,7 @@ export async function createCommands(spec: ExtensionSpec) {
         icon: command.icon ?? spec.icon,
         data: '',
         commandType: command.command_type,
+        hasQuickAction: command.hasQuickAction ? command.hasQuickAction : false,
       });
     }),
   );
@@ -27,6 +28,12 @@ export async function createCommands(spec: ExtensionSpec) {
 export async function setExtensionSpecDataInBackend(extensionId: string, data: string) {
   return await invoke('save_spec', {
     spec: data,
+    extensionId,
+  });
+}
+
+export async function deleteCommandsForExtension(extensionId: string) {
+  return await invoke('delete_commands', {
     extensionId,
   });
 }

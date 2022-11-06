@@ -37,6 +37,7 @@ fn main() {
             // Below are commands to fetch data from database
             command::commands::get_all_commands,
             command::commands::create_command,
+            command::commands::delete_commands,
             command::commands::save_spec,
             command::commands::get_spec,
         ])

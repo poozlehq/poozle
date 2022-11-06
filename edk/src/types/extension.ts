@@ -6,6 +6,7 @@ export interface ExtensionCommand {
   name: string;
   command_type: string;
   icon?: string;
+  hasQuickAction?: boolean;
 }
 
 export interface Extension {

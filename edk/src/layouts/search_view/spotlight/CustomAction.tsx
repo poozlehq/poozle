@@ -27,12 +27,12 @@ export const CustomAction = ({
       <Group noWrap>
         {action.icon && (
           <Center>
-            <Image src={action.icon} />
+            <Image src={action.icon} className={styles.icon} />
           </Center>
         )}
 
         <div className={styles.actionBody}>
-          <Text>{action.title}</Text>
+          <Text className={styles.title}>{action.title}</Text>
 
           {action.description && (
             <Text color="dimmed" size="xs">

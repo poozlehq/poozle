@@ -1746,10 +1746,10 @@
   resolved "https://registry.yarnpkg.com/@paciolan/remote-module-loader/-/remote-module-loader-3.0.2.tgz#e07a24d5c8e80b6e02f978f9dc3290d5382aa559"
   integrity sha512-1mL9xTkdp/M1TlRBYWsK5k8Lo7ErpWGkxTlMg1oqEnEn/lSNLqRR7Ah2QK9dGjQnxiKlQ+TkJk9gg21A7Y1W0w==
 
-"@poozle/edk@^0.1.35":
-  version "0.1.35"
-  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.35.tgz#ee5df6a4cf42523b2e1415f9f7d5c90c19c65be2"
-  integrity sha512-BiifkTCHeeo4/Esa7r8EjDg9TPt2QbAbDZoh6fUT2RWI32Nc2M8vmu768vF2oxKGF/QqhqOvsHcjkKjqROvj3g==
+"@poozle/edk@^0.1.40":
+  version "0.1.40"
+  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.40.tgz#80deed9f9da70e1c26c494da8e3526267674fc8e"
+  integrity sha512-FmppA+rcifRUUIUV8jI6vg5xZ+hxlyCxVIInda1GJG76cEBM6X3i8VJzQxNxYdavdbQcfs9V/pmaq2BAa8d3Jw==
   dependencies:
     "@emotion/react" "^11.10.4"
     "@mantine/core" "^5.4.1"
@@ -3871,11 +3871,6 @@ human-signals@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
   integrity sha512-B4FFZ6q/T2jhhksgkbEW3HBvWIfDW85snkQgawt07S7J5QXTk6BkNV+0yAeZrM5QpMAdYlocGoljn0sJ/WQkFw==
-
-husky@^8.0.1:
-  version "8.0.1"
-  resolved "https://registry.yarnpkg.com/husky/-/husky-8.0.1.tgz#511cb3e57de3e3190514ae49ed50f6bc3f50b3e9"
-  integrity sha512-xs7/chUH/CKdOCs7Zy0Aev9e/dKOMZf3K1Az1nar3tzlv0jfqnYtu235bstsWTmXOR0EfINrPa97yy4Lz6RiKw==
 
 ignore@^5.2.0:
   version "5.2.0"

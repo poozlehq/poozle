@@ -25,3 +25,15 @@
 .actionHovered {
   background-color: var(--mantine-color-dark-4);
 }
+
+$img-width: 30px;
+
+.icon {
+  width: $img-width;
+}
+
+$min-width-title: 200px;
+
+.title {
+  min-width: $min-width-title;
+}

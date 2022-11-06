@@ -50,6 +50,7 @@ pub fn create_command(
     icon: String,
     data: String,
     command_type: String,
+    has_quick_action: bool,
 ) {
     let new_command = NewCommand {
         key: command_key.as_str(),
@@ -60,9 +61,15 @@ pub fn create_command(
         data: data.as_str(),
         command_type: command_type.as_str(),
         extension_id: extension_id.as_str(),
+        has_quick_action,
     };
 
     db::query::create_command(new_command);
+}
+
+#[tauri::command]
+pub fn delete_commands(extension_id: String) {
+    db::query::delete_commands(extension_id)
 }
 
 #[tauri::command]

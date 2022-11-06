@@ -8,6 +8,7 @@ table! {
         data -> Text,
         extension_id -> Text,
         command_type -> Text,
+        has_quick_action -> Bool,
     }
 }
 

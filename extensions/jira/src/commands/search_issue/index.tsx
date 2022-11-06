@@ -11,7 +11,7 @@ import { jqlFor, fields, Issue } from './utils';
 const queryClient = new QueryClient();
 
 interface CommandProps {
-  specData: ExtensionSpecDataType;
+  specData: ExtensionSpecDataType | undefined;
   resetCommand: () => void;
 }
 
@@ -22,7 +22,7 @@ const SearchIssue = ({ specData, resetCommand }: CommandProps): React.ReactEleme
   const { isLoading, data }: any = useQuery(['searchIssues', searchText], async () => {
     const client = await getHTTPApiClient();
     return await client.get(
-      `https://${specData.data.jira_domain}/rest/api/3/search?jql=${jqlFor(
+      `https://${specData?.data.jira_domain}/rest/api/3/search?jql=${jqlFor(
         searchText,
       )}&fields=${fields}`,
       {
@@ -30,7 +30,7 @@ const SearchIssue = ({ specData, resetCommand }: CommandProps): React.ReactEleme
         // the expected response type
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Basic ${btoa(`${specData.data.email}:${specData.data.api_key}`)}`,
+          Authorization: `Basic ${btoa(`${specData?.data.email}:${specData?.data.api_key}`)}`,
         },
         responseType: ResponseType.JSON,
       },
@@ -47,10 +47,10 @@ const SearchIssue = ({ specData, resetCommand }: CommandProps): React.ReactEleme
           icon: issue.fields.issuetype.iconUrl,
           // accessoryIcon: statusIcon(issue.fields.status),
           accessoryTitle: issue.fields.status.name,
-          url: `https://${specData.data.jira_domain}/browse/${issue.key}`,
+          url: `https://${specData?.data.jira_domain}/browse/${issue.key}`,
           onTrigger: async () => {
-            clipboard.copy(`https://${specData.data.jira_domain}/browse/${issue.key}`);
-            await open(`https://${specData.data.jira_domain}/browse/${issue.key}`);
+            clipboard.copy(`https://${specData?.data.jira_domain}/browse/${issue.key}`);
+            await open(`https://${specData?.data.jira_domain}/browse/${issue.key}`);
           },
           linkText: `${issue.key}: ${issue.fields.summary}`,
         }));
