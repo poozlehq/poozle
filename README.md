@@ -23,5 +23,5 @@ For general help using Poozle, please refer to the official Poozle documentation
 - [Slack](https://join.slack.com/t/poozleworkspace/shared_invite/zt-1guq9l7i9-FUiXfhK0IRliaz30AnIa_w) (For live discussion with the Community and Poozle team)
 - [GitHub](https://github.com/poozlehq/poozle) (Bug reports, Contributions)
 
-# License
+
 
