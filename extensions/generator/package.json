@@ -16,7 +16,7 @@
   "scripts": {
     "build": "rimraf generator && npm run build:js && npm run copy:spec",
     "build:js": "rollup -c",
-    "lint": "eslint . --ext .ts --ext .mts",
+    "lint": "eslint --ext js,ts,tsx src",
     "prettier": "prettier --config .prettierrc --write .",
     "copy:spec": "cp spec.json generator/",
     "dev": "react-scripts start"
@@ -74,7 +74,7 @@
     "@mantine/hooks": "^5.6.3",
     "@mantine/modals": "^5.6.3",
     "@mantine/notifications": "^5.6.3",
-    "@poozle/edk": "^0.1.41",
+    "@poozle/edk": "^0.1.42",
     "@tabler/icons": "^1.110.0",
     "pw-simplified": "^0.2.0",
     "uuid": "^9.0.0"

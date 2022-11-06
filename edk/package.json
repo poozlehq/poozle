@@ -1,6 +1,6 @@
 {
   "name": "@poozle/edk",
-  "version": "0.1.41",
+  "version": "0.1.42",
   "description": "A util to build extensions for poozle",
   "exports": {
     ".": {

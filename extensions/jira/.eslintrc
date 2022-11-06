@@ -86,7 +86,7 @@
   "parser": "@typescript-eslint/parser",
   "overrides": [
     {
-      "files": ["scripts/**/*"],
+      "files": ["src/**/*"],
       "rules": {
         "@typescript-eslint/no-var-requires": "off"
       }

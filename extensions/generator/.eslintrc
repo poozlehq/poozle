@@ -74,12 +74,19 @@
     "react/jsx-curly-brace-presence": "warn",
     "react/jsx-fragments": "warn",
     "react/jsx-no-useless-fragment": ["warn", { "allowExpressions": true }],
-    "react/self-closing-comp": "warn"
+    "react/self-closing-comp": "warn",
+    "notice/notice": [
+      "error",
+      {
+        "mustMatch": "Copyright \\(c\\) [0-9]{0,4}, Poozle, all rights reserved.",
+        "template": "/** Copyright (c) <%= YEAR %>, Poozle, all rights reserved. **/\n\n"
+      }
+    ]
   },
   "parser": "@typescript-eslint/parser",
   "overrides": [
     {
-      "files": ["scripts/**/*"],
+      "files": ["src/**/*"],
       "rules": {
         "@typescript-eslint/no-var-requires": "off"
       }

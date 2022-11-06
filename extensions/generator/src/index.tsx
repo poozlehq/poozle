@@ -31,7 +31,6 @@ root.render(
               resetCommand={function (): void {
                 throw new Error('Function not implemented.');
               }}
-              specData={undefined}
             />
           </NotificationsProvider>
         </MantineProvider>
