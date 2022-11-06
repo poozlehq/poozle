@@ -28,8 +28,11 @@ const CommandView = ({ command, resetCommand }: Props) => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const getSpecData = useCallback(async () => {
-    const specData = await getExtensionSpecData(command.extension_id);
-    setSpecData(specData);
+    const spec = await getExtensionSpec(command.extension_id);
+    if (spec?.inputBlocks.length > 0) {
+      const spec = await getExtensionSpec(command.extension_id);
+      setSpec(spec);
+    }
   }, [command.extension_id]);
 
   const getCommandView = useCallback(async () => {
@@ -46,7 +49,7 @@ const CommandView = ({ command, resetCommand }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading || !specData || !componentViewURL) {
+  if (loading || !componentViewURL) {
     return (
       <div className={styles.commandView}>
         <div className={styles.commandViewContainer}>

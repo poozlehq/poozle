@@ -36,11 +36,9 @@ export default [
     external: pkg.peerDependencies,
     output: [
       {
-        dir: pkg.module,
+        file: pkg.module,
         sourcemap: true,
         format: 'esm',
-        exports: 'named',
-        preserveModules: false,
       },
       {
         file: pkg.main,

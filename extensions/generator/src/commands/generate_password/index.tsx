@@ -47,9 +47,7 @@ export const GeneratePassword = (_props: CommandProps): React.ReactElement => {
 
   return (
     <BasicView
-      onClose={function (): void {
-        throw new Error('Function not implemented.');
-      }}
+      onClose={() => resetCommand()}
     >
       <div className={styles.container}>
         <div className={styles.top}>

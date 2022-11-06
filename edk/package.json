@@ -1,16 +1,16 @@
 {
   "name": "@poozle/edk",
-  "version": "0.1.42",
+  "version": "0.1.43",
   "description": "A util to build extensions for poozle",
   "exports": {
     ".": {
       "types": "./edk",
-      "import": "./edk/es",
+      "import": "./edk/es/index.js",
       "require": "./edk/main/index.js"
     }
   },
   "main": "./edk/main/index.js",
-  "module": "./edk/es",
+  "module": "./edk/es/index.js",
   "types": "./edk",
   "files": [
     "edk/*"

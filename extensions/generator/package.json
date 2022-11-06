@@ -74,7 +74,7 @@
     "@mantine/hooks": "^5.6.3",
     "@mantine/modals": "^5.6.3",
     "@mantine/notifications": "^5.6.3",
-    "@poozle/edk": "^0.1.42",
+    "@poozle/edk": "^0.1.43",
     "@tabler/icons": "^1.110.0",
     "pw-simplified": "^0.2.0",
     "uuid": "^9.0.0"

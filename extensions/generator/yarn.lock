@@ -1753,10 +1753,10 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
-"@poozle/edk@^0.1.42":
-  version "0.1.42"
-  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.42.tgz#4080830228d5761f9bcfaed220ce91cfa469b9a7"
-  integrity sha512-Uu/OYnLkWL05TnTkf2nJr75755NXaX+YHq4qAuAXEQvBjfflD/imDb9IBBJRIGm9mgwFgO1lQPPOsBLd4k8rog==
+"@poozle/edk@^0.1.43":
+  version "0.1.43"
+  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.43.tgz#c62037fcdeee7fbe89b3c14a49fad46f4dd4fb68"
+  integrity sha512-pj2ikaAs5dADLz9WBVECj603y9zxvLeXaXtNVa+4RwaOQ9uhFDyuwKW8iS193VCpI7UmMfZbLRUyxd45M0YsNw==
   dependencies:
     "@emotion/react" "^11.10.4"
     "@mantine/core" "^5.4.1"

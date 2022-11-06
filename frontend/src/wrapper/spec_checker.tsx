@@ -25,8 +25,8 @@ export function specChecker(Component: React.FC<any>) {
     const getSpecData = useCallback(async () => {
       try {
         const spec = await getExtensionSpec(command.extension_id);
-        const specData = await getExtensionSpecData(command.extension_id);
         setSpec(spec);
+        const specData = await getExtensionSpecData(command.extension_id);
         setSpecData(specData);
       } catch (e) {
         console.log(e);
@@ -38,6 +38,7 @@ export function specChecker(Component: React.FC<any>) {
     useEffect(() => {
       getSpecData();
     }, [getSpecData]);
+
 
     if (loading || !spec) {
       return <Loader />;
