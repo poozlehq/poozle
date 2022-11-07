@@ -13,9 +13,6 @@ const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 const colorScheme = 'dark';
 
-const sampleSpecData = {}
-
-
 root.render(
   <div className={styles.rootContainer}>
     <div className={styles.innerContainer}>
@@ -35,7 +32,6 @@ root.render(
               resetCommand={function (): void {
                 throw new Error('Function not implemented.');
               }}
-              specData={sampleSpecData}
             />
           </NotificationsProvider>
         </MantineProvider>

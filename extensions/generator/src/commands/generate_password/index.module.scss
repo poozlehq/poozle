@@ -43,4 +43,12 @@
   align-items: center;
   gap: var(--mantine-spacing-sm);
   justify-content: center;
+
+  button {
+    border: none !important;
+  }
+
+  button:hover {
+    background-color: var(--mantine-color-dark-7) !important;
+  }
 }

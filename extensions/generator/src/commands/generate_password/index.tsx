@@ -13,7 +13,7 @@ interface CommandProps {
   resetCommand: () => void;
 }
 
-export const GeneratePassword = (_props: CommandProps): React.ReactElement => {
+export const GeneratePassword = ({ resetCommand }: CommandProps): React.ReactElement => {
   const [password, setPassword] = React.useState<string>('');
   const clipboard = useClipboard({ timeout: 500 });
 
@@ -46,9 +46,7 @@ export const GeneratePassword = (_props: CommandProps): React.ReactElement => {
   }
 
   return (
-    <BasicView
-      onClose={() => resetCommand()}
-    >
+    <BasicView onClose={() => resetCommand()}>
       <div className={styles.container}>
         <div className={styles.top}>
           <div className={styles.passwordContainer}>

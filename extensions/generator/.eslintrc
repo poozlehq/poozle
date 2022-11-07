@@ -7,7 +7,7 @@
     "plugin:css-modules/recommended",
     "plugin:jsx-a11y/recommended"
   ],
-  "plugins": ["react", "prettier", "unused-imports", "css-modules", "jsx-a11y"],
+  "plugins": ["react", "prettier", "unused-imports", "css-modules", "jsx-a11y", "notice"],
   "parserOptions": {
     "ecmaVersion": 2020,
     "sourceType": "module",

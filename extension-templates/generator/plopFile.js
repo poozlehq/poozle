@@ -87,6 +87,12 @@ module.exports = function (plop) {
         templateFile: `${httpApiInputRoot}/.prettierrc.hbs`,
         path: `${httpApiOutputRoot}/.prettierrc`,
       },
+      {
+        type: "add",
+        abortOnFail: true,
+        templateFile: `${httpApiInputRoot}/.babelrc.hbs`,
+        path: `${httpApiOutputRoot}/.babelrc`,
+      },
       { type: "emitSuccess", outputPath: httpApiOutputRoot },
     ],
   });

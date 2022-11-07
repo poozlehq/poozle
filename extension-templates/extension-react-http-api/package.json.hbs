@@ -16,7 +16,7 @@
   "scripts": {
     "build": "rimraf {{snakeCase name}} && npm run build:js && npm run copy:spec",
     "build:js": "rollup -c",
-    "lint": "eslint . --ext .ts --ext .mts",
+    "lint": "eslint --ext js,ts,tsx src",
     "prettier": "prettier --config .prettierrc --write .",
     "copy:spec": "cp spec.json {{snakeCase name}}/",
     "dev": "react-scripts start"
@@ -46,6 +46,7 @@
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jest": "^27.0.4",
     "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-notice": "^0.9.10",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-unused-imports": "^2.0.0",
     "node-sass": "^7.0.3",
