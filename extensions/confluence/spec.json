@@ -1,0 +1,34 @@
+{
+  "name": "Confluence extension",
+  "key": "confluence",
+  "description": "Confluence ",
+  "icon": "confluence.svg",
+  "commands": [
+    {
+      "name": "Search Document",
+      "key": "search_document",
+      "description": "Search document in Spaces",
+      "command_type": "react"
+    }
+  ],
+  "inputBlocks": [
+    {
+      "name": "Confluence domain",
+      "description": "Confluence domain",
+      "key": "confluence_domain",
+      "type": "input"
+    },
+    {
+      "name": "Email",
+      "key": "email",
+      "description": "Email address",
+      "type": "input"
+    },
+    {
+      "key": "api_key",
+      "description": "API key",
+      "name": "API key",
+      "type": "input"
+    }
+  ]
+}
