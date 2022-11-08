@@ -6,7 +6,7 @@ import { open } from '@tauri-apps/api/shell';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 
-import { Issue } from './utils';
+import { Issue } from '../utils';
 
 const queryClient = new QueryClient();
 

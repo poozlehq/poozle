@@ -15,14 +15,14 @@ interface CommandProps {
   resetCommand: () => void;
 }
 
-const SearchIssue = ({ specData, resetCommand }: CommandProps): React.ReactElement => {
+const SearchPRs = ({ specData, resetCommand }: CommandProps): React.ReactElement => {
   const [searchText, setSearchText] = useDebouncedState('', 500);
   const clipboard = useClipboard({ timeout: 500 });
 
-  const { isLoading, data }: any = useQuery(['searchIssues', searchText], async () => {
+  const { isLoading, data }: any = useQuery(['searchPRs', searchText], async () => {
     const repositories = `repo:${specData?.data.repos.replace(/,/g, '+repo:')}`;
     const response = await fetch(
-      `https://api.github.com/search/issues?q=${`is:issue ${searchText}`} ${repositories}&per_page=10`,
+      `https://api.github.com/search/issues?q=${`is:pull-request ${searchText}`} ${repositories}&per_page=10`,
       {
         // the expected response type
         headers: {
@@ -71,7 +71,7 @@ const SearchIssue = ({ specData, resetCommand }: CommandProps): React.ReactEleme
 export default function (props: CommandProps) {
   return (
     <QueryClientProvider client={queryClient}>
-      <SearchIssue {...props} />
+      <SearchPRs {...props} />
     </QueryClientProvider>
   );
 }

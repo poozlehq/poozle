@@ -7,8 +7,8 @@ import { FormView } from '@poozle/edk';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider, useMutation } from 'react-query';
 
+import { SelectData } from '../select_data';
 import styles from './index.module.scss';
-import { SelectData } from './select_data';
 
 interface CommandProps {
   specData?: ExtensionSpecDataType;
