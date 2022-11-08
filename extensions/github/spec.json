@@ -1,36 +1,64 @@
-// {
-//   "name": "JIRA extension",
-//   "key": "jira",
-//   "description": "Plan, track, and manage your agile and software development projects in JIRA. Customize your workflow, collaborate, and release great software.",
-//   "icon": "jira.svg",
-//   "commands": [
-//     {
-//       "name": "Search issue",
-//       "key": "search_issue",
-//       "description": "Search issue in JIRA board",
-//       "command_type": "react"
-//     }
-//   ],
-//   "inputBlocks": [
-//     {
-//       "name": "JIRA domain",
-//       "description": "JIRA domain",
-//       "key": "jira_domain",
-//       "type": "input"
-//     },
-//     {
-//       "name": "Email",
-//       "key": "email",
-//       "description": "Email address",
-//       "type": "input"
-//     },
-//     {
-//       "key": "api_key",
-//       "description": "API key",
-//       "name": "API key",
-//       "type": "input"
-//     }
-//   ]
-// }
-
-// Above is the sample spec for extension
+{
+  "name": "Github extension",
+  "key": "github",
+  "description": "Plan, track, and manage your agile and software development projects in Github. Customize your workflow, collaborate, and release great software.",
+  "icon": "github.svg",
+  "commands": [
+    {
+      "name": "Search issue",
+      "key": "search_issue",
+      "description": "Search issue in Github repositories",
+      "command_type": "react"
+    },
+    {
+      "name": "Create issue",
+      "key": "create_issue",
+      "description": "Create issue in a Github repository",
+      "command_type": "react"
+    },
+    {
+      "name": "Assigned Pull Requests",
+      "key": "search_assigned_pr",
+      "description": "Search assigned PRs in Github repositories",
+      "command_type": "react"
+    },
+    {
+      "name": "Review Pull Requests",
+      "key": "search_review_pr",
+      "description": "Search review PRs in Github repositories",
+      "command_type": "react"
+    },
+    {
+      "name": "Create Pull Request",
+      "key": "create_pr",
+      "description": "Create a Pull Request",
+      "command_type": "react"
+    },
+    {
+      "name": "Search Pull Requests",
+      "key": "search_pr",
+      "description": "Search Pull Requests in Github repositories",
+      "command_type": "react"
+    }
+  ],
+  "inputBlocks": [
+    {
+      "name": "Api Key",
+      "key": "api_key",
+      "description": "Enter the API Key",
+      "type": "input"
+    },
+    {
+      "name": "User Name",
+      "key": "user_name",
+      "description": "Enter the username. Example: octocat",
+      "type": "input"
+    },
+    {
+      "name": "Frequently used repos",
+      "key": "repos",
+      "description": "Enter comma separeted repos. Example: orgName/repo1,orgName/repo2",
+      "type": "input"
+    }
+  ]
+}

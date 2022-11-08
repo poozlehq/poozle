@@ -6,6 +6,7 @@ import CreateIssue from 'commands/create_issue';
 import CreatePr from 'commands/create_pr';
 import SearchReviewPR from 'commands/review_pr';
 import SearchIssue from 'commands/search_issue';
+import SearchPRs from 'commands/search_pr';
 import * as React from 'react';
 
 const App = ({ commandKey, specData, resetCommand }: AppProps): React.ReactElement => {
@@ -20,6 +21,8 @@ const App = ({ commandKey, specData, resetCommand }: AppProps): React.ReactEleme
       return <SearchAssignedPR specData={specData} resetCommand={resetCommand} />;
     case 'create_pr':
       return <CreatePr specData={specData} resetCommand={resetCommand} />;
+    case 'search_pr':
+      return <SearchPRs specData={specData} resetCommand={resetCommand} />;
   }
 
   // eslint-disable-next-line react/jsx-no-useless-fragment
