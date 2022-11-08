@@ -75,7 +75,7 @@
     "react/jsx-fragments": "warn",
     "react/jsx-no-useless-fragment": ["warn", { "allowExpressions": true }],
     "react/self-closing-comp": "warn",
-     "notice/notice": [
+    "notice/notice": [
       "error",
       {
         "mustMatch": "Copyright \\(c\\) [0-9]{0,4}, Poozle, all rights reserved.",

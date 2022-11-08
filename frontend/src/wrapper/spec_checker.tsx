@@ -1,6 +1,7 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { ExtensionSpec, ExtensionSpecDataType, Loader } from '@poozle/edk';
+import { LoaderWithHeader } from 'components';
 import { useCallback, useEffect, useState } from 'react';
 
 import { Command } from 'types/common';
@@ -39,9 +40,8 @@ export function specChecker(Component: React.FC<any>) {
       getSpecData();
     }, [getSpecData]);
 
-
     if (loading || !spec) {
-      return <Loader />;
+      return <LoaderWithHeader />;
     }
 
     // If input is not needed for the extension don't show spec view.

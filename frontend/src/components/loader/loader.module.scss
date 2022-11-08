@@ -1,0 +1,28 @@
+.container {
+  background-color: transparent;
+  border-radius: var(--mantine-radius-lg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+
+  :global {
+    .mantine-Spotlight-searchInput {
+      padding-left: 0;
+    }
+
+    div {
+      font-family: Metropolis !important;
+    }
+  }
+}
+
+.innerContainer {
+  width: 800px;
+  height: 600px;
+  align-self: center;
+  background: var(--mantine-color-dark-7);
+  border-radius: var(--mantine-radius-lg);
+}
