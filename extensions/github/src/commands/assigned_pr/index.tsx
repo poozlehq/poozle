@@ -6,6 +6,7 @@ import { open } from '@tauri-apps/api/shell';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 
+import styles from '../common.module.scss';
 import { Issue } from '../utils';
 
 const queryClient = new QueryClient();
@@ -19,21 +20,24 @@ const SearchAssignedPR = ({ specData, resetCommand }: CommandProps): React.React
   const [searchText, setSearchText] = useDebouncedState('', 500);
   const clipboard = useClipboard({ timeout: 500 });
 
-  const { isLoading, data }: any = useQuery(['SearchAssignedPr', searchText], async () => {
-    const response = await fetch(
-      `https://api.github.com/search/issues?q=${`is:pull-request ${searchText}`} assigned:${
-        specData?.data.user_name
-      }&per_page=10&sort=updated&order=desc`,
-      {
-        // the expected response type
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `token ${specData?.data.api_key}`,
+  const { isLoading, data }: any = useQuery(
+    ['SearchAssignedPr', searchText, specData],
+    async () => {
+      const response = await fetch(
+        `https://api.github.com/search/issues?q=${`is:pull-request`} ${searchText} assignee:${
+          specData?.data.user_name
+        }&per_page=10&sort=updated&order=desc`,
+        {
+          // the expected response type
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `token ${specData?.data.api_key}`,
+          },
         },
-      },
-    );
-    return await response.json();
-  });
+      );
+      return await response.json();
+    },
+  );
 
   const mappedResult =
     isLoading || !data
@@ -54,10 +58,10 @@ const SearchAssignedPR = ({ specData, resetCommand }: CommandProps): React.React
         }));
 
   return (
-    <div>
+    <div className={styles.container}>
       <SearchView
         actions={mappedResult}
-        loading={isLoading}
+        loading={isLoading || !specData}
         placeholder=""
         onQuery={(e) => setSearchText(e)}
         onClose={() => {
