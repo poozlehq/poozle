@@ -1,10 +1,12 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { ExtensionSpecDataType, Loader } from '@poozle/edk';
+import { ExtensionSpecDataType } from '@poozle/edk';
 import { useCallback, useEffect, useState } from 'react';
 
+import { LoaderWithHeader } from 'components';
+
 import { Command } from 'types/common';
-import { getExtensionSpecData, getExtensionViewURL } from 'utils/extension';
+import { getExtensionSpec, getExtensionSpecData, getExtensionViewURL } from 'utils/extension';
 import { specChecker } from 'wrapper/spec_checker';
 
 import { RemoteComponent } from '../../RemoteComponent';
@@ -30,8 +32,8 @@ const CommandView = ({ command, resetCommand }: Props) => {
   const getSpecData = useCallback(async () => {
     const spec = await getExtensionSpec(command.extension_id);
     if (spec?.inputBlocks.length > 0) {
-      const spec = await getExtensionSpec(command.extension_id);
-      setSpec(spec);
+      const specData = await getExtensionSpecData(command.extension_id);
+      setSpecData(specData);
     }
   }, [command.extension_id]);
 
@@ -50,13 +52,7 @@ const CommandView = ({ command, resetCommand }: Props) => {
   }, []);
 
   if (loading || !componentViewURL) {
-    return (
-      <div className={styles.commandView}>
-        <div className={styles.commandViewContainer}>
-          <Loader />
-        </div>
-      </div>
-    );
+    return <LoaderWithHeader />;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
