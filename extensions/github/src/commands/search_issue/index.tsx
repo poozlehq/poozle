@@ -6,6 +6,7 @@ import { open } from '@tauri-apps/api/shell';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 
+import styles from '../common.module.scss';
 import { Issue } from '../utils';
 
 const queryClient = new QueryClient();
@@ -19,10 +20,10 @@ const SearchIssue = ({ specData, resetCommand }: CommandProps): React.ReactEleme
   const [searchText, setSearchText] = useDebouncedState('', 500);
   const clipboard = useClipboard({ timeout: 500 });
 
-  const { isLoading, data }: any = useQuery(['searchIssues', searchText], async () => {
+  const { isLoading, data }: any = useQuery(['searchIssues', searchText, specData], async () => {
     const repositories = `repo:${specData?.data.repos.replace(/,/g, '+repo:')}`;
     const response = await fetch(
-      `https://api.github.com/search/issues?q=${`is:issue ${searchText}`} ${repositories}&per_page=10`,
+      `https://api.github.com/search/issues?q=${`is:issue`} ${searchText} ${repositories}&per_page=10`,
       {
         // the expected response type
         headers: {
@@ -40,7 +41,7 @@ const SearchIssue = ({ specData, resetCommand }: CommandProps): React.ReactEleme
       : data?.items?.map((issue: Issue) => ({
           id: issue.id,
           title: issue.title,
-          description: issue.body,
+          description: `#${issue.number}`,
           icon: issue.user.avatar_url,
           // accessoryIcon: statusIcon(issue.fields.status),
           // accessoryTitle: issue.fields.status.name,
@@ -53,7 +54,7 @@ const SearchIssue = ({ specData, resetCommand }: CommandProps): React.ReactEleme
         }));
 
   return (
-    <div>
+    <div className={styles.container}>
       <SearchView
         actions={mappedResult}
         loading={isLoading}

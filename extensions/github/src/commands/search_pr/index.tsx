@@ -6,6 +6,7 @@ import { open } from '@tauri-apps/api/shell';
 import * as React from 'react';
 import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 
+import styles from '../common.module.scss';
 import { Issue } from '../utils';
 
 const queryClient = new QueryClient();
@@ -22,7 +23,7 @@ const SearchPRs = ({ specData, resetCommand }: CommandProps): React.ReactElement
   const { isLoading, data }: any = useQuery(['searchPRs', searchText], async () => {
     const repositories = `repo:${specData?.data.repos.replace(/,/g, '+repo:')}`;
     const response = await fetch(
-      `https://api.github.com/search/issues?q=${`is:pull-request ${searchText}`} ${repositories}&per_page=10`,
+      `https://api.github.com/search/issues?q=${`is:pull-request`} ${searchText} ${repositories}&per_page=10`,
       {
         // the expected response type
         headers: {
@@ -40,7 +41,7 @@ const SearchPRs = ({ specData, resetCommand }: CommandProps): React.ReactElement
       : data?.items?.map((issue: Issue) => ({
           id: issue.id,
           title: issue.title,
-          description: issue.body,
+          description: `#${issue.number}`,
           icon: issue.user.avatar_url,
           // accessoryIcon: statusIcon(issue.fields.status),
           // accessoryTitle: issue.fields.status.name,
@@ -53,7 +54,7 @@ const SearchPRs = ({ specData, resetCommand }: CommandProps): React.ReactElement
         }));
 
   return (
-    <div>
+    <div className={styles.container}>
       <SearchView
         actions={mappedResult}
         loading={isLoading}

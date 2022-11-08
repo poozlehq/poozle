@@ -57,15 +57,15 @@ body {
   width: 800px;
   height: 600px;
   position: relative !important;
+  margin: 0 !important;
   align-self: center;
   background: var(--mantine-color-dark-7) !important;
   border-radius: var(--mantine-radius-lg);
-  border: 1px solid var(--mantine-color-dark-4);
 }
 
 .mantine-Spotlight-spotlight {
   box-shadow: none;
-  border-bottom: none;
+  border-bottom: none !important;
   border-radius: var(--mantine-radius-md) var(--mantine-radius-md) 0 0;
 }
 

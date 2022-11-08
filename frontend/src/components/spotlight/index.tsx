@@ -35,6 +35,7 @@ const SpotlightComponent = ({
 }: Props) => {
   const [query, setQuery] = useState('');
 
+  console.log(actions, actions.length);
   const ActionComponent = loading ? CustomActionWithLoader : actionComponent;
   const finalActions = loading ? [{ title: 'loading', onTrigger: () => null }] : actions;
   const extraParams =

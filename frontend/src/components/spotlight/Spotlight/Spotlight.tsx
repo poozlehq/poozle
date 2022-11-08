@@ -135,7 +135,7 @@ export const Spotlight = ({
   filter = filterActions,
   prefixInputComponent,
   nothingFoundMessage,
-  limit = 10,
+  limit = 100,
   actionComponent = DefaultAction,
   actionsWrapperComponent: ActionsWrapper = 'div',
   zIndex = getDefaultZIndex('max'),
