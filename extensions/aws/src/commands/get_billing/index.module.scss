@@ -1,0 +1,54 @@
+.container {
+  height: 100%;
+  padding: var(--mantine-spacing-sm);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--mantine-spacing-lg);
+
+  :global {
+    .mantine-Tooltip-tooltip {
+      font-size: var(--mantine-font-size-xs);
+    }
+  }
+}
+
+.top {
+  height: 100%;
+  background-color: var(--mantine-color-dark-8);
+  border-radius: var(--mantine-radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  h3 {
+    color: var(--mantine-color-dark-0);
+  }
+}
+
+.passwordContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  justify-content: center;
+
+  svg {
+    color: var(--mantine-color-dark-0);
+  }
+}
+
+.password {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  justify-content: center;
+
+  button {
+    border: none !important;
+  }
+
+  button:hover {
+    background-color: var(--mantine-color-dark-7) !important;
+  }
+}

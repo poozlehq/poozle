@@ -1,0 +1,34 @@
+{
+  "name": "AWS extension",
+  "key": "aws",
+  "description": "Plan, track, and manage your agile and software development projects in JIRA. Customize your workflow, collaborate, and release great software.",
+  "icon": "aws.svg",
+  "commands": [
+    {
+      "name": "AWS Billing",
+      "key": "aws_billing",
+      "description": "Get AWS billing from the dashboard",
+      "command_type": "react"
+    }
+  ],
+  "inputBlocks": [
+    {
+      "name": "Access Key",
+      "description": "Access key of AWS account",
+      "key": "access_key",
+      "type": "input"
+    },
+    {
+      "name": "Secret Key",
+      "key": "secret_key",
+      "description": "Secret Key of AWS account",
+      "type": "input"
+    },
+    {
+      "key": "region",
+      "description": "Preferred Region",
+      "name": "Region",
+      "type": "input"
+    }
+  ]
+}
