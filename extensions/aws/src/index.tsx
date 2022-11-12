@@ -28,13 +28,13 @@ root.render(
         >
           <NotificationsProvider>
             <App
-              commandKey="command1"
+              commandKey="aws_billing"
               resetCommand={function (): void {
                 throw new Error('Function not implemented.');
               }}
               specData={{
                 extensionId: '',
-                data: { profile_name: 'staging', file_path: '~/.aws/credentials', access_key: 'AKIAU4T4YDSML4XCR3B6', secret_key: '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'},
+                data: { region: '', access_key: '', secret_key: ''},
               }}
             />
           </NotificationsProvider>

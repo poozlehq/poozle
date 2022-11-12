@@ -2,8 +2,10 @@
 
 export interface Group {
   Metrics: {
-    Amount: string;
-    Unit: string;
+    BlendedCost:{
+      Amount: string;
+      Unit: string;
+    }
   };
   Keys: string[];
 }
@@ -16,4 +18,11 @@ export interface Results {
   DimensionValueAttributes: string[];
   GroupDefinitions: string[];
   ResultsByTime?: Result[];
+}
+
+export interface ForecastResult{
+  Total: {
+    Amount: string;
+    Unit: string;
+  }
 }

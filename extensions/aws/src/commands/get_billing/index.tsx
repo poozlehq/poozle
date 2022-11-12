@@ -1,23 +1,14 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { useClipboard } from '@mantine/hooks';
 import { Button } from '@mantine/core';
 import { ExtensionSpecDataType, BasicView } from '@poozle/edk';
-// import { open } from '@tauri-apps/api/shell';
 import * as React from 'react';
-// import { QueryClient, QueryClientProvider, useQuery } from 'react-query';
 
 import styles from './index.module.scss';
-// import { Issue } from '../utils';
 
-// import {CostExplorerClient} from '@aws-sdk/client-cost-explorer';
 import CostExplorer from 'aws-sdk/clients/costexplorer';
-import { Group } from './utils';
-import { integer } from 'aws-sdk/clients/cloudfront';
-// import AWS from 'aws-sdk'
-// import {fromIni} from '@aws-sdk/credential-providers';
 
-// const queryClient = new QueryClient();
+import { Group, Result } from './utils';
 
 interface CommandProps {
   specData?: ExtensionSpecDataType;
@@ -49,7 +40,7 @@ interface CommandProps {
 //     //   region: "us-east-1"
 //     // }
 //     // AWS.config.update(SESConfig);
-    
+
 //     const params = {
 //       Metrics: ['BLENDED_COST'],
 //       TimePeriod: {
@@ -126,11 +117,9 @@ interface CommandProps {
 //   );
 // }
 
-
-
 export const GetCosts = ({ specData, resetCommand }: CommandProps): React.ReactElement => {
-  const [password, setPassword] = React.useState<string>('');
-  const clipboard = useClipboard({ timeout: 500 });
+  const [totalSpent, setTotalSpent] = React.useState<string>('');
+  const [totalForecast, setTotalForecast] = React.useState<string>('');
 
   React.useEffect(() => {
     getCost();
@@ -139,33 +128,27 @@ export const GetCosts = ({ specData, resetCommand }: CommandProps): React.ReactE
 
   function getCost() {
     var costExplorer = new CostExplorer({
-      // region: 'us-east-1',
-      // accessKeyId: specData?.data.access_key,
-      // secretAccessKey: specData?.data.secret_key,
-      // credentials: fromIni({profile: 'staging'})
       credentials: {
         accessKeyId: specData?.data.access_key,
         secretAccessKey: specData?.data.secret_key,
       },
-      region: "us-east-1"
+      region: specData?.data.region,
     });
 
-    console.log(specData?.data.access_key)
-    // const SESConfig = {
-    //   apiVersion: "latest",
-    //   accessKeyId: specData?.data.access_key,
-    //   accessSecretKey: specData?.data.secret_key,
-    //   region: "us-east-1"
-    // }
-    // AWS.config.update(SESConfig);
-    
+    let today = new Date();
+    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
+    const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+      .toISOString()
+      .split('T')[0];
+    const currentDay = today.toISOString().split('T')[0];
+
     const params = {
       Metrics: ['BLENDED_COST'],
       TimePeriod: {
-        End: '2022-11-12' /* Fill the end date */,
-        Start: '2022-11-01' /* Fill the start date  */,
+        End: lastDay,
+        Start: firstDay,
       },
-      Granularity: 'MONTHLY' /* MONTHLY or HOURLY */,
+      Granularity: 'MONTHLY',
       GroupBy: [
         {
           Key: 'LINKED_ACCOUNT',
@@ -174,51 +157,40 @@ export const GetCosts = ({ specData, resetCommand }: CommandProps): React.ReactE
       ],
     };
 
-    costExplorer.getCostAndUsage(params, function (err: any, data: any) {
+    const forcastParams = {
+      Metric: 'BLENDED_COST',
+      TimePeriod: {
+        End: lastDay,
+        Start: currentDay,
+      },
+      Granularity: 'MONTHLY',
+    };
+
+    costExplorer.getCostAndUsage(params, async function (err: any, data: any) {
       if (err) console.log(err, err.stack); // an error occurred
       else {
-        console.log(data)
-
-        let sum = !data ? '' : data?.ResultsByTime.Groups.reduce(function(prev: integer, current: Group) {
-          return prev + +current.Metrics.Amount
-        }, 0);
-
-        console.log(sum)
-
-        // const usedCost = !data ? '' : data?.ResultsByTime.map((result: Result) => {
-        //   console.log(result.Groups.)
-
-        //   // console.log(`group; ${group.Metrics}`)
-
-        //   // return group?
-        //   // console.log(group)
-          
-
-        // })
-        // console.log(`usedCost: ${usedCost}`)
+        const spent = !data
+          ? ''
+          : data.ResultsByTime.reduce(function (prev: number, current: Result) {
+              return (
+                prev +
+                current.Groups.reduce(function (groupPrev: number, groupCurrent: Group) {
+                  return groupPrev + parseInt(groupCurrent.Metrics.BlendedCost.Amount, 10);
+                }, 0)
+              );
+            }, 0);
+        setTotalSpent(spent);
       }
     });
-    // const pw = new Pass(
-    //   {
-    //     length: 24, // must set
-    //     lowercase: true, // optional
-    //     uppercase: true, // optional
-    //     numbers: true, // optional
-    //     special: true, // optional also possible to add own "" with symbols - when true: ~`!@#$%^&*()_-+={[}]|\:;"'<,>.?/
-    //   },
-    //   {
-    //     minLength: 24, // must set
-    //     maxLength: 24, // optional
-    //     lowercase: true, // optional
-    //     uppercase: true, // optional
-    //     numbers: true, // optional
-    //     special: true, // optional
-    //   },
-    // );
-    // const password = pw.generate();
-    const password = '';
-    setPassword(password);
-    clipboard.copy(password);
+
+    costExplorer.getCostForecast(forcastParams, async function (err: any, data: any) {
+      if (err) console.log(err, err.stack); // an error occurred
+      else {
+        const forecastCost = !data ? '' : data?.Total.Amount;
+
+        setTotalForecast(forecastCost);
+      }
+    });
   }
 
   return (
@@ -226,8 +198,13 @@ export const GetCosts = ({ specData, resetCommand }: CommandProps): React.ReactE
       <div className={styles.container}>
         <div className={styles.top}>
           <div className={styles.passwordContainer}>
-            <div className={styles.password}>
-              <h3>{password}</h3>
+            <div className={styles.currentMtd}>
+              <h1>Current MTD</h1>
+              <h2>$ {totalSpent}</h2>
+            </div>
+            <div className={styles.forecast}>
+              <h1>Total Forecast</h1>
+              <h2>$ {parseInt(totalForecast, 10) + totalSpent}</h2>
             </div>
             <div>
               <Button onClick={() => getCost()}> Generate </Button>

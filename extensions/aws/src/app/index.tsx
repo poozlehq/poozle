@@ -6,7 +6,7 @@ import * as React from 'react';
 
 const App = ({ commandKey, specData, resetCommand }: AppProps): React.ReactElement => {
   switch (commandKey) {
-    case 'command1':
+    case 'aws_billing':
       return <GetCosts specData={specData} resetCommand={resetCommand} />;
   }
 
