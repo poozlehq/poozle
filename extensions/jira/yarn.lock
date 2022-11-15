@@ -2060,10 +2060,10 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
-"@poozle/edk@^0.1.42":
-  version "0.1.42"
-  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.42.tgz#4080830228d5761f9bcfaed220ce91cfa469b9a7"
-  integrity sha512-Uu/OYnLkWL05TnTkf2nJr75755NXaX+YHq4qAuAXEQvBjfflD/imDb9IBBJRIGm9mgwFgO1lQPPOsBLd4k8rog==
+"@poozle/edk@^0.1.45":
+  version "0.1.45"
+  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.45.tgz#01d5e229f99036b7137a3f2c91cdd40187588524"
+  integrity sha512-Ag+H1BsYUEFugjm5y0M+LWkuMp5V82kjNB1GOPVqNIiDxAp1OpS7eufQFpjAclw28Lg0LV73h0IRE5ZSqhLknw==
   dependencies:
     "@emotion/react" "^11.10.4"
     "@mantine/core" "^5.4.1"

@@ -2,7 +2,7 @@
 
 import { ActionIcon, Button, CopyButton, Tooltip } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
-import { BasicView } from '@poozle/edk';
+import { BasicView, Input } from '@poozle/edk';
 import { IconCopy, IconCheck } from '@tabler/icons';
 import * as React from 'react';
 import { v4 as uuidv4 } from 'uuid';
@@ -13,7 +13,7 @@ interface CommandProps {
   resetCommand: () => void;
 }
 
-export const GenerateUUID = (_props: CommandProps): React.ReactElement => {
+export const GenerateUUID = ({ resetCommand }: CommandProps): React.ReactElement => {
   const [UUID, setUUID] = React.useState<string>('');
   const clipboard = useClipboard({ timeout: 500 });
 
@@ -29,28 +29,32 @@ export const GenerateUUID = (_props: CommandProps): React.ReactElement => {
   }, [generateUUID]);
 
   return (
-    <BasicView
-      onClose={function (): void {
-        throw new Error('Function not implemented.');
-      }}
-    >
+    <BasicView onClose={() => resetCommand()}>
       <div className={styles.container}>
         <div className={styles.top}>
           <div className={styles.UUIDContainer}>
-            <div className={styles.UUID}>
-              <h3>{UUID}</h3>
-              <CopyButton value={UUID} timeout={2000}>
-                {({ copied, copy }) => (
-                  <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow position="right">
-                    <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
-                      {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
-                    </ActionIcon>
-                  </Tooltip>
-                )}
-              </CopyButton>
-            </div>
-            <div>
-              <Button onClick={() => generateUUID()}> Generate </Button>
+            <Input
+              label="UUID"
+              description="Click generate button for new uuid"
+              value={UUID}
+              className={styles.input}
+              rightSection={
+                <CopyButton value={UUID} timeout={2000}>
+                  {({ copied, copy }) => (
+                    <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow position="right">
+                      <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
+                        {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
+                      </ActionIcon>
+                    </Tooltip>
+                  )}
+                </CopyButton>
+              }
+            />
+            <div className={styles.actions}>
+              <Button size="xs" onClick={() => generateUUID()}>
+                {' '}
+                Generate{' '}
+              </Button>
             </div>
           </div>
         </div>

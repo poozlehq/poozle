@@ -2,6 +2,7 @@
 
 import { ExtensionSpecDataType } from '@poozle/edk';
 import { useCallback, useEffect, useState } from 'react';
+import { useSegmentPage } from 'react-segment-analytics';
 
 import { LoaderWithHeader } from 'components';
 
@@ -28,6 +29,7 @@ const CommandView = ({ command, resetCommand }: Props) => {
   const [componentViewURL, setComponentViewURL] = useState<string | undefined>();
   const [specData, setSpecData] = useState<ExtensionSpecDataType | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
+  const page = useSegmentPage();
 
   const getSpecData = useCallback(async () => {
     const spec = await getExtensionSpec(command.extension_id);
@@ -36,6 +38,10 @@ const CommandView = ({ command, resetCommand }: Props) => {
       setSpecData(specData);
     }
   }, [command.extension_id]);
+
+  useEffect(() => {
+    page('Command View Page');
+  }, [page]);
 
   const getCommandView = useCallback(async () => {
     setLoading(true);

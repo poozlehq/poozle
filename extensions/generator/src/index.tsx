@@ -27,7 +27,7 @@ root.render(
         >
           <NotificationsProvider>
             <App
-              commandKey="generate_uuid"
+              commandKey="generate_password"
               resetCommand={function (): void {
                 throw new Error('Function not implemented.');
               }}

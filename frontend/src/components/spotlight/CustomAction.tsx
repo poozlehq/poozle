@@ -9,7 +9,6 @@ import styles from './CustomAction.module.scss';
 
 export const CustomAction = ({
   action,
-
   classNames,
   hovered,
   onTrigger,
@@ -28,6 +27,12 @@ export const CustomAction = ({
         {action.icon && (
           <Center>
             <Image src={action.icon} html_renderer />
+          </Center>
+        )}
+
+        {action.image && (
+          <Center>
+            <Image src={action.image} />
           </Center>
         )}
 

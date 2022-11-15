@@ -3,8 +3,9 @@
  */
 
 .footer {
-  margin-top: var(--mantine-spacing-sm);
-  padding: var(--mantine-spacing-sm);
+  margin: 0 !important;
+  border-top: 1px solid var(--mantine-color-dark-4);
+  padding: var(--mantine-spacing-md);
   display: flex;
   align-items: center;
   font-size: var(--mantine-font-size-xs);
@@ -12,17 +13,18 @@
   justify-content: space-between;
   color: var(--mantine-color-dark-2);
   background-color: var(--mantine-color-dark-7);
-  border-radius: var(--mantine-radius-lg);
+  border-radius: 0 0 var(--mantine-radius-lg) var(--mantine-radius-lg);
 }
 
 .icon {
   margin-right: var(--mantine-spacing-xs);
   display: flex;
+  align-items: center;
   gap: var(--mantine-spacing-md);
 
   svg {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
   }
 }
 

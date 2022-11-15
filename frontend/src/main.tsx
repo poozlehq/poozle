@@ -3,6 +3,7 @@
 import { register } from '@tauri-apps/api/globalShortcut';
 import { appWindow } from '@tauri-apps/api/window';
 import ReactDOM from 'react-dom/client';
+import Segment from 'react-segment-analytics';
 
 import App from './App';
 import { ThemeProvider } from './config';
@@ -21,6 +22,8 @@ try {
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <ThemeProvider>
-    <App />
+    <Segment writeKey={import.meta.env.DEV ? '12345' : import.meta.env.VITE_SEGMENT_KEY}>
+      <App />
+    </Segment>
   </ThemeProvider>,
 );

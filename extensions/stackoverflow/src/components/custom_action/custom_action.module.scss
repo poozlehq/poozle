@@ -1,0 +1,54 @@
+/*
+ * Copyright (c) 2022, Poozle, all rights reserved.
+ */
+
+.action {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-xs);
+}
+
+.actionHovered {
+  background-color: var(--mantine-color-dark-4);
+}
+
+.actionContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  margin: 0;
+}
+
+.information {
+  margin-top: var(--mantine-spacing-xs);
+  display: flex;
+  gap: var(--mantine-spacing-md);
+  font-size: var(--mantine-font-size-sm);
+}
+
+.count {
+  gap: 5px;
+  display: flex;
+}
+
+.tags {
+  display: flex;
+  margin-top: var(--mantine-spacing-md);
+  gap: var(--mantine-spacing-sm);
+}
+
+.badge {
+  color: var(--mantine-color-green-9);
+}
+
+.tag {
+  text-transform: none;
+}
+
+// .body {
+//   margin-top: var(--mantine-spacing-md);
+// }

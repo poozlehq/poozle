@@ -92,7 +92,12 @@
       "csp": null
     },
     "updater": {
-      "active": false
+      "active": false,
+      "endpoints": [
+        "https://raw.githubusercontent.com/poozlehq/poozle/main/VERSION.json"
+      ],
+      "dialog": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDVGOURGQzk4NUU5NUU2NzgKUldSNDVwVmVtUHlkWDJ1QU9IMjMvVlAwWkYrZ2RXMklheTdESmVIaVZZNXFrSmFBZ05Wei9HUzIK"
     },
     "systemTray": {
       "iconPath": "icons/icon.png",
@@ -101,6 +106,8 @@
     "macOSPrivateApi": true,
     "windows": [
       {
+        "label": "main",
+        "url": "/main",
         "fullscreen": false,
         "transparent": true,
         "resizable": false,

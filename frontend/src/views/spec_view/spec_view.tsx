@@ -2,6 +2,7 @@
 
 import { Image, Loader } from '@poozle/edk';
 import { useCallback, useEffect, useState } from 'react';
+import { useSegmentPage } from 'react-segment-analytics';
 
 import { FormValues, Form } from 'components/form';
 import Header from 'components/header/header';
@@ -22,6 +23,7 @@ const SpecView = (props: Props) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [specData, setSpecData] = useState<any>(undefined);
   const [loading, setLoading] = useState(true);
+  const page = useSegmentPage();
 
   const getSpec = useCallback(async () => {
     const specData = await getExtensionSpec(command.extension_id);
@@ -32,6 +34,10 @@ const SpecView = (props: Props) => {
   useEffect(() => {
     getSpec();
   }, [getSpec]);
+
+  useEffect(() => {
+    page('Spec View Page');
+  }, [page]);
 
   const onSubmit = async (values: FormValues) => {
     await setExtensionSpecData(command.extension_id, JSON.stringify(values));

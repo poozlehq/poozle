@@ -15,15 +15,11 @@
 
 .top {
   height: 100%;
-  background-color: var(--mantine-color-dark-8);
   border-radius: var(--mantine-radius-lg);
   display: flex;
-  align-items: center;
+  align-items: flex-start;
+  margin-top: var(--mantine-spacing-md);
   justify-content: center;
-
-  h3 {
-    color: var(--mantine-color-dark-0);
-  }
 }
 
 .passwordContainer {
@@ -38,11 +34,8 @@
   }
 }
 
-.password {
-  display: flex;
-  align-items: center;
-  gap: var(--mantine-spacing-sm);
-  justify-content: center;
+.input {
+  width: 400px;
 
   button {
     border: none !important;
@@ -51,4 +44,11 @@
   button:hover {
     background-color: var(--mantine-color-dark-7) !important;
   }
+}
+
+.actions {
+  display: flex;
+  width: 100%;
+  margin-top: var(--mantine-spacing-md);
+  justify-content: flex-end;
 }

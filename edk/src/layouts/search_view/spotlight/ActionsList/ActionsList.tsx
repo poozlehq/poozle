@@ -71,9 +71,9 @@ export const ActionsList = ({
     items.length > 0 || (!!nothingFoundMessage && query.trim().length > 0);
 
   return (
-    <>
+    <div className={styles.actions}>
       {shouldRenderActions && (
-        <div className={styles.actions}>
+        <>
           {items.length > 0 ? (
             items
           ) : (
@@ -81,9 +81,9 @@ export const ActionsList = ({
               {nothingFoundMessage}
             </Text>
           )}
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 };
 

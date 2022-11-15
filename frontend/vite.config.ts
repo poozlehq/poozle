@@ -1,3 +1,5 @@
+/** Copyright (c) 2022, Poozle, all rights reserved. **/
+
 import path from 'path';
 
 import react from '@vitejs/plugin-react';

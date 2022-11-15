@@ -1,0 +1,95 @@
+{
+  "name": "@poozle/stackoverflow",
+  "version": "0.1.1",
+  "description": "stackoverflow extension for Poozle",
+  "exports": {
+    ".": {
+      "types": "./stackoverflow",
+      "require": "./stackoverflow/index.js"
+    }
+  },
+  "package": "./stackoverflow/index.js",
+  "types": "./stackoverflow",
+  "files": [
+    "stackoverflow"
+  ],
+  "scripts": {
+    "build": "rimraf stackoverflow && npm run build:js && npm run copy:spec",
+    "build:js": "rollup -c",
+    "lint": "eslint --ext js,ts,tsx src",
+    "prettier": "prettier --config .prettierrc --write .",
+    "copy:spec": "cp spec.json stackoverflow/",
+    "dev": "react-scripts start"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.2",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-react": "^7.18.6",
+    "@babel/preset-typescript": "^7.17.12",
+    "@rollup/plugin-babel": "6.0.2",
+    "@rollup/plugin-commonjs": "^23.0.2",
+    "@rollup/plugin-json": "^5.0.1",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-replace": "^5.0.1",
+    "@types/react": "^18.0.20",
+    "@types/react-dom": "^18.0.8",
+    "@types/styled-components": "^5.1.26",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-config-react-app": "^7.0.1",
+    "eslint-import-resolver-alias": "^1.1.2",
+    "eslint-plugin-css-modules": "^2.11.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jest": "^27.0.4",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-notice": "^0.9.10",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "node-sass": "^7.0.3",
+    "postcss": "^8.4.16",
+    "prettier": "^2.6.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
+    "rimraf": "^3.0.2",
+    "rollup": "^3.2.3",
+    "rollup-plugin-postcss": "^4.0.2",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-typescript2": "^0.34.0",
+    "sass-loader": "^13.0.2",
+    "typescript": "^4.7.2",
+    "typescript-plugin-css-modules": "^3.4.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "@mantine/core": "^5.6.3",
+    "@mantine/dates": "^5.6.3",
+    "@mantine/form": "^5.6.3",
+    "@mantine/hooks": "^5.6.3",
+    "@mantine/modals": "^5.6.3",
+    "@mantine/notifications": "^5.6.3",
+    "@poozle/edk": "^0.1.46",
+    "@tabler/icons": "^1.111.0",
+    "javascript-time-ago": "^2.5.9",
+    "query-string": "^7.1.1",
+    "react-query": "^3.39.2"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

@@ -11,16 +11,13 @@ export interface SpotlightStylesParams {
 }
 
 export default createStyles(
-  (theme, { centered, maxWidth, topOffset, radius, zIndex }: SpotlightStylesParams) => ({
+  (theme, { centered, maxWidth, topOffset, radius }: SpotlightStylesParams) => ({
     root: {
       ...theme.fn.cover(),
       position: 'fixed',
-      zIndex,
     },
-
     spotlight: {
       position: 'relative',
-      zIndex: 2,
       backgroundColor: 'transparent',
       borderRadius: theme.fn.radius(radius),
       width: '100%',
@@ -35,7 +32,7 @@ export default createStyles(
     },
 
     inner: {
-      height: '100vh',
+      height: '100%',
       display: 'flex',
       flexDirection: 'column',
       paddingTop: centered ? theme.spacing.md : topOffset,
