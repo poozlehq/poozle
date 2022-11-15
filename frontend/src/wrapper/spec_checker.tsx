@@ -1,8 +1,9 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { ExtensionSpec, ExtensionSpecDataType, Loader } from '@poozle/edk';
-import { LoaderWithHeader } from 'components';
+import { ExtensionSpec, ExtensionSpecDataType } from '@poozle/edk';
 import { useCallback, useEffect, useState } from 'react';
+
+import { LoaderWithHeader } from 'components';
 
 import { Command } from 'types/common';
 import { getExtensionSpec, getExtensionSpecData } from 'utils/extension';

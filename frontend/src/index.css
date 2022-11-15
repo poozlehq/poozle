@@ -60,7 +60,11 @@ body {
   margin: 0 !important;
   align-self: center;
   background: var(--mantine-color-dark-7) !important;
-  border-radius: var(--mantine-radius-lg);
+  border-radius: var(--mantine-radius-lg) var(--mantine-radius-lg) 0 0;
+}
+
+.mantine-Overlay-root {
+  display: none;
 }
 
 .mantine-Spotlight-spotlight {

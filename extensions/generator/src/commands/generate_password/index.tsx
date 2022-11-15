@@ -2,7 +2,7 @@
 
 import { ActionIcon, Button, CopyButton, Tooltip } from '@mantine/core';
 import { useClipboard } from '@mantine/hooks';
-import { BasicView } from '@poozle/edk';
+import { BasicView, Input } from '@poozle/edk';
 import { IconCopy, IconCheck } from '@tabler/icons';
 import Pass from 'pw-simplified';
 import * as React from 'react';
@@ -50,20 +50,28 @@ export const GeneratePassword = ({ resetCommand }: CommandProps): React.ReactEle
       <div className={styles.container}>
         <div className={styles.top}>
           <div className={styles.passwordContainer}>
-            <div className={styles.password}>
-              <h3>{password}</h3>
-              <CopyButton value={password} timeout={2000}>
-                {({ copied, copy }) => (
-                  <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow position="right">
-                    <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
-                      {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
-                    </ActionIcon>
-                  </Tooltip>
-                )}
-              </CopyButton>
-            </div>
-            <div>
-              <Button onClick={() => generatePassword()}> Generate </Button>
+            <Input
+              label="Password"
+              description="Click generate button for new password"
+              value={password}
+              className={styles.input}
+              rightSection={
+                <CopyButton value={password} timeout={2000}>
+                  {({ copied, copy }) => (
+                    <Tooltip label={copied ? 'Copied' : 'Copy'} withArrow position="right">
+                      <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
+                        {copied ? <IconCheck size={16} /> : <IconCopy size={16} />}
+                      </ActionIcon>
+                    </Tooltip>
+                  )}
+                </CopyButton>
+              }
+            />
+            <div className={styles.actions}>
+              <Button size="xs" onClick={() => generatePassword()}>
+                {' '}
+                Generate{' '}
+              </Button>
             </div>
           </div>
         </div>

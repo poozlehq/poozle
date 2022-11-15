@@ -113,7 +113,6 @@ export const Spotlight = ({
   actions,
   onClose,
   opened,
-
   transition = 'pop',
   transitionDuration,
   classNames,
@@ -192,7 +191,7 @@ export const Spotlight = ({
       case 'Enter': {
         event.preventDefault();
         const action = groupedActions[hovered];
-        action?.onTrigger?.(action);
+        action?.onTrigger?.(action, query);
         if (closeOnActionTrigger && action?.onTrigger) {
           handleClose();
         }
@@ -257,7 +256,7 @@ export const Spotlight = ({
                   nothingFoundMessage={nothingFoundMessage}
                   onActionHover={setHovered}
                   onActionTrigger={(action) => {
-                    action.onTrigger(action);
+                    action.onTrigger(action, query);
                     closeOnActionTrigger && handleClose();
                   }}
                   radius={radius}

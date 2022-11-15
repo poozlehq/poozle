@@ -1,7 +1,7 @@
 {
   "name": "poozle",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "author": "Poozle <support@poozle.in>",
   "license": "MIT",
@@ -26,7 +26,8 @@
     "@mantine/rte": "^5.1.1",
     "@mantine/spotlight": "^5.3.0",
     "@paciolan/remote-component": "^2.12.1",
-    "@poozle/edk": "^0.1.40",
+    "@poozle/edk": "^0.1.47",
+    "@segment/analytics-next": "^1.46.0",
     "@tabler/icons": "^1.78.1",
     "@tauri-apps/api": "^1.0.2",
     "@tauri-apps/tauri-forage": "^1.0.0-beta.2",
@@ -35,6 +36,7 @@
     "formik": "^2.2.9",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-segment-analytics": "^2.0.0",
     "styled-components": "^5.3.5",
     "tauri-plugin-store-api": "https://github.com/tauri-apps/tauri-plugin-store#dev"
   },

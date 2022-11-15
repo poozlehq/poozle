@@ -1,15 +1,15 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import type { SpotlightAction, SpotlightActionProps } from '@mantine/spotlight';
-
-import { useState } from 'react';
+import type { SpotlightActionProps } from '@mantine/spotlight';
 
 import { CustomActionWithLoader } from './CustomActionWithLoading';
 import { Spotlight } from './Spotlight/Spotlight';
+import { SpotlightAction } from './types';
 
 interface Props {
   actions: SpotlightAction[];
   placeholder: string;
+  query: string;
   actionComponent?: React.FC<SpotlightActionProps>;
   loading?: boolean;
   prefixInputComponent?: React.ReactNode;
@@ -31,13 +31,15 @@ const SpotlightComponent = ({
   searchIcon,
   prefixInputComponent,
   onQuery,
+  query,
   noFilter,
 }: Props) => {
-  const [query, setQuery] = useState('');
+  const getFinalActions = () => {
+    return loading ? [{ title: 'loading', onTrigger: () => null }] : actions;
+  };
 
-  console.log(actions, actions.length);
   const ActionComponent = loading ? CustomActionWithLoader : actionComponent;
-  const finalActions = loading ? [{ title: 'loading', onTrigger: () => null }] : actions;
+  const finalActions = getFinalActions();
   const extraParams =
     noFilter || loading
       ? {
@@ -56,8 +58,12 @@ const SpotlightComponent = ({
         if (loading) {
           return actions;
         }
-
-        return actions.filter((action) => action.title.toLowerCase().includes(query.toLowerCase()));
+        return actions.filter((action) => {
+          if (action.default) {
+            return true;
+          }
+          return action.title.toLowerCase().includes(query.toLowerCase());
+        });
       }}
       maxWidth={800}
       topOffset={0}
@@ -77,7 +83,6 @@ const SpotlightComponent = ({
         if (onQuery) {
           onQuery(query);
         }
-        setQuery(query);
       }}
       {...extraParams}
     />

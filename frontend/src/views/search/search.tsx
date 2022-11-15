@@ -5,20 +5,19 @@ import { SpotlightAction } from '@mantine/spotlight';
 import { Image } from '@poozle/edk';
 import { WebviewWindow } from '@tauri-apps/api/window';
 import { useCallback, useContext, useEffect, useState } from 'react';
+import { useSegmentPage } from 'react-segment-analytics';
+
+import Spotlight from 'components/spotlight';
+import { CustomAction } from 'components/spotlight/CustomAction';
 
 import { CommandsContext } from 'context/commands_context';
 import { Command } from 'types/common';
 import { registerAppWindow } from 'utils/application';
 import { capitalizeFirstLetter } from 'utils/common';
 
-import Spotlight from '../spotlight';
-import { CustomAction } from '../spotlight/CustomAction';
 import styles from './search.module.scss';
-
-const SPOTLIGHT_GROUPS = {
-  COMMANDS: 'COMMANDS',
-  EXTENSIONS: 'EXTENSIONS',
-};
+import SearchFooter from './search_footer';
+import { DEFAULT_ACTIONS, SPOTLIGHT_GROUPS } from './search_helper';
 
 interface Extension {
   title: string;
@@ -32,9 +31,11 @@ interface Props {
   resetCommand: () => void;
 }
 
-const Search = ({ onCommandSelect, resetCommand }: Props) => {
+export const Search = ({ onCommandSelect, resetCommand }: Props) => {
   const allCommands = useContext(CommandsContext);
   const [selectedExtension, selectExtension] = useState<Extension | undefined>(undefined);
+  const [query, setQuery] = useState('');
+  const page = useSegmentPage();
 
   useEffect(() => {
     if (document) {
@@ -47,6 +48,10 @@ const Search = ({ onCommandSelect, resetCommand }: Props) => {
       });
     }
   }, [resetCommand, selectedExtension]);
+
+  useEffect(() => {
+    page('Command Search Page');
+  }, [page]);
 
   const getAllExtensions = useCallback((): Extension[] => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -106,29 +111,32 @@ const Search = ({ onCommandSelect, resetCommand }: Props) => {
             } as SpotlightAction),
         );
 
-    return [...extensions, ...commands];
+    return [...extensions, ...commands, ...DEFAULT_ACTIONS];
   }, [allCommands, getAllExtensions, onCommandSelect, selectedExtension]);
 
   return (
     <div className={styles.mainContainer}>
-      <Spotlight
-        actions={getActions() ?? []}
-        placeholder="Search for commands"
-        withinPortal
-        prefixInputComponent={
-          <>
-            {selectedExtension && (
-              <Chip checked={false} value={selectedExtension.id} className={styles.chip}>
-                <Image src={selectedExtension.icon} html_renderer />
-                {selectedExtension.title}
-              </Chip>
-            )}
-          </>
-        }
-        actionComponent={CustomAction}
-      />
+      <div className={styles.content}>
+        <Spotlight
+          actions={getActions() ?? []}
+          query={query}
+          onQuery={(query: string) => setQuery(query)}
+          placeholder="Search for commands"
+          withinPortal
+          prefixInputComponent={
+            <>
+              {selectedExtension && (
+                <Chip checked={false} value={selectedExtension.id} className={styles.chip}>
+                  <Image src={selectedExtension.icon} html_renderer />
+                  {selectedExtension.title}
+                </Chip>
+              )}
+            </>
+          }
+          actionComponent={CustomAction}
+        />
+        <SearchFooter />
+      </div>
     </div>
   );
 };
-
-export default Search;

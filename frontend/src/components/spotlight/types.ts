@@ -21,8 +21,12 @@ export interface SpotlightAction {
   /** Decorative icon */
   icon?: ReactNode;
 
+  image?: string;
+
+  default?: boolean;
+
   /** Function that is called when action is triggered */
-  onTrigger(action: SpotlightAction): void;
+  onTrigger(action: SpotlightAction, text?: string): void;
 
   /** Any other properties that will be consumed by SpotlightProvider */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

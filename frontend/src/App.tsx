@@ -2,19 +2,21 @@
 
 import { appWindow } from '@tauri-apps/api/window';
 import { useEffect, useState } from 'react';
+import { useSegmentTrack } from 'react-segment-analytics';
 
 import { Command as CommandType } from 'types/common';
 
 import styles from './App.module.scss';
-import Search from './components/search/search';
 import { CommandContext } from './context/command_context';
 import { CommandsContext } from './context/commands_context';
-import { getAllCommands, prefillCommandsForExtension } from './utils/extension';
+import { getAllCommands } from './utils/extension';
 import CommandView from './views/command_view/command_view';
+import { Search } from './views/search';
 
 const App = () => {
   const [commands, setCommands] = useState<CommandType[]>([]);
   const [currentCommand, setCurrentCommand] = useState<CommandType>();
+  const track = useSegmentTrack();
 
   useEffect(() => {
     getCommands();
@@ -27,9 +29,9 @@ const App = () => {
 
   const registerForBlur = async () => {
     // Close the window when tauri is blurred
-    // appWindow.listen('tauri://blur', () => {
-    //   appWindow.hide();
-    // });
+    appWindow.listen('tauri://blur', () => {
+      // appWindow.hide();
+    });
   };
 
   async function getCommands() {
@@ -38,6 +40,9 @@ const App = () => {
   }
 
   const onCommandSelect = (command: CommandType) => {
+    track('Selected Command', {
+      command,
+    });
     setCurrentCommand(command);
   };
 

@@ -1,0 +1,10 @@
+.container {
+  width: 100%;
+
+  :global {
+    .mantine-Group-root img {
+      border-radius: 50% !important;
+    }
+  }
+}
+

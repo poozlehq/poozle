@@ -1,6 +1,6 @@
 {
   "name": "@poozle/github",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "github extension for Poozle",
   "exports": {
     ".": {
@@ -74,7 +74,7 @@
     "@mantine/hooks": "^5.6.3",
     "@mantine/modals": "^5.6.3",
     "@mantine/notifications": "^5.6.3",
-    "@poozle/edk": "^0.1.38",
+    "@poozle/edk": "^0.1.45",
     "react-query": "^3.39.2"
   },
   "browserslist": {

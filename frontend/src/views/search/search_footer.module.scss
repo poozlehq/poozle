@@ -1,0 +1,30 @@
+/*
+ * Copyright (c) 2022, Poozle, all rights reserved.
+ */
+
+ .footer {
+  margin: 0 !important;
+  border-top: 1px solid var(--mantine-color-dark-4);
+  padding: var(--mantine-spacing-md);
+  display: flex;
+  align-items: center;
+  font-size: var(--mantine-font-size-xs);
+  width: 100%;
+  justify-content: space-between;
+  color: var(--mantine-color-dark-2);
+  background-color: var(--mantine-color-dark-7);
+  border-radius: 0 0 var(--mantine-radius-lg) var(--mantine-radius-lg);
+}
+
+.icon {
+  margin-right: var(--mantine-spacing-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--mantine-spacing-md);
+
+  img {
+    width: 15px;
+    height: 15px;
+  }
+}

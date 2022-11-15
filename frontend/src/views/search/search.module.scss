@@ -4,10 +4,15 @@
 
 .mainContainer {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   height: 100%;
   width: 100%;
   flex-direction: column;
+}
+
+.content {
+  background-color: var(--mantine-color-dark-7);
+  border-radius: var(--mantine-radius-lg);
 }
 
 .chip {

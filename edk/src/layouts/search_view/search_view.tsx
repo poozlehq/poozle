@@ -1,5 +1,7 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
+import { MantineProvider } from '@mantine/core';
+import { defaultColorScheme, theme } from 'config';
 import * as React from 'react';
 
 import { BackButton } from './back_button';
@@ -28,19 +30,27 @@ const SearchView = ({
   const ActionComponent = CustomAction ?? DefaultCustomAction;
 
   return (
-    <div className={styles.mainContainer}>
-      <Spotlight
-        actions={actions}
-        noFilter
-        loading={loading}
-        placeholder={placeholder}
-        withinPortal
-        prefixInputComponent={<BackButton onBack={() => onClose()} />}
-        actionComponent={ActionComponent}
-        onQuery={onQuery}
-        onClose={onClose}
-      />
-    </div>
+    <MantineProvider
+      theme={theme(defaultColorScheme)}
+      inherit
+      withCSSVariables
+      withGlobalStyles
+      withNormalizeCSS
+    >
+      <div className={styles.mainContainer}>
+        <Spotlight
+          actions={actions}
+          noFilter
+          loading={loading}
+          placeholder={placeholder}
+          withinPortal
+          prefixInputComponent={<BackButton onBack={() => onClose()} />}
+          actionComponent={ActionComponent}
+          onQuery={onQuery}
+          onClose={onClose}
+        />
+      </div>
+    </MantineProvider>
   );
 };
 

@@ -1,0 +1,15 @@
+{
+  "name": "Stackoverflow extension",
+  "key": "stackoverflow",
+  "description": "Find the best answer to your technical question, help others answer theirs.",
+  "icon": "stackoverflow.svg",
+  "commands": [
+    {
+      "name": "Search",
+      "key": "search",
+      "description": "Search for anything over stackoverflow",
+      "command_type": "react"
+    }
+  ],
+  "inputBlocks": [ ]
+}
