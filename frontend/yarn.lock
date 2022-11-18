@@ -1227,22 +1227,10 @@
     minimatch "^3.1.2"
     strip-json-comments "^3.1.1"
 
-"@floating-ui/core@^0.7.3":
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-0.7.3.tgz#d274116678ffae87f6b60e90f88cc4083eefab86"
-  integrity sha512-buc8BXHmG9l82+OQXOFU3Kr2XQx9ys01U/Q9HMIrZ300iLc8HLMgh7dcCqgYzAzf4BkoQvDcXf5Y+CuEZ5JBYg==
-
 "@floating-ui/core@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@floating-ui/core/-/core-1.0.1.tgz#00e64d74e911602c8533957af0cce5af6b2e93c8"
   integrity sha512-bO37brCPfteXQfFY0DyNDGB3+IMe4j150KFQcgJ5aBP295p9nBGeHEs/p0czrRbtlHq4Px/yoPXO/+dOCcF4uA==
-
-"@floating-ui/dom@^0.5.3":
-  version "0.5.4"
-  resolved "https://registry.yarnpkg.com/@floating-ui/dom/-/dom-0.5.4.tgz#4eae73f78bcd4bd553ae2ade30e6f1f9c73fe3f1"
-  integrity sha512-419BMceRLq0RrmTSDxn8hf9R3VCJv2K9PUfugh5JyEFmdjzDo+e8U5EdR8nzKq8Yj1htzLm3b6eQEEam3/rrtg==
-  dependencies:
-    "@floating-ui/core" "^0.7.3"
 
 "@floating-ui/dom@^1.0.0":
   version "1.0.3"
@@ -1251,15 +1239,6 @@
   dependencies:
     "@floating-ui/core" "^1.0.1"
 
-"@floating-ui/react-dom-interactions@0.6.6":
-  version "0.6.6"
-  resolved "https://registry.yarnpkg.com/@floating-ui/react-dom-interactions/-/react-dom-interactions-0.6.6.tgz#8542e8c4bcbee2cd0d512de676c6a493e0a2d168"
-  integrity sha512-qnao6UPjSZNHnXrF+u4/n92qVroQkx0Umlhy3Avk1oIebm/5ee6yvDm4xbHob0OjY7ya8WmUnV3rQlPwX3Atwg==
-  dependencies:
-    "@floating-ui/react-dom" "^0.7.2"
-    aria-hidden "^1.1.3"
-    use-isomorphic-layout-effect "^1.1.1"
-
 "@floating-ui/react-dom-interactions@^0.10.1":
   version "0.10.2"
   resolved "https://registry.yarnpkg.com/@floating-ui/react-dom-interactions/-/react-dom-interactions-0.10.2.tgz#1a9c86f8bb9aa36b5926ae03d96de78579d2a70d"
@@ -1267,14 +1246,6 @@
   dependencies:
     "@floating-ui/react-dom" "^1.0.0"
     aria-hidden "^1.1.3"
-
-"@floating-ui/react-dom@^0.7.2":
-  version "0.7.2"
-  resolved "https://registry.yarnpkg.com/@floating-ui/react-dom/-/react-dom-0.7.2.tgz#0bf4ceccb777a140fc535c87eb5d6241c8e89864"
-  integrity sha512-1T0sJcpHgX/u4I1OzIEhlcrvkUN8ln39nz7fMoE/2HDHrPiMFoOGR7++GYyfUmIQHkkrTinaeQsO3XWubjSvGg==
-  dependencies:
-    "@floating-ui/dom" "^0.5.3"
-    use-isomorphic-layout-effect "^1.1.1"
 
 "@floating-ui/react-dom@^1.0.0":
   version "1.0.0"
@@ -1568,17 +1539,6 @@
   dependencies:
     "@lukeed/csprng" "^1.0.0"
 
-"@mantine/core@^5.0.0":
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-5.3.0.tgz#32d3784ef1febf1592603aaefec4f7ecc251be26"
-  integrity sha512-8Nj/Ruwi6pCZgG/A0ZM9sfIeQLhYQKjpM5XPyOinsw+BHzBeSA8WtGYve3DBXWYSKOOArrjt8yZAz4YTAAM+WA==
-  dependencies:
-    "@floating-ui/react-dom-interactions" "0.6.6"
-    "@mantine/styles" "5.3.0"
-    "@mantine/utils" "5.3.0"
-    "@radix-ui/react-scroll-area" "1.0.0"
-    react-textarea-autosize "8.3.4"
-
 "@mantine/core@^5.4.1":
   version "5.6.1"
   resolved "https://registry.yarnpkg.com/@mantine/core/-/core-5.6.1.tgz#aa1fcc8a15f6285ffefbbba4f186a290f1350729"
@@ -1587,6 +1547,17 @@
     "@floating-ui/react-dom-interactions" "^0.10.1"
     "@mantine/styles" "5.6.1"
     "@mantine/utils" "5.6.1"
+    "@radix-ui/react-scroll-area" "1.0.0"
+    react-textarea-autosize "8.3.4"
+
+"@mantine/core@^5.8.0":
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/@mantine/core/-/core-5.8.0.tgz#b1281d3a4d926a3a0e1a1a573855b7d96602b471"
+  integrity sha512-GGQJqVXI3cbY5OzFrg3S3bJUypPktJIFeb2hI65qskFJViL6F8dUynRuKZfi8B4GHteG86zqiZCUo0cUVRTiaQ==
+  dependencies:
+    "@floating-ui/react-dom-interactions" "^0.10.1"
+    "@mantine/styles" "5.8.0"
+    "@mantine/utils" "5.8.0"
     "@radix-ui/react-scroll-area" "1.0.0"
     react-textarea-autosize "8.3.4"
 
@@ -1660,12 +1631,12 @@
     "@mantine/utils" "5.6.1"
     react-transition-group "4.4.2"
 
-"@mantine/nprogress@^5.0.0":
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/@mantine/nprogress/-/nprogress-5.3.0.tgz#84bafd3811ee3435b0b7772b094e8fa3189395c4"
-  integrity sha512-Fcf6qtGferjBqp0R1s6I+xBmr22VamrxRqz/zl19nWIoi6+VVpJOp2Exn/elS7E2bUp4O7JoCReTACNx0qVK6g==
+"@mantine/nprogress@^5.8.0":
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/@mantine/nprogress/-/nprogress-5.8.0.tgz#3ec0fab4b1cac0864fff9c03aab08b6e243551ef"
+  integrity sha512-D3LUE4V94iGkgLN23xfYe2zFZ5jcDmugB0cVS82m1q/crJOrMVKfpXesOE+mu+zUBKeOBVTcni66hXvGYFgiZg==
   dependencies:
-    "@mantine/utils" "5.3.0"
+    "@mantine/utils" "5.8.0"
 
 "@mantine/rte@^5.1.1":
   version "5.3.0"
@@ -1699,18 +1670,18 @@
   dependencies:
     "@mantine/utils" "5.6.1"
 
-"@mantine/styles@5.3.0":
-  version "5.3.0"
-  resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-5.3.0.tgz#aea9810eab6b71c6ebe5189bafc47c051dd89f77"
-  integrity sha512-2JQ7m4XHq8sOeSQsrHenW6xK6vRQ+gdfObEZbFx15NsWiIUFKWi+7nzVlLGRjDzYa7rA75ZZ3AbnuYBbSp5hjA==
-  dependencies:
-    clsx "1.1.1"
-    csstype "3.0.9"
-
 "@mantine/styles@5.6.1":
   version "5.6.1"
   resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-5.6.1.tgz#71866098b473adfe49aeeee7d0ab158693ba1a5c"
   integrity sha512-IsJqMRqw0pGr0Rd959H4W6RhbdMxcP7E06f78zQZLB6GTng+vYhTog5l7BXFwrJ9zPDzz68fDt51Rd1gz7Yarw==
+  dependencies:
+    clsx "1.1.1"
+    csstype "3.0.9"
+
+"@mantine/styles@5.8.0":
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/@mantine/styles/-/styles-5.8.0.tgz#68ae3622a62286c62e4253f7532466b2c8900df7"
+  integrity sha512-sCKPEJpiSF97ISrbJ6tr9GdYCLoX0vWA0aKWc5GGnpZLVTr5WlqMdqY7u0J00aAfjPHqeuN3hIrnEs7bn0qmVg==
   dependencies:
     clsx "1.1.1"
     csstype "3.0.9"
@@ -1724,6 +1695,11 @@
   version "5.6.1"
   resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.6.1.tgz#5ab75c2185b5f64e78c70e1d0a5cbf56c9c1c8e9"
   integrity sha512-pu7ajDLJfW9oMVfzK6DKkhuaayRiCEZLfB6Be+wbL9joWrzMCZkc0tA3KxET7TGSO98d4NpjjmbEg2IsjT8Alw==
+
+"@mantine/utils@5.8.0":
+  version "5.8.0"
+  resolved "https://registry.yarnpkg.com/@mantine/utils/-/utils-5.8.0.tgz#daa5a0d88324fdd637971d6c3a0f7e7af4f57985"
+  integrity sha512-gVE4U3apoE53MUWgKqst9H0iWgurzBccZNSSGRv3kD62vAFcI1JJhxxuW7X271bc9IMhKjgezEH14ApH1jlwCA==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -1867,6 +1843,11 @@
   integrity sha512-6Tpkq+R6LOlmQb1R5NNETLG0B4YP0wc+klfXafpUCj6JGyaUc8il7/kUZ7m59rGbXGczE9Bs+iz2qloqsZBduQ==
   dependencies:
     "@babel/runtime" "^7.13.10"
+
+"@remix-run/router@1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.0.3.tgz#953b88c20ea00d0eddaffdc1b115c08474aa295d"
+  integrity sha512-ceuyTSs7PZ/tQqi19YZNBc5X7kj1f8p+4DIyrcIYFY9h+hd1OKm4RqtiWldR9eGEvIiJfsqwM4BsuCtRIuEw6Q==
 
 "@rushstack/eslint-patch@^1.1.0":
   version "1.1.4"
@@ -2798,7 +2779,7 @@
   resolved "https://registry.yarnpkg.com/@tabler/icons/-/icons-1.96.0.tgz#ff3cb1a5ddc38b96f54a54b9c0b5e1ed88c24da7"
   integrity sha512-ZAQ64CHi5sOFQE7COoBmZbhIBtTX+4XNuiVZsr8kcqJX1bmrw6dFU0W9ONJamt/2TO997uVfSqxr2o0WZqZr/g==
 
-"@tauri-apps/api@1.0.2", "@tauri-apps/api@^1.0.2":
+"@tauri-apps/api@1.0.2":
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.0.2.tgz#5228720e35d50fd08df87067dc29e7306c1f7a10"
   integrity sha512-yuNW0oeJ1/ZA7wNF1KgxhHrSu5viPVzY/UgUczzN5ptLM8dH15Juy5rEGkoHfeXGju90Y/l22hi3BtIrp/za+w==
@@ -2807,6 +2788,11 @@
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.1.0.tgz#2c5756f6aeecd36f7683183eaba021690711bedf"
   integrity sha512-n13pIqdPd3KtaMmmAcrU7BTfdMtIlGNnfZD0dNX8L4p8dgmuNyikm6JAA+yCpl9gqq6I8x5cV2Y0muqdgD0cWw==
+
+"@tauri-apps/api@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@tauri-apps/api/-/api-1.2.0.tgz#1f196b3e012971227f41b98214c846430a4eb477"
+  integrity sha512-lsI54KI6HGf7VImuf/T9pnoejfgkNoXveP14pVV7XarrQ46rOejIVJLFqHI9sRReJMGdh2YuCoI3cc/yCWCsrw==
 
 "@tauri-apps/cli-darwin-arm64@1.1.1":
   version "1.1.1"
@@ -6204,6 +6190,21 @@ react-refresh@^0.14.0:
   version "0.14.0"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.14.0.tgz#4e02825378a5f227079554d4284889354e5f553e"
   integrity sha512-wViHqhAd8OHeLS/IRMJjTSDHF3U9eWi62F/MledQGPdJGDhodXJ9PBLNGr6WWL7qlH12Mt3TyTpbS+hGXMjCzQ==
+
+react-router-dom@^6.4.3:
+  version "6.4.3"
+  resolved "https://registry.yarnpkg.com/react-router-dom/-/react-router-dom-6.4.3.tgz#70093b5f65f85f1df9e5d4182eb7ff3a08299275"
+  integrity sha512-MiaYQU8CwVCaOfJdYvt84KQNjT78VF0TJrA17SIQgNHRvLnXDJO6qsFqq8F/zzB1BWZjCFIrQpu4QxcshitziQ==
+  dependencies:
+    "@remix-run/router" "1.0.3"
+    react-router "6.4.3"
+
+react-router@6.4.3, react-router@^6.4.3:
+  version "6.4.3"
+  resolved "https://registry.yarnpkg.com/react-router/-/react-router-6.4.3.tgz#9ed3ee4d6e95889e9b075a5d63e29acc7def0d49"
+  integrity sha512-BT6DoGn6aV1FVP5yfODMOiieakp3z46P1Fk0RNzJMACzE7C339sFuHebfvWtnB4pzBvXXkHP2vscJzWRuUjTtA==
+  dependencies:
+    "@remix-run/router" "1.0.3"
 
 react-segment-analytics@^2.0.0:
   version "2.0.0"

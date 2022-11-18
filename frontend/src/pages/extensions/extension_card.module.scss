@@ -1,0 +1,24 @@
+$img-dim: 30px;
+
+.extensionCard {
+  display: flex;
+  gap: var(--mantine-spacing-md);
+  border: 1px solid var(--mantine-color-dark-4);
+  padding: var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-lg);
+
+  .image {
+    width: $img-dim;
+  }
+
+  .description {
+    font-size: var(--mantine-font-size-xs);
+    color: var(--mantine-color-dark-3);
+    margin-bottom: var(--mantine-spacing-sm);
+  }
+}
+
+.actions {
+  display: flex;
+  gap: var(--mantine-spacing-md);
+}

@@ -3,9 +3,10 @@
 import { register } from '@tauri-apps/api/globalShortcut';
 import { appWindow } from '@tauri-apps/api/window';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Segment from 'react-segment-analytics';
 
-import App from './App';
+import App from './app';
 import { ThemeProvider } from './config';
 
 import './index.css';
@@ -21,9 +22,13 @@ try {
 }
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <ThemeProvider>
-    <Segment writeKey={import.meta.env.DEV ? '12345' : import.meta.env.VITE_SEGMENT_KEY}>
-      <App />
-    </Segment>
-  </ThemeProvider>,
+  <Router>
+    <ThemeProvider>
+      <Segment writeKey={import.meta.env.DEV ? '12345' : import.meta.env.VITE_SEGMENT_KEY}>
+        <Routes>
+          <Route path="*" element={<App />} />
+        </Routes>
+      </Segment>
+    </ThemeProvider>
+  </Router>,
 );

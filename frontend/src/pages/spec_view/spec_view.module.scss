@@ -6,13 +6,13 @@
   display: flex;
   width: 100%;
   height: 100%;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
 }
 
 .specView {
   width: 800px;
-  height: 600px;
+  height: 661px;
   background: var(--mantine-color-dark-7);
   border-radius: var(--mantine-radius-lg);
 }

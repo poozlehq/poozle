@@ -15,6 +15,18 @@ pub fn commands_list() -> String {
     serialized
 }
 
+pub fn get_command_from_id(extension_id: String, command_key: String) -> String {
+    let connection = &mut db::establish_connection();
+    println!("{}", extension_id);
+    println!("{}", command_key);
+    let command = commands::dsl::commands
+        .filter(commands::extension_id.eq(extension_id.as_str()).and(commands::key.eq(command_key.as_str())))
+        .load::<Command>(connection)
+        .expect("Command not found");
+    let serialized = serde_json::to_string(&command).unwrap();
+    serialized
+}
+
 pub fn create_command(new_command: NewCommand) -> String {
     let connection = &mut db::establish_connection();
 

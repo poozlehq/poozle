@@ -7,6 +7,15 @@ export async function getCommandsFromBackend(): Promise<string> {
   return await invoke('get_all_commands');
 }
 
+export async function getCommandDataFromBackend(
+  extensionId: string,
+  commandKey: string,
+): Promise<string> {
+  const data = await invoke('get_command', { extensionId, commandKey });
+  console.log(data);
+  return data as string;
+}
+
 // Create commands in the database
 export async function createCommands(spec: ExtensionSpec) {
   return Promise.all(

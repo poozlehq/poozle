@@ -4,19 +4,19 @@ import { Chip } from '@mantine/core';
 import { SpotlightAction } from '@mantine/spotlight';
 import { Image } from '@poozle/edk';
 import { WebviewWindow } from '@tauri-apps/api/window';
-import { useCallback, useContext, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSegmentPage } from 'react-segment-analytics';
 
+import { Footer } from 'components/footer';
 import Spotlight from 'components/spotlight';
 import { CustomAction } from 'components/spotlight/CustomAction';
 
-import { CommandsContext } from 'context/commands_context';
-import { Command } from 'types/common';
 import { registerAppWindow } from 'utils/application';
 import { capitalizeFirstLetter } from 'utils/common';
 
+import { Command } from 'types/common';
+
 import styles from './search.module.scss';
-import SearchFooter from './search_footer';
 import { DEFAULT_ACTIONS, SPOTLIGHT_GROUPS } from './search_helper';
 
 interface Extension {
@@ -28,11 +28,10 @@ interface Extension {
 
 interface Props {
   onCommandSelect: (command: Command) => void;
-  resetCommand: () => void;
+  commands: Command[];
 }
 
-export const Search = ({ onCommandSelect, resetCommand }: Props) => {
-  const allCommands = useContext(CommandsContext);
+export const Search = ({ onCommandSelect, commands: allCommands }: Props) => {
   const [selectedExtension, selectExtension] = useState<Extension | undefined>(undefined);
   const [query, setQuery] = useState('');
   const page = useSegmentPage();
@@ -47,12 +46,13 @@ export const Search = ({ onCommandSelect, resetCommand }: Props) => {
         }
       });
     }
-  }, [resetCommand, selectedExtension]);
+  }, [selectedExtension]);
 
   useEffect(() => {
     page('Command Search Page');
   }, [page]);
 
+  // TODO (harshith) move these into services
   const getAllExtensions = useCallback((): Extension[] => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const allExtensions: Record<string, any> = {};
@@ -135,7 +135,7 @@ export const Search = ({ onCommandSelect, resetCommand }: Props) => {
           }
           actionComponent={CustomAction}
         />
-        <SearchFooter />
+        <Footer />
       </div>
     </div>
   );

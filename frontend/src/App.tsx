@@ -2,30 +2,31 @@
 
 import { appWindow } from '@tauri-apps/api/window';
 import { useEffect, useState } from 'react';
-import { useSegmentTrack } from 'react-segment-analytics';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import { getAllCommands } from 'service/extension';
+
+import { LoaderWithHeader } from 'components';
+
+import { CommandView } from 'pages/command_view';
+import { ErrorPage } from 'pages/error';
+import { Extensions } from 'pages/extensions';
+import { Search } from 'pages/search';
+import SpecView from 'pages/spec_view/spec_view';
+
+import { CommandsContext } from 'context/commands_context';
 
 import { Command as CommandType } from 'types/common';
 
 import styles from './App.module.scss';
-import { CommandContext } from './context/command_context';
-import { CommandsContext } from './context/commands_context';
-import { getAllCommands } from './utils/extension';
-import CommandView from './views/command_view/command_view';
-import { Search } from './views/search';
 
 const App = () => {
   const [commands, setCommands] = useState<CommandType[]>([]);
-  const [currentCommand, setCurrentCommand] = useState<CommandType>();
-  const track = useSegmentTrack();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getCommands();
     registerForBlur();
   }, []);
-
-  const resetCommand = () => {
-    setCurrentCommand(undefined);
-  };
 
   const registerForBlur = async () => {
     // Close the window when tauri is blurred
@@ -40,22 +41,27 @@ const App = () => {
   }
 
   const onCommandSelect = (command: CommandType) => {
-    track('Selected Command', {
-      command,
-    });
-    setCurrentCommand(command);
+    navigate(`/command/${command.extension_id}/${command.key}`);
   };
 
   return (
     <div className={styles.app}>
-      <CommandsContext.Provider value={commands}>
-        {currentCommand ? (
-          <CommandContext.Provider value={currentCommand}>
-            <CommandView command={currentCommand} resetCommand={resetCommand} />
-          </CommandContext.Provider>
-        ) : (
-          <Search onCommandSelect={onCommandSelect} resetCommand={resetCommand} />
-        )}
+      <CommandsContext.Provider
+        value={{
+          refetchCommands: getCommands,
+          commands,
+        }}
+      >
+        <Routes>
+          <Route
+            path="/search"
+            element={<Search onCommandSelect={onCommandSelect} commands={commands} />}
+          />
+          <Route path="/spec/:extensionId/:commandId" element={<SpecView />} />
+          <Route path="/command/:extensionId/:commandId" element={<CommandView />} />
+          <Route path="/extensions" element={<Extensions />} />
+          <Route path="*" element={<ErrorPage />} />
+        </Routes>
       </CommandsContext.Provider>
     </div>
   );

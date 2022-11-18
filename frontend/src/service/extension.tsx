@@ -2,9 +2,13 @@
 
 import { ExtensionSpec } from '@poozle/edk';
 import { BaseDirectory, readTextFile } from '@tauri-apps/api/fs';
+import { appDir, join } from '@tauri-apps/api/path';
+import { convertFileSrc } from '@tauri-apps/api/tauri';
+import React from 'react';
 import {
   createCommands,
   deleteCommandsForExtension,
+  getCommandDataFromBackend,
   getCommandsFromBackend,
   getExtensionSpecDataFromBackend,
   setExtensionSpecDataInBackend,
@@ -18,11 +22,16 @@ const indexViewFile = 'index.js';
 
 const extensionRemoteURL = 'https://raw.githubusercontent.com/poozlehq/extensions/main/';
 
-export async function getImage(extension_id: string): Promise<string> {
-  const contents = await fetch(`${extensionRemoteURL}/icons/${extension_id}.svg`).then((res) =>
+export async function getImage(extensionId: string): Promise<string> {
+  const contents = await fetch(`${extensionRemoteURL}/icons/${extensionId}.svg`).then((res) =>
     res.text(),
   );
   return contents;
+}
+
+export async function getCommandData(extensionId: string, commandKey: string): Promise<Command> {
+  const response = await getCommandDataFromBackend(extensionId, commandKey);
+  return JSON.parse(response) as Command;
 }
 
 export async function getAllCommands(): Promise<Command[]> {
@@ -37,10 +46,7 @@ export async function getAllCommands(): Promise<Command[]> {
     );
   }
 
-  // This is called when commands don't exist in the database
-  await prefillCommands();
-
-  return await getAllCommands();
+  return [];
 }
 
 export async function getExtensionSpec(extensionId: string): Promise<ExtensionSpec> {
@@ -61,11 +67,36 @@ export async function getExtensionMapping() {
   return JSON.parse(mapping) as ExtensionMapping;
 }
 
+// React util for the above function
+export const useCurrentExtensions = () => {
+  const [loading, setLoading] = React.useState(true);
+  const [currentExtensions, setCurrentExtensions] = React.useState<ExtensionMapping>({});
+
+  const fetchData = async () => {
+    try {
+      const currentExtensionMap = await getExtensionMapping();
+      setCurrentExtensions(currentExtensionMap);
+    } catch (error) {
+      setCurrentExtensions({});
+    }
+    setLoading(false);
+  };
+
+  React.useEffect(() => {
+    setLoading(true);
+    fetchData();
+  }, []);
+
+  return { currentExtensions, loading, refetch: fetchData };
+};
+
 export async function getExtensionViewURL(extensionId: string) {
   const mapping = await getExtensionMapping();
   const currentVersion = mapping[extensionId].currentVersion;
-
-  return `${extensionRemoteURL}/${extensionId}/${currentVersion}/${indexViewFile}`;
+  const dataDirPath = await appDir();
+  const filePath = await join(dataDirPath, `${extensionId}/${indexViewFile}`);
+  const assetUrl = convertFileSrc(filePath);
+  return assetUrl;
 }
 
 export async function getExtensionSpecData(extensionId: string) {

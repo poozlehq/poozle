@@ -1,59 +1,48 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { ExtensionSpec, ExtensionSpecDataType } from '@poozle/edk';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useCommand } from 'service/command_helper';
+import { getExtensionSpec, getExtensionSpecData } from 'service/extension';
+import { useCommandInformation } from 'service/location_helper';
 
 import { LoaderWithHeader } from 'components';
 
-import { Command } from 'types/common';
-import { getExtensionSpec, getExtensionSpecData } from 'utils/extension';
-
-import { SpecContext } from '../context/spec_context';
-import SpecView from '../views/spec_view/spec_view';
-
-interface Props {
-  command: Command;
-  resetCommand: () => void;
-}
+import { CommandsContext } from 'context/commands_context';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function specChecker(Component: React.FC<any>) {
-  return (props: Props) => {
-    const { command, resetCommand } = props;
+  return () => {
     const [loading, setLoading] = useState(true);
-    const [specData, setSpecData] = useState<ExtensionSpecDataType | undefined>(undefined);
-    const [spec, setSpec] = useState<ExtensionSpec | undefined>(undefined);
+    const { extensionId, commandKey } = useCommandInformation();
+    const navigate = useNavigate();
+    const { commands } = useContext(CommandsContext);
+    const command = useCommand(commands, extensionId, commandKey);
 
-    const getSpecData = useCallback(async () => {
+    // If spec.length not 0 and specData is not found in the data this
+    // navigates to the SpecView page
+    const getPreData = useCallback(async () => {
       try {
         const spec = await getExtensionSpec(command.extension_id);
-        setSpec(spec);
         const specData = await getExtensionSpecData(command.extension_id);
-        setSpecData(specData);
+        if (!specData && spec?.inputBlocks.length > 0) {
+          navigate(`/spec/${extensionId}/${commandKey}`);
+        }
       } catch (e) {
         console.log(e);
-        setSpecData(undefined);
+        navigate(`/spec/${extensionId}/${commandKey}`);
       }
       setLoading(false);
-    }, [command.extension_id]);
+    }, [command.extension_id, commandKey, extensionId, navigate]);
 
     useEffect(() => {
-      getSpecData();
-    }, [getSpecData]);
+      getPreData();
+    }, [getPreData]);
 
-    if (loading || !spec) {
+    if (loading) {
       return <LoaderWithHeader />;
     }
 
-    // If input is not needed for the extension don't show spec view.
-    if (!specData && spec?.inputBlocks.length > 0) {
-      return <SpecView command={command} getSpecData={getSpecData} resetCommand={resetCommand} />;
-    }
-
-    return (
-      <SpecContext.Provider value={specData}>
-        <Component {...props} />
-      </SpecContext.Provider>
-    );
+    return <Component />;
   };
 }

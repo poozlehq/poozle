@@ -1,23 +1,21 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { ExtensionSpecDataType } from '@poozle/edk';
-import { useCallback, useEffect, useState } from 'react';
-import { useSegmentPage } from 'react-segment-analytics';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { useCommand } from 'service/command_helper';
+import { getExtensionSpec, getExtensionSpecData, getExtensionViewURL } from 'service/extension';
+import { useCommandInformation } from 'service/location_helper';
 
 import { LoaderWithHeader } from 'components';
 
-import { Command } from 'types/common';
-import { getExtensionSpec, getExtensionSpecData, getExtensionViewURL } from 'utils/extension';
 import { specChecker } from 'wrapper/spec_checker';
+
+import { CommandsContext } from 'context/commands_context';
 
 import { RemoteComponent } from '../../RemoteComponent';
 import CommandFooter from './command_footer';
 import styles from './command_view.module.scss';
-
-interface Props {
-  command: Command;
-  resetCommand: () => void;
-}
 
 export interface AppProps {
   commandKey: string;
@@ -25,11 +23,14 @@ export interface AppProps {
   specData: ExtensionSpecDataType;
 }
 
-const CommandView = ({ command, resetCommand }: Props) => {
+const CommandViews = () => {
+  const { extensionId, commandKey } = useCommandInformation();
+  const { commands } = useContext(CommandsContext);
+  const command = useCommand(commands, extensionId, commandKey);
+  const navigate = useNavigate();
   const [componentViewURL, setComponentViewURL] = useState<string | undefined>();
   const [specData, setSpecData] = useState<ExtensionSpecDataType | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(false);
-  const page = useSegmentPage();
 
   const getSpecData = useCallback(async () => {
     const spec = await getExtensionSpec(command.extension_id);
@@ -38,10 +39,6 @@ const CommandView = ({ command, resetCommand }: Props) => {
       setSpecData(specData);
     }
   }, [command.extension_id]);
-
-  useEffect(() => {
-    page('Command View Page');
-  }, [page]);
 
   const getCommandView = useCallback(async () => {
     setLoading(true);
@@ -60,6 +57,10 @@ const CommandView = ({ command, resetCommand }: Props) => {
   if (loading || !componentViewURL) {
     return <LoaderWithHeader />;
   }
+
+  const resetCommand = () => {
+    navigate('/search');
+  };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const CommandViewComponent = (props: any) => (
@@ -92,4 +93,4 @@ const CommandView = ({ command, resetCommand }: Props) => {
   );
 };
 
-export default specChecker(CommandView);
+export const CommandView = specChecker(CommandViews);

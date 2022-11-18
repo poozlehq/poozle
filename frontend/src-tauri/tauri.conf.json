@@ -22,7 +22,7 @@
       "http": {
         "all": true,
         "request": true,
-        "scope": [ "https://**" ]
+        "scope": [ "https://**", "asset://**" ]
       },
       "globalShortcut": {
         "all": true
@@ -53,6 +53,11 @@
             "cmd": "sh",
             "args": [ { "validator": "\\S+" } ]
           } ]
+      },
+      "protocol": {
+        "all": true,
+        "asset": true,
+        "assetScope": ["**"]
       }
     },
     "bundle": {
@@ -89,7 +94,7 @@
       }
     },
     "security": {
-      "csp": null
+      "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost"
     },
     "updater": {
       "active": false,
@@ -107,7 +112,7 @@
     "windows": [
       {
         "label": "main",
-        "url": "/main",
+        "url": "/search",
         "fullscreen": false,
         "transparent": true,
         "resizable": false,
