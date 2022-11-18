@@ -5,8 +5,6 @@ import { useEffect, useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { getAllCommands } from 'service/extension';
 
-import { LoaderWithHeader } from 'components';
-
 import { CommandView } from 'pages/command_view';
 import { ErrorPage } from 'pages/error';
 import { Extensions } from 'pages/extensions';

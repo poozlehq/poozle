@@ -21,7 +21,7 @@ export const Header = ({ onClose }: HeaderProps): React.ReactElement => {
 
       <div>
         <Button variant="light" size="xs" radius="md">
-          <IconPlus size={12} /> Add extension
+          <IconPlus size={12} /> Add custom extension
         </Button>
       </div>
     </div>

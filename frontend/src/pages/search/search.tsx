@@ -3,7 +3,7 @@
 import { Chip } from '@mantine/core';
 import { SpotlightAction } from '@mantine/spotlight';
 import { Image } from '@poozle/edk';
-import { WebviewWindow } from '@tauri-apps/api/window';
+import { appWindow, WebviewWindow } from '@tauri-apps/api/window';
 import { useCallback, useEffect, useState } from 'react';
 import { useSegmentPage } from 'react-segment-analytics';
 
@@ -18,6 +18,7 @@ import { Command } from 'types/common';
 
 import styles from './search.module.scss';
 import { DEFAULT_ACTIONS, SPOTLIGHT_GROUPS } from './search_helper';
+import { useHotkeys } from '@mantine/hooks';
 
 interface Extension {
   title: string;
@@ -36,17 +37,19 @@ export const Search = ({ onCommandSelect, commands: allCommands }: Props) => {
   const [query, setQuery] = useState('');
   const page = useSegmentPage();
 
-  useEffect(() => {
-    if (document) {
-      registerAppWindow((appWindow: WebviewWindow) => {
+  useHotkeys([
+    [
+      'Esc',
+      () => {
+        console.log('here');
         if (selectedExtension) {
           selectExtension(undefined);
         } else {
           appWindow.hide();
         }
-      });
-    }
-  }, [selectedExtension]);
+      },
+    ],
+  ]);
 
   useEffect(() => {
     page('Command Search Page');

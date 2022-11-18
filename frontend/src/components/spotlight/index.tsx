@@ -75,8 +75,8 @@ const SpotlightComponent = ({
       centered={false}
       searchIcon={searchIcon}
       prefixInputComponent={prefixInputComponent}
-      onClose={function (): void {
-        throw new Error('Function not implemented.');
+      onClose={() => {
+        return null;
       }}
       query={query}
       onQueryChange={function (query: string): void {
