@@ -3,4 +3,9 @@
 import { Command } from '@poozle/edk';
 import { createContext } from 'react';
 
-export const CommandsContext = createContext<Command[]>([]);
+interface CommandsContextType {
+  refetchCommands(): void;
+  commands: Command[];
+}
+
+export const CommandsContext = createContext<CommandsContextType>([]);

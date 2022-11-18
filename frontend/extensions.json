@@ -1,0 +1,22 @@
+{
+  "extensions": [
+    {
+      "version": "0.1.2",
+      "name": "Generator",
+      "key": "generator",
+      "icon": "generator.svg"
+    },
+    {
+      "version": "0.1.2",
+      "name": "Github",
+      "key": "github",
+      "icon": "github.svg"
+    },
+    {
+      "version": "0.1.2",
+      "name": "Jira",
+      "key": "jira",
+      "icon": "jira.svg"
+    }
+  ]
+}

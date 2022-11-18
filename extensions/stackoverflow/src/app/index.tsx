@@ -16,7 +16,7 @@ const App = ({ commandKey, specData, resetCommand }: AppProps): React.ReactEleme
           withGlobalStyles
           withNormalizeCSS
         >
-          <Search specData={specData} resetCommand={resetCommand} />;
+          <Search specData={specData} resetCommand={resetCommand} />
         </MantineProvider>
       );
   }

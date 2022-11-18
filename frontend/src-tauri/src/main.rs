@@ -30,13 +30,10 @@ fn main() {
         .system_tray(SystemTray::new().with_menu(system_tray::get_system_tray_menu()))
         .on_system_tray_event(system_tray::on_system_tray_event)
         .invoke_handler(tauri::generate_handler![
-            command::cli::command_controller,
-            command::cli::get_action_data,
-            command::cli::fetch_data_for_id,
-            command::cli::spec_controller,
             // Below are commands to fetch data from database
             command::commands::get_all_commands,
             command::commands::create_command,
+            command::commands::get_command,
             command::commands::delete_commands,
             command::commands::save_spec,
             command::commands::get_spec,

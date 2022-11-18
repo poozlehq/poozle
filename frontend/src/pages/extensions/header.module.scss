@@ -1,0 +1,12 @@
+/*
+ * Copyright (c) 2022, Poozle, all rights reserved.
+ */
+
+.header {
+  border-bottom: 1px solid var(--mantine-color-dark-4);
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding-right: var(--mantine-spacing-md);
+}

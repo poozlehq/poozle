@@ -1,0 +1,26 @@
+/*
+ * Copyright (c) 2022, Poozle, all rights reserved.
+ */
+
+.mainContainer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  height: 100%;
+}
+
+.basicContainer {
+  height: 661px;
+  width: 100%;
+  position: relative !important;
+  display: flex;
+  flex-direction: column;
+  background: var(--mantine-color-dark-7) !important;
+  border-radius: var(--mantine-radius-lg);
+}
+
+.content {
+  padding: var(--mantine-spacing-md);
+  overflow: auto;
+  flex: 1;
+}

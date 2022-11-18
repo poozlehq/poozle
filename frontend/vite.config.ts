@@ -16,6 +16,7 @@ export default defineConfig({
       wrapper: path.resolve(__dirname, './src/wrapper'),
       types: path.resolve(__dirname, './src/types'),
       service: path.resolve(__dirname, './src/service'),
+      pages: path.resolve(__dirname, './src/pages'),
     },
   },
   plugins: [react()],

@@ -1,18 +1,27 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { ActionIcon, Menu, ThemeIcon } from '@mantine/core';
-import { IconSettings } from '@tabler/icons';
+import { IconArchive, IconSettings } from '@tabler/icons';
+import { useNavigate } from 'react-router-dom';
 
 import logoURL from '../../icons/icon.png';
-import styles from './search_footer.module.scss';
+import styles from './footer.module.scss';
 
-const SearchFooter = () => {
+interface FooterProps {
+  title?: string;
+}
+
+export const Footer = ({ title }: FooterProps) => {
+  const navigate = useNavigate();
+
   return (
     <div className={styles.footer}>
       <div className={styles.icon}>
         <ThemeIcon variant="filled">
           <img src={logoURL} alt="logo" />
         </ThemeIcon>
+
+        {title && <div className={styles.title}>{title}</div>}
       </div>
 
       <div>
@@ -25,12 +34,12 @@ const SearchFooter = () => {
 
           <Menu.Dropdown>
             <Menu.Label>Application</Menu.Label>
-            <Menu.Item icon={<IconSettings size={14} />}>Settings</Menu.Item>
+            <Menu.Item icon={<IconArchive size={16} />} onClick={() => navigate('/extensions')}>
+              Extensions
+            </Menu.Item>
           </Menu.Dropdown>
         </Menu>
       </div>
     </div>
   );
 };
-
-export default SearchFooter;

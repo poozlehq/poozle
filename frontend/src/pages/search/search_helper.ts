@@ -14,7 +14,7 @@ export const DEFAULT_ACTIONS: SpotlightAction[] = [
     title: 'Search Google',
     description: 'Search the text on google',
     image: 'https://raw.githubusercontent.com/poozlehq/extensions/main/icons/google.svg',
-    group: SPOTLIGHT_GROUPS.EXTENSIONS,
+    group: SPOTLIGHT_GROUPS.COMMANDS,
     type: 'Command',
     default: true,
     onTrigger: (_action: SpotlightAction, text: string) => {

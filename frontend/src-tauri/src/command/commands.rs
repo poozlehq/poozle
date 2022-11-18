@@ -73,6 +73,11 @@ pub fn delete_commands(extension_id: String) {
 }
 
 #[tauri::command]
+pub fn get_command(extension_id: String, command_key: String) {
+    db::query::get_command_from_id(extension_id, command_key);
+}
+
+#[tauri::command]
 pub fn save_spec(spec: String, extension_id: String) {
     let new_spec = NewSpec {
         data: spec.as_str(),

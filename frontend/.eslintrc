@@ -60,7 +60,17 @@
             "group": "internal"
           },
           {
-            "pattern": "+(assets|components|context|services|theme|types|ui|utils|views|wrapper){/**,}",
+            "pattern": "+(assets|pages|wrapper){/**,}",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "+(assets|context|services|theme|ui|utils){/**,}",
+            "group": "internal",
+            "position": "after"
+          },
+          {
+            "pattern": "+(types){/**,}",
             "group": "internal",
             "position": "after"
           }
