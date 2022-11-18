@@ -2,7 +2,7 @@
  * Copyright (c) 2022, Poozle, all rights reserved.
  */
 
- .footer {
+.footer {
   margin: 0 !important;
   border-top: 1px solid var(--mantine-color-dark-4);
   padding: var(--mantine-spacing-md);
@@ -29,7 +29,17 @@
   }
 }
 
-.title{
+.title {
   font-size: var(--mantine-font-size-md);
   color: var(--mantine-color-dark-0);
+}
+
+.rightActions {
+  display: flex;
+  align-items: center;
+  gap: var(--mantine-spacing-md);
+}
+
+.kbd {
+  font-size: var(--mantine-font-size-xs);
 }
