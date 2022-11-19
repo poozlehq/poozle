@@ -1,8 +1,8 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { ExtensionSpec } from '@poozle/edk';
+import { ExtensionSpec, ExtensionSpecDataType } from '@poozle/edk';
 import { BaseDirectory, readTextFile } from '@tauri-apps/api/fs';
-import { appDir, join } from '@tauri-apps/api/path';
+import { appConfigDir, appDir, join } from '@tauri-apps/api/path';
 import { convertFileSrc } from '@tauri-apps/api/tauri';
 import React from 'react';
 import {
@@ -12,6 +12,7 @@ import {
   getCommandsFromBackend,
   getExtensionSpecDataFromBackend,
   setExtensionSpecDataInBackend,
+  updateExtensionSpecDataInBackend,
 } from 'service/backend';
 
 import { Command, ExtensionMapping } from 'types/common';
@@ -50,13 +51,11 @@ export async function getAllCommands(): Promise<Command[]> {
 }
 
 export async function getExtensionSpec(extensionId: string): Promise<ExtensionSpec> {
-  const mapping = await getExtensionMapping();
-  const currentVersion = mapping[extensionId].currentVersion;
-  const contents: ExtensionSpec = await fetch(
-    `${extensionRemoteURL}/${extensionId}/${currentVersion}/${specFileName}`,
-  ).then((res) => res.json());
+  const mappingContent = await readTextFile(`${extensionId}/${specFileName}`, {
+    dir: BaseDirectory.App,
+  });
 
-  return contents;
+  return JSON.parse(mappingContent) as ExtensionSpec;
 }
 
 export async function getExtensionMapping() {
@@ -91,10 +90,8 @@ export const useCurrentExtensions = () => {
 };
 
 export async function getExtensionViewURL(extensionId: string) {
-  const mapping = await getExtensionMapping();
-  const currentVersion = mapping[extensionId].currentVersion;
-  const dataDirPath = await appDir();
-  const filePath = await join(dataDirPath, `${extensionId}/${indexViewFile}`);
+  const appPath = await appConfigDir();
+  const filePath = await join(appPath, `${extensionId}/${indexViewFile}`);
   const assetUrl = convertFileSrc(filePath);
   return assetUrl;
 }
@@ -102,8 +99,34 @@ export async function getExtensionViewURL(extensionId: string) {
 export async function getExtensionSpecData(extensionId: string) {
   return await getExtensionSpecDataFromBackend(extensionId);
 }
+
+export const useSpecData = (extensionKey: string) => {
+  const [loading, setLoading] = React.useState(true);
+  const [specData, setSpecData] = React.useState<ExtensionSpecDataType | undefined>(undefined);
+  const fetchData = React.useCallback(async () => {
+    try {
+      const specData = await getExtensionSpecData(extensionKey);
+      setSpecData(specData);
+    } catch (error) {
+      setSpecData(undefined);
+    }
+    setLoading(false);
+  }, [extensionKey]);
+
+  React.useEffect(() => {
+    setLoading(true);
+    fetchData();
+  }, [fetchData]);
+
+  return { loading, specData };
+};
+
 export async function setExtensionSpecData(extensionId: string, data: string) {
   return await setExtensionSpecDataInBackend(extensionId, data);
+}
+
+export async function updateExtensionSpecData(extensionId: string, data: string, id: number) {
+  return await updateExtensionSpecDataInBackend(extensionId, data, id);
 }
 
 export async function refetchCommandsForExtension(extensionId: string) {

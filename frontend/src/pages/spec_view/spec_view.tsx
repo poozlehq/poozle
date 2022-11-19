@@ -37,12 +37,10 @@ const SpecView = () => {
         <div className={styles.logo} />
 
         <div className={styles.form}>
-          <div className={styles.innerContainer}>
-            {spec && (
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              <Form blocks={spec.inputBlocks as any} onSubmit={onSubmit} />
-            )}
-          </div>
+          {spec && (
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            <Form blocks={spec.inputBlocks as any} onSubmit={onSubmit} />
+          )}
         </div>
       </div>
     </div>

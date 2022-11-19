@@ -1734,10 +1734,10 @@
   resolved "https://registry.yarnpkg.com/@paciolan/remote-module-loader/-/remote-module-loader-3.0.2.tgz#e07a24d5c8e80b6e02f978f9dc3290d5382aa559"
   integrity sha512-1mL9xTkdp/M1TlRBYWsK5k8Lo7ErpWGkxTlMg1oqEnEn/lSNLqRR7Ah2QK9dGjQnxiKlQ+TkJk9gg21A7Y1W0w==
 
-"@poozle/edk@^0.1.47":
-  version "0.1.47"
-  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.47.tgz#e64b5c5b9705f5e5456a472184478d1b49b2b70a"
-  integrity sha512-OF/+fmB+2MRr6cKrAsRZqJ3SMqzD3TVMrPDCUQmGBsrk04RCzVwj+cHdoSbMsa9+1kMaJsv40w4oAGlh4h3vZQ==
+"@poozle/edk@^0.1.48":
+  version "0.1.48"
+  resolved "https://registry.yarnpkg.com/@poozle/edk/-/edk-0.1.48.tgz#ac0e8457f2b7523c1b3674daa578c766415dc62d"
+  integrity sha512-sN+52AvOWdUdpvdWGwpGkx9ZxZJ1lMc5CT508OkYZdA5oyHJ0rFK+62ed4NJjmQJOZ3Hk//1+Nfr37eAoLUADA==
   dependencies:
     "@emotion/react" "^11.10.4"
     "@mantine/core" "^5.4.1"

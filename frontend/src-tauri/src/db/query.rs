@@ -4,6 +4,8 @@ use crate::schema::*;
 use diesel::prelude::*;
 
 use super::models::NewSpec;
+use super::models::UpdateSpec;
+
 use super::models::{Command, NewCommand};
 
 pub fn commands_list() -> String {
@@ -52,6 +54,20 @@ pub fn create_spec(new_spec: NewSpec) -> String {
 
     let authentication_details = diesel::insert_into(spec::table)
         .values(&new_spec)
+        .execute(connection)
+        .expect("Error saving new authentication details");
+    let spec_json = serde_json::to_string(&authentication_details).unwrap();
+    spec_json
+}
+
+pub fn update_spec(new_spec: UpdateSpec) -> String {
+    let connection = &mut db::establish_connection();
+
+    let authentication_details = diesel::insert_into(spec::table)
+        .values(&new_spec)
+        .on_conflict(spec::id)
+        .do_update()
+        .set(&new_spec)
         .execute(connection)
         .expect("Error saving new authentication details");
     let spec_json = serde_json::to_string(&authentication_details).unwrap();

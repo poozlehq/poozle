@@ -1,6 +1,6 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { register } from '@tauri-apps/api/globalShortcut';
+import { registerAll } from '@tauri-apps/api/globalShortcut';
 import { appWindow } from '@tauri-apps/api/window';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -13,7 +13,7 @@ import './index.css';
 
 // Register commands
 try {
-  register('Cmd+L', async () => {
+  registerAll(['Cmd+L', 'Ctrl+L'], async () => {
     await appWindow.show();
     await appWindow.setFocus();
   });

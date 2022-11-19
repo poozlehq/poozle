@@ -97,6 +97,9 @@ export interface InnerSpotlightProps
 
   /** The highlight color */
   highlightColor?: MantineColor;
+
+  /** trigger on keypress */
+  onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 interface SpotlightProps extends InnerSpotlightProps {
@@ -137,6 +140,7 @@ export const Spotlight = ({
   limit = 100,
   actionComponent = DefaultAction,
   actionsWrapperComponent: ActionsWrapper = 'div',
+  onKeyPress,
   zIndex = getDefaultZIndex('max'),
   ...others
 }: SpotlightProps) => {
@@ -201,7 +205,14 @@ export const Spotlight = ({
       case 'Escape': {
         event.preventDefault();
         handleClose();
+        break;
       }
+
+      default:
+        if (onKeyPress) {
+          onKeyPress(event);
+        }
+        break;
     }
   };
 

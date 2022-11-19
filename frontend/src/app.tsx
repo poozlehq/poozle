@@ -15,7 +15,8 @@ import { CommandsContext } from 'context/commands_context';
 
 import { Command as CommandType } from 'types/common';
 
-import styles from './App.module.scss';
+import styles from './app.module.scss';
+import { UpdateCredentials } from 'pages/extensions/pages/update_credentials';
 
 const App = () => {
   const [commands, setCommands] = useState<CommandType[]>([]);
@@ -58,6 +59,7 @@ const App = () => {
           <Route path="/spec/:extensionId/:commandId" element={<SpecView />} />
           <Route path="/command/:extensionId/:commandId" element={<CommandView />} />
           <Route path="/extensions" element={<Extensions />} />
+          <Route path="/extensions/:extensionId" element={<UpdateCredentials />} />
           <Route path="*" element={<ErrorPage />} />
         </Routes>
       </CommandsContext.Provider>

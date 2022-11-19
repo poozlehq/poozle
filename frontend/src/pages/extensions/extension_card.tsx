@@ -1,5 +1,5 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
-import { Grid, Text } from '@mantine/core';
+import { ActionIcon, Grid, Text } from '@mantine/core';
 import { Button } from '@poozle/edk';
 import { useContext } from 'react';
 import {
@@ -11,6 +11,8 @@ import {
 import { CommandsContext } from 'context/commands_context';
 
 import styles from './extension_card.module.scss';
+import { IconSettings } from '@tabler/icons';
+import { useNavigate } from 'react-router-dom';
 
 interface ExtensionCardProps {
   name: string;
@@ -37,6 +39,7 @@ export const ExtensionCard = ({
   const { deleteExtension, loading: loadingForDelete } = useDeleteExtension();
   const { updateExtension, loading: updating } = useUpdateExtension();
   const { refetchCommands } = useContext(CommandsContext);
+  const navigate = useNavigate();
 
   const onInstall = () => {
     download(extensionKey, version).then(() => refetchData());
@@ -57,6 +60,10 @@ export const ExtensionCard = ({
     refetchCommands();
   };
 
+  const goToEditPage = () => {
+    navigate(`/extensions/${extensionKey}`);
+  };
+
   return (
     <Grid.Col span={4}>
       <div className={styles.extensionCard}>
@@ -64,7 +71,14 @@ export const ExtensionCard = ({
           <img src={icon} alt="Extension" className={styles.image} />
         </div>
         <div>
-          <div>{name}</div>
+          <div className={styles.titleContainer}>
+            <div>{name}</div>
+            <div>
+              <ActionIcon color="gray" variant="filled" size="sm" onClick={goToEditPage}>
+                <IconSettings size={14} />
+              </ActionIcon>
+            </div>
+          </div>
           <div className={styles.description}>
             <Text size="xs" lineClamp={2}>
               {description}

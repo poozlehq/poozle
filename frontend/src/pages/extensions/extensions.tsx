@@ -1,15 +1,14 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { Grid } from '@mantine/core';
+import { useHotkeys } from '@mantine/hooks';
 import { Loader } from '@poozle/edk';
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCurrentExtensions } from 'service/extension';
 import { useRemoteExtensions } from 'service/remote_extension_helper';
 
 import { Footer } from 'components/footer';
-
-import { registerAppWindow } from 'utils/application';
 
 import { ExtensionCard } from './extension_card';
 import styles from './extensions.module.scss';
@@ -19,14 +18,20 @@ export const Extensions = () => {
   const { extensions } = useRemoteExtensions();
   const navigate = useNavigate();
   const { currentExtensions, refetch } = useCurrentExtensions();
+  const [actionsOpened, setActionsOpened] = useState(false);
 
   const onClose = React.useCallback(() => {
     navigate('/search');
   }, [navigate]);
 
-  React.useEffect(() => {
-    registerAppWindow(onClose);
-  }, [onClose]);
+  useHotkeys([
+    [
+      'Esc',
+      () => {
+        onClose();
+      },
+    ],
+  ]);
 
   return (
     <div className={styles.mainContainer}>
@@ -53,7 +58,7 @@ export const Extensions = () => {
             ))}
           </Grid>
         </div>
-        <Footer title="Extensions Store" />
+        <Footer actionsOpen={actionsOpened} setActionsOpened={setActionsOpened} />
       </div>
     </div>
   );
