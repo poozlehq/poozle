@@ -82,11 +82,13 @@ export const useRemoteExtensions = () => {
 };
 
 export async function updateExtensionMapping(extensionId: string, version: string) {
-  const isExist = await exists(extensionMappingFile, { dir: BaseDirectory.App });
+  const isExist = await exists(extensionMappingFile, { dir: BaseDirectory.AppConfig });
   let content = {};
 
   if (isExist) {
-    const mappingContent = await readTextFile(extensionMappingFile, { dir: BaseDirectory.App });
+    const mappingContent = await readTextFile(extensionMappingFile, {
+      dir: BaseDirectory.AppConfig,
+    });
     content = JSON.parse(mappingContent);
   }
 
@@ -95,12 +97,12 @@ export async function updateExtensionMapping(extensionId: string, version: strin
       path: extensionMappingFile,
       contents: JSON.stringify({ ...content, [extensionId]: { currentVersion: version } }),
     },
-    { dir: BaseDirectory.App },
+    { dir: BaseDirectory.AppConfig },
   );
 }
 
 export async function deleteExtensionFromMapping(extensionId: string) {
-  const mappingContent = await readTextFile(extensionMappingFile, { dir: BaseDirectory.App });
+  const mappingContent = await readTextFile(extensionMappingFile, { dir: BaseDirectory.AppConfig });
   const content = JSON.parse(mappingContent);
 
   delete content[extensionId];
@@ -110,7 +112,7 @@ export async function deleteExtensionFromMapping(extensionId: string) {
       path: extensionMappingFile,
       contents: JSON.stringify(content),
     },
-    { dir: BaseDirectory.App },
+    { dir: BaseDirectory.AppConfig },
   );
 }
 
@@ -120,7 +122,7 @@ export const useDownloadExtension = () => {
   const download = async (extensionId: string, version: string) => {
     setLoading(true);
 
-    await createDir(extensionId, { dir: BaseDirectory.App });
+    await createDir(extensionId, { dir: BaseDirectory.AppConfig, recursive: true });
 
     // Download appCode from the github remote and save to the app folder
     const appCode: string = await fetch(
@@ -128,16 +130,16 @@ export const useDownloadExtension = () => {
     ).then((res) => res.text());
     await writeTextFile(
       { path: `${extensionId}/${indexViewFile}`, contents: appCode },
-      { dir: BaseDirectory.App },
+      { dir: BaseDirectory.AppConfig },
     );
 
     // Download spec from the github remote and save to the app folder
     const spec: string = await fetch(
-      `${extensionRemoteURL}/${extensionId}/${version}/${indexViewFile}`,
+      `${extensionRemoteURL}/${extensionId}/${version}/${specFileName}`,
     ).then((res) => res.text());
     await writeTextFile(
       { path: `${extensionId}/${specFileName}`, contents: spec },
-      { dir: BaseDirectory.App },
+      { dir: BaseDirectory.AppConfig },
     );
 
     // Set the extensionMapping with the latest version
@@ -158,7 +160,7 @@ export const useDeleteExtension = () => {
     setLoading(true);
 
     // Delete the extension folder
-    await removeDir(extensionId, { dir: BaseDirectory.App, recursive: true });
+    await removeDir(extensionId, { dir: BaseDirectory.AppConfig, recursive: true });
 
     // Delete the extension from the extension mapping
     await deleteExtensionFromMapping(extensionId);

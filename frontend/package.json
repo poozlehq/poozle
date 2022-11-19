@@ -26,7 +26,7 @@
     "@mantine/rte": "^5.1.1",
     "@mantine/spotlight": "^5.3.0",
     "@paciolan/remote-component": "^2.12.1",
-    "@poozle/edk": "^0.1.47",
+    "@poozle/edk": "^0.1.48",
     "@segment/analytics-next": "^1.46.0",
     "@tabler/icons": "^1.78.1",
     "@tauri-apps/api": "^1.2.0",

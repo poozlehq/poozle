@@ -37,10 +37,19 @@ pub struct Spec {
     pub extension_id: String,
 }
 
-#[derive(Insertable, Serialize, Debug, Clone)]
+#[derive(Insertable, Serialize, Debug, Clone, AsChangeset)]
 #[table_name = "spec"]
 pub struct NewSpec<'a> {
     // this struct will be use when inserting into the db, a struct can be Queryable and Insertable at the same time too.
     pub data: &'a str,
     pub extension_id: &'a str,
+}
+
+#[derive(Insertable, Serialize, Debug, Clone, AsChangeset)]
+#[table_name = "spec"]
+pub struct UpdateSpec<'a> {
+    // this struct will be use when inserting into the db, a struct can be Queryable and Insertable at the same time too.
+    pub data: &'a str,
+    pub extension_id: &'a str,
+    pub id: i32,
 }

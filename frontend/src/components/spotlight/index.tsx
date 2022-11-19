@@ -17,6 +17,8 @@ interface Props {
   onQuery?: (query: string) => void;
   noFilter?: boolean;
   withinPortal?: boolean;
+  onClose: () => void;
+  onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void;
 }
 
 function filter(_query: string, actions: SpotlightAction[]) {
@@ -32,6 +34,8 @@ const SpotlightComponent = ({
   prefixInputComponent,
   onQuery,
   query,
+  onClose,
+  onKeyPress,
   noFilter,
 }: Props) => {
   const getFinalActions = () => {
@@ -75,9 +79,8 @@ const SpotlightComponent = ({
       centered={false}
       searchIcon={searchIcon}
       prefixInputComponent={prefixInputComponent}
-      onClose={() => {
-        return null;
-      }}
+      onClose={onClose}
+      onKeyPress={onKeyPress}
       query={query}
       onQueryChange={function (query: string): void {
         if (onQuery) {

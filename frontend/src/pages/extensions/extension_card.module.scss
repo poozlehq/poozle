@@ -22,3 +22,9 @@ $img-dim: 30px;
   display: flex;
   gap: var(--mantine-spacing-md);
 }
+
+.titleContainer {
+  display: flex;
+  gap: var(--mantine-spacing-md);
+  justify-content: space-between;
+}

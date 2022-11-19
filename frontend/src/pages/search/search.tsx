@@ -1,9 +1,10 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { Chip } from '@mantine/core';
+import { getHotkeyHandler, useHotkeys } from '@mantine/hooks';
 import { SpotlightAction } from '@mantine/spotlight';
 import { Image } from '@poozle/edk';
-import { appWindow, WebviewWindow } from '@tauri-apps/api/window';
+import { appWindow } from '@tauri-apps/api/window';
 import { useCallback, useEffect, useState } from 'react';
 import { useSegmentPage } from 'react-segment-analytics';
 
@@ -11,14 +12,12 @@ import { Footer } from 'components/footer';
 import Spotlight from 'components/spotlight';
 import { CustomAction } from 'components/spotlight/CustomAction';
 
-import { registerAppWindow } from 'utils/application';
 import { capitalizeFirstLetter } from 'utils/common';
 
 import { Command } from 'types/common';
 
 import styles from './search.module.scss';
 import { DEFAULT_ACTIONS, SPOTLIGHT_GROUPS } from './search_helper';
-import { useHotkeys } from '@mantine/hooks';
 
 interface Extension {
   title: string;
@@ -35,25 +34,19 @@ interface Props {
 export const Search = ({ onCommandSelect, commands: allCommands }: Props) => {
   const [selectedExtension, selectExtension] = useState<Extension | undefined>(undefined);
   const [query, setQuery] = useState('');
-  const page = useSegmentPage();
+  const [actionsOpened, setActionsOpened] = useState(false);
 
-  useHotkeys([
-    [
-      'Esc',
-      () => {
-        console.log('here');
-        if (selectedExtension) {
-          selectExtension(undefined);
-        } else {
-          appWindow.hide();
-        }
-      },
-    ],
-  ]);
-
-  useEffect(() => {
-    page('Command Search Page');
-  }, [page]);
+  const onClose = () => {
+    if (selectedExtension) {
+      if (query) {
+        setQuery('');
+      } else {
+        selectExtension(undefined);
+      }
+    } else {
+      appWindow.hide();
+    }
+  };
 
   // TODO (harshith) move these into services
   const getAllExtensions = useCallback((): Extension[] => {
@@ -110,6 +103,7 @@ export const Search = ({ onCommandSelect, commands: allCommands }: Props) => {
               type: 'Extension',
               onTrigger: () => {
                 selectExtension(extension);
+                setQuery('');
               },
             } as SpotlightAction),
         );
@@ -126,6 +120,8 @@ export const Search = ({ onCommandSelect, commands: allCommands }: Props) => {
           onQuery={(query: string) => setQuery(query)}
           placeholder="Search for commands"
           withinPortal
+          onKeyPress={getHotkeyHandler([['Ctrl+k', () => setActionsOpened(!actionsOpened)]])}
+          onClose={onClose}
           prefixInputComponent={
             <>
               {selectedExtension && (
@@ -138,7 +134,7 @@ export const Search = ({ onCommandSelect, commands: allCommands }: Props) => {
           }
           actionComponent={CustomAction}
         />
-        <Footer />
+        <Footer actionsOpen={actionsOpened} setActionsOpened={setActionsOpened} />
       </div>
     </div>
   );

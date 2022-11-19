@@ -20,6 +20,7 @@ interface FormProps {
   blocks: FormBlock[];
   onSubmit: (values: FormValues, helpers: FormHelpers) => void;
   submitText?: string;
+  initialValues?: FormValues;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -47,11 +48,11 @@ function getInitialValues(blocks: FormBlock[]) {
   return initialValues;
 }
 
-export const Form = ({ blocks, onSubmit, submitText }: FormProps) => {
+export const Form = ({ blocks, onSubmit, submitText, initialValues }: FormProps) => {
   const [loading, setLoading] = useState(false);
 
   const form = useForm({
-    initialValues: getInitialValues(blocks),
+    initialValues: initialValues ?? getInitialValues(blocks),
   });
 
   return (

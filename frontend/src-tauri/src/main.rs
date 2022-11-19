@@ -37,6 +37,7 @@ fn main() {
             command::commands::delete_commands,
             command::commands::save_spec,
             command::commands::get_spec,
+            command::commands::update_spec,
         ])
         .build(tauri::generate_context!())
         .expect("error while running tauri application");

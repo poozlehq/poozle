@@ -3,7 +3,6 @@
 import { ActionIcon, Kbd, Menu, ThemeIcon } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { IconArchive, IconInfoCircle, IconSettings } from '@tabler/icons';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import logoURL from '../../icons/icon.png';
@@ -11,17 +10,18 @@ import styles from './footer.module.scss';
 
 interface FooterProps {
   title?: string;
+  actionsOpen: boolean;
+  setActionsOpened: (value: boolean) => void;
 }
 
-export const Footer = ({ title }: FooterProps) => {
+export const Footer = ({ title, actionsOpen, setActionsOpened }: FooterProps) => {
   const navigate = useNavigate();
-  const [opened, setOpened] = useState(false);
 
   useHotkeys([
     [
-      'ctrl+K',
+      'mod+k',
       () => {
-        setOpened(true);
+        setActionsOpened(!actionsOpen);
       },
     ],
   ]);
@@ -40,9 +40,13 @@ export const Footer = ({ title }: FooterProps) => {
         <div className={styles.kbd}>
           <Kbd>⌘</Kbd> + <Kbd>k</Kbd>
         </div>
-        <Menu shadow="md" width={200} opened={opened}>
+        <Menu shadow="md" width={200} opened={actionsOpen}>
           <Menu.Target>
-            <ActionIcon color="gray" variant="filled" onClick={() => setOpened(!opened)}>
+            <ActionIcon
+              color="gray"
+              variant="filled"
+              onClick={() => setActionsOpened(!actionsOpen)}
+            >
               <IconSettings size={18} />
             </ActionIcon>
           </Menu.Target>

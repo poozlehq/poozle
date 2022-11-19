@@ -12,7 +12,6 @@ export async function getCommandDataFromBackend(
   commandKey: string,
 ): Promise<string> {
   const data = await invoke('get_command', { extensionId, commandKey });
-  console.log(data);
   return data as string;
 }
 
@@ -41,6 +40,18 @@ export async function setExtensionSpecDataInBackend(extensionId: string, data: s
   });
 }
 
+export async function updateExtensionSpecDataInBackend(
+  extensionId: string,
+  data: string,
+  id: number,
+) {
+  return await invoke('update_spec', {
+    spec: data,
+    extensionId,
+    id,
+  });
+}
+
 export async function deleteCommandsForExtension(extensionId: string) {
   return await invoke('delete_commands', {
     extensionId,
@@ -58,6 +69,7 @@ export async function getExtensionSpecDataFromBackend(
   if (storageData) {
     return {
       data: JSON.parse(storageData.data),
+      id: storageData.id,
       extensionId: storageData.extension_id,
     };
   }
