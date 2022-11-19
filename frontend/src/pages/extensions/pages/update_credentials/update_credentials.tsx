@@ -21,7 +21,6 @@ export const UpdateCredentials = () => {
   const { extensionId } = useCommandInformation();
   const { loading, spec } = useSpec(extensionId);
   const { loading: loadingSpecData, specData } = useSpecData(extensionId);
-  console.log(specData);
 
   const onClose = () => {
     navigate(-1);
@@ -41,7 +40,6 @@ export const UpdateCredentials = () => {
   }
 
   const onSubmit = async (values: FormValues) => {
-    console.log(values);
     await updateExtensionSpecData(extensionId, JSON.stringify(values), specData?.id as number);
     onClose();
   };
