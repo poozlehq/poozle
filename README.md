@@ -1,10 +1,9 @@
 # Introduction
 
-Poozle has created a new open-source standard to create extensions that automate your repititive tasks and improve your productivity
+Poozle has created a new open-source standard to create extensions that automate your repititive tasks, let you access different tools instantly and improve your productivity
 
 - Maintenance-free extensions you can use in minutes. Just download our extension and authenticate your sources, and get extensions that increases your productivity
 - Building new extensions made trivial. We make it very easy to create new extensions that you need, using the language of your choice.
-- Here's a list of our extensions with their health status.
 
 # Getting started
 - Install extension
