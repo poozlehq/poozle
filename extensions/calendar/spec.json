@@ -1,0 +1,28 @@
+{
+  "name": "Google Calendar extension",
+  "key": "google_calendar",
+  "description": "",
+  "icon": "calendar.svg",
+  "commands": [
+    {
+      "name": "Get Events",
+      "key": "get_events",
+      "description": "Get Events from Calendar",
+      "command_type": "react"
+    }
+  ],
+  "inputBlocks": [
+    {
+      "name": "calendar_id",
+      "description": "Calendar Id",
+      "key": "calendar_id",
+      "type": "input"
+    },
+    {
+      "name": "Service Account",
+      "key": "service_account",
+      "description": "Service Account",
+      "type": "input"
+    }
+  ]
+}
