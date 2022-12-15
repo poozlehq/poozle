@@ -5,7 +5,6 @@ import { useClipboard } from '@mantine/hooks';
 import { BasicView, Input } from '@poozle/edk';
 import { IconCopy, IconCheck } from '@tabler/icons';
 import * as React from 'react';
-// import { v4 as uuidv4 } from 'uuid';
 
 import styles from './index.module.scss';
 
@@ -24,7 +23,7 @@ export const ConvertEpoch = ({ resetCommand }: CommandProps): React.ReactElement
     setDateTime(myDate.toISOString());
     clipboard.copy(myDate.toString());
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [Epoch]);
 
   const convertDate = React.useCallback(() => {
     var myDate = new Date(Date.parse(DateTime))
@@ -32,12 +31,7 @@ export const ConvertEpoch = ({ resetCommand }: CommandProps): React.ReactElement
     var myEpoch = myDate.getTime()/1000;
     setEpoch(String(myEpoch));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  React.useEffect(() => {
-    convertEpoch();
-    convertDate()
-  }, [convertEpoch, convertDate]);
+  }, [DateTime]);
 
   return (
     <BasicView onClose={() => resetCommand()}>
