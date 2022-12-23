@@ -27,13 +27,14 @@ root.render(
         >
           <NotificationsProvider>
             <App
-              commandKey="search_lambda"
+              commandKey="get_lambda"
               resetCommand={function (): void {
                 throw new Error('Function not implemented.');
               }}
               specData={{
                 extensionId: '',
                 data: {
+
                 },
               }}
             />
