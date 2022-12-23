@@ -2,10 +2,10 @@
 
 export interface Group {
   Metrics: {
-    BlendedCost:{
+    BlendedCost: {
       Amount: string;
       Unit: string;
-    }
+    };
   };
   Keys: string[];
 }
@@ -20,9 +20,9 @@ export interface Results {
   ResultsByTime?: Result[];
 }
 
-export interface ForecastResult{
+export interface ForecastResult {
   Total: {
     Amount: string;
     Unit: string;
-  }
+  };
 }

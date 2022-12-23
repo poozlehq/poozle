@@ -2,12 +2,11 @@
 
 import { Button } from '@mantine/core';
 import { ExtensionSpecDataType, BasicView } from '@poozle/edk';
+import CostExplorer from 'aws-sdk/clients/costexplorer';
 import * as React from 'react';
 
 import styles from './index.module.scss';
 import { Group, Result } from './utils';
-
-import CostExplorer from 'aws-sdk/clients/costexplorer'
 
 interface CommandProps {
   specData?: ExtensionSpecDataType;
@@ -24,7 +23,7 @@ export const GetCosts = ({ specData, resetCommand }: CommandProps): React.ReactE
   }, []);
 
   function getCost() {
-    var costExplorer = new CostExplorer({
+    const costExplorer = new CostExplorer({
       credentials: {
         accessKeyId: specData?.data.access_key,
         secretAccessKey: specData?.data.secret_key,
@@ -32,7 +31,7 @@ export const GetCosts = ({ specData, resetCommand }: CommandProps): React.ReactE
       region: specData?.data.region,
     });
 
-    let today = new Date();
+    const today = new Date();
     const firstDay = new Date(today.getFullYear(), today.getMonth(), 1).toISOString().split('T')[0];
     const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0)
       .toISOString()
@@ -63,15 +62,17 @@ export const GetCosts = ({ specData, resetCommand }: CommandProps): React.ReactE
       Granularity: 'MONTHLY',
     };
 
-    costExplorer.getCostAndUsage(params, async function (err: any, data: any) {
-      if (err) console.log(err, err.stack); // an error occurred
+    costExplorer.getCostAndUsage(params, async (err: any, data: any) => {
+      if (err) {
+        console.log(err, err.stack);
+      } // an error occurred
       else {
         const spent = !data
           ? ''
-          : data.ResultsByTime.reduce(function (prev: number, current: Result) {
+          : data.ResultsByTime.reduce((prev: number, current: Result) => {
               return (
                 prev +
-                current.Groups.reduce(function (groupPrev: number, groupCurrent: Group) {
+                current.Groups.reduce((groupPrev: number, groupCurrent: Group) => {
                   return groupPrev + parseInt(groupCurrent.Metrics.BlendedCost.Amount, 10);
                 }, 0)
               );
@@ -80,8 +81,10 @@ export const GetCosts = ({ specData, resetCommand }: CommandProps): React.ReactE
       }
     });
 
-    costExplorer.getCostForecast(forcastParams, async function (err: any, data: any) {
-      if (err) console.log(err, err.stack); // an error occurred
+    costExplorer.getCostForecast(forcastParams, async (err: any, data: any) => {
+      if (err) {
+        console.log(err, err.stack);
+      } // an error occurred
       else {
         const forecastCost = !data ? '' : data?.Total.Amount;
 

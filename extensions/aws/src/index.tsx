@@ -6,7 +6,6 @@ import { theme } from '@poozle/edk';
 import ReactDOM from 'react-dom/client';
 
 import App from './app/index';
-
 import styles from './index.module.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -28,9 +27,14 @@ root.render(
         >
           <NotificationsProvider>
             <App
-              commandKey="aws_billing"
+              commandKey="search_lambda"
               resetCommand={function (): void {
                 throw new Error('Function not implemented.');
+              }}
+              specData={{
+                extensionId: '',
+                data: {
+                },
               }}
             />
           </NotificationsProvider>
