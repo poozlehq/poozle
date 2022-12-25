@@ -14,11 +14,12 @@
     "aws"
   ],
   "scripts": {
-    "build": "rimraf aws && npm run build:js && npm run copy:spec",
+    "build": "rimraf aws && npm run build:js && npm run copy:spec && npm run copy:assets",
     "build:js": "rollup -c",
     "lint": "eslint --ext js,ts,tsx src",
     "prettier": "prettier --config .prettierrc --write .",
     "copy:spec": "cp spec.json aws/",
+    "copy:assets": "cp -R ./public/assets/. aws/",
     "dev": "react-scripts start"
   },
   "peerDependencies": {
@@ -70,6 +71,7 @@
   "dependencies": {
     "@aws-sdk/client-ec2": "^3.236.0",
     "@aws-sdk/client-lambda": "^3.236.0",
+    "@aws-sdk/client-sqs": "^3.236.0",
     "@mantine/core": "^5.6.3",
     "@mantine/dates": "^5.6.3",
     "@mantine/form": "^5.6.3",
