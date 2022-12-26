@@ -79,6 +79,7 @@
     "@tabler/icons": "^1.110.0",
     "lorem-ipsum": "^2.0.8",
     "pw-simplified": "^0.2.0",
+    "react-query": "^3.39.2",
     "uuid": "^9.0.0"
   },
   "browserslist": {

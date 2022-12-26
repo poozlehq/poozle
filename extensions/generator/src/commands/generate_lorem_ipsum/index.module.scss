@@ -1,34 +1,11 @@
-.container {
-  height: 100%;
-  padding: var(--mantine-spacing-sm);
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: var(--mantine-spacing-lg);
 
-  :global {
-    .mantine-Tooltip-tooltip {
-      font-size: var(--mantine-font-size-xs);
-    }
-  }
-}
-
-.top {
-  height: 100%;
-  border-radius: var(--mantine-radius-lg);
-  display: flex;
-  align-items: flex-start;
-  margin-top: var(--mantine-spacing-md);
-  justify-content: center;
-}
-
-.passwordContainer {
+.inputContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--mantine-spacing-sm);
   justify-content: center;
-
+  padding-bottom: var(--mantine-spacing-md);
   svg {
     color: var(--mantine-color-dark-0);
   }
@@ -44,11 +21,4 @@
   button:hover {
     background-color: var(--mantine-color-dark-7) !important;
   }
-}
-
-.actions {
-  display: flex;
-  width: 100%;
-  margin-top: var(--mantine-spacing-md);
-  justify-content: flex-end;
 }

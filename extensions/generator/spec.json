@@ -17,6 +17,13 @@
       "description": "Generate UUID.",
       "command_type": "react",
       "has_quick_action": true
+    },
+    {
+      "name": "Generate Lorem Ipsum",
+      "key": "generate_lorem_ipsum",
+      "description": "Generate Lorem Ipsum.",
+      "command_type": "react",
+      "has_quick_action": true
     }
   ],
   "inputBlocks": []
