@@ -27,7 +27,7 @@ root.render(
         >
           <NotificationsProvider>
             <App
-              commandKey="generate_password"
+              commandKey="generate_lorem_ipsum"
               resetCommand={function (): void {
                 throw new Error('Function not implemented.');
               }}

@@ -3,6 +3,7 @@
 import { AppProps } from '@poozle/edk';
 import { GeneratePassword } from 'commands/generate_password';
 import { GenerateUUID } from 'commands/generate_uuid';
+import { GenerateLoremIpsum } from 'commands/generate_lorem_ipsum';
 import * as React from 'react';
 
 const App = ({ commandKey, resetCommand }: AppProps): React.ReactElement => {
@@ -11,7 +12,9 @@ const App = ({ commandKey, resetCommand }: AppProps): React.ReactElement => {
       return <GeneratePassword resetCommand={resetCommand} />;
     case 'generate_uuid':
       return <GenerateUUID resetCommand={resetCommand} />;
-  }
+    case 'generate_lorem_ipsum':
+      return <GenerateLoremIpsum resetCommand={resetCommand} />;
+    }
 
   // eslint-disable-next-line react/jsx-no-useless-fragment
   return <></>;

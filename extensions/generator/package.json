@@ -77,6 +77,7 @@
     "@mantine/notifications": "^5.6.3",
     "@poozle/edk": "^0.1.45",
     "@tabler/icons": "^1.110.0",
+    "lorem-ipsum": "^2.0.8",
     "pw-simplified": "^0.2.0",
     "uuid": "^9.0.0"
   },
