@@ -34,7 +34,6 @@ root.render(
               specData={{
                 extensionId: '',
                 data: {
-
                 },
               }}
             />
