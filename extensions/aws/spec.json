@@ -9,6 +9,24 @@
       "key": "aws_billing",
       "description": "Get AWS billing from the dashboard",
       "command_type": "react"
+    },
+    {
+      "name": "Get Ec2",
+      "key": "get_ec2",
+      "description": "Get and Search Ec2 instances",
+      "command_type": "react"
+    },
+    {
+      "name": "Get Lambda",
+      "key": "get_lambda",
+      "description": "Get and Search Lambdas",
+      "command_type": "react"
+    },
+    {
+      "name": "Get SQS",
+      "key": "get_sqs",
+      "description": "Get and Search SQS queues",
+      "command_type": "react"
     }
   ],
   "inputBlocks": [

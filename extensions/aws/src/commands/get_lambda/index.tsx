@@ -59,7 +59,7 @@ const GetLambda = ({ specData, resetCommand }: CommandProps): React.ReactElement
           id: lambdaFunction.CodeSha256,
           title: lambdaFunction.FunctionName,
           description: lambdaFunction.Description,
-          icon: null,
+          icon: `https://poozle-assets.s3.ap-south-1.amazonaws.com/aws-assets/assets/Architecture-Service-Icons_07312022/Arch_Compute/48/Arch_AWS-Lambda_48.svg`,
           url: `${AWS_URL_BASE}/lambda/home?region=${specData?.data.region}#/functions/${lambdaFunction.FunctionName}?tab=monitoring`,
           onTrigger: async () => {
             clipboard.copy(lambdaFunction.FunctionArn);

@@ -27,16 +27,14 @@ root.render(
         >
           <NotificationsProvider>
             <App
-              commandKey="get_sqs"
+              commandKey="get_ec2"
               resetCommand={function (): void {
                 throw new Error('Function not implemented.');
               }}
               specData={{
                 extensionId: '',
                 data: {
-                  access_key: 'AKIA2QVBJ6HSUSRQGLHO',
-                  secret_key: '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',
-                  region: 'ap-south-1',
+
                 },
               }}
             />

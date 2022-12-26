@@ -63,7 +63,7 @@ const GetEc2 = ({ specData, resetCommand }: CommandProps): React.ReactElement =>
           id: instance.InstanceId,
           title: instance.Tags ? instance.Tags[0].Value : instance.InstanceId,
           description: `Sate: ${instance.State?.Name} | Public IP: ${instance.PublicIpAddress} | Privite IP: ${instance.PrivateIpAddress}`,
-          icon: null,
+          icon: `https://poozle-assets.s3.ap-south-1.amazonaws.com/aws-assets/assets/Architecture-Service-Icons_07312022/Arch_Compute/48/Arch_Amazon-EC2_48.svg`,
           url: `${AWS_URL_BASE}/ec2/v2/home?region=${specData?.data.region}#InstanceDetails:instanceId=${instance.InstanceId}`,
           onTrigger: async () => {
             clipboard.copy(instance.InstanceId);

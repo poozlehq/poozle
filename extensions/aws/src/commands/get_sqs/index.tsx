@@ -61,7 +61,7 @@ const GetSqs = ({ specData, resetCommand }: CommandProps): React.ReactElement =>
           id: queue,
           title: queue.slice(queue.lastIndexOf('/') + 1),
           description: null,
-          icon: null, // `${__dirname}aws-icons/sqs.png`
+          icon: `https://poozle-assets.s3.ap-south-1.amazonaws.com/aws-assets/assets/Architecture-Service-Icons_07312022/Arch_App-Integration/Arch_48/Arch_Amazon-Simple-Queue-Service_48.svg`,
           url: `${AWS_URL_BASE}/sqs/v2/home?region=${
             specData?.data.region
           }#/queues/${encodeURIComponent(queue)}`,
