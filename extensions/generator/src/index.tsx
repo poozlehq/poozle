@@ -27,7 +27,7 @@ root.render(
         >
           <NotificationsProvider>
             <App
-              commandKey="generate_lorem_ipsum"
+              commandKey="generate_cron"
               resetCommand={function (): void {
                 throw new Error('Function not implemented.');
               }}

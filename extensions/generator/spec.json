@@ -24,6 +24,13 @@
       "description": "Generate Lorem Ipsum.",
       "command_type": "react",
       "has_quick_action": true
+    },
+    {
+      "name": "Generate Cron",
+      "key": "generate_cron",
+      "description": "Generate CRON Expression",
+      "command_type": "react",
+      "has_quick_action": true
     }
   ],
   "inputBlocks": []
