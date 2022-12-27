@@ -27,7 +27,7 @@ root.render(
         >
           <NotificationsProvider>
             <App
-              commandKey="generate_cron"
+              commandKey="convert_json_string"
               resetCommand={function (): void {
                 throw new Error('Function not implemented.');
               }}

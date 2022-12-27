@@ -1,6 +1,7 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { AppProps } from '@poozle/edk';
+import { JsonStringConverter } from 'commands/convert_json_string';
 import { GenerateCron } from 'commands/generate_cron';
 import GenerateLoremIpsum from 'commands/generate_lorem_ipsum';
 import { GeneratePassword } from 'commands/generate_password';
@@ -17,6 +18,8 @@ const App = ({ commandKey, resetCommand }: AppProps): React.ReactElement => {
       return <GenerateLoremIpsum resetCommand={resetCommand} />;
     case 'generate_cron':
       return <GenerateCron resetCommand={resetCommand} />;
+    case 'convert_json_string':
+      return <JsonStringConverter resetCommand={resetCommand} />;
   }
 
   // eslint-disable-next-line react/jsx-no-useless-fragment
