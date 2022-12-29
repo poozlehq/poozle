@@ -1,0 +1,28 @@
+{
+  "name": "Postman",
+  "key": "postman",
+  "description": "",
+  "icon": "postmant.svg",
+  "commands": [
+    {
+      "name": "Search Collection",
+      "key": "search_collection",
+      "description": "Search Collection in Postman",
+      "command_type": "react"
+    }
+  ],
+  "inputBlocks": [
+    {
+      "key": "api_key",
+      "description": "API key",
+      "name": "API key",
+      "type": "input"
+    },
+    {
+        "key": "workspace_id",
+        "description": "Workspace Id",
+        "name": "Workspace ID",
+        "type": "input"
+      }
+  ]
+}
