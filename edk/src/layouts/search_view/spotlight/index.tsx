@@ -23,6 +23,7 @@ interface Props {
   noFilter?: boolean;
   withinPortal?: boolean;
   onClose(): void;
+  suffixInputComponent?: React.ReactNode;
 }
 
 function filter(_query: string, actions: SpotlightAction[]) {
@@ -39,6 +40,7 @@ const SpotlightComponent = ({
   onQuery,
   noFilter,
   onClose,
+  suffixInputComponent,
 }: Props) => {
   const [query, setQuery] = useState('');
 
@@ -114,6 +116,7 @@ const SpotlightComponent = ({
           }
           setQuery(query);
         }}
+        suffixInputComponent={suffixInputComponent}
         {...extraParams}
       />
     </MantineProvider>

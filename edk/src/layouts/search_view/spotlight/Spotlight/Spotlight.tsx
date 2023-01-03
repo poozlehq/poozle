@@ -98,6 +98,8 @@ export interface InnerSpotlightProps
 
   /** The highlight color */
   highlightColor?: MantineColor;
+
+  suffixInputComponent?: React.ReactNode
 }
 
 interface SpotlightProps extends InnerSpotlightProps {
@@ -139,6 +141,7 @@ export const Spotlight = ({
   actionComponent = DefaultAction,
   actionsWrapperComponent: ActionsWrapper = 'div',
   zIndex = getDefaultZIndex('max'),
+  suffixInputComponent,
   ...others
 }: SpotlightProps) => {
   const [hovered, setHovered] = useState(-1);
@@ -246,6 +249,7 @@ export const Spotlight = ({
                   onMouseEnter={resetHovered}
                   autoComplete="chrome-please-just-do-not-show-it-thanks"
                 />
+                {suffixInputComponent && suffixInputComponent}
               </div>
               <ActionsWrapper>
                 <ActionsList

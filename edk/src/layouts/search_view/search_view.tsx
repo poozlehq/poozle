@@ -17,6 +17,7 @@ export interface SearchViewProps {
   onQuery?: (query: string) => void;
   placeholder: string;
   onClose(): void;
+  suffixAction?: JSX.Element;
 }
 
 const SearchView = ({
@@ -26,6 +27,7 @@ const SearchView = ({
   onQuery,
   loading,
   onClose,
+  suffixAction
 }: SearchViewProps): React.ReactElement => {
   const ActionComponent = CustomAction ?? DefaultCustomAction;
 
@@ -48,6 +50,7 @@ const SearchView = ({
           actionComponent={ActionComponent}
           onQuery={onQuery}
           onClose={onClose}
+          suffixInputComponent={suffixAction}
         />
       </div>
     </MantineProvider>
