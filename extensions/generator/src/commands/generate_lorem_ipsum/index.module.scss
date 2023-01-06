@@ -1,0 +1,24 @@
+
+.inputContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--mantine-spacing-sm);
+  justify-content: center;
+  padding-bottom: var(--mantine-spacing-md);
+  svg {
+    color: var(--mantine-color-dark-0);
+  }
+}
+
+.input {
+  width: 400px;
+
+  button {
+    border: none !important;
+  }
+
+  button:hover {
+    background-color: var(--mantine-color-dark-7) !important;
+  }
+}

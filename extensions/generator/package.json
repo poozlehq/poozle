@@ -77,7 +77,11 @@
     "@mantine/notifications": "^5.6.3",
     "@poozle/edk": "^0.1.45",
     "@tabler/icons": "^1.110.0",
+    "antd": "^5.1.1",
+    "lorem-ipsum": "^2.0.8",
     "pw-simplified": "^0.2.0",
+    "react-js-cron": "^3.0.1",
+    "react-query": "^3.39.2",
     "uuid": "^9.0.0"
   },
   "browserslist": {
