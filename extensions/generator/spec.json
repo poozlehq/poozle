@@ -17,6 +17,13 @@
       "description": "Generate UUID.",
       "command_type": "react",
       "has_quick_action": true
+    },
+    {
+      "name": "Convert Epoch",
+      "key": "convert_epoch",
+      "description": "Convert Epoch to Date Time and viceversa",
+      "command_type": "react",
+      "has_quick_action": true
     }
   ],
   "inputBlocks": []

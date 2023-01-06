@@ -27,7 +27,7 @@ root.render(
         >
           <NotificationsProvider>
             <App
-              commandKey="generate_password"
+              commandKey="convert_epoch"
               resetCommand={function (): void {
                 throw new Error('Function not implemented.');
               }}
