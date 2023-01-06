@@ -1,0 +1,28 @@
+{
+  "name": "Figma",
+  "key": "figma",
+  "description": "",
+  "icon": "figma.svg",
+  "commands": [
+    {
+      "name": "Search Files",
+      "key": "search_files",
+      "description": "Search files in Figma project",
+      "command_type": "react"
+    }
+  ],
+  "inputBlocks": [
+    {
+      "name": "Access Token",
+      "description": "Personal Access Token",
+      "key": "access_token",
+      "type": "input"
+    },
+    {
+      "name": "Team ID",
+      "key": "team_id",
+      "description": "Team ID",
+      "type": "input"
+    }
+  ]
+}
