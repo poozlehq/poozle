@@ -6,6 +6,7 @@ import { GenerateCron } from 'commands/generate_cron';
 import GenerateLoremIpsum from 'commands/generate_lorem_ipsum';
 import { GeneratePassword } from 'commands/generate_password';
 import { GenerateUUID } from 'commands/generate_uuid';
+import { ConvertEpoch } from 'commands/convert_epoch';
 import * as React from 'react';
 
 const App = ({ commandKey, resetCommand }: AppProps): React.ReactElement => {
@@ -20,6 +21,8 @@ const App = ({ commandKey, resetCommand }: AppProps): React.ReactElement => {
       return <GenerateCron resetCommand={resetCommand} />;
     case 'convert_json_string':
       return <JsonStringConverter resetCommand={resetCommand} />;
+    case 'convert_epoch':
+      return <ConvertEpoch resetCommand={resetCommand} />;
   }
 
   // eslint-disable-next-line react/jsx-no-useless-fragment
