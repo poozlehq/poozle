@@ -1,0 +1,28 @@
+{
+  "name": "Google Workspace",
+  "key": "google_workspace",
+  "description": "",
+  "icon": "jira.svg",
+  "commands": [
+    {
+      "name": "Create Spreadsheet",
+      "key": "create_spreadsheet",
+      "description": "Create a new Spreadsheet",
+      "command_type": "react"
+    },
+    {
+        "name": "Create Document",
+        "key": "create_document",
+        "description": "Create a new document",
+        "command_type": "react"
+    },
+    {
+        "name": "Create Slide",
+        "key": "create_slide",
+        "description": "Create a new Slide",
+        "command_type": "react"
+    }
+  ],
+  "inputBlocks": [
+  ]
+}
