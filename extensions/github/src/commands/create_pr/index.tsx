@@ -133,7 +133,7 @@ const CreatePr = ({ specData, resetCommand }: CommandProps): React.ReactElement 
 
         <div className={styles.inputContainer}>
           <Button size="sm" type="submit">
-            Create issue
+            Create PR
           </Button>
         </div>
       </form>
