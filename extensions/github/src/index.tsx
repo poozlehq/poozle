@@ -42,7 +42,7 @@ root.render(
         >
           <NotificationsProvider>
             <App
-              commandKey="create_pr"
+              commandKey="search_repo"
               resetCommand={function (): void {
                 throw new Error('Function not implemented.');
               }}

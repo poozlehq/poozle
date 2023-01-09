@@ -1,6 +1,8 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 export interface Repo {
+  html_url: string;
+  id: BigInteger;
   full_name: string;
   name: string;
   owner: {
@@ -22,4 +24,8 @@ export interface Issue {
 
 export interface Issues {
   items?: Issue[];
+}
+
+export interface Repos {
+  items?: Repo[];
 }
