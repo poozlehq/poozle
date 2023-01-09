@@ -39,6 +39,12 @@
       "key": "search_pr",
       "description": "Search Pull Requests in Github repositories",
       "command_type": "react"
+    },
+    {
+      "name": "Search Repositories",
+      "key": "search_repo",
+      "description": "Search public and private Github repositories",
+      "command_type": "react"
     }
   ],
   "inputBlocks": [
