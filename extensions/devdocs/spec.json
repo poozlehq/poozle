@@ -1,36 +1,15 @@
-// {
-//   "name": "JIRA extension",
-//   "key": "jira",
-//   "description": "Plan, track, and manage your agile and software development projects in JIRA. Customize your workflow, collaborate, and release great software.",
-//   "icon": "jira.svg",
-//   "commands": [
-//     {
-//       "name": "Search issue",
-//       "key": "search_issue",
-//       "description": "Search issue in JIRA board",
-//       "command_type": "react"
-//     }
-//   ],
-//   "inputBlocks": [
-//     {
-//       "name": "JIRA domain",
-//       "description": "JIRA domain",
-//       "key": "jira_domain",
-//       "type": "input"
-//     },
-//     {
-//       "name": "Email",
-//       "key": "email",
-//       "description": "Email address",
-//       "type": "input"
-//     },
-//     {
-//       "key": "api_key",
-//       "description": "API key",
-//       "name": "API key",
-//       "type": "input"
-//     }
-//   ]
-// }
-
-// Above is the sample spec for extension
+{
+  "name": "Devdocs extension",
+  "key": "devdocs",
+  "description": "",
+  "icon": "devdocs.svg",
+  "commands": [
+    {
+      "name": "Search Document",
+      "key": "search_document",
+      "description": "Search Document",
+      "command_type": "react"
+    }
+  ],
+  "inputBlocks": []
+}

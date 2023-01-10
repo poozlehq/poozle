@@ -17,7 +17,7 @@ export interface SearchViewProps {
   onQuery?: (query: string) => void;
   placeholder: string;
   onClose(): void;
-  suffixAction?: JSX.Element;
+  suffixAction?: React.ReactElement;
 }
 
 const SearchView = ({

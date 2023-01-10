@@ -6,7 +6,6 @@ import { NotificationsProvider } from '@mantine/notifications';
 import ReactDOM from 'react-dom/client';
 
 import App from './app/index';
-
 import styles from './index.module.scss';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);

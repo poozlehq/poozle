@@ -75,6 +75,7 @@
     "@mantine/modals": "^5.6.3",
     "@mantine/notifications": "^5.6.3",
     "@poozle/edk": "/Users/manoj/work/poozle/edk",
+    "fuse.js": "^6.6.2",
     "react-query": "^3.39.2"
   },
   "browserslist": {
