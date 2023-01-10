@@ -78,6 +78,7 @@
     "@poozle/edk": "^0.1.45",
     "@tabler/icons": "^1.110.0",
     "antd": "^5.1.1",
+    "js-yaml": "^4.1.0",
     "lorem-ipsum": "^2.0.8",
     "pw-simplified": "^0.2.0",
     "react-js-cron": "^3.0.1",

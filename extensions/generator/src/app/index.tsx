@@ -8,6 +8,7 @@ import { GeneratePassword } from 'commands/generate_password';
 import { GenerateUUID } from 'commands/generate_uuid';
 import { ConvertEpoch } from 'commands/convert_epoch';
 import * as React from 'react';
+import { JsonYamlConverter } from 'commands/convert_json_yaml';
 
 const App = ({ commandKey, resetCommand }: AppProps): React.ReactElement => {
   switch (commandKey) {
@@ -23,6 +24,8 @@ const App = ({ commandKey, resetCommand }: AppProps): React.ReactElement => {
       return <JsonStringConverter resetCommand={resetCommand} />;
     case 'convert_epoch':
       return <ConvertEpoch resetCommand={resetCommand} />;
+    case 'convert_json_yaml':
+      return <JsonYamlConverter resetCommand={resetCommand} />;
   }
 
   // eslint-disable-next-line react/jsx-no-useless-fragment

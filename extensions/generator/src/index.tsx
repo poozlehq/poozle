@@ -27,7 +27,7 @@ root.render(
         >
           <NotificationsProvider>
             <App
-              commandKey="convert_json_string"
+              commandKey="convert_json_yaml"
               resetCommand={function (): void {
                 throw new Error('Function not implemented.');
               }}
