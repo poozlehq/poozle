@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Workspace {
+  workspaceId         String                @id @default(uuid())
+  email               String?
+  name                String?
+  slug                String                @unique
+  ExtensionDefinition ExtensionDefinition[]
+  ExtensionAccount    ExtensionAccount[]
+}
+
+model ExtensionDefinition {
+  extensionDefinitionId String             @id @default(uuid())
+  name                  String
+  functionUrl           String
+  functionEnv           FunctionEnv
+  icon                  String?
+  releaseStage          ReleaseStage       @default(ALPHA)
+  extensionType         ExtensionType      @default(GRAPHQL)
+  workspace             Workspace?         @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId           String?
+  ExtensionAccount      ExtensionAccount[]
+  ExtensionRouter       ExtensionRouter[]
+}
+
+model ExtensionAccount {
+  extensionAccountId     String              @id @default(uuid())
+  extensionDefinition    ExtensionDefinition @relation(references: [extensionDefinitionId], fields: [extensionDefinitionId])
+  extensionDefinitionId  String
+  extensionConfiguration Json?
+  workspace              Workspace?          @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId            String?
+  name                   String
+  extensionAccountName   String              @unique
+}
+
+model ExtensionRouter {
+  extensionRouterId     String              @id @default(uuid())
+  extensionDefinition   ExtensionDefinition @relation(references: [extensionDefinitionId], fields: [extensionDefinitionId])
+  extensionDefinitionId String
+  endpoint              String
+}
+
+enum ExtensionType {
+  GRAPHQL
+  OPENAPI
+  CUSTOM
+}
+
+enum ReleaseStage {
+  ALPHA
+  BETA
+  GENERALLY_AVAILABLE
+  CUSTOM
+}
+
+enum FunctionEnv {
+  NODE
+}
+
+enum RunStatus {
+  FAILED
+  SUCCESS
+}
