@@ -1,0 +1,10 @@
+[
+  {
+    "name": "Notion",
+    "dockerImageTag": "latest",
+    "dockerRepository": "notion",
+    "icon": "gicon",
+    "releaseStage": "ALPHA",
+    "extensionType": "OPENAPI"
+  }
+]

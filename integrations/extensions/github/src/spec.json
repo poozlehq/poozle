@@ -1,0 +1,15 @@
+{
+  "name": "Github extension",
+  "key": "github",
+  "description": "Plan, track, and manage your agile and software development projects in Github. Customize your workflow, collaborate, and release great software.",
+  "icon": "github.svg",
+  "type": "GRAPHQL",
+  "inputs": [
+    {
+      "name": "Api Key",
+      "key": "api_key",
+      "description": "Enter the API Key",
+      "type": "input"
+    }
+  ]
+}
