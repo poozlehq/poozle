@@ -1,6 +1,6 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { FunctionEnv } from '@prisma/client';
+import { ExtensionType } from '@prisma/client';
 
 export interface ExtensionDefinitionRequestIdBody {
   extensionDefinitionId: string;
@@ -8,7 +8,8 @@ export interface ExtensionDefinitionRequestIdBody {
 
 export interface ExtensionDefinitionCreateBody {
   name: string;
-  functionUrl: string;
-  functionEnv: FunctionEnv;
+  dockerImageTag: string;
+  dockerRepository: string;
   workspaceId: string;
+  extensionType: ExtensionType;
 }

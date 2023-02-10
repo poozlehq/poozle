@@ -2,11 +2,11 @@
 
 import { Injectable } from '@nestjs/common';
 import { ExtensionAccount } from '@prisma/client';
+import { PrismaService } from 'nestjs-prisma';
 
 import { ExtensionDefinitionRequestIdBody } from 'modules/extension_definition/extension_definition.interface';
 import { ExtensionDefinitionService } from 'modules/extension_definition/extension_definition.service';
 
-import { PrismaService } from '../prisma/prisma.service';
 import {
   ExtensionAccountCreateBody,
   ExtensionAccountGetRequestBody,

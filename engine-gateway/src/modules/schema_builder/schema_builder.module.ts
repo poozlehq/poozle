@@ -2,9 +2,7 @@
 
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-
-import { PrismaModule } from 'modules/prisma/prisma.module';
-import { PrismaService } from 'modules/prisma/prisma.service';
+import { PrismaModule, PrismaService } from 'nestjs-prisma';
 
 import { SchemaBuilderService } from './schema_builder.service';
 

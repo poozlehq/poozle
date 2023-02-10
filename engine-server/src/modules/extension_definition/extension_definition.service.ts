@@ -1,13 +1,9 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { Injectable } from '@nestjs/common';
-import {
-  ExtensionDefinition,
-  ExtensionType,
-  ReleaseStage,
-} from '@prisma/client';
+import { ExtensionDefinition, ReleaseStage } from '@prisma/client';
+import { PrismaService } from 'nestjs-prisma';
 
-import { PrismaService } from '../prisma/prisma.service';
 import {
   ExtensionDefinitionCreateBody,
   ExtensionDefinitionRequestIdBody,
@@ -39,7 +35,6 @@ export class ExtensionDefinitionService {
       data: {
         ...extensionDefinitionCreateBody,
         releaseStage: ReleaseStage.CUSTOM,
-        extensionType: ExtensionType.GRAPHQL,
       },
     });
   }

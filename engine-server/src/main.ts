@@ -21,14 +21,12 @@ async function bootstrap() {
   });
 
   app.setGlobalPrefix(API_PREFIX);
-
   app.useGlobalFilters(
     // TODO: uncomment when ready
     // new GlobalExceptionFilter(),
 
     new InvalidFormExceptionFilter(),
   );
-
   app.use(
     cors({
       origin: process.env.FRONTEND_URL,
@@ -36,11 +34,8 @@ async function bootstrap() {
       credentials: true,
     }),
   );
-
   app.use(cookieParser());
-
   app.useGlobalPipes(new ValidationPipe());
-
   const configService = app.get<ConfigService>(ConfigService);
   const swaggerConfig = configService.get<SwaggerConfig>('swagger');
 

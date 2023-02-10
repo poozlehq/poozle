@@ -1,9 +1,7 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { Module } from '@nestjs/common';
-
-import { PrismaModule } from 'modules/prisma/prisma.module';
-import { PrismaService } from 'modules/prisma/prisma.service';
+import { PrismaModule, PrismaService } from 'nestjs-prisma';
 
 import { ExtensionRouterService } from './extension_router.service';
 

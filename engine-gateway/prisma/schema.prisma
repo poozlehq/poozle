@@ -15,6 +15,7 @@ model Workspace {
   ExtensionDefinition ExtensionDefinition[]
   ExtensionAccount    ExtensionAccount[]
   ExtensionRouter     ExtensionRouter[]
+  deleted             DateTime?
 }
 
 model ExtensionDefinition {
@@ -27,8 +28,10 @@ model ExtensionDefinition {
   extensionType         ExtensionType      @default(GRAPHQL)
   workspace             Workspace?         @relation(references: [workspaceId], fields: [workspaceId])
   workspaceId           String?
+  spec                  Json
   ExtensionAccount      ExtensionAccount[]
   ExtensionRouter       ExtensionRouter[]
+  deleted               DateTime?
 }
 
 model ExtensionAccount {
@@ -40,7 +43,8 @@ model ExtensionAccount {
   workspaceId            String?
   name                   String
   extensionAccountName   String              @unique
-  ExtensionSpec          ExtensionSpec[]
+  ExtensionSchema        ExtensionSchema[]
+  deleted                DateTime?
 }
 
 model ExtensionRouter {
@@ -50,16 +54,25 @@ model ExtensionRouter {
   endpoint              String
   workspace             Workspace?          @relation(references: [workspaceId], fields: [workspaceId])
   workspaceId           String?
+  deleted               DateTime?
 }
 
-model ExtensionSpec {
-  extensionSpecId    String           @id @default(uuid())
-  spec               Json
-  extensionAccount   ExtensionAccount @relation(references: [extensionAccountId], fields: [extensionAccountId])
+model ExtensionSchema {
+  extensionSchemaId  String              @id @default(uuid())
+  type               ExtensionSchemaType
+  schema             Json
+  extensionAccount   ExtensionAccount    @relation(references: [extensionAccountId], fields: [extensionAccountId])
   extensionAccountId String
+  deleted            DateTime?
 }
 
 enum ExtensionType {
+  GRAPHQL
+  OPENAPI
+  CUSTOM
+}
+
+enum ExtensionSchemaType {
   GRAPHQL
   OPENAPI
   CUSTOM
@@ -70,8 +83,4 @@ enum ReleaseStage {
   BETA
   GENERALLY_AVAILABLE
   CUSTOM
-}
-
-enum FunctionEnv {
-  NODE
 }

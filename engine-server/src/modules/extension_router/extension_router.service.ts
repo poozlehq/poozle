@@ -2,8 +2,8 @@
 
 import { Injectable } from '@nestjs/common';
 import { ExtensionRouter } from '@prisma/client';
+import { PrismaService } from 'nestjs-prisma';
 
-import { PrismaService } from '../prisma/prisma.service';
 import {
   ExtensionRouterCreateBody,
   ExtensionRouterRequestIdBody,
