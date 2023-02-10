@@ -1,0 +1,27 @@
+{
+  "name": "AWS Lambda extension",
+  "key": "aws_lambda",
+  "description": "Lambda related things",
+  "icon": "aws_lambda.svg",
+  "type": "OPENAPI",
+  "inputs": [
+    {
+      "name": "Access Key",
+      "description": "Access key of AWS account",
+      "key": "access_key",
+      "type": "input"
+    },
+    {
+      "name": "Secret Key",
+      "key": "secret_key",
+      "description": "Secret Key of AWS account",
+      "type": "input"
+    },
+    {
+      "key": "region",
+      "description": "Preferred Region",
+      "name": "Region",
+      "type": "input"
+    }
+  ]
+}

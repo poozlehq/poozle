@@ -100,7 +100,7 @@ export class SchemaBuilderService {
       },
     );
     const headers = await headersResponse.json();
-    console.log(headers);
+
     const schemaResponse = await fetch(`${extensionReachURL}/schema`, {
       method: 'POST',
       headers: {
