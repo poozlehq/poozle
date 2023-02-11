@@ -1,8 +1,8 @@
 [
   {
-    "name": "Notion",
+    "name": "AWS Lambda",
     "dockerImageTag": "latest",
-    "dockerRepository": "notion",
+    "dockerRepository": "aws-lambda",
     "icon": "gicon",
     "releaseStage": "ALPHA",
     "extensionType": "OPENAPI"

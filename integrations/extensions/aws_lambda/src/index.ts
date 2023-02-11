@@ -1,10 +1,17 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 import * as fs from "fs";
-import * as https from "https";
 
 import * as aws4 from "aws4";
 
-type Config = Record<string, string | number>;
+interface Config {
+  region: string;
+  context: {
+    method: string;
+    path: string;
+  };
+  accessKeyId: string;
+  secretAccessKey: string;
+}
 
 const enum SchemaType {
   "GRAPHQL" = "GRAPHQL",
@@ -37,42 +44,40 @@ interface Spec {
   inputBlocks: Input[];
 }
 
-function request(opts: any) {
-  console.log(opts, "options");
-  https
-    .request(opts, (res) => {
-      res.pipe(process.stdout);
-    })
-    .end(opts.body || "");
-}
-
 class GithubExtension {
-  getAuthHeaders(config: Config): Record<string, string | number> {
-    console.log(request(
-      aws4.sign({
-        service: "lambda",
-        region: "ap-south-1",
-        method: "GET",
-        path: "/2015-03-31/functions/",
-      })
-    ))
-    return aws4.sign(
+  getAuthHeaders(config: Config): Record<string, string> {
+    const response = aws4.sign(
       {
         service: "lambda",
-        region: "ap-south-1",
-        method: "GET",
-        path: "/2015-03-31/functions/",
+        region: config.region,
+        method: config.context.method.toUpperCase(),
+        path: config.context.path,
+      },
+      {
+        accessKeyId: config.accessKeyId,
+        secretAccessKey: config.secretAccessKey,
       }
     );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return response.headers as Record<string, string>;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async getSchema(_config: Config): Promise<Schema> {
+  async getSchema(config: Config): Promise<Schema> {
     const schema = JSON.parse(fs.readFileSync("./aws_lambda.json", "utf8"));
+
+    const changedSchema = {
+      ...schema,
+      servers: [
+        {
+          url: schema.servers[0].url.replace("{region}", config.region),
+        },
+      ],
+    };
 
     return {
       type: SchemaType.OPENAPI,
-      schema,
+      schema: changedSchema,
     };
   }
 

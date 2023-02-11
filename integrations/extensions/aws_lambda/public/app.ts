@@ -6,7 +6,7 @@ import ExtensionClass from "../src/index";
 
 const app = express();
 app.use(express.json());
-const port = 8000;
+const port = 8002;
 
 app.post("/schema", async (req, res) => {
   const className = new ExtensionClass();

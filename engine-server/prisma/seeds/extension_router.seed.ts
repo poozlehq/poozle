@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 async function main() {
   const extensionDefinition = await prisma.extensionDefinition.findUnique({
     where: {
-      extensionDefinitionId: "4e58bc7a-95b5-4ea0-85f6-c883e3e09c63"
+      extensionDefinitionId: "0f3c48aa-cf45-4b7c-af80-2f1dc11ceeb0"
     }
   });
 
@@ -16,7 +16,7 @@ async function main() {
     await prisma.extensionRouter.create({
       data: {
         extensionDefinitionId: extensionDefinition.extensionDefinitionId,
-        endpoint: 'http://localhost:8001',
+        endpoint: 'http://localhost:8002',
       },
     });
 

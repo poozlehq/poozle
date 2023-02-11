@@ -27,7 +27,7 @@
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
     "nestjs-prisma": "^0.20.0",
-    "openapi-to-graphql-harshith": "^2.6.4",
+    "openapi-to-graphql-harshith": "2.6.12",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.8.0",
