@@ -4953,10 +4953,10 @@ onetime@^5.1.0, onetime@^5.1.2:
   dependencies:
     mimic-fn "^2.1.0"
 
-openapi-to-graphql-harshith@^2.6.4:
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/openapi-to-graphql-harshith/-/openapi-to-graphql-harshith-2.6.4.tgz#05c158d4dc64c642a740097ae8cdf488fb7e63c6"
-  integrity sha512-MD7Es5pAI3XH8f+FH73F+/GKCfxf6ZGOL5V/gwdBoIFuUNX9ViBWerr9SOAhPLZLWFsYK6ZM/kT+bRybrrJwhA==
+openapi-to-graphql-harshith@2.6.12:
+  version "2.6.12"
+  resolved "https://registry.yarnpkg.com/openapi-to-graphql-harshith/-/openapi-to-graphql-harshith-2.6.12.tgz#4dfa0b9fdda38fcedc090b69e1fbc5e1bf800432"
+  integrity sha512-1CaDW/4WOTb2ripS/VGnFNoxPqbr3X9BJ9vm7/NrXDHF68AxJu7mmPs8LeyL8MJomqf/Mh1rmv272HoYvKv/Xg==
   dependencies:
     cross-fetch "^3.1.4"
     debug "^4.2.0"

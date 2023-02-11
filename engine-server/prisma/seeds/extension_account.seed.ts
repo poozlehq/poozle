@@ -14,10 +14,10 @@ async function main() {
       data: {
         extensionDefinitionId: extensionDefinition.extensionDefinitionId,
         extensionConfiguration: {
-          "api_key": ""
+
         },
         name: extensionDefinition.name,
-        extensionAccountName: 'notion_1',
+        extensionAccountName: 'aws_lambda_1',
         workspaceId: workspace.workspaceId
       },
     });

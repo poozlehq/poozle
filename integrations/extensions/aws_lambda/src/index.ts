@@ -1,10 +1,17 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 import * as fs from "fs";
-// import * as https from "https";
 
 import * as aws4 from "aws4";
 
-type Config = any;
+interface Config {
+  region: string;
+  context: {
+    method: string;
+    path: string;
+  };
+  accessKeyId: string;
+  secretAccessKey: string;
+}
 
 const enum SchemaType {
   "GRAPHQL" = "GRAPHQL",
@@ -42,29 +49,35 @@ class GithubExtension {
     const response = aws4.sign(
       {
         service: "lambda",
-        region: config.region as string,
-        method: config.context.method,
-        path: "/2015-03-31/functions/",
+        region: config.region,
+        method: config.context.method.toUpperCase(),
+        path: config.context.path,
       },
       {
-        accessKeyId: config.accessKeyId as string,
-        secretAccessKey: config.secretAccessKey as string,
+        accessKeyId: config.accessKeyId,
+        secretAccessKey: config.secretAccessKey,
       }
     );
-    return {
-      Authorization: response.headers.Authorization as string,
-      "X-Amz-Date": response.headers["X-Amz-Date"] as string,
-      Host: response.headers.Host as string,
-    };
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return response.headers as Record<string, string>;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async getSchema(_config: Config): Promise<Schema> {
+  async getSchema(config: Config): Promise<Schema> {
     const schema = JSON.parse(fs.readFileSync("./aws_lambda.json", "utf8"));
+
+    const changedSchema = {
+      ...schema,
+      servers: [
+        {
+          url: schema.servers[0].url.replace("{region}", config.region),
+        },
+      ],
+    };
 
     return {
       type: SchemaType.OPENAPI,
-      schema,
+      schema: changedSchema,
     };
   }
 
