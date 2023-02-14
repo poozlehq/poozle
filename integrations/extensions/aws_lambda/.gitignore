@@ -397,4 +397,4 @@ Temporary Items
 .env
 dist
 
-github/
+aws_lambda/

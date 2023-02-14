@@ -1,7 +1,10 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 import * as fs from "fs";
+// import fetch from "node-fetch";
 
 import * as aws4 from "aws4";
+import { GraphQLSchema } from "graphql";
+import { createGraphQLSchema } from "openapi-to-graphql-harshith";
 
 interface Config {
   region: string;
@@ -13,6 +16,14 @@ interface Config {
   secretAccessKey: string;
 }
 
+interface Context {
+  config: {
+    accessKeyId: string;
+    secretAccessKey: string;
+    region: string;
+  };
+}
+
 const enum SchemaType {
   "GRAPHQL" = "GRAPHQL",
   "OPENAPI" = "OPENAPI",
@@ -20,8 +31,7 @@ const enum SchemaType {
 
 interface Schema {
   type: SchemaType;
-  schema?: string;
-  openapiSchema?: string;
+  schema: GraphQLSchema;
 }
 
 const enum InputType {
@@ -44,7 +54,7 @@ interface Spec {
   inputBlocks: Input[];
 }
 
-class GithubExtension {
+class AWSLambdaExtension {
   getAuthHeaders(config: Config): Record<string, string> {
     const response = aws4.sign(
       {
@@ -63,21 +73,35 @@ class GithubExtension {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async getSchema(config: Config): Promise<Schema> {
-    const schema = JSON.parse(fs.readFileSync("./aws_lambda.json", "utf8"));
+  async getSchema(): Promise<Schema> {
+    const schemaJSON = JSON.parse(fs.readFileSync("./aws_lambda.json", "utf8"));
 
-    const changedSchema = {
-      ...schema,
-      servers: [
-        {
-          url: schema.servers[0].url.replace("{region}", config.region),
-        },
-      ],
-    };
+    const { schema } = await createGraphQLSchema(schemaJSON, {
+      baseUrl: (_context: any) => {
+        return "https://lambda.ap-south-1.amazonaws.com";
+      },
+      headers: (
+        method: string,
+        path: string,
+        _title,
+        context: { context: Context }
+      ) => {
+        if (context) {
+          const credentials = context?.context.config;
+
+          return this.getAuthHeaders({
+            ...credentials,
+            context: { method, path },
+          });
+        }
+
+        return {};
+      },
+    });
 
     return {
       type: SchemaType.OPENAPI,
-      schema: changedSchema,
+      schema,
     };
   }
 
@@ -88,4 +112,4 @@ class GithubExtension {
   }
 }
 
-export default GithubExtension;
+export default AWSLambdaExtension;

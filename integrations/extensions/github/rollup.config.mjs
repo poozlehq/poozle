@@ -10,7 +10,7 @@ const extensions = [".ts"];
 
 const plugins = [
   json(),
-  resolve({ extensions }),
+  resolve({ extensions, exportConditions: ["node"], preferBuiltins: false }),
   commonjs({
     include: /\/node_modules\//,
   }),
@@ -21,10 +21,10 @@ const plugins = [
 // eslint-disable-next-line import/no-anonymous-default-export
 export default [
   {
-    input: "public/app.ts",
+    input: "src/app.ts",
     output: [
       {
-        file: "./index.js",
+        file: "github/index.js",
         sourcemap: false,
         format: "cjs",
         exports: "named",

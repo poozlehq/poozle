@@ -1,10 +1,11 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 import * as fs from "fs";
 
-import { schemaFromExecutor } from "@graphql-tools/wrap";
+import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
+import { loadSchema } from "@graphql-tools/load";
 import axios from "axios";
 import * as graphql from "graphql";
-import { printSchema } from "graphql";
+// import { GraphQLSchema } from "graphql";
 
 import { GITHUB_API_URL } from "./constants";
 
@@ -14,13 +15,6 @@ const enum SchemaType {
   "GRAPHQL" = "GRAPHQL",
   "OPENAPI" = "OPENAPI",
 }
-
-interface Schema {
-  type: SchemaType;
-  schema?: string;
-  openapiSchema?: string;
-}
-
 const enum InputType {
   input = "input",
 }
@@ -52,38 +46,32 @@ class GithubExtension {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-
-  async getSchema(config: Config): Promise<Schema> {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const remoteExecutor = async ({ document, variables }: any) => {
+  async getSchema(): Promise<any> {
+    const remoteExecutor = async ({ document, variables, context }: any) => {
+      const credentials = context.config;
       const query = graphql.print(document);
-      try {
-        const fetchResult = await axios.post(
-          this.url,
-          {
-            query,
-            variables,
+      const fetchResult = await axios.post(
+        this.url,
+        {
+          query,
+          variables,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            ...this.getAuthHeaders(credentials),
           },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              ...this.getAuthHeaders(config),
-            },
-          }
-        );
-
-        return fetchResult.data;
-      } catch (e) {
-        console.log(e);
-        return {};
-      }
+        }
+      );
+      return fetchResult.data;
     };
-
-    const schema = await schemaFromExecutor(remoteExecutor);
+    const schema = await loadSchema("schema/github.graphql", {
+      loaders: [new GraphQLFileLoader()],
+    });
 
     return {
-      type: SchemaType.GRAPHQL,
-      schema: printSchema(schema),
+      schema,
+      executor: remoteExecutor,
     };
   }
 

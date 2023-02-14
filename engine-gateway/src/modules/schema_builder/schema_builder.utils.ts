@@ -85,7 +85,8 @@ export async function getSchemaForOPENAPI(
 
     const schemaFromExtension = await schemaResponse.json();
     const { schema } = await createGraphQLSchema(schemaFromExtension.schema, {
-      headers: async (method: string, path: string) => {
+      headers: async (method: string, path: string, title, context) => {
+        console.log(title, context);
         const headersResponse = await fetch(
           `${extensionReachURL}/get_auth_headers`,
           {
@@ -118,6 +119,7 @@ export async function getSchemaForOPENAPI(
       ],
     };
   } catch (e) {
+    console.log(e);
     return undefined;
   }
 }

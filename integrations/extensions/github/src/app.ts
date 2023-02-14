@@ -1,0 +1,45 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
+import { createServer } from "http";
+
+import { stitchSchemas } from "@graphql-tools/stitch";
+import { useDisableIntrospection } from "@graphql-yoga/plugin-disable-introspection";
+import { createYoga } from "graphql-yoga";
+
+import ExtensionClass from "./index";
+
+const port = 8000;
+
+async function runGateway() {
+  const Class = new ExtensionClass();
+  const schema = stitchSchemas({
+    subschemas: [await Class.getSchema()],
+  });
+  const yoga = createYoga({
+    schema,
+    plugins: [
+      useDisableIntrospection({
+        isDisabled: (request) => !request.headers.get("config"),
+      }),
+    ],
+    context: async ({ request }: { request: Request }) => {
+      const config64 = request.headers.get("config") ?? null;
+      if (config64) {
+        const buff = new Buffer(config64, "base64");
+        const config = buff.toString("utf8");
+        return {
+          config: JSON.parse(JSON.parse(config)),
+        };
+      }
+
+      return {};
+    },
+  });
+
+  const server = createServer(yoga);
+  server.listen(port, () => {
+    console.info(`Server is running on ${port}`);
+  });
+}
+
+runGateway();
