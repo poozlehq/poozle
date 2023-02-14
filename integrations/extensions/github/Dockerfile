@@ -1,17 +1,11 @@
-FROM node:16.17.0-bullseye-slim
+FROM node:16.17.0-bullseye
 
 WORKDIR /usr/src/app
-
 COPY . .
-
 RUN yarn
-
 RUN yarn build
 
-COPY public/app.js ./
-
-RUN yarn add express
-
+WORKDIR /usr/src/app
 EXPOSE 8000
 
-CMD ["node", "app.js"]
+CMD ["node", "github/index.js"]

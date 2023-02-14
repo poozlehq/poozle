@@ -1,3 +1,3 @@
-# github
+# notion
 
-To interact with github API
+To interact with notion API

@@ -229,15 +229,6 @@
         "required": false
       }
     },
-    "securitySchemes": {
-      "hmac": {
-        "type": "apiKey",
-        "name": "Authorization",
-        "in": "header",
-        "description": "Amazon Signature authorization v4",
-        "x-amazon-apigateway-authtype": "awsSigv4"
-      }
-    },
     "schemas": {
       "ListFunctionsResponse": {
         "type": "object",
@@ -249,388 +240,380 @@
           "Functions": {
             "type": "array",
             "items": {
-              "type": "array",
-              "items": {
-                "type": "object",
-                "properties": {
-                  "FunctionName": {
-                    "type": "string",
-                    "pattern": "(arn:(aws[a-zA-Z-]*)?:lambda:)?([a-z]{2}(-gov)?-[a-z]+-\\d{1}:)?(\\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:(\\$LATEST|[a-zA-Z0-9-_]+))?",
-                    "minLength": 1,
-                    "maxLength": 140,
-                    "description": "The name of the function."
-                  },
-                  "FunctionArn": {
-                    "type": "string",
-                    "pattern": "arn:(aws[a-zA-Z-]*)?:lambda:[a-z]{2}(-gov)?-[a-z]+-\\d{1}:\\d{12}:function:[a-zA-Z0-9-_]+(:(\\$LATEST|[a-zA-Z0-9-_]+))?",
-                    "description": "The function's Amazon Resource Name (ARN)."
-                  },
-                  "Runtime": {
-                    "type": "string",
-                    "enum": [
-                      "nodejs",
-                      "nodejs4.3",
-                      "nodejs6.10",
-                      "nodejs8.10",
-                      "nodejs10.x",
-                      "nodejs12.x",
-                      "nodejs14.x",
-                      "java8",
-                      "java8.al2",
-                      "java11",
-                      "python2.7",
-                      "python3.6",
-                      "python3.7",
-                      "python3.8",
-                      "python3.9",
-                      "dotnetcore1.0",
-                      "dotnetcore2.0",
-                      "dotnetcore2.1",
-                      "dotnetcore3.1",
-                      "nodejs4.3-edge",
-                      "go1.x",
-                      "ruby2.5",
-                      "ruby2.7",
-                      "provided",
-                      "provided.al2"
-                    ],
-                    "description": "The runtime environment for the Lambda function."
-                  },
-                  "Role": {
-                    "type": "string",
-                    "pattern": "arn:(aws[a-zA-Z-]*)?:iam::\\d{12}:role/?[a-zA-Z_0-9+=,.@\\-_/]+",
-                    "description": "The function's execution role."
-                  },
-                  "Handler": {
-                    "type": "string",
-                    "pattern": "[^\\s]+",
-                    "maxLength": 128,
-                    "description": "The function that Lambda calls to begin executing your function."
-                  },
-                  "CodeSize": {
-                    "type": "integer",
-                    "description": "The size of the function's deployment package, in bytes."
-                  },
-                  "Description": {
-                    "type": "string",
-                    "minLength": 0,
-                    "maxLength": 256,
-                    "description": "The function's description."
-                    
-                  },
-                  "Timeout": {
-                    "type": "integer",
-                    "minimum": 1,
-                    "description": "The amount of time in seconds that Lambda allows a function to run before stopping it."
-                  },
-                  "MemorySize": {
-                    "type": "integer",
-                    "minimum": 128,
-                    "maximum": 10240,
-                    "description": "The amount of memory available to the function at runtime. "
-                  },
-                  "LastModified": {
-                    "type": "string",
-                    "description": "The date and time that the function was last updated, in <a href=\"https://www.w3.org/TR/NOTE-datetime\">ISO-8601 format</a> (YYYY-MM-DDThh:mm:ss.sTZD)."
-                  },
-                  "CodeSha256": {
-                    "type": "string",
-                    "description": "The SHA256 hash of the function's deployment package."
-                  },
-                  "Version": {
-                    "type": "string",
-                    "pattern": "(\\$LATEST|[0-9]+)",
-                    "minLength": 1,
-                    "maxLength": 1024,
-                    "description": "The version of the Lambda function."
-                  },
-                  "VpcConfig": {
-                    "type": "object",
-                    "properties": {
-                        "SubnetIds": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          },
-                          "description": "A list of VPC subnet IDs."
-                        },
-                        "SecurityGroupIds": {
-                          "type": "array",
-                          "items": {
-                            "type": "string"
-                          },
-                          "description": "A list of VPC security groups IDs."
-                        },
-                        "VpcId": {
-                          "type": "string",
-                          "description": "The ID of the VPC."
-                        }
+              "type": "object",
+              "properties": {
+                "FunctionName": {
+                  "type": "string",
+                  "pattern": "(arn:(aws[a-zA-Z-]*)?:lambda:)?([a-z]{2}(-gov)?-[a-z]+-\\d{1}:)?(\\d{12}:)?(function:)?([a-zA-Z0-9-_]+)(:(\\$LATEST|[a-zA-Z0-9-_]+))?",
+                  "minLength": 1,
+                  "maxLength": 140,
+                  "description": "The name of the function."
+                },
+                "FunctionArn": {
+                  "type": "string",
+                  "pattern": "arn:(aws[a-zA-Z-]*)?:lambda:[a-z]{2}(-gov)?-[a-z]+-\\d{1}:\\d{12}:function:[a-zA-Z0-9-_]+(:(\\$LATEST|[a-zA-Z0-9-_]+))?",
+                  "description": "The function's Amazon Resource Name (ARN)."
+                },
+                "Runtime": {
+                  "type": "string",
+                  "enum": [
+                    "nodejs",
+                    "nodejs4.3",
+                    "nodejs6.10",
+                    "nodejs8.10",
+                    "nodejs10.x",
+                    "nodejs12.x",
+                    "nodejs14.x",
+                    "java8",
+                    "java8.al2",
+                    "java11",
+                    "python2.7",
+                    "python3.6",
+                    "python3.7",
+                    "python3.8",
+                    "python3.9",
+                    "dotnetcore1.0",
+                    "dotnetcore2.0",
+                    "dotnetcore2.1",
+                    "dotnetcore3.1",
+                    "nodejs4.3-edge",
+                    "go1.x",
+                    "ruby2.5",
+                    "ruby2.7",
+                    "provided",
+                    "provided.al2"
+                  ],
+                  "description": "The runtime environment for the Lambda function."
+                },
+                "Role": {
+                  "type": "string",
+                  "pattern": "arn:(aws[a-zA-Z-]*)?:iam::\\d{12}:role/?[a-zA-Z_0-9+=,.@\\-_/]+",
+                  "description": "The function's execution role."
+                },
+                "Handler": {
+                  "type": "string",
+                  "pattern": "[^\\s]+",
+                  "maxLength": 128,
+                  "description": "The function that Lambda calls to begin executing your function."
+                },
+                "CodeSize": {
+                  "type": "integer",
+                  "description": "The size of the function's deployment package, in bytes."
+                },
+                "Description": {
+                  "type": "string",
+                  "minLength": 0,
+                  "maxLength": 256,
+                  "description": "The function's description."
+
+                },
+                "Timeout": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "The amount of time in seconds that Lambda allows a function to run before stopping it."
+                },
+                "MemorySize": {
+                  "type": "integer",
+                  "minimum": 128,
+                  "maximum": 10240,
+                  "description": "The amount of memory available to the function at runtime. "
+                },
+                "LastModified": {
+                  "type": "string",
+                  "description": "The date and time that the function was last updated, in <a href=\"https://www.w3.org/TR/NOTE-datetime\">ISO-8601 format</a> (YYYY-MM-DDThh:mm:ss.sTZD)."
+                },
+                "CodeSha256": {
+                  "type": "string",
+                  "description": "The SHA256 hash of the function's deployment package."
+                },
+                "Version": {
+                  "type": "string",
+                  "pattern": "(\\$LATEST|[0-9]+)",
+                  "minLength": 1,
+                  "maxLength": 1024,
+                  "description": "The version of the Lambda function."
+                },
+                "VpcConfig": {
+                  "type": "object",
+                  "properties": {
+                    "SubnetIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "A list of VPC subnet IDs."
                     },
-                    "description": "The function's networking configuration."
+                    "SecurityGroupIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "description": "A list of VPC security groups IDs."
+                    },
+                    "VpcId": {
+                      "type": "string",
+                      "description": "The ID of the VPC."
+                    }
                   },
-                  "DeadLetterConfig": {
-                    "type": "object",
-                    "properties": {
-                      "TargetArn": {
+                  "description": "The function's networking configuration."
+                },
+                "DeadLetterConfig": {
+                  "type": "object",
+                  "properties": {
+                    "TargetArn": {
+                      "type": "string",
+                      "pattern": "(arn:(aws[a-zA-Z-]*)?:[a-z0-9-.]+:.*)|()",
+                      "description": "The Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic."
+                    }
+                  },
+                  "description": "The function's dead letter queue."
+                },
+                "Environment": {
+                  "type": "object",
+                  "properties": {
+                    "Variables": {
+                      "type": "object",
+                      "additionalProperties": {
                         "type": "string",
-                        "pattern": "(arn:(aws[a-zA-Z-]*)?:[a-z0-9-.]+:.*)|()",
-                        "description": "The Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic."
-                      }
-                    },
-                    "description": "The function's dead letter queue."
-                  },
-                  "Environment": {
-                    "type": "object",
-                    "properties": {
-                      "Variables": {
-                        "type": "object",
-                        "additionalProperties": {
-                          "type": "string",
-                          "format": "password"
-                        },
-                        "description": "Environment variable key-value pairs."
+                        "format": "password"
                       },
-                      "Error": {
-                        "type": "object",
-                        "properties": {
-                          "ErrorCode": {
-                            "type": "string",
-                            "description": "The error code."
-                          },
-                          "Message": {
-                            "type": "string",
-                            "format": "password",
-                            "description": "The error message."
-                          }
-                        },
-                        "description": "Error messages for environment variables that couldn't be applied."
-                      }
+                      "description": "Environment variable key-value pairs."
                     },
-                    "description": "The function's <a href=\"https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html\">environment variables</a>."
-                  },
-                  "KMSKeyArn": {
-                    "type": "string",
-                    "pattern": "(arn:(aws[a-zA-Z-]*)?:[a-z0-9-.]+:.*)|()",
-                    "description": "The KMS key that's used to encrypt the function's environment variables. This key is only returned if you've configured a customer managed CMK."
-                  },
-                  "TracingConfig": {
+                    "Error": {
                       "type": "object",
                       "properties": {
-                        "Mode": {
+                        "ErrorCode": {
                           "type": "string",
-                          "enum": [
-                            "Active",
-                            "PassThrough"
-                          ],
-                          "description": "The tracing mode."
+                          "description": "The error code."
+                        },
+                        "Message": {
+                          "type": "string",
+                          "format": "password",
+                          "description": "The error message."
                         }
                       },
-                      "description": "The function's X-Ray tracing configuration."
+                      "description": "Error messages for environment variables that couldn't be applied."
+                    }
                   },
-                  "MasterArn": {
-                    "type": "string",
-                    "pattern": "arn:(aws[a-zA-Z-]*)?:lambda:[a-z]{2}(-gov)?-[a-z]+-\\d{1}:\\d{12}:function:[a-zA-Z0-9-_]+(:(\\$LATEST|[a-zA-Z0-9-_]+))?",
-                    "description": "For Lambda@Edge functions, the ARN of the master function"
-                  },
-                  "RevisionId": {
-                    "type": "string",
-                    "description": "The latest updated revision of the function or alias."
-                  },
-                  "Layers": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "properties": {
-                        "Arn": {
-                          "type": "string",
-                          "pattern": "arn:[a-zA-Z0-9-]+:lambda:[a-zA-Z0-9-]+:\\d{12}:layer:[a-zA-Z0-9-_]+:[0-9]+",
-                          "minLength": 1,
-                          "maxLength": 140,
-                          "description": "The Amazon Resource Name (ARN) of the function layer."
-                        },
-                        "CodeSize": {
-                            "type": "integer",
-                            "description": "The size of the layer archive in bytes."
-                        },
-                        "SigningProfileVersionArn": {
-                          "type": "string",
-                          "pattern": "arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\\-])+:([a-z]{2}(-gov)?-[a-z]+-\\d{1})?:(\\d{12})?:(.*)",
-                          "description": "The Amazon Resource Name (ARN) for a signing profile version."
-                        },
-                        "SigningJobArn": {
-                          "type": "string",
-                          "pattern": "arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\\-])+:([a-z]{2}(-gov)?-[a-z]+-\\d{1})?:(\\d{12})?:(.*)",
-                          "description": "The Amazon Resource Name (ARN) of a signing job."
-                        }
-                      }
-                    },
-                    "description": "The function's <a href=\"https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html\"> layers</a>."
-                  },
-                  "State": {
-                    "type": "string",
-                    "enum": [
-                      "Pending",
-                      "Active",
-                      "Inactive",
-                      "Failed"
-                    ],
-                    "description": "The current state of the function. When the state is <code>Inactive</code>, you can reactivate the function by invoking it."
-                  },
-                  "StateReason": {
-                    "type": "string",
-                    "description": "The reason for the function's current state."
-                  },
-                  "StateReasonCode": {
-                    "type": "string",
-                    "enum": [
-                      "Idle",
-                      "Creating",
-                      "Restoring",
-                      "EniLimitExceeded",
-                      "InsufficientRolePermissions",
-                      "InvalidConfiguration",
-                      "InternalError",
-                      "SubnetOutOfIPAddresses",
-                      "InvalidSubnet",
-                      "InvalidSecurityGroup",
-                      "ImageDeleted",
-                      "ImageAccessDenied",
-                      "InvalidImage"
-                    ],
-                    "description": "The reason code for the function's current state. When the code is <code>Creating</code>, you can't invoke or modify the function."
-                  },
-                  "LastUpdateStatus": {
-                    "type": "string",
-                    "enum": [
-                      "Successful",
-                      "Failed",
-                      "InProgress"
-                    ],
-                    "description": "The status of the last update that was performed on the function. This is first set to <code>Successful</code> after function creation completes."
-                  },
-                  "LastUpdateStatusReason": {
-                    "type": "string",
-                    "description": "The reason for the last update that was performed on the function."
-                  },
-                  "LastUpdateStatusReasonCode": {
-                    "type": "string",
-                    "enum": [
-                      "EniLimitExceeded",
-                      "InsufficientRolePermissions",
-                      "InvalidConfiguration",
-                      "InternalError",
-                      "SubnetOutOfIPAddresses",
-                      "InvalidSubnet",
-                      "InvalidSecurityGroup",
-                      "ImageDeleted",
-                      "ImageAccessDenied",
-                      "InvalidImage"
-                    ],
-                    "description": "The reason code for the last update that was performed on the function."
-                  },
-                  "FileSystemConfigs": {
-                    "type": "array",
-                    "items": {
-                      "type": "object",
-                      "required": [
-                        "Arn",
-                        "LocalMountPath"
+                  "description": "The function's <a href=\"https://docs.aws.amazon.com/lambda/latest/dg/configuration-envvars.html\">environment variables</a>."
+                },
+                "KMSKeyArn": {
+                  "type": "string",
+                  "pattern": "(arn:(aws[a-zA-Z-]*)?:[a-z0-9-.]+:.*)|()",
+                  "description": "The KMS key that's used to encrypt the function's environment variables. This key is only returned if you've configured a customer managed CMK."
+                },
+                "TracingConfig": {
+                  "type": "object",
+                  "properties": {
+                    "Mode": {
+                      "type": "string",
+                      "enum": [
+                        "Active",
+                        "PassThrough"
                       ],
-                      "properties": {
-                        "Arn": {
-                          "type": "string",
-                          "pattern": "arn:aws[a-zA-Z-]*:elasticfilesystem:[a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\\d{1}:\\d{12}:access-point/fsap-[a-f0-9]{17}",
-                          "maxLength": 200,
-                          "description": "The Amazon Resource Name (ARN) of the Amazon EFS access point that provides access to the file system."
-                        },
-                        "LocalMountPath": {
-                          "type": "string",
-                          "pattern": "^/mnt/[a-zA-Z0-9-_.]+$",
-                          "maxLength": 160,
-                          "description": "The path where the function can access the file system, starting with <code>/mnt/</code>."
-                        }
-                      }
-                    },
-                    "maxItems": 1,
-                    "description": "Connection settings for an <a href=\"https://docs.aws.amazon.com/lambda/latest/dg/configuration-filesystem.html\">Amazon EFS file system</a>."
+                      "description": "The tracing mode."
+                    }
                   },
-                  "PackageType": {
-                    "type": "string",
-                    "enum": [
-                      "Zip",
-                      "Image"
-                    ],
-                    "description": "The type of deployment package. Set to <code>Image</code> for container image and set <code>Zip</code> for .zip file archive."
-                  },
-                  "ImageConfigResponse": {
+                  "description": "The function's X-Ray tracing configuration."
+                },
+                "MasterArn": {
+                  "type": "string",
+                  "pattern": "arn:(aws[a-zA-Z-]*)?:lambda:[a-z]{2}(-gov)?-[a-z]+-\\d{1}:\\d{12}:function:[a-zA-Z0-9-_]+(:(\\$LATEST|[a-zA-Z0-9-_]+))?",
+                  "description": "For Lambda@Edge functions, the ARN of the master function"
+                },
+                "RevisionId": {
+                  "type": "string",
+                  "description": "The latest updated revision of the function or alias."
+                },
+                "Layers": {
+                  "type": "array",
+                  "items": {
                     "type": "object",
                     "properties": {
-                      "ImageConfig": {
-                        "type": "object",
-                          "properties": {
-                            "EntryPoint": {
-                              "type": "array",
-                              "items": {
-                                "type":"string"
-                              },
-                              "maxItems": 1500,
-                              "description": "Specifies the entry point to their application, which is typically the location of the runtime executable."
-                            },
-                            "Command": {
-                              "type": "array",
-                              "items": {
-                                "type":"string"
-                              },
-                              "maxItems": 1500,
-                              "description": "Specifies parameters that you want to pass in with ENTRYPOINT. "
-                            },
-                            "WorkingDirectory": {
-                              "type": "string",
-                              "maxLength": 1000,
-                              "description": "Specifies the working directory."
-                            }
-                          },
-                          "description": "Configuration values that override the container image Dockerfile."
+                      "Arn": {
+                        "type": "string",
+                        "pattern": "arn:[a-zA-Z0-9-]+:lambda:[a-zA-Z0-9-]+:\\d{12}:layer:[a-zA-Z0-9-_]+:[0-9]+",
+                        "minLength": 1,
+                        "maxLength": 140,
+                        "description": "The Amazon Resource Name (ARN) of the function layer."
                       },
-                      "Error": {
-                        "type": "object",
-                        "properties": {
-                          "ErrorCode": {
-                            "type":"string",
-                            "description": "Error code."
-                          },
-                          "Message": {
-                            "type": "string",
-                            "format": "password",
-                            "description": "Error message."
-                          }
-                        },
-                        "description": "Error response to GetFunctionConfiguration."
+                      "CodeSize": {
+                        "type": "integer",
+                        "description": "The size of the layer archive in bytes."
+                      },
+                      "SigningProfileVersionArn": {
+                        "type": "string",
+                        "pattern": "arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\\-])+:([a-z]{2}(-gov)?-[a-z]+-\\d{1})?:(\\d{12})?:(.*)",
+                        "description": "The Amazon Resource Name (ARN) for a signing profile version."
+                      },
+                      "SigningJobArn": {
+                        "type": "string",
+                        "pattern": "arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\\-])+:([a-z]{2}(-gov)?-[a-z]+-\\d{1})?:(\\d{12})?:(.*)",
+                        "description": "The Amazon Resource Name (ARN) of a signing job."
                       }
+                    }
+                  },
+                  "description": "The function's <a href=\"https://docs.aws.amazon.com/lambda/latest/dg/configuration-layers.html\"> layers</a>."
+                },
+                "State": {
+                  "type": "string",
+                  "enum": [
+                    "Pending",
+                    "Active",
+                    "Inactive",
+                    "Failed"
+                  ],
+                  "description": "The current state of the function. When the state is <code>Inactive</code>, you can reactivate the function by invoking it."
+                },
+                "StateReason": {
+                  "type": "string",
+                  "description": "The reason for the function's current state."
+                },
+                "StateReasonCode": {
+                  "type": "string",
+                  "enum": [
+                    "Idle",
+                    "Creating",
+                    "Restoring",
+                    "EniLimitExceeded",
+                    "InsufficientRolePermissions",
+                    "InvalidConfiguration",
+                    "InternalError",
+                    "SubnetOutOfIPAddresses",
+                    "InvalidSubnet",
+                    "InvalidSecurityGroup",
+                    "ImageDeleted",
+                    "ImageAccessDenied",
+                    "InvalidImage"
+                  ],
+                  "description": "The reason code for the function's current state. When the code is <code>Creating</code>, you can't invoke or modify the function."
+                },
+                "LastUpdateStatus": {
+                  "type": "string",
+                  "enum": [
+                    "Successful",
+                    "Failed",
+                    "InProgress"
+                  ],
+                  "description": "The status of the last update that was performed on the function. This is first set to <code>Successful</code> after function creation completes."
+                },
+                "LastUpdateStatusReason": {
+                  "type": "string",
+                  "description": "The reason for the last update that was performed on the function."
+                },
+                "LastUpdateStatusReasonCode": {
+                  "type": "string",
+                  "enum": [
+                    "EniLimitExceeded",
+                    "InsufficientRolePermissions",
+                    "InvalidConfiguration",
+                    "InternalError",
+                    "SubnetOutOfIPAddresses",
+                    "InvalidSubnet",
+                    "InvalidSecurityGroup",
+                    "ImageDeleted",
+                    "ImageAccessDenied",
+                    "InvalidImage"
+                  ],
+                  "description": "The reason code for the last update that was performed on the function."
+                },
+                "FileSystemConfigs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "Arn",
+                      "LocalMountPath"
+                    ],
+                    "properties": {
+                      "Arn": {
+                        "type": "string",
+                        "pattern": "arn:aws[a-zA-Z-]*:elasticfilesystem:[a-z]{2}((-gov)|(-iso(b?)))?-[a-z]+-\\d{1}:\\d{12}:access-point/fsap-[a-f0-9]{17}",
+                        "maxLength": 200,
+                        "description": "The Amazon Resource Name (ARN) of the Amazon EFS access point that provides access to the file system."
+                      },
+                      "LocalMountPath": {
+                        "type": "string",
+                        "pattern": "^/mnt/[a-zA-Z0-9-_.]+$",
+                        "maxLength": 160,
+                        "description": "The path where the function can access the file system, starting with <code>/mnt/</code>."
+                      }
+                    }
+                  },
+                  "maxItems": 1,
+                  "description": "Connection settings for an <a href=\"https://docs.aws.amazon.com/lambda/latest/dg/configuration-filesystem.html\">Amazon EFS file system</a>."
+                },
+                "PackageType": {
+                  "type": "string",
+                  "enum": [
+                    "Zip",
+                    "Image"
+                  ],
+                  "description": "The type of deployment package. Set to <code>Image</code> for container image and set <code>Zip</code> for .zip file archive."
+                },
+                "ImageConfigResponse": {
+                  "type": "object",
+                  "properties": {
+                    "ImageConfig": {
+                      "type": "object",
+                      "properties": {
+                        "EntryPoint": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "maxItems": 1500,
+                          "description": "Specifies the entry point to their application, which is typically the location of the runtime executable."
+                        },
+                        "Command": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          },
+                          "maxItems": 1500,
+                          "description": "Specifies parameters that you want to pass in with ENTRYPOINT. "
+                        },
+                        "WorkingDirectory": {
+                          "type": "string",
+                          "maxLength": 1000,
+                          "description": "Specifies the working directory."
+                        }
+                      },
+                      "description": "Configuration values that override the container image Dockerfile."
                     },
-                    "description": "The function's image configuration values."
+                    "Error": {
+                      "type": "object",
+                      "properties": {
+                        "ErrorCode": {
+                          "type": "string",
+                          "description": "Error code."
+                        },
+                        "Message": {
+                          "type": "string",
+                          "format": "password",
+                          "description": "Error message."
+                        }
+                      },
+                      "description": "Error response to GetFunctionConfiguration."
+                    }
                   },
-                  "SigningProfileVersionArn": {
-                    "type": "string",
-                    "pattern": "arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\\-])+:([a-z]{2}(-gov)?-[a-z]+-\\d{1})?:(\\d{12})?:(.*)",
-                    "description": "The ARN of the signing profile version."
-                  },
-                  "SigningJobArn": {
-                    "type": "string",
-                    "pattern": "arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\\-])+:([a-z]{2}(-gov)?-[a-z]+-\\d{1})?:(\\d{12})?:(.*)",
-                    "description": "The ARN of the signing job."
-                  }
+                  "description": "The function's image configuration values."
+                },
+                "SigningProfileVersionArn": {
+                  "type": "string",
+                  "pattern": "arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\\-])+:([a-z]{2}(-gov)?-[a-z]+-\\d{1})?:(\\d{12})?:(.*)",
+                  "description": "The ARN of the signing profile version."
+                },
+                "SigningJobArn": {
+                  "type": "string",
+                  "pattern": "arn:(aws[a-zA-Z0-9-]*):([a-zA-Z0-9\\-])+:([a-z]{2}(-gov)?-[a-z]+-\\d{1})?:(\\d{12})?:(.*)",
+                  "description": "The ARN of the signing job."
+                }
               }
             }
           }
         }
       }
-      }
     }
-  },
-  "security": [
-    {
-      "hmac": []
-    }
-  ]
+  }
 }

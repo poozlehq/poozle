@@ -1,63 +1,43 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 import * as fs from "fs";
+import { resolve } from "path";
 
-type Config = Record<string, string | number>;
+import {
+  AuthHeaderResponse,
+  BaseRestExtension,
+  Config,
+  Context,
+  BaseURLResponse,
+} from "@poozle/engine-edk";
+import { SpecResponse } from "@poozle/engine-edk";
 
-const enum SchemaType {
-  "GRAPHQL" = "GRAPHQL",
-  "OPENAPI" = "OPENAPI",
-}
-
-interface Schema {
-  type: SchemaType;
-  schema?: string;
-  openapiSchema?: string;
-}
-
-const enum InputType {
-  input = "input",
-}
-
-interface Input {
-  name: string;
-  key: string;
-  description: string;
-  type: InputType;
-}
-
-interface Spec {
-  name: string;
-  key: string;
-  description?: string;
-  icon: string;
-  type: SchemaType;
-  inputBlocks: Input[];
-}
-
-class GithubExtension {
-  getAuthHeaders(config: Config): Record<string, string | number> {
+class NotionExtension extends BaseRestExtension {
+  authHeaders(config: Config): AuthHeaderResponse {
     const token = config["api_key"] as string;
     return {
       Authorization: `Bearer ${token}`,
-      "Notion-Version": "2022-06-28"
-    };
+      "Notion-Version": "2022-06-28",
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } as any;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async getSchema(_config: Config): Promise<Schema> {
-    const schema = JSON.parse(fs.readFileSync("./notion.json", "utf8"));
+  async getSchema(): Promise<string> {
+    const schemaJSON = JSON.parse(
+      fs.readFileSync(resolve("schema/notion.json"), "utf8")
+    );
 
-    return {
-      type: SchemaType.OPENAPI,
-      schema,
-    };
+    return schemaJSON;
   }
 
-  getSpec(): Spec {
+  getSpec(): SpecResponse {
     const data = fs.readFileSync("./spec.json", "utf8");
 
-    return JSON.parse(data) as Spec;
+    return JSON.parse(data) as SpecResponse;
+  }
+
+  async baseURL(context: Context): BaseURLResponse {
+    return `https://lambda.${context.config.region}.amazonaws.com`;
   }
 }
 
-export default GithubExtension;
+export default NotionExtension;

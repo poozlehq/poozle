@@ -8,12 +8,12 @@
     {
       "name": "Access Key",
       "description": "Access key of AWS account",
-      "key": "access_key",
+      "key": "accessKeyId",
       "type": "input"
     },
     {
       "name": "Secret Key",
-      "key": "secret_key",
+      "key": "secretAccessKey",
       "description": "Secret Key of AWS account",
       "type": "input"
     },
