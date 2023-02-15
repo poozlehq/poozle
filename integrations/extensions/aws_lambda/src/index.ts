@@ -1,51 +1,19 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 import * as fs from "fs";
+import { resolve } from "path";
 
+import {
+  AuthHeaderResponse,
+  BaseRestExtension,
+  Config,
+  Context,
+  BaseURLResponse,
+} from "@poozle/engine-edk";
+import { SpecResponse } from "@poozle/engine-edk";
 import * as aws4 from "aws4";
 
-interface Config {
-  region: string;
-  context: {
-    method: string;
-    path: string;
-  };
-  accessKeyId: string;
-  secretAccessKey: string;
-}
-
-const enum SchemaType {
-  "GRAPHQL" = "GRAPHQL",
-  "OPENAPI" = "OPENAPI",
-}
-
-interface Schema {
-  type: SchemaType;
-  schema?: string;
-  openapiSchema?: string;
-}
-
-const enum InputType {
-  input = "input",
-}
-
-interface Input {
-  name: string;
-  key: string;
-  description: string;
-  type: InputType;
-}
-
-interface Spec {
-  name: string;
-  key: string;
-  description?: string;
-  icon: string;
-  type: SchemaType;
-  inputBlocks: Input[];
-}
-
-class GithubExtension {
-  getAuthHeaders(config: Config): Record<string, string> {
+class AWSLambdaExtension extends BaseRestExtension {
+  authHeaders(config: Config): AuthHeaderResponse {
     const response = aws4.sign(
       {
         service: "lambda",
@@ -58,34 +26,28 @@ class GithubExtension {
         secretAccessKey: config.secretAccessKey,
       }
     );
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return response.headers as Record<string, string>;
+    return response.headers as any;
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async getSchema(config: Config): Promise<Schema> {
-    const schema = JSON.parse(fs.readFileSync("./aws_lambda.json", "utf8"));
+  async getSchema(): Promise<string> {
+    const schemaJSON = JSON.parse(
+      fs.readFileSync(resolve("schema/aws_lambda.json"), "utf8")
+    );
 
-    const changedSchema = {
-      ...schema,
-      servers: [
-        {
-          url: schema.servers[0].url.replace("{region}", config.region),
-        },
-      ],
-    };
-
-    return {
-      type: SchemaType.OPENAPI,
-      schema: changedSchema,
-    };
+    return schemaJSON;
   }
 
-  getSpec(): Spec {
+  getSpec(): SpecResponse {
     const data = fs.readFileSync("./spec.json", "utf8");
 
-    return JSON.parse(data) as Spec;
+    return JSON.parse(data) as SpecResponse;
+  }
+
+  async baseURL(context: Context): BaseURLResponse {
+    return `https://lambda.${context.config.region}.amazonaws.com`;
   }
 }
 
-export default GithubExtension;
+export default AWSLambdaExtension;

@@ -1,15 +1,11 @@
-FROM node:16.17.0-bullseye-slim
+FROM node:16.17.0-bullseye
 
 WORKDIR /usr/src/app
-
 COPY . .
-
-COPY src/notion.json .
-
 RUN yarn
-
 RUN yarn build
 
+WORKDIR /usr/src/app
 EXPOSE 8000
 
-CMD ["node", "index.js"]
+CMD ["node", "notion/index.js"]
