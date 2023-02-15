@@ -16,6 +16,7 @@ async function runGateway() {
   });
   const yoga = createYoga({
     schema,
+    graphiql: false,
     context: async ({ request }: { request: Request }) => {
       const config64 = request.headers.get("config") ?? null;
       if (config64) {

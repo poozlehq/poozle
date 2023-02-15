@@ -15,6 +15,7 @@ async function runGateway() {
   const yoga = createYoga({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     schema: schema as any,
+    graphiql: false,
     context: async ({ request }: { request: Request }) => {
       const config64 = request.headers.get("config") ?? null;
       if (config64) {
