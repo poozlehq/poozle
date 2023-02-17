@@ -1,15 +1,27 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-export interface WorkspaceCreateBody {
+import { Field, InputType } from '@nestjs/graphql';
+
+@InputType()
+export class WorkspaceCreateBody {
+  @Field()
   name: string;
+
+  @Field()
   email: string;
+
+  @Field()
   slug: string;
 }
 
-export interface WorkspaceRequestIdBody {
+@InputType()
+export class WorkspaceRequestIdBody {
+  @Field()
   workspaceId: string;
 }
 
-export interface WorkspaceRequestSlugBody {
+@InputType()
+export class WorkspaceRequestSlugBody {
+  @Field()
   slug: string;
 }

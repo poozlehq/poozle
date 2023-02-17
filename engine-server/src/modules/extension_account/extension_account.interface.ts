@@ -1,17 +1,34 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { ExtensionAccount } from '@prisma/client';
+import { Field, InputType } from '@nestjs/graphql';
+import GraphQLJSON from 'graphql-type-json';
 
-export interface ExtensionAccountRequestIdBody {
+@InputType()
+export class ExtensionAccountRequestIdBody {
+  @Field()
   extensionAccountId: string;
+
+  @Field()
+  workspaceId: string;
 }
 
-export interface ExtensionAccountCreateBody {
+@InputType()
+export class ExtensionAccountCreateBody {
+  @Field()
   extensionDefinitionId: string;
-  extensionConfiguration?: ExtensionAccount['extensionConfiguration'];
+
+  @Field(() => GraphQLJSON, { nullable: true })
+  extensionConfiguration?: JSON;
+
+  @Field()
   extensionAccountName: string;
+
+  @Field()
+  workspaceId: string;
 }
 
-export interface ExtensionAccountGetRequestBody {
+@InputType()
+export class ExtensionAccountGetRequestBody {
+  @Field()
   workspaceId: string;
 }

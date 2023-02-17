@@ -1,0 +1,117 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  userId String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  email String [unique, not null]
+  password String [not null]
+  firstname String
+  lastname String
+  Workspace Workspace [not null]
+}
+
+Table Workspace {
+  workspaceId String [pk]
+  slug String [not null]
+  user User [not null]
+  userId String [not null]
+  ExtensionDefinition ExtensionDefinition [not null]
+  ExtensionAccount ExtensionAccount [not null]
+  ExtensionRouter ExtensionRouter [not null]
+  deleted DateTime
+
+  indexes {
+    (userId, slug) [unique]
+  }
+}
+
+Table ExtensionDefinition {
+  extensionDefinitionId String [pk]
+  name String [not null]
+  dockerImageTag String [not null]
+  dockerRepository String [not null]
+  icon String
+  releaseStage ReleaseStage [not null, default: 'ALPHA']
+  extensionType ExtensionType [not null, default: 'GRAPHQL']
+  workspace Workspace
+  workspaceId String
+  ExtensionAccount ExtensionAccount [not null]
+  ExtensionRouter ExtensionRouter [not null]
+  deleted DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table ExtensionAccount {
+  extensionAccountId String [pk]
+  extensionDefinition ExtensionDefinition [not null]
+  extensionDefinitionId String [not null]
+  extensionConfiguration Json
+  workspace Workspace [not null]
+  workspaceId String [not null]
+  name String [not null]
+  extensionAccountName String [unique, not null]
+  ExtensionSchema ExtensionSchema [not null]
+  deleted DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table ExtensionRouter {
+  extensionRouterId String [pk]
+  extensionDefinition ExtensionDefinition [not null]
+  extensionDefinitionId String [unique, not null]
+  endpoint String [not null]
+  workspace Workspace
+  workspaceId String
+  deleted DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table ExtensionSchema {
+  extensionSchemaId String [pk]
+  type ExtensionSchemaType [not null]
+  schema Json [not null]
+  extensionAccount ExtensionAccount [not null]
+  extensionAccountId String [not null]
+  deleted DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Enum ExtensionType {
+  GRAPHQL
+  OPENAPI
+  CUSTOM
+}
+
+Enum ExtensionSchemaType {
+  GRAPHQL
+  OPENAPI
+  CUSTOM
+}
+
+Enum ReleaseStage {
+  ALPHA
+  BETA
+  GENERALLY_AVAILABLE
+  CUSTOM
+}
+
+Ref: Workspace.userId > User.userId
+
+Ref: ExtensionDefinition.workspaceId > Workspace.workspaceId
+
+Ref: ExtensionAccount.extensionDefinitionId > ExtensionDefinition.extensionDefinitionId
+
+Ref: ExtensionAccount.workspaceId > Workspace.workspaceId
+
+Ref: ExtensionRouter.extensionDefinitionId > ExtensionDefinition.extensionDefinitionId
+
+Ref: ExtensionRouter.workspaceId > Workspace.workspaceId
+
+Ref: ExtensionSchema.extensionAccountId > ExtensionAccount.extensionAccountId

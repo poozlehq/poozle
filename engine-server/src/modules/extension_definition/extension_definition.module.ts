@@ -3,13 +3,17 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule, PrismaService } from 'nestjs-prisma';
 
-import { ExtensionDefinitionController } from './extension_definition.controller';
+import { ExtensionDefinitionResolver } from './extension_definition.resolver';
 import { ExtensionDefinitionService } from './extension_definition.service';
 
 @Module({
   imports: [PrismaModule],
-  controllers: [ExtensionDefinitionController],
-  providers: [ExtensionDefinitionService, PrismaService],
+  controllers: [],
+  providers: [
+    ExtensionDefinitionService,
+    PrismaService,
+    ExtensionDefinitionResolver,
+  ],
   exports: [ExtensionDefinitionService],
 })
 export class ExtensionDefinitionModule {}

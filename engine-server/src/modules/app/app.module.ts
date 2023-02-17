@@ -1,43 +1,46 @@
-/** Copyright (c) 2022, Poozle, all rights reserved. **/
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Module } from '@nestjs/common';
-import { MiddlewareConsumer } from '@nestjs/common';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { Logger, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { GLOBAL_CONFIG } from 'configs/global.config';
+import { GraphQLModule } from '@nestjs/graphql';
 import { PrismaModule } from 'nestjs-prisma';
-import { prismaDeleteSoftlyMiddleware } from 'shared/prisma.middleware';
 
-import { LoggerMiddleware } from 'middlewares/logger.middleware';
+import config from 'common/configs/config';
+import { loggingMiddleware } from 'common/middleware/logging.middleware';
 
+import { AuthModule } from 'modules/auth/auth.module';
+import { ExtensionAccountModule } from 'modules/extension_account/extension_account.module';
 import { ExtensionDefinitionModule } from 'modules/extension_definition/extension_definition.module';
-import { ExtensionRouterModule } from 'modules/extension_router/extension_router.module';
-import { LoggerModule } from 'modules/logger/logger.module';
+import { UserModule } from 'modules/user/user.module';
 import { WorkspaceModule } from 'modules/workspace/workspace.module';
 
-import { ExtensionAccountModule } from '../extension_account/extension_account.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { GqlConfigService } from '../gql-config.service';
 
 @Module({
   imports: [
-    LoggerModule,
+    ConfigModule.forRoot({ isGlobal: true, load: [config] }),
     PrismaModule.forRoot({
+      isGlobal: true,
       prismaServiceOptions: {
-        middlewares: [prismaDeleteSoftlyMiddleware()],
+        middlewares: [loggingMiddleware(new Logger('PrismaMiddleware'))], // configure your prisma middleware
       },
     }),
-    WorkspaceModule,
-    ExtensionDefinitionModule,
+
+    GraphQLModule.forRootAsync<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      useClass: GqlConfigService,
+    }),
+
+    AuthModule,
+    UserModule,
     ExtensionAccountModule,
-    ExtensionRouterModule,
-    ConfigModule.forRoot({ isGlobal: true, load: [() => GLOBAL_CONFIG] }),
+    ExtensionDefinitionModule,
+    WorkspaceModule,
   ],
   controllers: [AppController],
   providers: [AppService],
-  exports: [],
 })
-export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    consumer.apply(LoggerMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}

@@ -1,39 +1,43 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { Injectable } from '@nestjs/common';
-import { Prisma, Workspace } from '@prisma/client';
+import { Workspace } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 
+import { User } from '@generated/user/user.model';
+
 import {
+  WorkspaceCreateBody,
   WorkspaceRequestIdBody,
-  WorkspaceRequestSlugBody,
 } from './workspace.interface';
 
 @Injectable()
 export class WorkspaceService {
   constructor(private prisma: PrismaService) {}
 
-  async createWorkspace(data: Prisma.WorkspaceCreateInput): Promise<Workspace> {
+  async createWorkspace(
+    createWorkspaceBody: WorkspaceCreateBody,
+    user: User,
+  ): Promise<Workspace> {
     return this.prisma.workspace.create({
-      data,
+      data: {
+        ...createWorkspaceBody,
+        userId: user.userId,
+      },
     });
   }
 
-  async getAllWorkspaces(): Promise<Workspace[]> {
-    return this.prisma.workspace.findMany();
+  async getAllWorkspaces(user: User): Promise<Workspace[]> {
+    return this.prisma.workspace.findMany({
+      where: {
+        userId: user.userId,
+      },
+    });
   }
 
   async getWorkspaceWithId(workspaceRequestIdBody: WorkspaceRequestIdBody) {
     return this.prisma.workspace.findUnique({
       where: { workspaceId: workspaceRequestIdBody.workspaceId },
-    });
-  }
-
-  async getWorkspaceWithSlug(
-    workspaceRequestSlugBody: WorkspaceRequestSlugBody,
-  ) {
-    return this.prisma.workspace.findUnique({
-      where: { slug: workspaceRequestSlugBody.slug },
     });
   }
 }

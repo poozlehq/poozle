@@ -3,16 +3,18 @@
 import { Module } from '@nestjs/common';
 import { PrismaModule, PrismaService } from 'nestjs-prisma';
 
-import { ExtensionDefinitionService } from '../extension_definition/extension_definition.service';
-import { ExtensionAccountController } from './extension_account.controller';
+import { ExtensionDefinitionService } from 'modules/extension_definition/extension_definition.service';
+
+import { ExtensionAccountResolver } from './extension_account.resolver';
 import { ExtensionAccountService } from './extension_account.service';
 
 @Module({
   imports: [PrismaModule],
-  controllers: [ExtensionAccountController],
+  controllers: [],
   providers: [
     ExtensionAccountService,
     PrismaService,
+    ExtensionAccountResolver,
     ExtensionDefinitionService,
   ],
   exports: [ExtensionAccountService],
