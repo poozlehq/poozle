@@ -5,8 +5,9 @@
 import * as fs from 'fs';
 import { resolve } from 'path';
 
-import { PrismaClient } from '@prisma/client';
 import * as yaml from 'js-yaml';
+
+import { PrismaClient } from './client';
 
 const prisma = new PrismaClient();
 
@@ -22,13 +23,13 @@ async function main() {
     const configHeaders = Buffer.from(
       JSON.stringify(account.extensionConfiguration),
     ).toString('base64');
-    const accountName = account.name.replace('/ /g', '_');
+    const accountName = account.name.replace(/ /g, '_');
 
     return {
       name: account.extensionAccountName,
       handler: {
         graphql: {
-          endpoint: 'http://localhost:8000/graphql',
+          endpoint: 'http://host.docker.internal:8000/graphql',
           operationHeaders: {
             config: configHeaders,
           },
