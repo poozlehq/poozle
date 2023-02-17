@@ -1,15 +1,34 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
+import { Field, InputType } from '@nestjs/graphql';
 import { ExtensionType } from '@prisma/client';
 
-export interface ExtensionDefinitionRequestIdBody {
+@InputType()
+export class ExtensionDefinitionRequestIdBody {
+  @Field()
   extensionDefinitionId: string;
 }
 
-export interface ExtensionDefinitionCreateBody {
-  name: string;
-  dockerImageTag: string;
-  dockerRepository: string;
+@InputType()
+export class ExtensionDefinitionRequestWorkspaceIdBody {
+  @Field()
   workspaceId: string;
+}
+
+@InputType()
+export class ExtensionDefinitionCreateBody {
+  @Field()
+  name: string;
+
+  @Field()
+  dockerImageTag: string;
+
+  @Field()
+  dockerRepository: string;
+
+  @Field()
+  workspaceId: string;
+
+  @Field()
   extensionType: ExtensionType;
 }

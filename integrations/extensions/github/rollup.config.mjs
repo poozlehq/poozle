@@ -10,7 +10,7 @@ const extensions = [".ts"];
 
 const plugins = [
   json(),
-  resolve({ extensions, exportConditions: ["node"], preferBuiltins: false }),
+  resolve({ extensions, exportConditions: ["node"], preferBuiltins: true }),
   commonjs({
     include: /\/node_modules\//,
   }),

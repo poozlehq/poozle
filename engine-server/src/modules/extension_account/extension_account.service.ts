@@ -1,8 +1,10 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { Injectable } from '@nestjs/common';
-import { ExtensionAccount } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
+
+import { ExtensionAccountUncheckedCreateInput } from '@generated/extension-account/extension-account-unchecked-create.input';
+import { ExtensionAccount } from '@generated/extension-account/extension-account.model';
 
 import { ExtensionDefinitionRequestIdBody } from 'modules/extension_definition/extension_definition.interface';
 import { ExtensionDefinitionService } from 'modules/extension_definition/extension_definition.service';
@@ -52,7 +54,9 @@ export class ExtensionAccountService {
       data: {
         ...extensionAccountCreateBody,
         name: extensionDefinition.name,
-      },
+        workspaceId: extensionAccountCreateBody.workspaceId,
+        extensionDefinitionId: extensionDefinition.extensionDefinitionId,
+      } as ExtensionAccountUncheckedCreateInput,
     });
   }
 }

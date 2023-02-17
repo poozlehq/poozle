@@ -1,4 +1,4 @@
-/** Copyright (c) 2022, Poozle, all rights reserved. **/
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Injectable } from '@nestjs/common';
 
