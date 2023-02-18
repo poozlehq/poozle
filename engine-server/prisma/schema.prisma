@@ -69,7 +69,6 @@ model ExtensionAccount {
   workspaceId            String
   name                   String
   extensionAccountName   String              @unique
-  ExtensionSchema        ExtensionSchema[]
   deleted                DateTime?
   createdAt              DateTime            @default(now())
   updatedAt              DateTime            @updatedAt
@@ -80,22 +79,11 @@ model ExtensionRouter {
   extensionDefinition   ExtensionDefinition @relation(references: [extensionDefinitionId], fields: [extensionDefinitionId])
   extensionDefinitionId String              @unique
   endpoint              String
-  workspace             Workspace?          @relation(references: [workspaceId], fields: [workspaceId])
-  workspaceId           String?
+  workspace             Workspace           @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId           String
   deleted               DateTime?
   createdAt             DateTime            @default(now())
   updatedAt             DateTime            @updatedAt
-}
-
-model ExtensionSchema {
-  extensionSchemaId  String              @id @default(uuid())
-  type               ExtensionSchemaType
-  schema             Json
-  extensionAccount   ExtensionAccount    @relation(references: [extensionAccountId], fields: [extensionAccountId])
-  extensionAccountId String
-  deleted            DateTime?
-  createdAt          DateTime            @default(now())
-  updatedAt          DateTime            @updatedAt
 }
 
 enum ExtensionType {

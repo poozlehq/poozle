@@ -1,0 +1,38 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+import * as fs from "fs";
+
+import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
+import { loadSchema } from "@graphql-tools/load";
+import {
+  AuthHeaderResponse,
+  BaseGraphQLExtension,
+  Config,
+  SpecResponse,
+} from "@poozle/engine-edk";
+import { GraphQLSchema } from "graphql";
+
+import { API_URL } from "./constants";
+
+class {{properCase name}}Extension extends BaseGraphQLExtension {
+  url = API_URL;
+
+  async authHeaders(config: Config): AuthHeaderResponse {
+    // Write the code to pass the required headers to the API
+  }
+
+  async getSchema(): Promise<GraphQLSchema> {
+    const schema = await loadSchema("schema/schema.graphql", {
+      loaders: [new GraphQLFileLoader()],
+    });
+
+    return schema;
+  }
+
+  getSpec(): SpecResponse {
+    const data = fs.readFileSync("./spec.json", "utf8");
+
+    return JSON.parse(data) as SpecResponse;
+  }
+}
+
+export default {{properCase name}}Extension;
