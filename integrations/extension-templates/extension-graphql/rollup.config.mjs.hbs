@@ -24,7 +24,7 @@ export default [
     input: "src/app.ts",
     output: [
       {
-        file: "github/index.js",
+        file: "{{snakeCase name}}/index.js",
         sourcemap: false,
         format: "cjs",
         exports: "named",

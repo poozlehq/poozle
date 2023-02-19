@@ -11,7 +11,9 @@ COPY --from=builder /usr/src/app/github /usr/src/app/github
 COPY --from=builder /usr/src/app/schema /usr/src/app/schema
 
 WORKDIR /usr/src/app
-RUN yarn add jsonpointer form-data ms http-errors object-path function-bind has for-each has-symbols should
+
+# There is an issue with globby latest version https://github.com/sindresorhus/globby/issues/193
+RUN yarn add jsonpointer form-data ms http-errors object-path function-bind has for-each has-symbols should resolve-from globby@11.0.4 p-limit@3.1.0
 EXPOSE 8000
 
 CMD ["node", "github/index.js"]

@@ -32,15 +32,13 @@ model User {
 
 model Workspace {
   workspaceId         String                @id @default(uuid())
-  slug                String
+  slug                String                @unique
   user                User                  @relation(references: [userId], fields: [userId])
   userId              String
   ExtensionDefinition ExtensionDefinition[]
   ExtensionAccount    ExtensionAccount[]
   ExtensionRouter     ExtensionRouter[]
   deleted             DateTime?
-
-  @@unique([userId, slug])
 }
 
 model ExtensionDefinition {
