@@ -74,10 +74,17 @@ export class BaseRestExtension implements BaseExtensionInterface {
     return schema;
   }
 
+  /*
+    This will return the spec for the extension
+  */
   spec(): SpecResponse {
     return this.getSpec();
   }
 
+  /*
+    This function will be used when the extension is getting configured. We will use this to test with the
+    credentials are valid.
+  */
   check(config: Config): CheckResponse {
     return this.checkCredentials(config);
   }
