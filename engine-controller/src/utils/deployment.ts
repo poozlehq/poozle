@@ -68,7 +68,7 @@ export async function deleteDeployment(
   namespace: string,
   deploymentName: string,
 ) {
-  return await k8sApi.deleteNamespacedDeployment(namespace, deploymentName);
+  return await k8sApi.deleteNamespacedDeployment(deploymentName, namespace);
 }
 
 export async function restartDeployment(

@@ -3,7 +3,7 @@
 import * as k8s from '@kubernetes/client-node';
 
 const defaultService = {
-  apiVersion: 'apps/v1',
+  apiVersion: 'v1',
   kind: 'Service',
 };
 
