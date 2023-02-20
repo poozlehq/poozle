@@ -20,4 +20,5 @@ export interface ExtensionRequestBody {
   event: ExtensionEventEnum;
   slug: string;
   dockerImage: string;
+  workspaceSlug: string;
 }

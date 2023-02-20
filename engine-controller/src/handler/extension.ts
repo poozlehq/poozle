@@ -8,6 +8,7 @@ import {
   ExtensionEventEnum,
   ExtensionRequestBody,
   Namespace,
+  Workspace,
 } from '../modules';
 
 const INTEGRATIONS_NAMESPACE = 'engine-integrations';
@@ -41,6 +42,14 @@ export function extensionHandler(logger: Logger) {
       logger,
     );
 
+    const workspace = new Workspace(
+      k8sApi,
+      k8sApiCore,
+      body.workspaceSlug,
+      'engine-gateway',
+      logger,
+    );
+
     switch (body.event) {
       case ExtensionEventEnum.CREATED: {
         /* 
@@ -55,8 +64,12 @@ export function extensionHandler(logger: Logger) {
             },
           ],
         });
-        res.status(createStatus.status ? 200 : 400);
-        res.json(createStatus);
+        res.status(createStatus.status ? 200 : 400).json(createStatus);
+
+        /**
+         * Restart the engine-gateway deployment for this workspace
+         */
+        await workspace.restartDeployment();
         break;
       }
       case ExtensionEventEnum.DELETED_ALL: {
@@ -64,8 +77,12 @@ export function extensionHandler(logger: Logger) {
           This will delete all the resources related to the extension
         */
         const deleteStatus = await extension.startDelete();
-        res.status(deleteStatus.status ? 200 : 400);
-        res.json(deleteStatus);
+        res.status(deleteStatus.status ? 200 : 400).json(deleteStatus);
+
+        /**
+         * Restart the engine-gateway deployment for this workspace
+         */
+        await workspace.restartDeployment();
         break;
       }
     }
