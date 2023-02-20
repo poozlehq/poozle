@@ -1,10 +1,10 @@
 {
   "name": "controller",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha",
   "description": "Handles the k8s deployments for gateway and extensions",
   "license": "MIT",
   "main": "src/index.ts",
-  "keywords": [],
+  "keywords": [ ],
   "scripts": {
     "build": "rollup -c",
     "start": "ts-node src/index.ts"

@@ -2,7 +2,7 @@
 
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import axios from "axios";
-import { print, GraphQLSchema } from "graphql";
+import { print, GraphQLSchema, GraphQLError } from "graphql";
 
 import {
   AuthHeaderResponse,
@@ -52,23 +52,27 @@ export class BaseGraphQLExtension implements BaseExtensionInterface {
     // We use this to populate the auth Headers
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const remoteExecutor = async ({ document, variables, context }: any) => {
-      const credentials = context.config;
-      const query = print(document);
-      const authHeaders = await this.authHeaders(credentials);
-      const fetchResult = await axios.post(
-        this.url,
-        {
-          query,
-          variables,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            ...authHeaders,
+      try {
+        const credentials = context.config;
+        const query = print(document);
+        const authHeaders = await this.authHeaders(credentials);
+        const fetchResult = await axios.post(
+          this.url,
+          {
+            query,
+            variables,
           },
-        }
-      );
-      return fetchResult.data;
+          {
+            headers: {
+              "Content-Type": "application/json",
+              ...authHeaders,
+            },
+          }
+        );
+        return fetchResult.data;
+      } catch (e) {
+        return Promise.reject(new GraphQLError(e));
+      }
     };
 
     return {

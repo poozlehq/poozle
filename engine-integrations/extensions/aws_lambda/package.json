@@ -6,7 +6,8 @@
   "main": "src/index.ts",
   "keywords": [ ],
   "scripts": {
-    "build": "rm -rf aws_lambda && rollup -c"
+    "build": "rm -rf aws_lambda && rollup -c",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "engines": {
     "node": ">=10"

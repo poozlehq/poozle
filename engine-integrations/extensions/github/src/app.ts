@@ -1,11 +1,11 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { createServer } from "http";
+import { createServer } from 'http';
 
-import { stitchSchemas } from "@graphql-tools/stitch";
-import { createYoga } from "graphql-yoga";
+import { stitchSchemas } from '@graphql-tools/stitch';
+import { createYoga } from 'graphql-yoga';
 
-import ExtensionClass from "./index";
+import ExtensionClass from './index';
 
 const port = 8000;
 
@@ -17,11 +17,13 @@ async function runGateway() {
   const yoga = createYoga({
     schema,
     graphiql: false,
+    landingPage: false,
+    maskedErrors: false,
     context: async ({ request }: { request: Request }) => {
-      const config64 = request.headers.get("config") ?? null;
+      const config64 = request.headers.get('config') ?? null;
       if (config64) {
-        const buff = new Buffer(config64, "base64");
-        const config = buff.toString("utf8");
+        const buff = new Buffer(config64, 'base64');
+        const config = buff.toString('utf8');
         return {
           config: JSON.parse(JSON.parse(config)),
         };
