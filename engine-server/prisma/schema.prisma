@@ -92,7 +92,7 @@ enum ExtensionType {
 
 enum ExtensionSchemaType {
   GRAPHQL
-  OPENAPI
+  REST
   CUSTOM
 }
 

@@ -1,0 +1,13 @@
+schema: ../engine-server/src/schema.graphql
+documents: src/queries/**/*.graphql
+generates:
+  src/queries/generated/graphql.tsx:
+    config:
+      withHooks: true
+    plugins:
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
+  src/queries/generated/modules.d.ts:
+    plugins:
+      - typescript-graphql-files-modules

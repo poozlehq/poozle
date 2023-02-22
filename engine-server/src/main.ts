@@ -4,6 +4,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import * as cookieParser from 'cookie-parser';
 import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
 
 import type { CorsConfig, NestConfig } from 'common/configs/config.interface';
@@ -12,6 +13,7 @@ import { AppModule } from './modules/app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.use(cookieParser());
 
   // Validation
   app.useGlobalPipes(new ValidationPipe());

@@ -1,0 +1,23 @@
+query GetAuthenticatedUser {
+  me {
+    firstname
+    lastname
+    email
+  }
+}
+
+mutation LoginUser($data: LoginInput!) {
+  login(data: $data) {
+    user {
+      email
+    }
+  }
+}
+
+mutation SignupUser($data: SignupInput!) {
+  signup(data: $data) {
+    user {
+      email
+    }
+  }
+}
