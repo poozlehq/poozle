@@ -9,3 +9,5 @@ prisma/migrations/dev/
 .env
 
 src/queries/generated
+
+.next
