@@ -1,0 +1,24 @@
+$width: 420px;
+
+.container {
+  width: $width;
+  margin: var(--mantine-spacing-xl);
+}
+
+.title {
+  font-weight: 900;
+}
+
+.text {
+  margin-top: var(--mantine-spacing-sm);
+}
+
+.link {
+  color: var(--mantine-color-blue-6) !important;
+  text-decoration: none;
+}
+
+.paper {
+  padding: var(--mantine-spacing-xl);
+  margin-top: var(--mantine-spacing-md);
+}

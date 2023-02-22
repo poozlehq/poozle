@@ -15,17 +15,13 @@ Table User {
 
 Table Workspace {
   workspaceId String [pk]
-  slug String [not null]
+  slug String [unique, not null]
   user User [not null]
   userId String [not null]
   ExtensionDefinition ExtensionDefinition [not null]
   ExtensionAccount ExtensionAccount [not null]
   ExtensionRouter ExtensionRouter [not null]
   deleted DateTime
-
-  indexes {
-    (userId, slug) [unique]
-  }
 }
 
 Table ExtensionDefinition {
@@ -54,7 +50,6 @@ Table ExtensionAccount {
   workspaceId String [not null]
   name String [not null]
   extensionAccountName String [unique, not null]
-  ExtensionSchema ExtensionSchema [not null]
   deleted DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
@@ -65,19 +60,8 @@ Table ExtensionRouter {
   extensionDefinition ExtensionDefinition [not null]
   extensionDefinitionId String [unique, not null]
   endpoint String [not null]
-  workspace Workspace
-  workspaceId String
-  deleted DateTime
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-}
-
-Table ExtensionSchema {
-  extensionSchemaId String [pk]
-  type ExtensionSchemaType [not null]
-  schema Json [not null]
-  extensionAccount ExtensionAccount [not null]
-  extensionAccountId String [not null]
+  workspace Workspace [not null]
+  workspaceId String [not null]
   deleted DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
@@ -91,7 +75,7 @@ Enum ExtensionType {
 
 Enum ExtensionSchemaType {
   GRAPHQL
-  OPENAPI
+  REST
   CUSTOM
 }
 
@@ -113,5 +97,3 @@ Ref: ExtensionAccount.workspaceId > Workspace.workspaceId
 Ref: ExtensionRouter.extensionDefinitionId > ExtensionDefinition.extensionDefinitionId
 
 Ref: ExtensionRouter.workspaceId > Workspace.workspaceId
-
-Ref: ExtensionSchema.extensionAccountId > ExtensionAccount.extensionAccountId

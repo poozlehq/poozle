@@ -1,0 +1,14 @@
+@import 'src/components/typography.scss';
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: Metropolis, sans-serif;
+  font-smooth: always !important;
+
+  svg {
+    shape-rendering: crisp-edges;
+    image-rendering: crisp-edges;
+  }
+}

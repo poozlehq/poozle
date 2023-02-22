@@ -1,0 +1,13 @@
+node_modules/
+dist/
+prisma/*.db
+coverage/
+
+.DS_Store
+
+prisma/migrations/dev/
+.env
+
+src/queries/generated
+
+.next

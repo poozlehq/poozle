@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: poozle-ingress
+  annotations:
+    beta.cloud.google.com/backend-config: '{"default": "config-default"}'
+    kubernetes.io/ingress.global-static-ip-name: poozle
+    networking.gke.io/managed-certificates: managed-cert
+    kubernetes.io/ingress.class: "gce"
+spec:
+  rules:
+    - host: app.poozle.dev
+      http:
+        paths:
+          - backend:
+              service:
+                name: poozle-web
+                port:
+                  number: 80
+            path: /*
+            pathType: ImplementationSpecific

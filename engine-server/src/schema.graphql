@@ -22,8 +22,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type ExtensionAccount {
-  ExtensionSchema: [ExtensionSchema!]
-  _count: ExtensionAccountCount!
   createdAt: DateTime!
   deleted: DateTime
   extensionAccountId: ID!
@@ -35,10 +33,6 @@ type ExtensionAccount {
   updatedAt: DateTime!
   workspace: Workspace!
   workspaceId: String!
-}
-
-type ExtensionAccountCount {
-  ExtensionSchema: Int!
 }
 
 input ExtensionAccountCreateBody {
@@ -104,25 +98,8 @@ type ExtensionRouter {
   extensionDefinitionId: String!
   extensionRouterId: ID!
   updatedAt: DateTime!
-  workspace: Workspace
-  workspaceId: String
-}
-
-type ExtensionSchema {
-  createdAt: DateTime!
-  deleted: DateTime
-  extensionAccount: ExtensionAccount!
-  extensionAccountId: String!
-  extensionSchemaId: ID!
-  schema: JSON!
-  type: ExtensionSchemaType!
-  updatedAt: DateTime!
-}
-
-enum ExtensionSchemaType {
-  CUSTOM
-  GRAPHQL
-  OPENAPI
+  workspace: Workspace!
+  workspaceId: String!
 }
 
 enum ExtensionType {

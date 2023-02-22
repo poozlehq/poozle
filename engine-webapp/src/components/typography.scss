@@ -1,0 +1,27 @@
+@font-face {
+  font-weight: normal;
+  font-family: Metropolis;
+  src: url('./Metropolis-Regular.otf') format('opentype');
+}
+
+@font-face {
+  font-weight: 300;
+  font-family: Metropolis;
+  src: url('./Metropolis-Thin.otf') format('opentype');
+}
+
+@font-face {
+  font-weight: 500;
+  font-family: Metropolis;
+  src: url('./Metropolis-SemiBold.otf') format('opentype');
+}
+
+@font-face {
+  font-weight: bold;
+  font-family: Metropolis;
+  src: url('./Metropolis-Bold.otf') format('opentype');
+}
+
+@mixin font-text() {
+  font-family: Metropolis;
+}

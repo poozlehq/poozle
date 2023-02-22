@@ -6,7 +6,9 @@ import {
   Args,
   Parent,
   ResolveField,
+  Context,
 } from '@nestjs/graphql';
+import { Response } from 'express';
 
 import { User } from '@generated/user/user.model';
 
@@ -32,11 +34,23 @@ export class AuthResolver {
   }
 
   @Mutation(() => Auth)
-  async login(@Args('data') { email, password }: LoginInput) {
+  async login(
+    @Args('data') { email, password }: LoginInput,
+    @Context('res') res: Response,
+  ) {
     const { accessToken, refreshToken } = await this.auth.login(
       email.toLowerCase(),
       password,
     );
+
+    const options = {
+      maxAge: 1000 * 60 * 60 * 24, // expires in a day
+      // httpOnly: true, // cookie is only accessible by the server
+      // secure: process.env.NODE_ENV === 'prod', // only transferred over https
+      // sameSite: true, // only sent for requests to the same FQDN as the domain in the cookie
+    };
+
+    res.cookie('token', accessToken, options);
 
     return {
       accessToken,
