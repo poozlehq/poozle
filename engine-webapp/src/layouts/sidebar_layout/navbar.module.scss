@@ -1,0 +1,42 @@
+$dim: 50;
+
+.iconContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.link {
+  width: $dim;
+  margin-bottom: var(--mantine-spacing-sm);
+  height: $dim;
+  border-radius: var(--mantine-radius-md);
+  padding: var(--mantine-spacing-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--mantine-color-gray-7);
+
+  &:hover {
+    background-color: var(--mantine-color-gray-0);
+    color: var(--mantine-color-black);
+  }
+}
+
+.open.link {
+  justify-content: flex-start;
+}
+
+.section {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.openedSection {
+  align-items: flex-start;
+
+  .link {
+    width: 100%;
+  }
+}

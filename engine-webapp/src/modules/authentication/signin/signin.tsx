@@ -3,12 +3,13 @@
 import {
   TextInput,
   PasswordInput,
-  Anchor,
   Paper,
   Title,
   Text,
   Container,
   Button,
+  Group,
+  Anchor,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import Link from 'next/link';
@@ -84,6 +85,15 @@ export function Signin(): ReactElement {
             mt="md"
             {...form.getInputProps('password')}
           />
+          <Group position="apart" mt="lg">
+            <Anchor<'a'>
+              onClick={(event) => event.preventDefault()}
+              href="#"
+              size="sm"
+            >
+              Forgot password?
+            </Anchor>
+          </Group>
           <Button fullWidth mt="xl" type="submit" loading={loading}>
             Sign in
           </Button>

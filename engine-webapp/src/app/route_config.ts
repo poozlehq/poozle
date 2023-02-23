@@ -1,6 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { AuthenticationLayout } from 'layouts/authentication_layout';
+import { SideBarLayout } from 'layouts/sidebar_layout';
 import { GetUserData } from 'wrappers/get_user_data';
 
 export interface RouteConfig {
@@ -15,7 +16,12 @@ export const routes: RouteConfig[] = [
   {
     path: '/home',
     protected: true,
-    layouts: [GetUserData],
+    layouts: [GetUserData, SideBarLayout],
+  },
+  {
+    path: '/playground',
+    protected: true,
+    layouts: [GetUserData, SideBarLayout],
   },
   {
     path: '/authentication/signin',

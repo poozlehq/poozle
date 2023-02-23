@@ -1,0 +1,36 @@
+sources:
+  - name: Github
+    handler:
+      graphql:
+        endpoint: http://localhost:8000/graphql
+        operationHeaders:
+          config: IntcImFwaV9rZXlcIjpcImdocF9RY0dXOFJ6VFVxOWNrcTZDb0JmS04zb0dOM2htRk8yMlVJbndcIn0iIA
+    transforms:
+      - prefix:
+          mode: wrap
+          value: Github_
+      - encapsulate:
+          name: github_1
+          applyTo:
+            query: true
+            mutation: true
+            subscription: true
+  - name: AWS Lambda
+    handler:
+      graphql:
+        endpoint: http://localhost:8001/graphql
+        operationHeaders:
+          config: IntcInJlZ2lvblwiOlwiYXAtc291dGgtMVwiLFwiYWNjZXNzS2V5SWRcIjpcIkFLSUEyUVZCSjZIU1FXNDdPQUM3XCIsXCJzZWNyZXRBY2Nlc3NLZXlcIjpcInRhMmQ5MlJxL1hDWkFhQ1kwM3dvQnhJN1h0b2tWTG5IbzRBeFBsMGRcIn0i
+    transforms:
+      - prefix:
+          mode: wrap
+          value: AWSLambda_
+      - encapsulate:
+          name: aws_lambda_1
+          applyTo:
+            query: true
+            mutation: true
+            subscription: true
+
+serve:
+  playground: true

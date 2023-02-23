@@ -1,14 +1,14 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 export enum WorkspaceEventEnum {
-  'CREATED' = 'CREATED',
-  'DELETED' = 'DELETED',
-  'CREDENTIALS_UPDATED' = 'CREDENTIALS_UPDATED',
+  'CREATE' = 'CREATE',
+  'DELETE' = 'DELETE',
+  'RESTART' = 'RESTART',
 }
 
 export enum ExtensionEventEnum {
-  'CREATED' = 'CREATED',
-  'DELETED_ALL' = 'DELETED_ALL',
+  'CREATE' = 'CREATE',
+  'DELETE' = 'DELETE',
 }
 
 export interface WorkspaceRequestBody {

@@ -14,10 +14,6 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
-    "paths": {
-      "@/utils/*": ["src/utils/*"],
-      "@/ui/*": ["src/components/*"]
-    },
     "declaration": false,
     "removeComments": true,
     "emitDecoratorMetadata": true,
