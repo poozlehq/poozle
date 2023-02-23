@@ -51,7 +51,7 @@ export function extensionHandler(logger: Logger) {
     );
 
     switch (body.event) {
-      case ExtensionEventEnum.CREATED: {
+      case ExtensionEventEnum.CREATE: {
         /* 
           This will create a deployment for the extension 
           if not found
@@ -72,7 +72,7 @@ export function extensionHandler(logger: Logger) {
         await workspace.restartDeployment();
         break;
       }
-      case ExtensionEventEnum.DELETED_ALL: {
+      case ExtensionEventEnum.DELETE: {
         /* 
           This will delete all the resources related to the extension
         */

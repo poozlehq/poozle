@@ -16,7 +16,7 @@ import '../styles/globals.scss';
 
 export default function MyApp({ Component, pageProps, router }: AppProps) {
   const ComponentToRender = configProcessor(router, Component, pageProps);
-  const [colorScheme, setColorScheme] = React.useState<ColorScheme>('dark');
+  const [colorScheme, setColorScheme] = React.useState<ColorScheme>('light');
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
 

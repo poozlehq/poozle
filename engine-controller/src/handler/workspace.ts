@@ -49,7 +49,7 @@ export function workspaceHandler(logger: Logger) {
     );
 
     switch (body.event) {
-      case WorkspaceEventEnum.CREATED: {
+      case WorkspaceEventEnum.CREATE: {
         /* 
           This will create a gateway deployment for the workspace 
           if not found
@@ -58,7 +58,7 @@ export function workspaceHandler(logger: Logger) {
         res.status(createStatus.status ? 200 : 400).json(createStatus);
         break;
       }
-      case WorkspaceEventEnum.DELETED: {
+      case WorkspaceEventEnum.DELETE: {
         /* 
           Deleting the deployment and service for the workspace
         */
@@ -66,7 +66,7 @@ export function workspaceHandler(logger: Logger) {
         res.status(deleteStatus.status ? 200 : 400).json(deleteStatus);
         break;
       }
-      case WorkspaceEventEnum.CREDENTIALS_UPDATED: {
+      case WorkspaceEventEnum.RESTART: {
         /* 
           This will create a new engine-gateway pods with the new credentials
         */

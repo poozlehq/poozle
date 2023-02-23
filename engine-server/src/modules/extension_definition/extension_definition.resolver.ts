@@ -19,7 +19,6 @@ import { ExtensionDefinitionService } from './extension_definition.service';
 export class ExtensionDefinitionResolver {
   constructor(private extensionDefinitionService: ExtensionDefinitionService) {}
 
-  @UseGuards(GqlAuthGuard)
   @Query(() => ExtensionDefinition)
   async getExtensionDefinitionById(
     @Args('data')
@@ -30,7 +29,6 @@ export class ExtensionDefinitionResolver {
     );
   }
 
-  @UseGuards(GqlAuthGuard)
   @Query(() => [ExtensionDefinition])
   getExtensionDefinitionsByWorkspace(
     @Args('data')
@@ -41,13 +39,11 @@ export class ExtensionDefinitionResolver {
     );
   }
 
-  @UseGuards(GqlAuthGuard)
   @Query(() => [ExtensionDefinition])
   getExtensionDefinitions() {
     return this.extensionDefinitionService.getAllExtensionDefinitions();
   }
 
-  @UseGuards(GqlAuthGuard)
   @Mutation(() => ExtensionDefinition)
   async createExtensionDefinition(
     @Args('data') createExtensionAccountInput: ExtensionDefinitionCreateBody,
