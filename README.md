@@ -1,3 +1,6 @@
+![Poozle logo](https://user-images.githubusercontent.com/17528887/221166175-706c5ce3-756e-49b5-985b-1dc5bf40b8e1.svg)
+
+
 # Introduction
 
 Poozle is an open-source, fast and reliable platform to integrate data from external APIs via a single integration layer
