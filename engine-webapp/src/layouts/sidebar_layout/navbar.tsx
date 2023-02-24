@@ -107,7 +107,9 @@ export function Navbar({ open }: NavbarProps) {
       >
         {links}
       </MNavbar.Section>
-      <MNavbar.Section>
+      <MNavbar.Section
+        className={classnames(styles.section, { [styles.openedSection]: open })}
+      >
         <NavbarLink
           icon={IconLogout}
           label="Logout"

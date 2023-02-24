@@ -1,5 +1,5 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
-import { Header as MHeader, Group, Badge, Title } from '@mantine/core';
+import { Header as MHeader, Group, Badge } from '@mantine/core';
 
 import { ThemeLogo } from 'components/theme_logo';
 

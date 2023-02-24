@@ -48,8 +48,12 @@ export type SchemaResponse = Promise<GraphQLSchema | SubschemaConfig>;
 export type AuthHeaderResponse = Promise<
   Record<string, string | number | boolean>
 >;
-export type SpecResponse = Spec | undefined;
-export type CheckResponse = Promise<boolean>;
+export type SpecResponse = Promise<Spec | undefined>;
+export interface CheckResponseType {
+  status: boolean;
+  error?: string;
+}
+export type CheckResponse = Promise<CheckResponseType>;
 
 export interface BaseExtensionInterface {
   // This will return GRAPHQL Schema

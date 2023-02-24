@@ -24,6 +24,11 @@ export const routes: RouteConfig[] = [
     layouts: [GetUserData, SideBarLayout],
   },
   {
+    path: '/integrations',
+    protected: true,
+    layouts: [GetUserData, SideBarLayout],
+  },
+  {
     path: '/authentication/signin',
     redirectIfLoggedIn: true,
     layouts: [AuthenticationLayout],
