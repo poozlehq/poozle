@@ -9,6 +9,11 @@ Poozle is an open-source, fast and reliable platform to integrate data from exte
 - Install extension
 - Here is a step-by-step guide showing you how to use our API playground, all on your computer.
 
+
+https://user-images.githubusercontent.com/17528887/221165613-cb1ded30-823f-4fbe-b509-d940489a1b42.mov
+
+
+
 # Contributing
 We love contributions to Poozle, big or small.
 
