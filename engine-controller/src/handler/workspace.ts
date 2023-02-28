@@ -13,7 +13,7 @@ import {
 const deploymentSpec = {
   containers: [
     {
-      image: 'github:latest',
+      image: 'manoj67/engine-gateway:latest',
       name: 'gateway',
     },
   ],
@@ -74,12 +74,18 @@ export function workspaceHandler(logger: Logger) {
         res.status(restartStatus.status ? 200 : 400).json(restartStatus);
         break;
       }
-
+      case WorkspaceEventEnum.STATUS:{
+        /* 
+          This will get pods status of new gateway
+        */
+        const deploymentStatus = await workspace.getDeployment();
+        res.status(deploymentStatus.status ? 200 : 400).json(deploymentStatus);
+        break;
+      }
       default: {
         logger.info('No event was configured for this');
       }
     }
 
-    res.send('Hello workd');
   };
 }

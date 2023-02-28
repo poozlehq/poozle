@@ -11,6 +11,7 @@
     "start": "mesh start",
     "start:dev": "mesh dev",
     "run-script": "yarn run:script && yarn build && yarn start",
+    "run-test": "yarn build && yarn start",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "dependencies": {

@@ -40,7 +40,6 @@ CREATE TABLE "ExtensionDefinition" (
     "releaseStage" "ReleaseStage" NOT NULL DEFAULT 'ALPHA',
     "extensionType" "ExtensionType" NOT NULL DEFAULT 'GRAPHQL',
     "workspaceId" TEXT,
-    "spec" JSONB NOT NULL,
     "deleted" TIMESTAMP(3),
 
     CONSTRAINT "ExtensionDefinition_pkey" PRIMARY KEY ("extensionDefinitionId")

@@ -9,3 +9,5 @@ src/client
 storage
 
 .mesh
+
+.meshrc.yml

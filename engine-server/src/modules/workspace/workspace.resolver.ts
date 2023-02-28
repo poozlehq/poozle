@@ -46,4 +46,14 @@ export class WorkspaceResolver {
       user,
     );
   }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Workspace)
+  async deleteWorkspace(
+    @Args('data') workspaceRequestIdBody: WorkspaceRequestIdBody,
+  ) {
+    return await this.workspaceService.deleteWorkspace(
+      workspaceRequestIdBody
+    );
+  }
 }

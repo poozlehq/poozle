@@ -85,6 +85,11 @@ export function extensionHandler(logger: Logger) {
         await workspace.restartDeployment();
         break;
       }
+      case ExtensionEventEnum.STATUS: {
+        const deploymentStatus = await extension.getDeployment();
+        res.status(deploymentStatus.status ? 200 : 400).json(deploymentStatus);
+        break;
+      }
     }
   };
 }

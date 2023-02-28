@@ -211,4 +211,26 @@ export class Base {
       };
     }
   }
+
+  async getDeployment() {
+    try {
+      const response = await readDeployment(
+        this.k8sApi,
+        this.namespace,
+        this.slug
+      )
+      this.logger.info('Deployment found for this Workspace')
+      return {
+        status: true,
+        availableReplicas: response.body.status.availableReplicas
+      }
+    }
+    catch(e){
+      return {
+        status: false,
+        error: 'Deployment not found for this Workspace'
+      }
+    }
+    
+  }
 }

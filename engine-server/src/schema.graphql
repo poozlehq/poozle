@@ -128,6 +128,7 @@ type Mutation {
   createExtensionAccount(data: ExtensionAccountCreateBody!): ExtensionAccount!
   createExtensionDefinition(data: ExtensionDefinitionCreateBody!): ExtensionDefinition!
   createWorkspace(data: WorkspaceCreateBody!): Workspace!
+  deleteWorkspace(data: WorkspaceRequestIdBody!): Workspace!
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
@@ -207,8 +208,6 @@ type WorkspaceCount {
 }
 
 input WorkspaceCreateBody {
-  email: String!
-  name: String!
   slug: String!
 }
 

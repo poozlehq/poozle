@@ -4,11 +4,13 @@ export enum WorkspaceEventEnum {
   'CREATE' = 'CREATE',
   'DELETE' = 'DELETE',
   'RESTART' = 'RESTART',
+  'STATUS' = 'STATUS'
 }
 
 export enum ExtensionEventEnum {
   'CREATE' = 'CREATE',
   'DELETE' = 'DELETE',
+  'STATUS' = 'STATUS'
 }
 
 export interface WorkspaceRequestBody {

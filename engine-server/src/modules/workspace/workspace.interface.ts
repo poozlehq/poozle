@@ -5,12 +5,6 @@ import { Field, InputType } from '@nestjs/graphql';
 @InputType()
 export class WorkspaceCreateBody {
   @Field()
-  name: string;
-
-  @Field()
-  email: string;
-
-  @Field()
   slug: string;
 }
 
@@ -24,4 +18,9 @@ export class WorkspaceRequestIdBody {
 export class WorkspaceRequestSlugBody {
   @Field()
   slug: string;
+}
+
+
+export type ControllerReponse = {
+  status: string
 }
