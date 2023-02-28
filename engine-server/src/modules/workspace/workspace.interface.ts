@@ -20,7 +20,6 @@ export class WorkspaceRequestSlugBody {
   slug: string;
 }
 
-
-export type ControllerReponse = {
-  status: string
+export interface ControllerReponse {
+  status: string;
 }

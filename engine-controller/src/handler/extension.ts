@@ -51,6 +51,22 @@ export function extensionHandler(logger: Logger) {
     );
 
     switch (body.event) {
+      case ExtensionEventEnum.CREATE_WITHOUT_RESTART: {
+        /* 
+          This will create a deployment for the extension 
+          if not found
+        */
+        const createStatus = await extension.startCreate({
+          containers: [
+            {
+              image: body.dockerImage,
+              name: body.slug,
+            },
+          ],
+        });
+        res.status(createStatus.status ? 200 : 400).json(createStatus);
+        break;
+      }
       case ExtensionEventEnum.CREATE: {
         /* 
           This will create a deployment for the extension 
@@ -86,6 +102,9 @@ export function extensionHandler(logger: Logger) {
         break;
       }
       case ExtensionEventEnum.STATUS: {
+        /* 
+          This will get pods status of extension
+        */
         const deploymentStatus = await extension.getDeployment();
         res.status(deploymentStatus.status ? 200 : 400).json(deploymentStatus);
         break;

@@ -1,24 +1,26 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-export type ControllerBody = {
+export interface ControllerBody {
   event: string;
   slug: string;
   workspaceSlug?: string;
   dockerImage?: string;
 }
 
-export type ControllerResponse = {
+export interface ControllerResponse {
   status: boolean;
-  avaliableReplicas?: number; 
+  avaliableReplicas?: number;
 }
 
-export type ExtensionBody = {
-  query: string
+export interface ExtensionBody {
+  query: string;
+  endpoint: string;
 }
 
-export type SpecConfig = {
-  spec: JSON
+export interface SpecConfig {
+  spec: JSON;
 }
 
-export type getSpec = {
-  getSpec: SpecConfig
+export interface getSpec {
+  getSpec: SpecConfig;
 }

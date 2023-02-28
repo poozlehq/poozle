@@ -1,47 +1,56 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
+import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Workspace } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
-import { HttpService } from '@nestjs/axios'
 
 import { User } from '@generated/user/user.model';
+
+import { ControllerApi } from 'modules/utils';
+import { ControllerBody } from 'modules/utils/api.types';
 
 import {
   WorkspaceCreateBody,
   WorkspaceRequestIdBody,
 } from './workspace.interface';
-import { ControllerApi } from 'modules/utils'
-import { ControllerBody } from 'modules/utils/api.types';
 
-
-const controllerPath = 'workspace'
+const controllerPath = 'workspace';
 
 @Injectable()
 export class WorkspaceService {
-  constructor(private prisma: PrismaService, private httpService: HttpService) { }
+  constructor(
+    private prisma: PrismaService,
+    private configService: ConfigService,
+
+    private httpService: HttpService,
+  ) {}
 
   async createWorkspace(
     createWorkspaceBody: WorkspaceCreateBody,
     user: User,
   ): Promise<Workspace> {
-
     const workspace = await this.prisma.workspace.create({
       data: {
         ...createWorkspaceBody,
         userId: user.userId,
       },
     });
-
+    /**
+     * Send event to controller to create the workspace deployment and service
+     */
     const controllerBody: ControllerBody = {
       event: 'CREATE',
-      slug: workspace.slug
-    }
+      slug: workspace.slug,
+    };
+    const controllerService = new ControllerApi(
+      this.httpService,
+      this.configService,
+    );
 
-    const controllerService = new ControllerApi(this.httpService)
-    controllerService.post(controllerBody, controllerPath)
-
-    return workspace
+    await controllerService.post(controllerBody, controllerPath);
+    return workspace;
   }
 
   async getAllWorkspaces(user: User): Promise<Workspace[]> {
@@ -61,16 +70,22 @@ export class WorkspaceService {
   async deleteWorkspace(workspaceRequestIdBody: WorkspaceRequestIdBody) {
     const workspace = await this.prisma.workspace.update({
       where: { workspaceId: workspaceRequestIdBody.workspaceId },
-      data: { deleted: new Date() }
-    })
+      data: { deleted: new Date() },
+    });
 
+    /**
+     * Send event to controller to delete the workspace deployment and service
+     */
     const controllerBody: ControllerBody = {
       event: 'DELETE',
-      slug: workspace.slug
-    }
-    const controllerService = new ControllerApi(this.httpService)
-    controllerService.post(controllerBody, controllerPath)
+      slug: workspace.slug,
+    };
+    const controllerService = new ControllerApi(
+      this.httpService,
+      this.configService,
+    );
 
-    return workspace
+    await controllerService.post(controllerBody, controllerPath);
+    return workspace;
   }
 }

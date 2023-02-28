@@ -84,10 +84,15 @@ input ExtensionDefinitionCreateBody {
 
 input ExtensionDefinitionRequestIdBody {
   extensionDefinitionId: String!
+  workspaceId: String!
 }
 
 input ExtensionDefinitionRequestWorkspaceIdBody {
   workspaceId: String!
+}
+
+type ExtensionDefinitionSpec {
+  spec: JSON!
 }
 
 type ExtensionRouter {
@@ -141,6 +146,7 @@ type Query {
   getExtensionDefinitionById(data: ExtensionDefinitionRequestIdBody!): ExtensionDefinition!
   getExtensionDefinitions: [ExtensionDefinition!]!
   getExtensionDefinitionsByWorkspace(data: ExtensionDefinitionRequestWorkspaceIdBody!): [ExtensionDefinition!]!
+  getSpecForExtensionDefinition(data: ExtensionDefinitionRequestIdBody!): ExtensionDefinitionSpec!
   getWorkspaceWithId(data: WorkspaceRequestIdBody!): Workspace!
   getWorkspaces: [Workspace!]!
   me: User!

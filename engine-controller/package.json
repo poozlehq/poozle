@@ -7,7 +7,8 @@
   "keywords": [ ],
   "scripts": {
     "build": "rollup -c",
-    "start": "ts-node src/index.ts"
+    "start": "ts-node src/index.ts",
+    "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "engines": {
     "node": ">=10"

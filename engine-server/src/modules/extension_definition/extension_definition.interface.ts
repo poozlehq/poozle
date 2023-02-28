@@ -1,12 +1,16 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { Field, InputType } from '@nestjs/graphql';
+import { Field, InputType, ObjectType } from '@nestjs/graphql';
 import { ExtensionType } from '@prisma/client';
+import GraphQLJSON from 'graphql-type-json';
 
 @InputType()
 export class ExtensionDefinitionRequestIdBody {
   @Field()
   extensionDefinitionId: string;
+
+  @Field()
+  workspaceId: string;
 }
 
 @InputType()
@@ -31,4 +35,10 @@ export class ExtensionDefinitionCreateBody {
 
   @Field()
   extensionType: ExtensionType;
+}
+
+@ObjectType()
+export class ExtensionDefinitionSpec {
+  @Field(() => GraphQLJSON)
+  spec: JSON;
 }

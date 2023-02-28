@@ -49,8 +49,6 @@ export class WorkspaceResolver {
   async deleteWorkspace(
     @Args('data') workspaceRequestIdBody: WorkspaceRequestIdBody,
   ) {
-    return await this.workspaceService.deleteWorkspace(
-      workspaceRequestIdBody
-    );
+    return await this.workspaceService.deleteWorkspace(workspaceRequestIdBody);
   }
 }

@@ -74,7 +74,7 @@ export function workspaceHandler(logger: Logger) {
         res.status(restartStatus.status ? 200 : 400).json(restartStatus);
         break;
       }
-      case WorkspaceEventEnum.STATUS:{
+      case WorkspaceEventEnum.STATUS: {
         /* 
           This will get pods status of new gateway
         */
@@ -86,6 +86,5 @@ export function workspaceHandler(logger: Logger) {
         logger.info('No event was configured for this');
       }
     }
-
   };
 }
