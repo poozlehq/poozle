@@ -76,13 +76,19 @@ export class AuthService {
   }
 
   validateUser(userId: string): Promise<User> {
-    return this.prisma.user.findUnique({ where: { userId } });
+    return this.prisma.user.findUnique({
+      where: { userId },
+      include: { Workspace: true },
+    });
   }
 
   getUserFromToken(token: string): Promise<User> {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const userId = (this.jwtService.decode(token) as any)['userId'];
-    return this.prisma.user.findUnique({ where: { userId } });
+    return this.prisma.user.findUnique({
+      where: { userId },
+      include: { Workspace: true },
+    });
   }
 
   generateTokens(payload: { userId: string }): Token {

@@ -29,6 +29,9 @@ export class ExtensionAccountService {
       where: {
         workspaceId: extensionAccountGetRequestBody.workspaceId,
       },
+      include: {
+        extensionDefinition: true,
+      },
     });
   }
 

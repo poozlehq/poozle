@@ -16,12 +16,17 @@ export const routes: RouteConfig[] = [
   {
     path: '/home',
     protected: true,
-    layouts: [GetUserData, SideBarLayout],
+    layouts: [SideBarLayout, GetUserData],
   },
   {
     path: '/playground',
     protected: true,
-    layouts: [GetUserData, SideBarLayout],
+    layouts: [SideBarLayout, GetUserData],
+  },
+  {
+    path: '/integrations',
+    protected: true,
+    layouts: [SideBarLayout, GetUserData],
   },
   {
     path: '/authentication/signin',
@@ -32,16 +37,5 @@ export const routes: RouteConfig[] = [
     path: '/authentication/signup',
     redirectIfLoggedIn: true,
     layouts: [AuthenticationLayout],
-  },
-  {
-    path: '/onboarding',
-    protected: true,
-    layouts: [],
-    wrappers: [GetUserData],
-  },
-  {
-    path: '/integrations',
-    protected: true,
-    layouts: [GetUserData],
   },
 ];

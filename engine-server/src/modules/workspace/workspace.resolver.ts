@@ -21,7 +21,6 @@ import { WorkspaceService } from './workspace.service';
 export class WorkspaceResolver {
   constructor(private workspaceService: WorkspaceService) {}
 
-  @UseGuards(GqlAuthGuard)
   @Query(() => Workspace)
   async getWorkspaceWithId(
     @Args('data') workspaceRequestIdBody: WorkspaceRequestIdBody,
@@ -29,13 +28,11 @@ export class WorkspaceResolver {
     return this.workspaceService.getWorkspaceWithId(workspaceRequestIdBody);
   }
 
-  @UseGuards(GqlAuthGuard)
   @Query(() => [Workspace])
   async getWorkspaces(@UserEntity() user: User) {
     return this.workspaceService.getAllWorkspaces(user);
   }
 
-  @UseGuards(GqlAuthGuard)
   @Mutation(() => Workspace)
   async createWorkspace(
     @UserEntity() user: User,
@@ -45,5 +42,13 @@ export class WorkspaceResolver {
       createWorkspaceBody,
       user,
     );
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Mutation(() => Workspace)
+  async deleteWorkspace(
+    @Args('data') workspaceRequestIdBody: WorkspaceRequestIdBody,
+  ) {
+    return await this.workspaceService.deleteWorkspace(workspaceRequestIdBody);
   }
 }

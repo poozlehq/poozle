@@ -8,11 +8,11 @@ Poozle is an open-source, fast and reliable platform to integrate data from exte
 - Building new integrations made trivial. We make it very easy to create new intgerations that you need.
 
 # Getting started
+- Install extension
 - Here is a step-by-step guide showing you how to use our API playground, all on your computer.
 
 
 https://user-images.githubusercontent.com/17528887/221165613-cb1ded30-823f-4fbe-b509-d940489a1b42.mov
-
 
 
 # Contributing
@@ -24,6 +24,5 @@ Also, we will never ask you to maintain your extension. The goal is that the Poo
 
 # Community support
 For general help using Poozle, please refer to the official Poozle documentation. For additional help, you can use one of these channels to ask a question:
-
 - [Slack](https://join.slack.com/t/poozle-community/shared_invite/zt-1pwu2hmj9-xtG~DGsW2aEWZc~QtOnVMQ) (For live discussion with the Community and Poozle team)
 - [GitHub](https://github.com/poozlehq/poozle) (Bug reports, Contributions)

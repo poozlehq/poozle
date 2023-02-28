@@ -9,6 +9,7 @@ FROM node:16.17.0-bullseye-slim as runner
 ENV NODE_ENV=production
 COPY --from=builder /usr/src/app/github /usr/src/app/github
 COPY --from=builder /usr/src/app/schema /usr/src/app/schema
+COPY --from=builder /usr/src/app/spec.json /usr/src/app/spec.json
 
 WORKDIR /usr/src/app
 

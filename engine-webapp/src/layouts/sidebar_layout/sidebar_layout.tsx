@@ -13,11 +13,12 @@ interface SideBarLayoutProps {
 export function SideBarLayout({ children }: SideBarLayoutProps) {
   return (
     <AppShell
+      fixed
       navbar={<Navbar open />}
       header={<Header />}
       styles={(theme) => ({
         main: {
-          backgroundColor: theme.colors.white,
+          backgroundColor: theme.colors.gray[0],
           paddingLeft: 'calc(var(--mantine-navbar-width, 0px))',
           paddingTop: `calc(var(--mantine-header-height, 0px))`,
           paddingBottom: 'calc(var(--mantine-footer-height, 0px))',

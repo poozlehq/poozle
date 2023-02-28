@@ -1,0 +1,22 @@
+.headTitle {
+  text-transform: uppercase;
+  color: var(--mantine-color-white);
+}
+
+.headContainer {
+  border-radius: var(--mantine-radius-md);
+}
+
+.headingRow {
+  .heading:first-child {
+    border-radius: var(--mantine-radius-md) 0 0 0;
+  }
+
+  .heading:last-child {
+    border-radius: 0 var(--mantine-radius-md) 0 0;
+  }
+}
+
+.heading {
+  background-color: var(--mantine-color-blue-9);
+}

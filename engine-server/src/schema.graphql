@@ -84,10 +84,15 @@ input ExtensionDefinitionCreateBody {
 
 input ExtensionDefinitionRequestIdBody {
   extensionDefinitionId: String!
+  workspaceId: String!
 }
 
 input ExtensionDefinitionRequestWorkspaceIdBody {
   workspaceId: String!
+}
+
+type ExtensionDefinitionSpec {
+  spec: JSON!
 }
 
 type ExtensionRouter {
@@ -128,6 +133,7 @@ type Mutation {
   createExtensionAccount(data: ExtensionAccountCreateBody!): ExtensionAccount!
   createExtensionDefinition(data: ExtensionDefinitionCreateBody!): ExtensionDefinition!
   createWorkspace(data: WorkspaceCreateBody!): Workspace!
+  deleteWorkspace(data: WorkspaceRequestIdBody!): Workspace!
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
@@ -136,13 +142,14 @@ type Mutation {
 
 type Query {
   getExtensionAccount(data: ExtensionAccountRequestIdBody!): ExtensionAccount!
+  getExtensionAccountsByWorkspace(data: ExtensionAccountGetRequestBody!): [ExtensionAccount!]!
   getExtensionDefinitionById(data: ExtensionDefinitionRequestIdBody!): ExtensionDefinition!
   getExtensionDefinitions: [ExtensionDefinition!]!
   getExtensionDefinitionsByWorkspace(data: ExtensionDefinitionRequestWorkspaceIdBody!): [ExtensionDefinition!]!
+  getSpecForExtensionDefinition(data: ExtensionDefinitionRequestIdBody!): ExtensionDefinitionSpec!
   getWorkspaceWithId(data: WorkspaceRequestIdBody!): Workspace!
   getWorkspaces: [Workspace!]!
   me: User!
-  userPosts(data: ExtensionAccountGetRequestBody!): [ExtensionAccount!]!
 }
 
 enum ReleaseStage {
@@ -207,8 +214,6 @@ type WorkspaceCount {
 }
 
 input WorkspaceCreateBody {
-  email: String!
-  name: String!
   slug: String!
 }
 

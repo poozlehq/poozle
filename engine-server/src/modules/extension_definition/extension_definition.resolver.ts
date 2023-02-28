@@ -11,6 +11,7 @@ import {
   ExtensionDefinitionRequestIdBody,
   ExtensionDefinitionCreateBody,
   ExtensionDefinitionRequestWorkspaceIdBody,
+  ExtensionDefinitionSpec,
 } from './extension_definition.interface';
 import { ExtensionDefinitionService } from './extension_definition.service';
 
@@ -30,18 +31,28 @@ export class ExtensionDefinitionResolver {
   }
 
   @Query(() => [ExtensionDefinition])
-  getExtensionDefinitionsByWorkspace(
+  async getExtensionDefinitionsByWorkspace(
     @Args('data')
     extensionDefinitionRequestWorkspaceIdBody: ExtensionDefinitionRequestWorkspaceIdBody,
   ) {
-    return this.extensionDefinitionService.getExtensionDefinitionsForWorkspace(
+    return await this.extensionDefinitionService.getExtensionDefinitionsForWorkspace(
       extensionDefinitionRequestWorkspaceIdBody,
     );
   }
 
   @Query(() => [ExtensionDefinition])
-  getExtensionDefinitions() {
-    return this.extensionDefinitionService.getAllExtensionDefinitions();
+  async getExtensionDefinitions() {
+    return await this.extensionDefinitionService.getAllExtensionDefinitions();
+  }
+
+  @Query(() => ExtensionDefinitionSpec)
+  async getSpecForExtensionDefinition(
+    @Args('data')
+    extensionDefinitionRequestIdBody: ExtensionDefinitionRequestIdBody,
+  ): Promise<ExtensionDefinitionSpec> {
+    return await this.extensionDefinitionService.getSpecForExtensionDefinition(
+      extensionDefinitionRequestIdBody,
+    );
   }
 
   @Mutation(() => ExtensionDefinition)

@@ -19,7 +19,6 @@ export function LoggedInGuard(props: Props): React.ReactElement {
     error: isError,
   } = useGetAuthenticatedUserQuery();
   const router = useRouter();
-  console.log(data, isError);
 
   useEffect(() => {
     if (!isLoading && !isError && data.me.email) {
