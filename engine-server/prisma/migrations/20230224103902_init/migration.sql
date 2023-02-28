@@ -2,7 +2,7 @@
 CREATE TYPE "ExtensionType" AS ENUM ('GRAPHQL', 'OPENAPI', 'CUSTOM');
 
 -- CreateEnum
-CREATE TYPE "ExtensionSchemaType" AS ENUM ('GRAPHQL', 'OPENAPI', 'CUSTOM');
+CREATE TYPE "ExtensionSchemaType" AS ENUM ('GRAPHQL', 'REST', 'CUSTOM');
 
 -- CreateEnum
 CREATE TYPE "ReleaseStage" AS ENUM ('ALPHA', 'BETA', 'GENERALLY_AVAILABLE', 'CUSTOM');
@@ -41,6 +41,8 @@ CREATE TABLE "ExtensionDefinition" (
     "extensionType" "ExtensionType" NOT NULL DEFAULT 'GRAPHQL',
     "workspaceId" TEXT,
     "deleted" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "ExtensionDefinition_pkey" PRIMARY KEY ("extensionDefinitionId")
 );
@@ -50,10 +52,12 @@ CREATE TABLE "ExtensionAccount" (
     "extensionAccountId" TEXT NOT NULL,
     "extensionDefinitionId" TEXT NOT NULL,
     "extensionConfiguration" JSONB,
-    "workspaceId" TEXT,
+    "workspaceId" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "extensionAccountName" TEXT NOT NULL,
     "deleted" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "ExtensionAccount_pkey" PRIMARY KEY ("extensionAccountId")
 );
@@ -63,28 +67,19 @@ CREATE TABLE "ExtensionRouter" (
     "extensionRouterId" TEXT NOT NULL,
     "extensionDefinitionId" TEXT NOT NULL,
     "endpoint" TEXT NOT NULL,
-    "workspaceId" TEXT,
+    "workspaceId" TEXT NOT NULL,
     "deleted" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "ExtensionRouter_pkey" PRIMARY KEY ("extensionRouterId")
-);
-
--- CreateTable
-CREATE TABLE "ExtensionSchema" (
-    "extensionSchemaId" TEXT NOT NULL,
-    "type" "ExtensionSchemaType" NOT NULL,
-    "schema" JSONB NOT NULL,
-    "extensionAccountId" TEXT NOT NULL,
-    "deleted" TIMESTAMP(3),
-
-    CONSTRAINT "ExtensionSchema_pkey" PRIMARY KEY ("extensionSchemaId")
 );
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Workspace_userId_slug_key" ON "Workspace"("userId", "slug");
+CREATE UNIQUE INDEX "Workspace_slug_key" ON "Workspace"("slug");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ExtensionAccount_extensionAccountName_key" ON "ExtensionAccount"("extensionAccountName");
@@ -102,13 +97,10 @@ ALTER TABLE "ExtensionDefinition" ADD CONSTRAINT "ExtensionDefinition_workspaceI
 ALTER TABLE "ExtensionAccount" ADD CONSTRAINT "ExtensionAccount_extensionDefinitionId_fkey" FOREIGN KEY ("extensionDefinitionId") REFERENCES "ExtensionDefinition"("extensionDefinitionId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ExtensionAccount" ADD CONSTRAINT "ExtensionAccount_workspaceId_fkey" FOREIGN KEY ("workspaceId") REFERENCES "Workspace"("workspaceId") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "ExtensionAccount" ADD CONSTRAINT "ExtensionAccount_workspaceId_fkey" FOREIGN KEY ("workspaceId") REFERENCES "Workspace"("workspaceId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ExtensionRouter" ADD CONSTRAINT "ExtensionRouter_extensionDefinitionId_fkey" FOREIGN KEY ("extensionDefinitionId") REFERENCES "ExtensionDefinition"("extensionDefinitionId") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ExtensionRouter" ADD CONSTRAINT "ExtensionRouter_workspaceId_fkey" FOREIGN KEY ("workspaceId") REFERENCES "Workspace"("workspaceId") ON DELETE SET NULL ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "ExtensionSchema" ADD CONSTRAINT "ExtensionSchema_extensionAccountId_fkey" FOREIGN KEY ("extensionAccountId") REFERENCES "ExtensionAccount"("extensionAccountId") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ExtensionRouter" ADD CONSTRAINT "ExtensionRouter_workspaceId_fkey" FOREIGN KEY ("workspaceId") REFERENCES "Workspace"("workspaceId") ON DELETE RESTRICT ON UPDATE CASCADE;

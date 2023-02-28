@@ -8,11 +8,22 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  userId    String      @id @default(cuid())
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  email     String      @unique
+  password  String
+  firstname String?
+  lastname  String?
+  Workspace Workspace[]
+}
+
 model Workspace {
   workspaceId         String                @id @default(uuid())
-  email               String?
-  name                String?
   slug                String                @unique
+  user                User                  @relation(references: [userId], fields: [userId])
+  userId              String
   ExtensionDefinition ExtensionDefinition[]
   ExtensionAccount    ExtensionAccount[]
   ExtensionRouter     ExtensionRouter[]
@@ -29,10 +40,11 @@ model ExtensionDefinition {
   extensionType         ExtensionType      @default(GRAPHQL)
   workspace             Workspace?         @relation(references: [workspaceId], fields: [workspaceId])
   workspaceId           String?
-  spec                  Json
   ExtensionAccount      ExtensionAccount[]
   ExtensionRouter       ExtensionRouter[]
   deleted               DateTime?
+  createdAt             DateTime           @default(now())
+  updatedAt             DateTime           @updatedAt
 }
 
 model ExtensionAccount {
@@ -40,12 +52,13 @@ model ExtensionAccount {
   extensionDefinition    ExtensionDefinition @relation(references: [extensionDefinitionId], fields: [extensionDefinitionId])
   extensionDefinitionId  String
   extensionConfiguration Json?
-  workspace              Workspace?          @relation(references: [workspaceId], fields: [workspaceId])
-  workspaceId            String?
+  workspace              Workspace           @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId            String
   name                   String
   extensionAccountName   String              @unique
-  ExtensionSchema        ExtensionSchema[]
   deleted                DateTime?
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @updatedAt
 }
 
 model ExtensionRouter {
@@ -53,18 +66,11 @@ model ExtensionRouter {
   extensionDefinition   ExtensionDefinition @relation(references: [extensionDefinitionId], fields: [extensionDefinitionId])
   extensionDefinitionId String              @unique
   endpoint              String
-  workspace             Workspace?          @relation(references: [workspaceId], fields: [workspaceId])
-  workspaceId           String?
+  workspace             Workspace           @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId           String
   deleted               DateTime?
-}
-
-model ExtensionSchema {
-  extensionSchemaId  String              @id @default(uuid())
-  type               ExtensionSchemaType
-  schema             Json
-  extensionAccount   ExtensionAccount    @relation(references: [extensionAccountId], fields: [extensionAccountId])
-  extensionAccountId String
-  deleted            DateTime?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
 }
 
 enum ExtensionType {
@@ -75,7 +81,7 @@ enum ExtensionType {
 
 enum ExtensionSchemaType {
   GRAPHQL
-  OPENAPI
+  REST
   CUSTOM
 }
 

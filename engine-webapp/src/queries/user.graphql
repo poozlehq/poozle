@@ -3,5 +3,9 @@ query GetUser {
     firstname
     lastname
     email
+    Workspace {
+      workspaceId
+      slug
+    }
   }
 }

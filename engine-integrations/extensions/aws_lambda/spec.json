@@ -1,27 +1,32 @@
 {
-  "name": "AWS Lambda extension",
-  "key": "aws_lambda",
-  "description": "Lambda related things",
-  "icon": "aws_lambda.svg",
-  "type": "OPENAPI",
-  "inputs": [
-    {
-      "name": "Access Key",
-      "description": "Access key of AWS account",
-      "key": "accessKeyId",
-      "type": "input"
-    },
-    {
-      "name": "Secret Key",
-      "key": "secretAccessKey",
-      "description": "Secret Key of AWS account",
-      "type": "input"
-    },
-    {
-      "key": "region",
-      "description": "Preferred Region",
-      "name": "Region",
-      "type": "input"
+  "integrationSpecification": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "AWS Lambda Spec",
+    "type": "object",
+    "properties": {
+      "credentials": {
+        "access_key_id": {
+          "type": "string",
+          "title": "Access Key",
+          "order": 0,
+          "description": "Access key of AWS account",
+          "secret": true
+        },
+        "secret_access_key": {
+          "type": "string",
+          "title": "Secret Key",
+          "order": 0,
+          "description": "Secret Key of AWS account",
+          "secret": true
+        },
+        "region": {
+          "type": "string",
+          "title": "Secret Key",
+          "order": 0,
+          "description": "Secret Key of AWS account",
+          "secret": true
+        }
+      }
     }
-  ]
+  }
 }

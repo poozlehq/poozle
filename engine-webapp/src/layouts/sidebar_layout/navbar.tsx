@@ -31,16 +31,13 @@ interface NavbarLinkProps {
 
 const useStyles = createStyles((theme) => ({
   linkActive: {
-    color: `${
-      theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color
-    } !important`,
+    color: `${theme.colors.blue[9]} !important`,
     '&, &:hover': {
       backgroundColor: theme.fn.variant({
         variant: 'light',
         color: theme.primaryColor,
       }).background,
-      color: theme.fn.variant({ variant: 'light', color: theme.primaryColor })
-        .color,
+      color: theme.colors.blue[9],
     },
   },
 }));

@@ -21,7 +21,6 @@ export class ExtensionAccountResolver {
 
   // TODO (harshith): Later check here if the accountId belongs to the workspace
   // the user has access to otherwise don't allow the request
-  @UseGuards(GqlAuthGuard)
   @Query(() => ExtensionAccount)
   async getExtensionAccount(
     @Args('data') getExtensionAccountInput: ExtensionAccountRequestIdBody,
@@ -31,9 +30,8 @@ export class ExtensionAccountResolver {
     );
   }
 
-  @UseGuards(GqlAuthGuard)
   @Query(() => [ExtensionAccount])
-  userPosts(
+  getExtensionAccountsByWorkspace(
     @Args('data') getAllExtensionAccounts: ExtensionAccountGetRequestBody,
   ) {
     return this.extensionAccountService.getAllExtensionAccountsInWorkspace(
@@ -41,7 +39,6 @@ export class ExtensionAccountResolver {
     );
   }
 
-  @UseGuards(GqlAuthGuard)
   @Mutation(() => ExtensionAccount)
   async createExtensionAccount(
     @Args('data') createExtensionAccountInput: ExtensionAccountCreateBody,

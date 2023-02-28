@@ -137,13 +137,13 @@ type Mutation {
 
 type Query {
   getExtensionAccount(data: ExtensionAccountRequestIdBody!): ExtensionAccount!
+  getExtensionAccountsByWorkspace(data: ExtensionAccountGetRequestBody!): [ExtensionAccount!]!
   getExtensionDefinitionById(data: ExtensionDefinitionRequestIdBody!): ExtensionDefinition!
   getExtensionDefinitions: [ExtensionDefinition!]!
   getExtensionDefinitionsByWorkspace(data: ExtensionDefinitionRequestWorkspaceIdBody!): [ExtensionDefinition!]!
   getWorkspaceWithId(data: WorkspaceRequestIdBody!): Workspace!
   getWorkspaces: [Workspace!]!
   me: User!
-  userPosts(data: ExtensionAccountGetRequestBody!): [ExtensionAccount!]!
 }
 
 enum ReleaseStage {

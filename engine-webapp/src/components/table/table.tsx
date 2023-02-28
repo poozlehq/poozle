@@ -1,38 +1,40 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
-import { Table as MTable, Text, createStyles } from '@mantine/core';
+import { Table as MTable, TableProps, Text } from '@mantine/core';
 
 import styles from './table.module.scss';
 
 interface ColumnProps {
   key: string;
   name: string;
-  render?(): React.ReactElement;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  render?(data: any): React.ReactElement;
 }
 
-interface TableProps {
+interface CustomTableProps extends TableProps {
   columns: ColumnProps[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
 }
 
-const useStyles = createStyles((theme) => ({
-  head: {
-    backgroundColor: theme.fn.variant({
-      variant: 'light',
-      color: theme.primaryColor,
-    }).background,
-  },
-}));
-
-export function Table({ columns }: TableProps) {
-  const { classes } = useStyles();
+export function Table<TableDataType>({
+  columns,
+  data,
+  ...restProps
+}: CustomTableProps) {
+  const rows = data.map((element: TableDataType) => (
+    <tr>
+      {columns.map((column) => (
+        <td>{column.render(element)}</td>
+      ))}
+    </tr>
+  ));
 
   return (
-    <MTable>
-      <thead className={classes.head}>
-        <tr>
+    <MTable {...restProps}>
+      <thead className={styles.headContainer}>
+        <tr className={styles.headingRow}>
           {columns.map((column) => (
-            <th key={column.key}>
+            <th key={column.key} className={styles.heading}>
               <Text size="xs" className={styles.headTitle}>
                 {column.name}
               </Text>
@@ -40,6 +42,8 @@ export function Table({ columns }: TableProps) {
           ))}
         </tr>
       </thead>
+
+      <tbody>{rows}</tbody>
     </MTable>
   );
 }

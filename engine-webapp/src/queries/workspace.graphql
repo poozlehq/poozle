@@ -1,0 +1,6 @@
+query GetWorkspaces {
+  getWorkspaces {
+    workspaceId
+    slug
+  }
+}

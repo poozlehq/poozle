@@ -1,15 +1,18 @@
 {
-  "name": "Github extension",
-  "key": "github",
-  "description": "Plan, track, and manage your agile and software development projects in Github. Customize your workflow, collaborate, and release great software.",
-  "icon": "github.svg",
-  "type": "GRAPHQL",
-  "inputs": [
-    {
-      "name": "Api Key",
-      "key": "api_key",
-      "description": "Enter the API Key",
-      "type": "input"
+  "integrationSpecification": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Github Spec",
+    "type": "object",
+    "properties": {
+      "credentials": {
+        "api_key": {
+          "type": "string",
+          "title": "Api Key",
+          "order": 0,
+          "description": "Enter the API Key",
+          "secret": true
+        }
+      }
     }
-  ]
+  }
 }
