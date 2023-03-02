@@ -1,5 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import type { NextComponentType } from 'next';
+
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import {
   ColorScheme,
@@ -7,15 +9,19 @@ import {
   MantineProvider,
 } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
-import { AppProps } from 'next/app';
+import { AppContext, AppInitialProps, AppLayoutProps } from 'next/app';
 import * as React from 'react';
 
-import { configProcessor } from 'app';
+import { primaryColor } from 'app/theme';
 
 import '../styles/globals.scss';
 
-export default function MyApp({ Component, pageProps, router }: AppProps) {
-  const ComponentToRender = configProcessor(router, Component, pageProps);
+export const MyApp: NextComponentType<
+  AppContext,
+  AppInitialProps,
+  AppLayoutProps
+> = ({ Component, pageProps }: AppLayoutProps) => {
+  const getLayout = Component.getLayout || ((page: React.ReactNode) => page);
   const [colorScheme, setColorScheme] = React.useState<ColorScheme>('light');
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
@@ -33,16 +39,28 @@ export default function MyApp({ Component, pageProps, router }: AppProps) {
         toggleColorScheme={toggleColorScheme}
       >
         <MantineProvider
-          theme={{ colorScheme }}
+          theme={{
+            colorScheme,
+            colors: {
+              // TODO (harshith): Change this to more strict type
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              primary: primaryColor as any,
+            },
+            primaryColor: 'primary',
+            primaryShade: 5,
+            defaultRadius: 'md',
+          }}
           withCSSVariables
           withGlobalStyles
           withNormalizeCSS
         >
           <NotificationsProvider position="top-right">
-            {ComponentToRender}
+            {getLayout(<Component {...pageProps} />)}
           </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </ApolloProvider>
   );
-}
+};
+
+export default MyApp;

@@ -3,7 +3,6 @@
 import { AppShell } from '@mantine/core';
 import * as React from 'react';
 
-import { Header } from './header';
 import { Navbar } from './navbar';
 
 interface SideBarLayoutProps {
@@ -11,11 +10,18 @@ interface SideBarLayoutProps {
 }
 
 export function SideBarLayout({ children }: SideBarLayoutProps) {
+  const [navbarOpen, setNavbarOpen] = React.useState(true);
+
   return (
     <AppShell
       fixed
-      navbar={<Navbar open />}
-      header={<Header />}
+      navbar={
+        <Navbar
+          open={navbarOpen}
+          onToggle={() => setNavbarOpen((value) => !value)}
+        />
+      }
+      header={null}
       styles={(theme) => ({
         main: {
           backgroundColor: theme.colors.gray[0],
@@ -26,7 +32,17 @@ export function SideBarLayout({ children }: SideBarLayoutProps) {
         },
       })}
     >
-      {children}
+      <>
+        <div
+          style={{
+            height: 'calc(100vh)',
+          }}
+        >
+          <div style={{ width: '100%', height: '100%', overflow: 'auto' }}>
+            {children}
+          </div>
+        </div>
+      </>
     </AppShell>
   );
 }

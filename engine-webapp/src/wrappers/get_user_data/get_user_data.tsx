@@ -15,25 +15,10 @@ interface Props {
 export function GetUserData(props: Props): React.ReactElement {
   const { children } = props;
   const { data, loading: isLoading, error: isError } = useGetUserQuery();
-  const [defaultWorkspace, setDefaultWorkspace] = React.useState(undefined);
-
-  React.useEffect(() => {
-    if (!isLoading && !isError) {
-      setDefaultWorkspace(data.me.Workspace[0]);
-    }
-  }, [isLoading, isError, setDefaultWorkspace]);
 
   if (!isLoading && !isError) {
     return (
-      <UserContext.Provider
-        value={
-          {
-            ...data.me,
-            defaultWorkspace: defaultWorkspace ?? data.me.Workspace[0],
-            setDefaultWorkspace,
-          } as User
-        }
-      >
+      <UserContext.Provider value={data.me as User}>
         {cloneElement(children)}
       </UserContext.Provider>
     );

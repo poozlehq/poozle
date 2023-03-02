@@ -14,8 +14,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { ReactElement } from 'react';
 
+import { useSignupUserMutation } from 'queries/generated/graphql';
+
+import { AuthenticationLayout } from 'layouts/authentication_layout';
+import { LoggedInGuard } from 'wrappers/logged_in_guard';
+
 import styles from './signup.module.scss';
-import { useSignupUserMutation } from '../../../queries/generated/graphql';
 
 interface FormValues {
   email: string;
@@ -105,3 +109,11 @@ export function Signup(): ReactElement {
     </Container>
   );
 }
+
+Signup.getLayout = function getLayout(page: React.ReactElement) {
+  return (
+    <LoggedInGuard>
+      <AuthenticationLayout>{page}</AuthenticationLayout>
+    </LoggedInGuard>
+  );
+};
