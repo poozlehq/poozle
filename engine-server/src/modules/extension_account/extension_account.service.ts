@@ -1,15 +1,18 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { Injectable } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
+import { GraphQLError } from 'graphql';
 import { PrismaService } from 'nestjs-prisma';
 
-import { ExtensionAccountUncheckedCreateInput } from '@generated/extension-account/extension-account-unchecked-create.input';
 import { ExtensionAccount } from '@generated/extension-account/extension-account.model';
 
+import { ControllerService } from 'modules/controller/controller.service';
 import { ExtensionDefinitionRequestIdBody } from 'modules/extension_definition/extension_definition.interface';
 import { ExtensionDefinitionService } from 'modules/extension_definition/extension_definition.service';
 
 import {
+  ExtensionAccountByEDGetRequestBody,
   ExtensionAccountCreateBody,
   ExtensionAccountGetRequestBody,
   ExtensionAccountRequestIdBody,
@@ -17,9 +20,12 @@ import {
 
 @Injectable()
 export class ExtensionAccountService {
+  private readonly logger = new Logger(ExtensionAccountService.name);
+
   constructor(
     private prisma: PrismaService,
     private extensionDefinitionService: ExtensionDefinitionService,
+    private controllerService: ControllerService,
   ) {}
 
   async getAllExtensionAccountsInWorkspace(
@@ -28,6 +34,21 @@ export class ExtensionAccountService {
     return this.prisma.extensionAccount.findMany({
       where: {
         workspaceId: extensionAccountGetRequestBody.workspaceId,
+      },
+      include: {
+        extensionDefinition: true,
+      },
+    });
+  }
+
+  async getAllExtensionAccountsForExtensionDefinition(
+    extensionAccountByEDGetRequestBody: ExtensionAccountByEDGetRequestBody,
+  ): Promise<ExtensionAccount[]> {
+    return this.prisma.extensionAccount.findMany({
+      where: {
+        workspaceId: extensionAccountByEDGetRequestBody.workspaceId,
+        extensionDefinitionId:
+          extensionAccountByEDGetRequestBody.extensionDefinitionId,
       },
       include: {
         extensionDefinition: true,
@@ -48,18 +69,99 @@ export class ExtensionAccountService {
   async createExtensionAccount(
     extensionAccountCreateBody: ExtensionAccountCreateBody,
   ): Promise<ExtensionAccount> {
-    const extensionDefinition =
-      await this.extensionDefinitionService.getExtensionDefinitionWithId({
-        extensionDefinitionId: extensionAccountCreateBody.extensionDefinitionId,
-      } as ExtensionDefinitionRequestIdBody);
+    try {
+      const extensionDefinition =
+        await this.extensionDefinitionService.getExtensionDefinitionWithId({
+          extensionDefinitionId:
+            extensionAccountCreateBody.extensionDefinitionId,
+        } as ExtensionDefinitionRequestIdBody);
 
-    return this.prisma.extensionAccount.create({
-      data: {
-        ...extensionAccountCreateBody,
-        name: extensionDefinition.name,
-        workspaceId: extensionAccountCreateBody.workspaceId,
-        extensionDefinitionId: extensionDefinition.extensionDefinitionId,
-      } as ExtensionAccountUncheckedCreateInput,
+      const extensionAccount = await this.prisma.extensionAccount.create({
+        data: {
+          name: extensionDefinition.name,
+          workspaceId: extensionAccountCreateBody.workspaceId,
+          extensionAccountName: extensionAccountCreateBody.extensionAccountName,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          extensionConfiguration:
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            extensionAccountCreateBody.extensionConfiguration as any,
+          extensionDefinitionId:
+            extensionAccountCreateBody.extensionDefinitionId,
+        },
+      });
+
+      /**
+       * Create extension deployment
+       */
+      await this.controllerService.createExtensionDeployment(
+        true,
+        extensionDefinition,
+      );
+
+      return extensionAccount;
+    } catch (e) {
+      console.log(e);
+      throw new GraphQLError(e.message);
+    }
+  }
+
+  /**
+   * Create all the deployments and services when the server starts up
+   */
+  async initServer() {
+    this.logger.log('Starting server');
+    const extensionAccounts = await this.prisma.extensionAccount.findMany({
+      distinct: ['extensionDefinitionId', 'workspaceId'],
+      include: {
+        workspace: true,
+      },
     });
+
+    const workspaces = extensionAccounts.map((account) => account.workspace);
+
+    const extensionDefinitions = await Promise.all(
+      extensionAccounts.map(
+        async (account) =>
+          await this.extensionDefinitionService.getExtensionDefinitionWithId({
+            extensionDefinitionId: account.extensionDefinitionId,
+            workspaceId: account.workspaceId,
+          }),
+      ),
+    );
+
+    /** Create extension deployments */
+    await Promise.all(
+      extensionDefinitions.map(async (extensionDefinition) => {
+        this.logger.log(
+          `Creating deployment for extension ${extensionDefinition.name}:${extensionDefinition.extensionDefinitionId}`,
+        );
+        try {
+          await this.controllerService.createExtensionDeploymentSync(
+            false,
+            extensionDefinition,
+          );
+        } catch (e) {
+          this.logger.error(
+            `Creating failed for extension: ${extensionDefinition.extensionDefinitionId} with ${e}`,
+          );
+        }
+      }),
+    );
+
+    /** Create gateway deployments */
+    await Promise.all(
+      workspaces.map(async (workspace) => {
+        this.logger.log(
+          `Creating deployment for workspace ${workspace.slug}:${workspace.workspaceId}`,
+        );
+        try {
+          await this.controllerService.createGatewayDeployment(workspace);
+        } catch (e) {
+          this.logger.error(
+            `Creating failed for workspace: ${workspace.workspaceId} with ${e}`,
+          );
+        }
+      }),
+    );
   }
 }

@@ -32,3 +32,12 @@ export class ExtensionAccountGetRequestBody {
   @Field()
   workspaceId: string;
 }
+
+@InputType()
+export class ExtensionAccountByEDGetRequestBody {
+  @Field()
+  workspaceId: string;
+
+  @Field()
+  extensionDefinitionId: string;
+}

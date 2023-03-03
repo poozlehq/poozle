@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Paper } from '@mantine/core';
+import { Button, Paper } from '@mantine/core';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
@@ -12,9 +12,9 @@ import { GetUserData } from 'wrappers/get_user_data';
 
 import { Header, Loader, Table } from 'components';
 
-import styles from './integrations.module.scss';
+import styles from './extension.module.scss';
 
-export function Integrations() {
+export function Extension() {
   const router = useRouter();
   const {
     query: { workspaceId },
@@ -66,10 +66,17 @@ export function Integrations() {
 
   return (
     <div>
-      <Header title="Integrations" />
+      <Header
+        title="Extensions"
+        actions={
+          <Button onClick={() => router.push(`${router.asPath}/new`)}>
+            + New Extension
+          </Button>
+        }
+      />
 
       <div className={styles.tableContainer}>
-        <Paper shadow="xs" radius="md">
+        <Paper radius="md" className={styles.tablePaper}>
           <Table
             horizontalSpacing="lg"
             columns={columns}
@@ -81,7 +88,7 @@ export function Integrations() {
   );
 }
 
-Integrations.getLayout = function getLayout(page: React.ReactElement) {
+Extension.getLayout = function getLayout(page: React.ReactElement) {
   return (
     <AuthGuard>
       <GetUserData>

@@ -78,7 +78,7 @@ export function Signup(): ReactElement {
         </Link>
       </Text>
 
-      <Paper withBorder shadow="md" radius="md" className={styles.paper}>
+      <Paper withBorder radius="md" className={styles.paper}>
         <form onSubmit={form.onSubmit(onSubmit)}>
           <TextInput
             label="Name"

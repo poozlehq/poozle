@@ -12,3 +12,40 @@ export const primaryColor: string[] = [
   '#003682',
   '#002051',
 ];
+
+export const theme = {
+  colors: {
+    // TODO (harshith): Change this to more strict type
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    primary: primaryColor as any,
+  },
+  primaryColor: 'primary',
+  primaryShade: 5,
+  defaultRadius: 'md',
+  components: {
+    Select: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      styles: (theme: any) => ({
+        input: {
+          borderColor: theme.colors.gray[2],
+        },
+      }),
+    },
+    TextInput: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      styles: (theme: any) => ({
+        input: {
+          borderColor: theme.colors.gray[2],
+        },
+      }),
+    },
+    PasswordInput: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      styles: (theme: any) => ({
+        input: {
+          borderColor: theme.colors.gray[2],
+        },
+      }),
+    },
+  },
+};

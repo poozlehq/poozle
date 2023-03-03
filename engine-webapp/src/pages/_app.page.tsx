@@ -8,11 +8,11 @@ import {
   ColorSchemeProvider,
   MantineProvider,
 } from '@mantine/core';
-import { NotificationsProvider } from '@mantine/notifications';
+import { Notifications } from '@mantine/notifications';
 import { AppContext, AppInitialProps, AppLayoutProps } from 'next/app';
 import * as React from 'react';
 
-import { primaryColor } from 'app/theme';
+import { theme } from 'app/theme';
 
 import '../styles/globals.scss';
 
@@ -41,22 +41,15 @@ export const MyApp: NextComponentType<
         <MantineProvider
           theme={{
             colorScheme,
-            colors: {
-              // TODO (harshith): Change this to more strict type
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              primary: primaryColor as any,
-            },
-            primaryColor: 'primary',
-            primaryShade: 5,
-            defaultRadius: 'md',
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ...(theme as any),
           }}
           withCSSVariables
           withGlobalStyles
           withNormalizeCSS
         >
-          <NotificationsProvider position="top-right">
-            {getLayout(<Component {...pageProps} />)}
-          </NotificationsProvider>
+          <Notifications />
+          {getLayout(<Component {...pageProps} />)}
         </MantineProvider>
       </ColorSchemeProvider>
     </ApolloProvider>

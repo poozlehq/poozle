@@ -12,6 +12,8 @@ import {
   ExtensionDefinitionCreateBody,
   ExtensionDefinitionRequestWorkspaceIdBody,
   ExtensionDefinitionSpec,
+  ExtensionDefinitionCheck,
+  ExtensionDefinitionCheckBody,
 } from './extension_definition.interface';
 import { ExtensionDefinitionService } from './extension_definition.service';
 
@@ -52,6 +54,16 @@ export class ExtensionDefinitionResolver {
   ): Promise<ExtensionDefinitionSpec> {
     return await this.extensionDefinitionService.getSpecForExtensionDefinition(
       extensionDefinitionRequestIdBody,
+    );
+  }
+
+  @Query(() => ExtensionDefinitionCheck)
+  async validateExtensionCredentials(
+    @Args('data')
+    extensionDefinitionCheckBody: ExtensionDefinitionCheckBody,
+  ): Promise<ExtensionDefinitionCheck> {
+    return await this.extensionDefinitionService.checkIfCredentialsValid(
+      extensionDefinitionCheckBody,
     );
   }
 

@@ -39,7 +39,7 @@ interface NavbarLinkProps {
 
 const useStyles = createStyles((theme) => ({
   linkActive: {
-    color: `${theme.colors.primary[7]} !important`,
+    color: `${theme.colors.primary[6]} !important`,
     '&, &:hover': {
       backgroundColor: `${
         theme.fn.variant({
@@ -47,7 +47,7 @@ const useStyles = createStyles((theme) => ({
           color: theme.primaryColor,
         }).background
       } !important`,
-      color: theme.colors.primary[7],
+      color: theme.colors.primary[6],
     },
   },
 }));
@@ -83,7 +83,7 @@ function NavbarLink({
 
 const LINK_DATA = [
   { icon: IconHome2, label: 'Home', routeKey: '/home' },
-  { icon: IconApps, label: 'Integrations', routeKey: '/integrations' },
+  { icon: IconApps, label: 'Extensions', routeKey: '/extensions' },
   { icon: IconCode, label: 'Playground', routeKey: '/playground' },
   { icon: IconSettings, label: 'Settings', routeKey: '/settings' },
 ];
@@ -109,7 +109,9 @@ export function Navbar({ open }: NavbarProps) {
       key={link.label}
       open={open}
       active={router.route.includes(link.routeKey)}
-      onClick={(routeKey) => router.push(routeKey)}
+      onClick={(routeKey) =>
+        router.push(`/workspaces/${workspaceId}${routeKey}`)
+      }
     />
   ));
 

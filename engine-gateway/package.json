@@ -20,6 +20,7 @@
     "@graphql-mesh/transform-encapsulate": "^0.4.12",
     "@graphql-mesh/transform-naming-convention": "^0.13.12",
     "@graphql-mesh/transform-prefix": "^0.12.12",
+    "axios": "^1.3.4",
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
     "js-yaml": "^4.1.0"

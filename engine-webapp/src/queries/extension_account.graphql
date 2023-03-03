@@ -8,3 +8,12 @@ query ExtensionAccounts($workspaceId: String!) {
     updatedAt
   }
 }
+
+mutation CreateExtensionAccount(
+  $extensionCreateBody: ExtensionAccountCreateBody!
+) {
+  createExtensionAccount(data: $extensionCreateBody) {
+    extensionAccountId
+    extensionAccountName
+  }
+}

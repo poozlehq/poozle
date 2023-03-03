@@ -101,6 +101,14 @@ export function extensionHandler(logger: Logger) {
         await workspace.restartDeployment();
         break;
       }
+      case ExtensionEventEnum.DELETE_WITHOUT_RESTART: {
+        /* 
+          This will delete all the resources related to the extension
+        */
+        const deleteStatus = await extension.startDelete();
+        res.status(deleteStatus.status ? 200 : 400).json(deleteStatus);
+        break;
+      }
       case ExtensionEventEnum.STATUS: {
         /* 
           This will get pods status of extension

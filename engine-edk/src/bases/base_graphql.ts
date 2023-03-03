@@ -117,9 +117,11 @@ export class BaseGraphQLExtension implements BaseExtensionInterface {
     This function will be used when the extension is getting configured. We will use this to test with the
     credentials are valid.
   */
-  async check(config: Config): CheckResponse {
+  async check(config: string): CheckResponse {
     try {
-      return await this.checkCredentials(config);
+      const buff = new Buffer(config, "base64");
+      const configJSON = buff.toString("utf8");
+      return await this.checkCredentials(JSON.parse(configJSON) as Config);
     } catch (err) {
       return {
         status: false,

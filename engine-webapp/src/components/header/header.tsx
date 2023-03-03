@@ -1,13 +1,14 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
-import { Button, Group, Title } from '@mantine/core';
+import { Group, Title } from '@mantine/core';
 
 import styles from './header.module.scss';
 
 interface HeaderProps {
   title: string;
+  actions?: React.ReactNode;
 }
 
-export function Header({ title }: HeaderProps) {
+export function Header({ title, actions }: HeaderProps) {
   return (
     <div className={styles.header}>
       <Group
@@ -17,7 +18,7 @@ export function Header({ title }: HeaderProps) {
         className={styles.container}
       >
         <Title order={4}>{title}</Title>
-        <Button> + New Integration </Button>
+        <div>{actions}</div>
       </Group>
     </div>
   );
