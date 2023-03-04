@@ -11,7 +11,7 @@ import {
   Workspace,
 } from '../modules';
 
-const INTEGRATIONS_NAMESPACE = 'engine-integrations';
+const NAMESPACE = 'engine';
 const port = 8000;
 
 export function extensionHandler(logger: Logger) {
@@ -25,7 +25,7 @@ export function extensionHandler(logger: Logger) {
     const k8sApi = kc.makeApiClient(k8s.AppsV1Api);
     const k8sApiCore = kc.makeApiClient(k8s.CoreV1Api);
 
-    const namespace = new Namespace(INTEGRATIONS_NAMESPACE, k8sApiCore, logger);
+    const namespace = new Namespace(NAMESPACE, k8sApiCore, logger);
     /* 
       This will create the engine-integrations namespace if not present
       in which all the integration pods will go into
@@ -39,7 +39,7 @@ export function extensionHandler(logger: Logger) {
       k8sApi,
       k8sApiCore,
       body.slug,
-      INTEGRATIONS_NAMESPACE,
+      NAMESPACE,
       logger,
       port,
     );
@@ -47,8 +47,8 @@ export function extensionHandler(logger: Logger) {
     const workspace = new Workspace(
       k8sApi,
       k8sApiCore,
-      body.workspaceSlug,
-      'engine-gateway',
+      body.workspaceSlug || "",
+      NAMESPACE,
       logger,
     );
 

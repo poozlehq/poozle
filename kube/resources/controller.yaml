@@ -3,6 +3,7 @@ kind: Service
 metadata:
   namespace: engine-core
   name: poozle-controller-svc
+  namespace: engine
 spec:
   type: NodePort
   ports:
@@ -14,7 +15,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: engine-core
+  namespace: engine
   name: poozle-controller
 spec:
   replicas: 1
@@ -30,18 +31,19 @@ spec:
       automountServiceAccountToken: true
       containers:
         - name: poozle-controller-container
-          image: poozle/controller
+          image: poozlehq/engine-controller
+          imagePullPolicy: Always
           env:
-            - name: ENGINE_VERSION
-              valueFrom:
-                configMapKeyRef:
-                  name: poozle-env
-                  key: ENGINE_VERSION
-            - name: DATABASE_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: poozle-env
-                  key: DATABASE_URL
+          - name: ENGINE_VERSION
+            valueFrom:
+              configMapKeyRef:
+                name: poozle-env
+                key: ENGINE_VERSION
+          - name: DATABASE_URL
+            valueFrom:
+              configMapKeyRef:
+                name: poozle-env
+                key: DATABASE_URL
           ports:
             - containerPort: 3000
       # nodeSelector:

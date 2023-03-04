@@ -33,7 +33,7 @@ export function workspaceHandler(logger: Logger) {
     const k8sApi = kc.makeApiClient(k8s.AppsV1Api);
     const k8sApiCore = kc.makeApiClient(k8s.CoreV1Api);
 
-    const namespace = new Namespace('engine-gateway', k8sApiCore, logger);
+    const namespace = new Namespace('engine', k8sApiCore, logger);
     /* 
       This will create the engine-gateway namespace if not present
       in which all the gateway pods will go into
@@ -47,7 +47,7 @@ export function workspaceHandler(logger: Logger) {
       k8sApi,
       k8sApiCore,
       body.slug,
-      'engine-gateway',
+      'engine',
       logger,
       port,
     );

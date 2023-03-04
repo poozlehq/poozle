@@ -88,6 +88,9 @@ export class ExtensionAccountService {
           extensionDefinitionId:
             extensionAccountCreateBody.extensionDefinitionId,
         },
+        include: {
+          workspace: true
+        }
       });
 
       /**
@@ -96,6 +99,7 @@ export class ExtensionAccountService {
       await this.controllerService.createExtensionDeployment(
         true,
         extensionDefinition,
+        extensionAccount.workspace.slug
       );
 
       return extensionAccount;
@@ -139,6 +143,7 @@ export class ExtensionAccountService {
           await this.controllerService.createExtensionDeploymentSync(
             false,
             extensionDefinition,
+            ''
           );
         } catch (e) {
           this.logger.error(
