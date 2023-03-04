@@ -30,6 +30,13 @@ spec:
         - name: poozle-webapp-container
           image: poozlehq/engine-webapp
           imagePullPolicy: Always
+          livenessProbe:
+            exec:
+              command:
+                - cat
+                - /app/package.json
+            initialDelaySeconds: 10
+            periodSeconds: 3
           env:
             - name: NEXT_PUBLIC_BASE_SERVER_URL
               valueFrom:

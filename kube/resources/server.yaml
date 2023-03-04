@@ -30,6 +30,13 @@ spec:
         - name: poozle-server-container
           image: poozlehq/engine-server
           imagePullPolicy: Always
+          livenessProbe:
+            exec:
+              command:
+                - cat
+                - package.json
+            initialDelaySeconds: 10
+            periodSeconds: 3
           env:
             - name: ENGINE_VERSION
               valueFrom:
@@ -101,7 +108,7 @@ spec:
                 configMapKeyRef:
                   name: poozle-env
                   key: ON_KUBERNETES
-              
+
           ports:
             - containerPort: 3000
       # nodeSelector:
