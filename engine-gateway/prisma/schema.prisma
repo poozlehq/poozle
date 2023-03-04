@@ -8,17 +8,6 @@ generator client {
   // previewFeatures = []
 }
 
-generator dbml {
-  provider = "prisma-dbml-generator"
-}
-
-generator nestgraphql {
-  provider = "node node_modules/prisma-nestjs-graphql"
-  // for yarn monorepos
-  // provider = "prisma-nestjs-graphql"
-  output   = "../src/@generated"
-}
-
 model User {
   userId    String      @id @default(cuid())
   createdAt DateTime    @default(now())
