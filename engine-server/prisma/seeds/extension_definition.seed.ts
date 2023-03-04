@@ -9,22 +9,30 @@ import { ExtensionType, PrismaClient, ReleaseStage } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  const extensionDefinitions = JSON.parse(
-    fs.readFileSync(resolve('extension_definition.json'), 'utf8'),
-  );
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const extensionDefinitionCreate = extensionDefinitions.map((ed: any) => ({
-    ...ed,
-    releaseStage: ReleaseStage[ed.releaseStage as ReleaseStage],
-    extensionType: ExtensionType[ed.extensionType as ExtensionType],
-  }));
+  const extensionDefinitions = await prisma.extensionDefinition.findMany({
+    where: {
+      workspace: null,
+    },
+  });
 
-  const createdExtensionDefinitions =
-    await prisma.extensionDefinition.createMany({
-      data: extensionDefinitionCreate,
-    });
+  if (extensionDefinitions.length === 0) {
+    const extensionDefinitions = JSON.parse(
+      fs.readFileSync(resolve('extension_definition.json'), 'utf8'),
+    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const extensionDefinitionCreate = extensionDefinitions.map((ed: any) => ({
+      ...ed,
+      releaseStage: ReleaseStage[ed.releaseStage as ReleaseStage],
+      extensionType: ExtensionType[ed.extensionType as ExtensionType],
+    }));
 
-  console.log(createdExtensionDefinitions);
+    const createdExtensionDefinitions =
+      await prisma.extensionDefinition.createMany({
+        data: extensionDefinitionCreate,
+      });
+
+    console.log(createdExtensionDefinitions);
+  }
 }
 
 main()
