@@ -3,6 +3,7 @@
 import { Alert, Button, Group, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import { IconAlertCircle } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
@@ -16,7 +17,6 @@ import { Loader } from 'components';
 
 import styles from './new_extension_form.module.scss';
 import { getInitialValues, getProperties } from './new_extension_form_utils';
-import { IconAlertCircle } from '@tabler/icons-react';
 
 interface NewIntegrationFormProps {
   extensionDefinitionId: string;

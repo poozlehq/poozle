@@ -41,7 +41,6 @@ export function Form({ spec, workspaceId, extensionAccount }: FormProps) {
   const [errorMessage, setErrorMessage] = React.useState(undefined);
 
   const onSubmit = (values: Values) => {
-    const extensionAccountName = values.extensionAccountName;
     delete values['extensionAccountName'];
   };
 

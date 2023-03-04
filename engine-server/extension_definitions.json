@@ -6,9 +6,9 @@
     "extensionType": "GRAPHQL"
   },
   {
-    "name": "Hubpost",
-    "dockerImageTag": "poozlehq/extension-hubspot",
+    "name": "Pipedrive",
+    "dockerImageTag": "poozlehq/extension-pipedrive",
     "dockerRespository": "0.1.0",
-    "icon": "hubspot.svg",
+    "icon": "pipedrive.svg",
     "extensionType": "REST"
   } ]

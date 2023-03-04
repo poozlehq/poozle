@@ -14,7 +14,7 @@
   "scripts": {
     "codegen": "graphql-codegen --config codegen.yml",
     "dev": "next dev",
-    "build": "next build",
+    "build": "yarn codegen && next build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "next start",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
