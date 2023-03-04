@@ -15,9 +15,15 @@ const defaultStrategy = {
   },
 };
 
+export interface containerEnv{
+  name: string;
+  value: string;
+}
+
 export interface Container {
   image: string;
   name: string;
+  env?: containerEnv[]
 }
 
 export interface DeploymentSpec {
@@ -48,6 +54,9 @@ export async function createDeployment(
           labels: {
             app: deploymentName,
           },
+          annotations: {
+            restartedAt: null,
+          }
         },
         spec: deploymentSpec,
       },
@@ -76,16 +85,24 @@ export async function restartDeployment(
   namespace: string,
   deploymentName: string,
 ) {
-  const now = new Date().toISOString();
-  return await k8sApi.patchNamespacedDeployment(deploymentName, namespace, {
-    spec: {
-      template: {
-        metadata: {
-          annotations: {
-            'kubectl.kubernetes.io/restartedAt': now,
-          },
-        },
-      },
+
+  // we get this error `unsupported media type back by the api` without this headers
+  const headers = { headers: { 'content-type': 'application/json-patch+json' }}
+
+  // As we changed the headers to json-path, we need to send the body in the JSON Patch format
+  const spec = [
+    {
+      op: 'replace',
+      path: '/spec/template/metadata/annotations/restartedAt',
+      value: new Date().toISOString(),
     },
-  });
+  ]
+
+  return await k8sApi.patchNamespacedDeployment(deploymentName, namespace, spec, 
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    undefined,
+    headers);
 }

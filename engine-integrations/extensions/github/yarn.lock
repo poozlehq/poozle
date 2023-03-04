@@ -402,10 +402,10 @@
     tslib "^2.4.1"
     webcrypto-core "^1.7.4"
 
-"@poozle/engine-edk@0.1.11":
-  version "0.1.11"
-  resolved "https://registry.yarnpkg.com/@poozle/engine-edk/-/engine-edk-0.1.11.tgz#40f27a67c3da243bc6f3af6b9c2e833d88429fff"
-  integrity sha512-uOdXxWNxHa6F2rvsG7sbQm2B+GEJBgLZTu2pF78ph7ym6Z+VdqayJDZw5fFlKyO6qpFM5paeHUZPO9XU0lfHIw==
+"@poozle/engine-edk@0.1.12":
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/@poozle/engine-edk/-/engine-edk-0.1.12.tgz#f63b96729270e66797f4f57ed693667a451e546e"
+  integrity sha512-MUifl9T4fBPELdjAETbMBq3x9ZpxaPtqbBXgIbEhUlHkDI6KfnlcCTZIP34Q8bdNf/ngE09lqf/Q6m+ykvBSXA==
   dependencies:
     "@graphql-tools/schema" "^9.0.16"
     "@graphql-tools/stitch" "^8.7.41"

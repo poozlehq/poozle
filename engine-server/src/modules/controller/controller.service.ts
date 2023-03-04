@@ -22,16 +22,14 @@ export class ControllerService {
     controllerPath: string,
   ): Promise<ControllerResponse> {
     const CONTROLLER_URL = this.configService.get('CONTROLLER_URL');
-
-    const repsonse = await lastValueFrom(
+    const response = await lastValueFrom(
       this.httpService.post(
         `${CONTROLLER_URL}/${controllerPath}`,
         controllerBody,
       ),
     );
-    return repsonse.data;
+    return response.data
   }
-
   async deleteExtensionDeployment(
     restartGateway = false,
     extensionDefinition: ExtensionDefinition,
@@ -47,7 +45,7 @@ export class ControllerService {
       workspaceSlug: extensionDefinition.workspace.slug,
     };
 
-    await this.post(deleteExtensionDeploymentBody, 'extensions');
+    await this.post(deleteExtensionDeploymentBody, 'extension');
   }
 
   async createExtensionDeployment(
@@ -64,8 +62,7 @@ export class ControllerService {
       dockerImage: `${extensionDefinition.dockerRepository}:${extensionDefinition.dockerImageTag}`,
       workspaceSlug: extensionDefinition.workspace.slug,
     };
-
-    await this.post(createExtensionBody, 'extensions');
+    await this.post(createExtensionBody, 'extension');    
   }
 
   async createExtensionDeploymentSync(
@@ -110,7 +107,7 @@ export class ControllerService {
 
     const deploymentStatusResponse = await this.post(
       controllerBody,
-      'extensions',
+      'extension',
     );
     return deploymentStatusResponse.status;
   }
@@ -123,6 +120,7 @@ export class ControllerService {
     const createGatewayBody: ControllerBody = {
       event: 'CREATE',
       slug: workspace.slug,
+      workspaceId: workspace.workspaceId
     };
 
     return await this.post(createGatewayBody, 'workspace');

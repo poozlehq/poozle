@@ -21,7 +21,7 @@ async function testSource(endpoint: string, config: string) {
       },
       {
         headers: {
-          config,
+          Authorization: `Bearer ${config}`,
         },
       },
     );
@@ -34,6 +34,7 @@ async function testSource(endpoint: string, config: string) {
 
 async function main(): Promise<null> {
   // Don't let this through if WORKSPACE_ID is not found in the process
+
   if (!process.env.WORKSPACE_ID) {
     return null;
   }

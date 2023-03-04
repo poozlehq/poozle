@@ -7,13 +7,13 @@ export class Workspace extends Base {
   async restartDeployment() {
     try {
       await restartDeployment(this.k8sApi, this.namespace, this.slug);
-      this.logger.info('Service for this workspace is restarted.');
+      this.logger.info('Deployment for this workspace is restarted.');
       return {
         status: true,
       };
     } catch (e) {
       this.logger.info(
-        'Service for this workspace was not restarted error occured.',
+        'Deployment for this workspace was not restarted error occured.',
       );
       this.logger.error(e);
       return {

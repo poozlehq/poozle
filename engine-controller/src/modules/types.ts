@@ -18,6 +18,7 @@ export enum ExtensionEventEnum {
 export interface WorkspaceRequestBody {
   event: WorkspaceEventEnum;
   slug: string;
+  workspaceId?: string;
 }
 
 export interface ExtensionRequestBody {

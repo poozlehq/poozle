@@ -3,6 +3,7 @@
 export interface ControllerBody {
   event: string;
   slug: string;
+  workspaceId?: string;
   workspaceSlug?: string;
   dockerImage?: string;
 }

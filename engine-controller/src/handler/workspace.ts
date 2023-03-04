@@ -9,6 +9,7 @@ import {
   WorkspaceEventEnum,
   WorkspaceRequestBody,
 } from '../modules';
+import { Container } from '../utils';
 
 const deploymentSpec = {
   containers: [
@@ -18,6 +19,8 @@ const deploymentSpec = {
     },
   ],
 };
+
+const port = 4000;
 
 export function workspaceHandler(logger: Logger) {
   return async (req: Request, res: Response) => {
@@ -46,7 +49,12 @@ export function workspaceHandler(logger: Logger) {
       body.slug,
       'engine-gateway',
       logger,
+      port
     );
+
+    deploymentSpec.containers.map((container: Container) => {
+      container.env = [{ 'name': 'WORKSPACE_ID', 'value': body.workspaceId }]
+    })
 
     switch (body.event) {
       case WorkspaceEventEnum.CREATE: {

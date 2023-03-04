@@ -18,6 +18,7 @@ export class Base {
 
   slug: string;
   namespace: string;
+  port: number;
   logger: Logger;
 
   constructor(
@@ -26,12 +27,14 @@ export class Base {
     slug: string,
     namespace: string,
     logger: Logger,
+    port?: number,
   ) {
     this.k8sApi = k8sApi;
     this.k8sApiCore = k8sApiCore;
     this.slug = slug;
     this.namespace = namespace;
     this.logger = logger;
+    this.port = port
   }
 
   async createDeployment(deploymentSpec: DeploymentSpec) {
@@ -84,7 +87,7 @@ export class Base {
         this.k8sApiCore,
         this.namespace,
         this.slug,
-        4000,
+        this.port,
       );
       return {
         status: true,
