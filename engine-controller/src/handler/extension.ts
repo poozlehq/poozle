@@ -12,7 +12,7 @@ import {
 } from '../modules';
 
 const INTEGRATIONS_NAMESPACE = 'engine-integrations';
-const port = 8000
+const port = 8000;
 
 export function extensionHandler(logger: Logger) {
   return async (req: Request, res: Response) => {
@@ -52,8 +52,8 @@ export function extensionHandler(logger: Logger) {
       logger,
     );
 
-    logger.info(`event Body: ${body}`)
-      
+    logger.info(`event Body: ${body}`);
+
     switch (body.event) {
       case ExtensionEventEnum.CREATE_WITHOUT_RESTART: {
         /* 

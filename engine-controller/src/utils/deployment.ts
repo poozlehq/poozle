@@ -15,7 +15,7 @@ const defaultStrategy = {
   },
 };
 
-export interface containerEnv{
+export interface containerEnv {
   name: string;
   value: string;
 }
@@ -23,7 +23,7 @@ export interface containerEnv{
 export interface Container {
   image: string;
   name: string;
-  env?: containerEnv[]
+  env?: containerEnv[];
 }
 
 export interface DeploymentSpec {
@@ -56,7 +56,7 @@ export async function createDeployment(
           },
           annotations: {
             restartedAt: null,
-          }
+          },
         },
         spec: deploymentSpec,
       },
@@ -85,9 +85,10 @@ export async function restartDeployment(
   namespace: string,
   deploymentName: string,
 ) {
-
   // we get this error `unsupported media type back by the api` without this headers
-  const headers = { headers: { 'content-type': 'application/json-patch+json' }}
+  const headers = {
+    headers: { 'content-type': 'application/json-patch+json' },
+  };
 
   // As we changed the headers to json-path, we need to send the body in the JSON Patch format
   const spec = [
@@ -96,13 +97,17 @@ export async function restartDeployment(
       path: '/spec/template/metadata/annotations/restartedAt',
       value: new Date().toISOString(),
     },
-  ]
+  ];
 
-  return await k8sApi.patchNamespacedDeployment(deploymentName, namespace, spec, 
+  return await k8sApi.patchNamespacedDeployment(
+    deploymentName,
+    namespace,
+    spec,
     undefined,
     undefined,
     undefined,
     undefined,
     undefined,
-    headers);
+    headers,
+  );
 }

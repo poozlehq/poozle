@@ -1,47 +1,45 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: poozle-controller-svc
+  name: poozle-webapp-svc
 spec:
   type: NodePort
   ports:
-    - port: 3000
+    - port: 8000
       protocol: TCP
   selector:
-    poozle: controller
+    poozle: webapp
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: engine-core
-  name: poozle-controller
+  name: poozle-webapp
 spec:
-  serviceAccountName: poozle-admin
-  automountServiceAccountToken: true
   replicas: 1
   selector:
     matchLabels:
-      poozle: controller
+      poozle: webapp
   template:
     metadata:
       labels:
-        poozle: controller
+        poozle: webapp
     spec:
       containers:
-        - name: poozle-controller-container
-          image: poozle/controller
+        - name: poozle-webapp-container
+          image: poozlehq/engine-webapp
           env:
-            - name: ENGINE_VERSION
+            - name: NEXT_PUBLIC_BASE_SERVER_URL
               valueFrom:
                 configMapKeyRef:
                   name: poozle-env
-                  key: ENGINE_VERSION
-            - name: DATABASE_URL
+                  key: NEXT_PUBLIC_BASE_SERVER_URL
+            - name: NEXT_PUBLIC_VERSION
               valueFrom:
                 configMapKeyRef:
                   name: poozle-env
-                  key: DATABASE_URL
+                  key: NEXT_PUBLIC_VERSION
           ports:
-            - containerPort: 3000
+            - containerPort: 8000
       # nodeSelector:
       #   role: core

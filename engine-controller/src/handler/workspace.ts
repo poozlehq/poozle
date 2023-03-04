@@ -14,7 +14,7 @@ import { Container } from '../utils';
 const deploymentSpec = {
   containers: [
     {
-      image: 'manoj67/engine-gateway:latest',
+      image: `poozlehq/engine-gateway:${process.env.ENGINE_VERSION}`,
       name: 'gateway',
     },
   ],
@@ -49,12 +49,15 @@ export function workspaceHandler(logger: Logger) {
       body.slug,
       'engine-gateway',
       logger,
-      port
+      port,
     );
 
     deploymentSpec.containers.map((container: Container) => {
-      container.env = [{ 'name': 'WORKSPACE_ID', 'value': body.workspaceId }]
-    })
+      container.env = [
+        { name: 'WORKSPACE_ID', value: body.workspaceId },
+        { name: 'DATABASE_URL', value: process.env.DATABASE_URL },
+      ];
+    });
 
     switch (body.event) {
       case WorkspaceEventEnum.CREATE: {

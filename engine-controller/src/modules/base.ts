@@ -34,7 +34,7 @@ export class Base {
     this.slug = slug;
     this.namespace = namespace;
     this.logger = logger;
-    this.port = port
+    this.port = port;
   }
 
   async createDeployment(deploymentSpec: DeploymentSpec) {
