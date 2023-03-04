@@ -2,6 +2,7 @@
 
 import { Alert, Button, Group, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { IconAlertCircle } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
@@ -15,7 +16,6 @@ import { Loader } from 'components';
 
 import styles from './update_extension_form.module.scss';
 import { getInitialValues, getProperties } from './update_extension_form_utils';
-import { IconAlertCircle } from '@tabler/icons-react';
 
 interface UpdateExtensionFormProps {
   extensionAccount: ExtensionAccount;
