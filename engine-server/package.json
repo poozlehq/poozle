@@ -27,6 +27,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
+    "start:migrate:prod": "yarn migrate:deploy && node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "migrate:dev": "prisma migrate dev --preview-feature",
     "migrate:dev:create": "prisma migrate dev --create-only --preview-feature",
@@ -44,12 +45,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "start:db": "npm run migrate:up && npm run prisma:generate && npm run seed",
     "seed": "prisma db seed",
-    "postinstall": "npm run prisma:generate",
-    "docker:migrate": "docker-compose -f docker-compose.migrate.yml up -d",
-    "docker:db": "docker-compose -f docker-compose.db.yml up -d",
-    "docker:seed": "docker exec -it nest-api npm run seed",
-    "docker": "docker-compose up -d",
-    "docker:build": "docker-compose build"
+    "postinstall": "npm run prisma:generate"
   },
   "dependencies": {
     "@devoxa/prisma-relay-cursor-connection": "2.2.2",

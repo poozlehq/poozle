@@ -120,7 +120,7 @@ type ExtensionRouter {
 enum ExtensionType {
   CUSTOM
   GRAPHQL
-  OPENAPI
+  REST
 }
 
 """

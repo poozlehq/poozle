@@ -86,12 +86,6 @@ model ExtensionRouter {
 
 enum ExtensionType {
   GRAPHQL
-  OPENAPI
-  CUSTOM
-}
-
-enum ExtensionSchemaType {
-  GRAPHQL
   REST
   CUSTOM
 }
