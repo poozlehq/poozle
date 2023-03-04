@@ -72,10 +72,7 @@ export function Extension() {
       <Header
         title="Extensions"
         actions={
-          <Button
-            onClick={() => router.push(`${router.asPath}/new`)}
-            variant="subtle"
-          >
+          <Button onClick={() => router.push(`${router.asPath}/new`)}>
             + New Extension
           </Button>
         }

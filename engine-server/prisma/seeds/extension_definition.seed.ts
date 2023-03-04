@@ -9,32 +9,37 @@ import { ExtensionType, PrismaClient, ReleaseStage } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  const workspace = await prisma.workspace.findFirst();
+  const extensionDefinitions = await prisma.extensionDefinition.findMany({
+    where: {
+      workspace: null,
+    },
+  });
 
-  const extensionDefinitions = JSON.parse(
-    fs.readFileSync(resolve('extension_definition.json'), 'utf8'),
-  );
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const extensionDefinitionCreate = extensionDefinitions.map((ed: any) => ({
-    ...ed,
-    workspaceId: workspace.workspaceId,
-    releaseStage: ReleaseStage[ed.releaseStage as ReleaseStage],
-    extensionType: ExtensionType[ed.extensionType as ExtensionType],
-  }));
+  if (extensionDefinitions.length === 0) {
+    const extensionDefinitions = JSON.parse(
+      fs.readFileSync(resolve('extension_definition.json'), 'utf8'),
+    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const extensionDefinitionCreate = extensionDefinitions.map((ed: any) => ({
+      ...ed,
+      releaseStage: ReleaseStage[ed.releaseStage as ReleaseStage],
+      extensionType: ExtensionType[ed.extensionType as ExtensionType],
+    }));
 
-  const createdExtensionDefinitions =
-    await prisma.extensionDefinition.createMany({
-      data: extensionDefinitionCreate,
-    });
+    const createdExtensionDefinitions =
+      await prisma.extensionDefinition.createMany({
+        data: extensionDefinitionCreate,
+      });
 
-  console.log(createdExtensionDefinitions);
+    console.log(createdExtensionDefinitions);
+  }
 }
 
-main().
-  then(async () => {
+main()
+  .then(async () => {
     await prisma.$disconnect();
-  }).
-  catch(async (e) => {
+  })
+  .catch(async (e) => {
     console.error(e);
     await prisma.$disconnect();
     process.exit(1);

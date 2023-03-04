@@ -1,11 +1,12 @@
-generator client {
-  provider = "prisma-client-js"
-  output   = "../src/client"
-}
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/client"
+  // previewFeatures = []
 }
 
 model User {
@@ -74,12 +75,6 @@ model ExtensionRouter {
 }
 
 enum ExtensionType {
-  GRAPHQL
-  OPENAPI
-  CUSTOM
-}
-
-enum ExtensionSchemaType {
   GRAPHQL
   REST
   CUSTOM

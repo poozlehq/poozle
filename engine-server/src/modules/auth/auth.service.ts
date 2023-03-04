@@ -37,6 +37,11 @@ export class AuthService {
         data: {
           ...payload,
           password: hashedPassword,
+          Workspace: {
+            create: {
+              slug: 'default',
+            },
+          },
         },
       });
 
