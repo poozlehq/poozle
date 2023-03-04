@@ -1,16 +1,19 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Button, Paper } from '@mantine/core';
+import { Button, Paper, Text } from '@mantine/core';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
-import { useExtensionAccountsQuery } from 'queries/generated/graphql';
+import {
+  ExtensionAccount,
+  useExtensionAccountsQuery,
+} from 'queries/generated/graphql';
 
 import { SideBarLayout } from 'layouts/sidebar_layout';
 import { AuthGuard } from 'wrappers/auth_guard';
 import { GetUserData } from 'wrappers/get_user_data';
 
-import { Header, Loader, Table } from 'components';
+import { ExtensionIcon, Header, Loader, Table } from 'components';
 
 import styles from './extension.module.scss';
 
@@ -31,7 +34,7 @@ export function Extension() {
     {
       name: 'Name',
       key: 'name',
-      render: (data: any) => (
+      render: (data: ExtensionAccount) => (
         <div className={styles.tableDataContainer}>
           {data['extensionAccountName']}
         </div>
@@ -40,22 +43,22 @@ export function Extension() {
     {
       name: 'Integration',
       key: 'integration',
-      render: (data: any) => (
-        <div className={styles.tableDataContainer}>{data['name']}</div>
-      ),
-    },
-    {
-      name: 'Status',
-      key: 'status',
-      render: (data: any) => (
-        <div className={styles.tableDataContainer}>{data['name']}</div>
+      render: (data: ExtensionAccount) => (
+        <div className={styles.tableDataContainer}>
+          <div className={styles.extensionName}>
+            <ExtensionIcon icon="github.svg" width={25} height={25} />
+            <Text>{data['name']}</Text>
+          </div>
+        </div>
       ),
     },
     {
       name: 'Last Updated',
       key: 'last_updated',
-      render: (data: any) => (
-        <div className={styles.tableDataContainer}>{data['name']}</div>
+      render: (data: ExtensionAccount) => (
+        <div className={styles.tableDataContainer}>
+          {new Date(data.updatedAt).toLocaleString()}
+        </div>
       ),
     },
   ];
@@ -69,7 +72,10 @@ export function Extension() {
       <Header
         title="Extensions"
         actions={
-          <Button onClick={() => router.push(`${router.asPath}/new`)}>
+          <Button
+            onClick={() => router.push(`${router.asPath}/new`)}
+            variant="subtle"
+          >
             + New Extension
           </Button>
         }
@@ -80,6 +86,8 @@ export function Extension() {
           <Table
             horizontalSpacing="lg"
             columns={columns}
+            idKey="extensionAccountId"
+            onRowClick={(id: string) => router.push(`${router.asPath}/${id}`)}
             data={data.getExtensionAccountsByWorkspace}
           />
         </Paper>

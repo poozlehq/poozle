@@ -7,12 +7,27 @@ import { resolve } from 'path';
 
 import axios from 'axios';
 import * as yaml from 'js-yaml';
+import { createLogger, transports, format } from 'winston';
 
 import { PrismaClient } from './client';
 
-const prisma = new PrismaClient();
+const prisma = new PrismaClient({
+  log: ['query', 'info', 'warn', 'error'],
+});
+
+const logger = createLogger({
+  transports: [new transports.Console()],
+  format: format.combine(
+    format.colorize(),
+    format.timestamp(),
+    format.printf(({ timestamp, level, message }) => {
+      return `[${timestamp}] ${level}: ${message}`;
+    }),
+  ),
+});
 
 async function testSource(endpoint: string, config: string) {
+  logger.info(`Testing the endpoint ${endpoint}`);
   try {
     const response = await axios.post(
       endpoint,
@@ -28,6 +43,8 @@ async function testSource(endpoint: string, config: string) {
 
     return response.status === 200;
   } catch (e) {
+    logger.error(`Testing the endpoint ${endpoint} failed ${e}`);
+
     return false;
   }
 }

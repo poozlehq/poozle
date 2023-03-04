@@ -23,6 +23,12 @@ $dim: 40;
   }
 }
 
+.linkActive {
+  font-weight: bold;
+  color: var(--mantine-color-gray-9);
+  background-color: var(--mantine-color-gray-0) !important;
+}
+
 .button {
   width: 100%;
   padding: var(--mantine-spacing-xs);

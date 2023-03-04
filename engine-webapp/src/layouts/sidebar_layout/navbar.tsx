@@ -10,7 +10,6 @@ import {
   Text,
   Title,
   UnstyledButton,
-  createStyles,
 } from '@mantine/core';
 import {
   IconHome2,
@@ -37,21 +36,6 @@ interface NavbarLinkProps {
   onClick?(link: string): void;
 }
 
-const useStyles = createStyles((theme) => ({
-  linkActive: {
-    color: `${theme.colors.primary[6]} !important`,
-    '&, &:hover': {
-      backgroundColor: `${
-        theme.fn.variant({
-          variant: 'light',
-          color: theme.primaryColor,
-        }).background
-      } !important`,
-      color: theme.colors.primary[6],
-    },
-  },
-}));
-
 function NavbarLink({
   icon: Icon,
   label,
@@ -60,14 +44,12 @@ function NavbarLink({
   routeKey,
   open,
 }: NavbarLinkProps) {
-  const { classes } = useStyles();
-
   return (
     <UnstyledButton
       onClick={() => onClick(routeKey)}
       className={classnames(
         styles.link,
-        { [classes.linkActive]: active },
+        { [styles.linkActive]: active },
         { [styles.open]: open },
       )}
     >
@@ -120,9 +102,7 @@ export function Navbar({ open }: NavbarProps) {
       <MNavbar.Section px="sm">
         <UnstyledButton className={classnames(styles.button)}>
           <Group position="left">
-            <Avatar color="primary">
-              {firstname.slice(0, 2).toUpperCase()}
-            </Avatar>
+            <Avatar color="blue">{firstname.slice(0, 2).toUpperCase()}</Avatar>
             {open && (
               <div className={styles.flexContainer}>
                 <Title order={6}>{firstname}</Title>

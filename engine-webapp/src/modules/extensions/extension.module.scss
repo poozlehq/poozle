@@ -1,5 +1,5 @@
 .tableContainer {
-  padding: var(--mantine-spacing-md);
+  padding: var(--mantine-spacing-xl);
 }
 
 .tableDataContainer {
@@ -8,4 +8,10 @@
 
 .tablePaper {
   border: 1px solid var(--mantine-color-gray-2);
+}
+
+.extensionName {
+  display: flex;
+  gap: 3px;
+  align-items: center;
 }

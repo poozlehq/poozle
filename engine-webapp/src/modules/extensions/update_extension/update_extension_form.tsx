@@ -2,84 +2,60 @@
 
 import { Alert, Button, Group, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
 import {
-  useCreateExtensionAccountMutation,
+  ExtensionAccount,
   useSpecForExtensionDefinitionQuery,
   useValidateCredentialsForExtensionLazyQuery,
 } from 'queries/generated/graphql';
 
 import { Loader } from 'components';
 
-import styles from './new_extension_form.module.scss';
-import { getInitialValues, getProperties } from './new_extension_form_utils';
+import styles from './update_extension_form.module.scss';
+import { getInitialValues, getProperties } from './update_extension_form_utils';
 import { IconAlertCircle } from '@tabler/icons-react';
 
-interface NewIntegrationFormProps {
-  extensionDefinitionId: string;
+interface UpdateExtensionFormProps {
+  extensionAccount: ExtensionAccount;
 }
 
 interface FormProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   spec: any;
   workspaceId: string;
-  extensionDefinitionId: string;
+  extensionAccount: ExtensionAccount;
 }
 
-interface Values {
-  api_key: string;
-  extensionAccountName: string;
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Values = Record<string, any>;
 
-export function Form({ spec, workspaceId, extensionDefinitionId }: FormProps) {
+export function Form({ spec, workspaceId, extensionAccount }: FormProps) {
   const form = useForm({
-    initialValues: getInitialValues(spec),
+    initialValues: getInitialValues(spec, extensionAccount),
   });
+
   const [validateCredentialsForExtension, { loading: validateLoading }] =
     useValidateCredentialsForExtensionLazyQuery();
-  const [createExtensionAccount, { loading }] =
-    useCreateExtensionAccountMutation();
   const [errorMessage, setErrorMessage] = React.useState(undefined);
 
   const onSubmit = (values: Values) => {
     const extensionAccountName = values.extensionAccountName;
     delete values['extensionAccountName'];
-
-    createExtensionAccount({
-      variables: {
-        extensionCreateBody: {
-          extensionDefinitionId,
-          workspaceId,
-          extensionAccountName,
-          extensionConfiguration: values,
-        },
-      },
-      onCompleted: () => {
-        notifications.show({
-          title: 'Extension',
-          color: 'green',
-          variant: 'filled',
-          message: 'Extension successfully created',
-        });
-        form.reset();
-      },
-    });
   };
 
   const properties = getProperties(spec);
 
   return (
-    <Group p="md" pt={0} className={styles.formContainer}>
+    <Group p="md" className={styles.formContainer}>
       <form
         className={styles.form}
         onSubmit={form.onSubmit((values) => {
           validateCredentialsForExtension({
             variables: {
               workspaceId,
-              extensionDefinitionId,
+              extensionDefinitionId: extensionAccount.extensionDefinitionId,
               config: {
                 ...values,
               },
@@ -87,7 +63,7 @@ export function Form({ spec, workspaceId, extensionDefinitionId }: FormProps) {
             onCompleted: (data) => {
               if (data.validateExtensionCredentials.status === false) {
                 setErrorMessage('Account credentials are invalid');
-                setTimeout(() => setErrorMessage(undefined), 5000);
+                setTimeout(() => setErrorMessage(undefined), 100000);
               } else {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onSubmit(values as any);
@@ -98,7 +74,7 @@ export function Form({ spec, workspaceId, extensionDefinitionId }: FormProps) {
       >
         <TextInput
           pb="md"
-          disabled={loading || validateLoading}
+          disabled={validateLoading}
           label="Extension account name"
           placeholder="Enter extension account name"
           {...form.getInputProps('extensionAccountName')}
@@ -107,7 +83,7 @@ export function Form({ spec, workspaceId, extensionDefinitionId }: FormProps) {
           <TextInput
             key={property.key}
             pb="md"
-            disabled={loading || validateLoading}
+            disabled={validateLoading}
             label={property.title}
             placeholder={`Enter ${property.title}`}
             {...form.getInputProps(property.key)}
@@ -125,8 +101,8 @@ export function Form({ spec, workspaceId, extensionDefinitionId }: FormProps) {
           </Alert>
         )}
         <Group pt="xl" position="right">
-          <Button type="submit" loading={validateLoading || loading}>
-            Create
+          <Button type="submit" loading={validateLoading}>
+            Update
           </Button>
         </Group>
       </form>
@@ -134,15 +110,15 @@ export function Form({ spec, workspaceId, extensionDefinitionId }: FormProps) {
   );
 }
 
-export function NewExtensionForm({
-  extensionDefinitionId,
-}: NewIntegrationFormProps) {
+export function UpdateExtensionForm({
+  extensionAccount,
+}: UpdateExtensionFormProps) {
   const {
     query: { workspaceId },
   } = useRouter();
   const { data, loading, error } = useSpecForExtensionDefinitionQuery({
     variables: {
-      extensionDefinitionId,
+      extensionDefinitionId: extensionAccount.extensionDefinitionId,
       workspaceId: workspaceId as string,
     },
   });
@@ -162,15 +138,15 @@ export function NewExtensionForm({
     );
   }
 
-  if (loading) {
+  if (loading || !data) {
     return <Loader />;
   }
 
   return (
     <Form
       spec={data.getSpecForExtensionDefinition.spec}
+      extensionAccount={extensionAccount}
       workspaceId={workspaceId as string}
-      extensionDefinitionId={extensionDefinitionId}
     />
   );
 }

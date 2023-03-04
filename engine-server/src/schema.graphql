@@ -48,7 +48,6 @@ input ExtensionAccountGetRequestBody {
 
 input ExtensionAccountRequestIdBody {
   extensionAccountId: String!
-  workspaceId: String!
 }
 
 type ExtensionDefinition {

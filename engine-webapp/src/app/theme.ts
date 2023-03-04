@@ -19,7 +19,7 @@ export const theme = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     primary: primaryColor as any,
   },
-  primaryColor: 'primary',
+  primaryColor: 'blue',
   primaryShade: 5,
   defaultRadius: 'md',
   components: {
@@ -30,6 +30,13 @@ export const theme = {
           borderColor: theme.colors.gray[2],
         },
       }),
+    },
+    Alert: {
+      styles: {
+        title: {
+          marginBottom: 0,
+        },
+      },
     },
     TextInput: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
