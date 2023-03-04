@@ -1,3 +1,3 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-export * from './config_processor';
+export * from './new_extension';

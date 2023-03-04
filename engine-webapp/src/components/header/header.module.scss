@@ -1,0 +1,12 @@
+// To adjust with the sidebar
+$height: 61px;
+
+.header {
+  height: $height;
+  background-color: var(--mantine-color-white);
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+}
+
+.container {
+  height: 100%;
+}

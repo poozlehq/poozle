@@ -2,9 +2,28 @@ query ExtensionAccounts($workspaceId: String!) {
   getExtensionAccountsByWorkspace(data: { workspaceId: $workspaceId }) {
     name
     extensionAccountName
+    extensionAccountId
     extensionDefinition {
       name
     }
     updatedAt
+  }
+}
+
+query GetExtensionAccount($extensionAccountId: String!) {
+  getExtensionAccount(data: { extensionAccountId: $extensionAccountId }) {
+    extensionAccountId
+    extensionAccountName
+    extensionConfiguration
+    extensionDefinitionId
+  }
+}
+
+mutation CreateExtensionAccount(
+  $extensionCreateBody: ExtensionAccountCreateBody!
+) {
+  createExtensionAccount(data: $extensionCreateBody) {
+    extensionAccountId
+    extensionAccountName
   }
 }

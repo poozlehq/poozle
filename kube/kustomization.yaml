@@ -11,7 +11,7 @@ images:
     newTag: 0.1.0-alpha
   - name: poozlehq/server
     newTag: 0.1.0-alpha
-  - name: poozlehq/controller
+  - name: poozlehq/engine-controller
     newTag: 0.1.0-alpha
 
 configMapGenerator:

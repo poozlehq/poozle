@@ -13,6 +13,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: engine-core
   name: poozle-controller
 spec:
   serviceAccountName: poozle-admin
@@ -30,12 +31,17 @@ spec:
         - name: poozle-controller-container
           image: poozle/controller
           env:
-            - name: POOZLE_VERSION
+            - name: ENGINE_VERSION
               valueFrom:
                 configMapKeyRef:
                   name: poozle-env
-                  key: POOZLE_VERSION
+                  key: ENGINE_VERSION
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: poozle-env
+                  key: DATABASE_URL
           ports:
             - containerPort: 3000
-      nodeSelector:
-        role: core
+      # nodeSelector:
+      #   role: core

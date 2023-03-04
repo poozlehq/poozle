@@ -13,6 +13,7 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: engine-core
   name: poozle-server
 spec:
   replicas: 1
@@ -26,13 +27,13 @@ spec:
     spec:
       containers:
         - name: poozle-server-container
-          image: poozle/server
+          image: poozlehq/engine-server
           env:
-            - name: POOZLE_VERSION
+            - name: ENGINE_VERSION
               valueFrom:
                 configMapKeyRef:
                   name: poozle-env
-                  key: POOZLE_VERSION
+                  key: ENGINE_VERSION
             - name: POSTGRES_USER
               valueFrom:
                 configMapKeyRef:
@@ -63,11 +64,11 @@ spec:
                 configMapKeyRef:
                   name: poozle-env
                   key: DB_SCHEMA
-            - name: DB_SCHEMA
+            - name: DATABASE_URL
               valueFrom:
                 configMapKeyRef:
                   name: poozle-env
-                  key: DB_SCHEMA
+                  key: DATABASE_URL
             - name: PORT
               valueFrom:
                 configMapKeyRef:
@@ -84,6 +85,6 @@ spec:
                   name: poozle-env
                   key: JWT_REFRESH_SECRET
           ports:
-            - containerPort: 8001
-      nodeSelector:
-        role: core
+            - containerPort: 8000
+      # nodeSelector:
+      #   role: core

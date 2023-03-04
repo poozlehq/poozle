@@ -1,21 +1,27 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import type { NextComponentType } from 'next';
+
 import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
 import {
   ColorScheme,
   ColorSchemeProvider,
   MantineProvider,
 } from '@mantine/core';
-import { NotificationsProvider } from '@mantine/notifications';
-import { AppProps } from 'next/app';
+import { Notifications } from '@mantine/notifications';
+import { AppContext, AppInitialProps, AppLayoutProps } from 'next/app';
 import * as React from 'react';
 
-import { configProcessor } from 'app';
+import { theme } from 'app/theme';
 
 import '../styles/globals.scss';
 
-export default function MyApp({ Component, pageProps, router }: AppProps) {
-  const ComponentToRender = configProcessor(router, Component, pageProps);
+export const MyApp: NextComponentType<
+  AppContext,
+  AppInitialProps,
+  AppLayoutProps
+> = ({ Component, pageProps }: AppLayoutProps) => {
+  const getLayout = Component.getLayout || ((page: React.ReactNode) => page);
   const [colorScheme, setColorScheme] = React.useState<ColorScheme>('light');
   const toggleColorScheme = (value?: ColorScheme) =>
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
@@ -33,16 +39,21 @@ export default function MyApp({ Component, pageProps, router }: AppProps) {
         toggleColorScheme={toggleColorScheme}
       >
         <MantineProvider
-          theme={{ colorScheme }}
+          theme={{
+            colorScheme,
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ...(theme as any),
+          }}
           withCSSVariables
           withGlobalStyles
           withNormalizeCSS
         >
-          <NotificationsProvider position="top-right">
-            {ComponentToRender}
-          </NotificationsProvider>
+          <Notifications />
+          {getLayout(<Component {...pageProps} />)}
         </MantineProvider>
       </ColorSchemeProvider>
     </ApolloProvider>
   );
-}
+};
+
+export default MyApp;

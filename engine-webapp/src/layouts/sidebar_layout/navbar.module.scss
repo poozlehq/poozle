@@ -1,4 +1,4 @@
-$dim: 50;
+$dim: 40;
 
 .iconContainer {
   display: flex;
@@ -11,7 +11,7 @@ $dim: 50;
   margin-bottom: var(--mantine-spacing-sm);
   height: $dim;
   border-radius: var(--mantine-radius-md);
-  padding: var(--mantine-spacing-sm);
+  padding: var(--mantine-spacing-xs);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,6 +20,22 @@ $dim: 50;
   &:hover {
     background-color: var(--mantine-color-gray-0);
     color: var(--mantine-color-black);
+  }
+}
+
+.linkActive {
+  font-weight: bold;
+  color: var(--mantine-color-gray-9);
+  background-color: var(--mantine-color-gray-0) !important;
+}
+
+.button {
+  width: 100%;
+  padding: var(--mantine-spacing-xs);
+  border-radius: var(--mantine-radius-md);
+
+  &:hover {
+    background-color: var(--mantine-color-gray-0);
   }
 }
 
@@ -33,10 +49,36 @@ $dim: 50;
   flex-direction: column;
 }
 
+.bottomSection {
+  border-top: 1px solid var(--mantine-color-gray-2);
+}
+
 .openedSection {
   align-items: flex-start;
 
   .link {
     width: 100%;
   }
+}
+
+.flexContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.logoContainer {
+  width: 100%;
+}
+
+.navbarToggleButton {
+  width: 100%;
+}
+
+.versionBadge {
+  background-color: var(--mantine-color-gray-2);
+  color: var(--mantine-color-dark-3);
+}
+
+.divider {
+  border-top-color: var(--mantine-color-gray-2);
 }

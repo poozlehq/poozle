@@ -1,30 +1,24 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { Workspace } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 
 import { User } from '@generated/user/user.model';
 
-import { ControllerApi } from 'modules/utils';
-import { ControllerBody } from 'modules/utils/api.types';
+import { ControllerService } from 'modules/controller/controller.service';
 
 import {
   WorkspaceCreateBody,
   WorkspaceRequestIdBody,
 } from './workspace.interface';
 
-const controllerPath = 'workspace';
-
 @Injectable()
 export class WorkspaceService {
   constructor(
     private prisma: PrismaService,
-    private configService: ConfigService,
 
-    private httpService: HttpService,
+    private controllerService: ControllerService,
   ) {}
 
   async createWorkspace(
@@ -37,19 +31,9 @@ export class WorkspaceService {
         userId: user.userId,
       },
     });
-    /**
-     * Send event to controller to create the workspace deployment and service
-     */
-    const controllerBody: ControllerBody = {
-      event: 'CREATE',
-      slug: workspace.slug,
-    };
-    const controllerService = new ControllerApi(
-      this.httpService,
-      this.configService,
-    );
 
-    await controllerService.post(controllerBody, controllerPath);
+    await this.controllerService.createGatewayDeployment(workspace);
+
     return workspace;
   }
 
@@ -73,19 +57,6 @@ export class WorkspaceService {
       data: { deleted: new Date() },
     });
 
-    /**
-     * Send event to controller to delete the workspace deployment and service
-     */
-    const controllerBody: ControllerBody = {
-      event: 'DELETE',
-      slug: workspace.slug,
-    };
-    const controllerService = new ControllerApi(
-      this.httpService,
-      this.configService,
-    );
-
-    await controllerService.post(controllerBody, controllerPath);
-    return workspace;
+    await this.controllerService.deleteGatewayDeployment(workspace);
   }
 }

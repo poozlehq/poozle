@@ -29,9 +29,16 @@ export async function runGateway(
       const config64 = request.headers.get("config") ?? null;
       if (config64) {
         const buff = new Buffer(config64, "base64");
-        const config = buff.toString("utf8");
+        let config = buff.toString("utf8");
+        config = JSON.parse(config);
+
+        // This to check if the base64 is still not parsed to JSON
+        if (typeof config === "string") {
+          config = JSON.parse(config);
+        }
+
         return {
-          config: JSON.parse(JSON.parse(config)),
+          config,
         };
       }
 

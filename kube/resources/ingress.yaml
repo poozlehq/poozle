@@ -14,7 +14,17 @@ spec:
         paths:
           - backend:
               service:
-                name: poozle-web
+                name: poozle-webapp-svc
+                port:
+                  number: 80
+            path: /*
+            pathType: ImplementationSpecific
+    - host: server.poozle.dev
+      http:
+        paths:
+          - backend:
+              service:
+                name: poozle-server-svc
                 port:
                   number: 80
             path: /*

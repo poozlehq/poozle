@@ -7,9 +7,6 @@ import GraphQLJSON from 'graphql-type-json';
 export class ExtensionAccountRequestIdBody {
   @Field()
   extensionAccountId: string;
-
-  @Field()
-  workspaceId: string;
 }
 
 @InputType()
@@ -31,4 +28,13 @@ export class ExtensionAccountCreateBody {
 export class ExtensionAccountGetRequestBody {
   @Field()
   workspaceId: string;
+}
+
+@InputType()
+export class ExtensionAccountByEDGetRequestBody {
+  @Field()
+  workspaceId: string;
+
+  @Field()
+  extensionDefinitionId: string;
 }

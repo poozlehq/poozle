@@ -48,7 +48,6 @@ input ExtensionAccountGetRequestBody {
 
 input ExtensionAccountRequestIdBody {
   extensionAccountId: String!
-  workspaceId: String!
 }
 
 type ExtensionDefinition {
@@ -67,6 +66,17 @@ type ExtensionDefinition {
   updatedAt: DateTime!
   workspace: Workspace
   workspaceId: String
+}
+
+type ExtensionDefinitionCheck {
+  error: String!
+  status: Boolean!
+}
+
+input ExtensionDefinitionCheckBody {
+  config: JSON!
+  extensionDefinitionId: String!
+  workspaceId: String!
 }
 
 type ExtensionDefinitionCount {
@@ -150,6 +160,7 @@ type Query {
   getWorkspaceWithId(data: WorkspaceRequestIdBody!): Workspace!
   getWorkspaces: [Workspace!]!
   me: User!
+  validateExtensionCredentials(data: ExtensionDefinitionCheckBody!): ExtensionDefinitionCheck!
 }
 
 enum ReleaseStage {

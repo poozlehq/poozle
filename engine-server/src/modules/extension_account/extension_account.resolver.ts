@@ -31,10 +31,10 @@ export class ExtensionAccountResolver {
   }
 
   @Query(() => [ExtensionAccount])
-  getExtensionAccountsByWorkspace(
+  async getExtensionAccountsByWorkspace(
     @Args('data') getAllExtensionAccounts: ExtensionAccountGetRequestBody,
   ) {
-    return this.extensionAccountService.getAllExtensionAccountsInWorkspace(
+    return await this.extensionAccountService.getAllExtensionAccountsInWorkspace(
       getAllExtensionAccounts,
     );
   }
@@ -43,7 +43,7 @@ export class ExtensionAccountResolver {
   async createExtensionAccount(
     @Args('data') createExtensionAccountInput: ExtensionAccountCreateBody,
   ) {
-    this.extensionAccountService.createExtensionAccount(
+    return await this.extensionAccountService.createExtensionAccount(
       createExtensionAccountInput,
     );
   }

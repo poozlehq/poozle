@@ -5,38 +5,9 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { lastValueFrom } from 'rxjs';
 
-import {
-  ControllerBody,
-  ControllerResponse,
-  ExtensionBody,
-  SpecConfig,
-} from './api.types';
+import { ExtensionDefinitionCheck } from 'modules/extension_definition/extension_definition.interface';
 
-@Injectable()
-export class ControllerApi {
-  httpService: HttpService;
-  configService: ConfigService;
-
-  constructor(httpService: HttpService, configService: ConfigService) {
-    this.httpService = httpService;
-    this.configService = configService;
-  }
-
-  async post(
-    controllerBody: ControllerBody,
-    controllerPath: string,
-  ): Promise<ControllerResponse> {
-    const CONTROLLER_URL = this.configService.get('CONTROLLER_URL');
-
-    const repsonse = await lastValueFrom(
-      this.httpService.post(
-        `${CONTROLLER_URL}/${controllerPath}`,
-        controllerBody,
-      ),
-    );
-    return repsonse.data;
-  }
-}
+import { ExtensionBody, SpecConfig } from './api.types';
 
 @Injectable()
 export class ExtensionApi {
@@ -68,5 +39,15 @@ export class ExtensionApi {
     );
 
     return response.data.data.getSpec;
+  }
+
+  async check(extensionBody: ExtensionBody): Promise<ExtensionDefinitionCheck> {
+    const extensionURL = this.getExtensionURL(extensionBody.endpoint);
+
+    const response = await lastValueFrom(
+      this.httpService.post(extensionURL, { query: extensionBody.query }),
+    );
+
+    return response.data.data.check;
   }
 }

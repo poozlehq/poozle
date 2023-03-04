@@ -37,8 +37,29 @@ export class ExtensionDefinitionCreateBody {
   extensionType: ExtensionType;
 }
 
+@InputType()
+export class ExtensionDefinitionCheckBody {
+  @Field()
+  extensionDefinitionId: string;
+
+  @Field()
+  workspaceId: string;
+
+  @Field(() => GraphQLJSON)
+  config: JSON;
+}
+
 @ObjectType()
 export class ExtensionDefinitionSpec {
   @Field(() => GraphQLJSON)
   spec: JSON;
+}
+
+@ObjectType()
+export class ExtensionDefinitionCheck {
+  @Field()
+  status: boolean;
+
+  @Field()
+  error: string;
 }

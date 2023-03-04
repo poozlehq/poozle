@@ -14,9 +14,11 @@ import {
 import { useForm } from '@mantine/form';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { ReactElement } from 'react';
 
 import { useLoginUserMutation } from 'queries/generated/graphql';
+
+import { AuthenticationLayout } from 'layouts/authentication_layout';
+import { LoggedInGuard } from 'wrappers/logged_in_guard';
 
 import styles from './signin.module.scss';
 
@@ -25,7 +27,7 @@ interface FormValues {
   password: string;
 }
 
-export function Signin(): ReactElement {
+export function Signin() {
   const [loginUserMutation, { loading }] = useLoginUserMutation();
   const router = useRouter();
   const form = useForm({
@@ -48,7 +50,7 @@ export function Signin(): ReactElement {
         },
       },
       onCompleted: () => {
-        router.replace('/home');
+        router.replace('/workspaces');
       },
       onError: (err: Error) => {
         form.setErrors({
@@ -70,7 +72,7 @@ export function Signin(): ReactElement {
         </Link>
       </Text>
 
-      <Paper withBorder shadow="md" radius="md" className={styles.paper}>
+      <Paper withBorder radius="md" className={styles.paper}>
         <form onSubmit={form.onSubmit(onSubmit)}>
           <TextInput
             label="Email"
@@ -102,3 +104,11 @@ export function Signin(): ReactElement {
     </Container>
   );
 }
+
+Signin.getLayout = function getLayout(page: React.ReactElement) {
+  return (
+    <LoggedInGuard>
+      <AuthenticationLayout>{page}</AuthenticationLayout>
+    </LoggedInGuard>
+  );
+};

@@ -12,6 +12,7 @@ import {
 } from '../modules';
 
 const INTEGRATIONS_NAMESPACE = 'engine-integrations';
+const port = 8000;
 
 export function extensionHandler(logger: Logger) {
   return async (req: Request, res: Response) => {
@@ -40,6 +41,7 @@ export function extensionHandler(logger: Logger) {
       body.slug,
       INTEGRATIONS_NAMESPACE,
       logger,
+      port,
     );
 
     const workspace = new Workspace(
@@ -49,6 +51,8 @@ export function extensionHandler(logger: Logger) {
       'engine-gateway',
       logger,
     );
+
+    logger.info(`event Body: ${body}`);
 
     switch (body.event) {
       case ExtensionEventEnum.CREATE_WITHOUT_RESTART: {
@@ -99,6 +103,14 @@ export function extensionHandler(logger: Logger) {
          * Restart the engine-gateway deployment for this workspace
          */
         await workspace.restartDeployment();
+        break;
+      }
+      case ExtensionEventEnum.DELETE_WITHOUT_RESTART: {
+        /* 
+          This will delete all the resources related to the extension
+        */
+        const deleteStatus = await extension.startDelete();
+        res.status(deleteStatus.status ? 200 : 400).json(deleteStatus);
         break;
       }
       case ExtensionEventEnum.STATUS: {

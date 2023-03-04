@@ -3,22 +3,22 @@
 import { HttpService } from '@nestjs/axios';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Workspace } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 
 import { ExtensionDefinition } from '@generated/extension-definition/extension-definition.model';
 
-import { ControllerApi, ExtensionApi } from 'modules/utils';
-import { ControllerBody, ExtensionBody } from 'modules/utils/api.types';
+import { ControllerService } from 'modules/controller/controller.service';
+import { ExtensionApi } from 'modules/utils';
+import { ExtensionBody } from 'modules/utils/api.types';
 
 import {
+  ExtensionDefinitionCheck,
+  ExtensionDefinitionCheckBody,
   ExtensionDefinitionCreateBody,
   ExtensionDefinitionRequestIdBody,
   ExtensionDefinitionRequestWorkspaceIdBody,
   ExtensionDefinitionSpec,
 } from './extension_definition.interface';
-
-const controllerPath = 'extension';
 
 @Injectable()
 export class ExtensionDefinitionService {
@@ -26,6 +26,7 @@ export class ExtensionDefinitionService {
     private prisma: PrismaService,
     private configService: ConfigService,
     private httpService: HttpService,
+    private controllerService: ControllerService,
   ) {}
 
   async getAllExtensionDefinitions(): Promise<ExtensionDefinition[]> {
@@ -41,7 +42,14 @@ export class ExtensionDefinitionService {
   ): Promise<ExtensionDefinition[]> {
     return this.prisma.extensionDefinition.findMany({
       where: {
-        workspaceId: extensionDefinitionRequestWorkspaceIdBody.workspaceId,
+        OR: [
+          {
+            workspaceId: extensionDefinitionRequestWorkspaceIdBody.workspaceId,
+          },
+          {
+            workspaceId: null,
+          },
+        ],
       },
     });
   }
@@ -74,15 +82,49 @@ export class ExtensionDefinitionService {
   async getSpecForExtensionDefinition(
     extensionDefinitionRequestIdBody: ExtensionDefinitionRequestIdBody,
   ): Promise<ExtensionDefinitionSpec> {
-    const extensionDefinition = await this.getExtensionDefinitionWithId(
-      extensionDefinitionRequestIdBody,
-    );
+    const { extensionDefinition, extensionRouter } =
+      await this.preflightForSpecAndCheck(
+        extensionDefinitionRequestIdBody.extensionDefinitionId,
+        extensionDefinitionRequestIdBody.workspaceId,
+      );
 
-    // Check if Extension router is there for this extension definition
+    return await this.getExtensionSpec(
+      extensionDefinition,
+      extensionRouter?.endpoint,
+    );
+  }
+
+  // Check if the credentails are valid for the extension
+  async checkIfCredentialsValid(
+    extensionDefinitionCheckBody: ExtensionDefinitionCheckBody,
+  ): Promise<ExtensionDefinitionCheck> {
+    const { extensionDefinition, extensionRouter } =
+      await this.preflightForSpecAndCheck(
+        extensionDefinitionCheckBody.extensionDefinitionId,
+        extensionDefinitionCheckBody.workspaceId,
+      );
+    return await this.getExtensionCheck(
+      extensionDefinition,
+      extensionRouter?.endpoint,
+      extensionDefinitionCheckBody.config,
+    );
+  }
+
+  /**
+   * Utilities
+   */
+
+  async preflightForSpecAndCheck(
+    extensionDefinitionId: string,
+    workspaceId: string,
+  ) {
+    const extensionDefinition = await this.getExtensionDefinitionWithId({
+      extensionDefinitionId,
+      workspaceId,
+    });
     const extensionRouter = await this.prisma.extensionRouter.findUnique({
       where: {
-        extensionDefinitionId:
-          extensionDefinitionRequestIdBody.extensionDefinitionId,
+        extensionDefinitionId,
       },
     });
 
@@ -90,20 +132,18 @@ export class ExtensionDefinitionService {
       /**
        * Deploy the extension wait for it and then hit the service
        */
-      const deploymentStatus = await this.getExtensionDeploymentStatus(
-        extensionDefinition,
-        extensionDefinition.workspace,
-      );
+      const deploymentStatus =
+        await this.controllerService.createExtensionDeploymentSync(
+          false,
+          extensionDefinition,
+        );
 
       if (!deploymentStatus) {
         throw new BadRequestException('Deployment failed');
       }
     }
 
-    return await this.getExtensionSpec(
-      extensionDefinition,
-      extensionRouter.endpoint,
-    );
+    return { extensionDefinition, extensionRouter };
   }
 
   async getExtensionSpec(
@@ -122,58 +162,20 @@ export class ExtensionDefinitionService {
     return specResponse;
   }
 
-  async getExtensionDeploymentStatus(
+  async getExtensionCheck(
     extensionDefinition: ExtensionDefinition | ExtensionDefinitionCreateBody,
-    workspace: Workspace,
-  ): Promise<boolean> {
-    /**
-     * This will call controller asking to create the deployment and service
-     * for the extension
-     */
-    const createExtensionBody: ControllerBody = {
-      event: 'CREATE_WITHOUT_RESTART',
-      slug: extensionDefinition.name,
-      dockerImage: `${extensionDefinition.dockerRepository}:${extensionDefinition.dockerImageTag}`,
-      workspaceSlug: workspace.slug,
-    };
-
-    const controllerService = new ControllerApi(
+    endpoint: string | undefined,
+    config: JSON,
+  ): Promise<ExtensionDefinitionCheck> {
+    const extensionService = new ExtensionApi(
       this.httpService,
       this.configService,
     );
-    await controllerService.post(createExtensionBody, controllerPath);
-
-    /**
-     * Now the deployment is done we need to wait for that status to be successful
-     * After which we can query the service directly
-     */
-    const counter = 0;
-    let deploymentStatus = false;
-
-    /**
-     * Try 5 times before we return false and throw some error
-     * TODO (harshith): Change this to a better solution later
-     */
-    while (counter < 5 && !deploymentStatus) {
-      const controllerBody: ControllerBody = {
-        event: 'STATUS',
-        slug: extensionDefinition.name,
-      };
-
-      const deploymentStatusResponse = await controllerService.post(
-        controllerBody,
-        controllerPath,
-      );
-      deploymentStatus = deploymentStatusResponse.status;
-
-      /**
-       * Sleep for 5 seconds if the deployment status is false
-       */
-      if (!deploymentStatus) {
-        await new Promise((resolve) => setTimeout(resolve, 5000));
-      }
-    }
-
-    return deploymentStatus;
+    const extensionBody: ExtensionBody = {
+      query: `{check(config:"${btoa(JSON.stringify(config))}"){status}}`,
+      endpoint: endpoint ?? extensionDefinition.name,
+    };
+    const checkResponse = await extensionService.check(extensionBody);
+    return checkResponse;
   }
 }

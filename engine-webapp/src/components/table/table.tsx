@@ -14,15 +14,23 @@ interface CustomTableProps extends TableProps {
   columns: ColumnProps[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
+  idKey: string;
+  onRowClick: (id: string) => void;
 }
 
 export function Table<TableDataType>({
   columns,
   data,
+  idKey,
+  onRowClick,
   ...restProps
 }: CustomTableProps) {
   const rows = data.map((element: TableDataType) => (
-    <tr>
+    <tr
+      className={styles.dataRow}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onClick={() => onRowClick((element as any)[idKey])}
+    >
       {columns.map((column) => (
         <td>{column.render(element)}</td>
       ))}

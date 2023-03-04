@@ -61,7 +61,7 @@ export interface BaseExtensionInterface {
   // Return the spec json
   spec(): SpecResponse;
   // Check if passed config is valid
-  check(config: Config): CheckResponse;
+  check(config: string): CheckResponse;
   // Return Auth headers to send to be sent in the query
   authHeaders(config: Config): AuthHeaderResponse;
 }

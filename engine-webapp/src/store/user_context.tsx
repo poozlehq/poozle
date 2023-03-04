@@ -12,8 +12,6 @@ export interface User {
   lastname: string;
   email: string;
   Workspace: Workspace[];
-  defaultWorkspace: Workspace;
-  setDefaultWorkspace: (workspace: Workspace) => void;
 }
 
 export const UserContext = createContext<User>(undefined);
