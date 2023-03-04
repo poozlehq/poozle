@@ -5,3 +5,4 @@ metadata:
 spec:
   domains:
     - app.poozle.dev
+    - server.poozle.dev

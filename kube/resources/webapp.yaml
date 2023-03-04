@@ -5,8 +5,9 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8000
+    - port: 80
       protocol: TCP
+      targetPort: 3000
   selector:
     poozle: webapp
 ---
@@ -28,6 +29,7 @@ spec:
       containers:
         - name: poozle-webapp-container
           image: poozlehq/engine-webapp
+          imagePullPolicy: Always
           env:
             - name: NEXT_PUBLIC_BASE_SERVER_URL
               valueFrom:
@@ -40,6 +42,6 @@ spec:
                   name: poozle-env
                   key: NEXT_PUBLIC_VERSION
           ports:
-            - containerPort: 8000
+            - containerPort: 3000
       # nodeSelector:
       #   role: core

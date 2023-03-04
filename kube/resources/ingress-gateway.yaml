@@ -9,3 +9,13 @@ metadata:
     kubernetes.io/ingress.class: "gce"
 spec:
   rules:
+    - host: graphql.poozle.dev
+      http:
+        paths:
+          - backend:
+              service:
+                name: default
+                port:
+                  number: 80
+            path: /default/*
+            pathType: ImplementationSpecific

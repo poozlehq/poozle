@@ -5,8 +5,9 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 8001
+    - port: 80
       protocol: TCP
+      targetPort: 3000
   selector:
     poozle: server
 ---
@@ -28,6 +29,7 @@ spec:
       containers:
         - name: poozle-server-container
           image: poozlehq/engine-server
+          imagePullPolicy: Always
           env:
             - name: ENGINE_VERSION
               valueFrom:
@@ -84,7 +86,23 @@ spec:
                 configMapKeyRef:
                   name: poozle-env
                   key: JWT_REFRESH_SECRET
+            - name: CONTROLLER_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: poozle-env
+                  key: CONTROLLER_URL
+            - name: EXTENSION_BASE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: poozle-env
+                  key: EXTENSION_BASE_HOST
+            - name: ON_KUBERNETES
+              valueFrom:
+                configMapKeyRef:
+                  name: poozle-env
+                  key: ON_KUBERNETES
+              
           ports:
-            - containerPort: 8000
+            - containerPort: 3000
       # nodeSelector:
       #   role: core

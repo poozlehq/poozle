@@ -7,8 +7,8 @@ bases:
   - ./resources
 
 images:
-  # - name: poozlehq/engine-gateway
-  #   newTag: 0.1.0-alpha
+  - name: poozlehq/engine-webapp
+    newTag: 0.1.1-alpha
   - name: poozlehq/engine-server
     newTag: 0.1.1-alpha
   - name: poozlehq/engine-controller
