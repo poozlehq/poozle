@@ -1,4 +1,4 @@
-schema: ../engine-server/src/schema.graphql
+schema: src/schema.graphql
 documents: src/queries/**/*.graphql
 generates:
   src/queries/generated/graphql.tsx:

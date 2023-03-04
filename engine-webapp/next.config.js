@@ -1,6 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 module.exports = {
+  output: 'standalone',
   async redirects() {
     return [
       {

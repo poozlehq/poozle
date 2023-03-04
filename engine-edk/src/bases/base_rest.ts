@@ -23,6 +23,11 @@ export class BaseRestExtension implements BaseExtensionInterface {
     return undefined;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async qs(_config: Config): Promise<Record<string, string>> {
+    return {};
+  }
+
   // This function is written again in the extended class
   async getSchema(): Promise<string> {
     return "";
@@ -55,6 +60,23 @@ export class BaseRestExtension implements BaseExtensionInterface {
     const { schema } = await createGraphQLSchema(schemaString, {
       baseUrl: (context: Context) => {
         return this.baseURL(context);
+      },
+      qs: (
+        method: string,
+        path: string,
+        _title,
+        context: { context: Context }
+      ) => {
+        if (context) {
+          const credentials = context?.context.config;
+
+          return this.qs({
+            ...credentials,
+            context: { method, path },
+          });
+        }
+
+        return {};
       },
       headers: (
         method: string,

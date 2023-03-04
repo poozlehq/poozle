@@ -114,6 +114,10 @@ module.exports = {
     ],
   },
   parser: '@typescript-eslint/parser',
+  ignorePatterns: [
+    'src/queries/generated/**/*.tsx',
+    'src/queries/generated/**/*.ts',
+  ],
   overrides: [
     {
       files: ['scripts/**/*'],
