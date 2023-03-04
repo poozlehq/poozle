@@ -1,0 +1,12 @@
+[ {
+    "name": "Github",
+    "dockerImageTag": "poozlehq/extension-github",
+    "dockerRespository": "0.1.0",
+    "icon": "githug.svg"
+  },
+  {
+    "name": "Hubpost",
+    "dockerImageTag": "poozlehq/extension-hubspot",
+    "dockerRespository": "0.1.0",
+    "icon": "hubspot.svg"
+  } ]
