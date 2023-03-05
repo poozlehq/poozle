@@ -23,3 +23,6 @@ Also, we will never ask you to maintain your extension. The goal is that the Poo
 For general help using Poozle, please refer to the official Poozle documentation. For additional help, you can use one of these channels to ask a question:
 - [Slack](https://join.slack.com/t/poozle-community/shared_invite/zt-1pwu2hmj9-xtG~DGsW2aEWZc~QtOnVMQ) (For live discussion with the Community and Poozle team)
 - [GitHub](https://github.com/poozlehq/poozle) (Bug reports, Contributions)
+
+# Copyright and License
+The product is under the [MIT License](https://github.com/poozlehq/engine/blob/main/LICENSE.md)
