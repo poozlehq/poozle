@@ -100,62 +100,55 @@ async function main(): Promise<null> {
     `Total ${allExtensionAccountsForWorkspace.length} are found for this workspace`,
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let sources: any = [];
-
-  if (allExtensionAccountsForWorkspace.length === 0) {
-    logger.info(`Setting up gateway with sample source`);
-    sources = [sampleSource];
-  } else {
-    /*
+  /*
     Loop through all the accounts and generate a base64 with the
     configuration saved
   */
-    sources = await Promise.all(
-      allExtensionAccountsForWorkspace
-        .map(async (account) => {
-          const configHeaders = Buffer.from(
-            JSON.stringify(account.extensionConfiguration),
-          ).toString('base64');
-          const accountName = account.name.replace(/ /g, '_');
+  const sources = await Promise.all(
+    allExtensionAccountsForWorkspace
+      .map(async (account) => {
+        const configHeaders = Buffer.from(
+          JSON.stringify(account.extensionConfiguration),
+        ).toString('base64');
+        const accountName = account.name.replace(/ /g, '_');
 
-          const extensionRouter = await prisma.extensionRouter.findUnique({
-            where: {
-              extensionDefinitionId: account.extensionDefinitionId,
-            },
-          });
+        const extensionRouter = await prisma.extensionRouter.findUnique({
+          where: {
+            extensionDefinitionId: account.extensionDefinitionId,
+          },
+        });
 
-          const endpoint = extensionRouter.endpoint;
-          const testStatus = await testSource(endpoint, configHeaders);
+        const endpoint = extensionRouter.endpoint;
+        const testStatus = await testSource(endpoint, configHeaders);
 
-          if (!testStatus) {
-            return undefined;
-          }
+        if (!testStatus) {
+          return undefined;
+        }
 
-          return {
-            name: account.extensionAccountName,
-            handler: {
-              graphql: {
-                // TODO (harshith): Remove static URL and move this to ExtensionRouter based
-                endpoint,
-                operationHeaders: {
-                  config: configHeaders,
-                },
+        return {
+          name: account.extensionAccountName,
+          handler: {
+            graphql: {
+              // TODO (harshith): Remove static URL and move this to ExtensionRouter based
+              endpoint,
+              operationHeaders: {
+                config: configHeaders,
               },
             },
-            transforms: [
-              {
-                /* 
+          },
+          transforms: [
+            {
+              /* 
                 This plugin is used so that we can merge the types and roots when same extension is configured
                 multiple times.
               */
-                prefix: {
-                  mode: 'wrap',
-                  value: `${accountName}_`,
-                },
+              prefix: {
+                mode: 'wrap',
+                value: `${accountName}_`,
               },
-              {
-                /* 
+            },
+            {
+              /* 
                 This is used so that we can write queries easily when multiple accounts are configured
                 for the same Extension
                 query {
@@ -167,25 +160,24 @@ async function main(): Promise<null> {
                   }
                 }
               */
-                encapsulate: {
-                  name: account.extensionAccountName,
-                  applyTo: {
-                    query: true,
-                    mutation: true,
-                    subscription: true,
-                  },
+              encapsulate: {
+                name: account.extensionAccountName,
+                applyTo: {
+                  query: true,
+                  mutation: true,
+                  subscription: true,
                 },
               },
-            ],
-          };
-        })
-        .filter(Boolean),
-    );
-  }
+            },
+          ],
+        };
+      })
+      .filter(Boolean),
+  );
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const meshConfig: any = {
-    sources,
+    sources: [...sources, sampleSource],
     // TODO (harshith): remove this playground configuration from here
     serve: {
       playground: true,

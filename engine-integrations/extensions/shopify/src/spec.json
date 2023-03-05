@@ -1,0 +1,25 @@
+{
+  "integrationSpecification": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Shopify Spec",
+    "type": "object",
+    "properties": {
+      "credentials": {
+        "token": {
+          "type": "string",
+          "title": "Token",
+          "order": 0,
+          "description": "Enter the Token",
+          "secret": true
+        },
+        "shop_name": {
+          "type": "string",
+          "title": "Shop name",
+          "order": 0,
+          "description": "Enter the Shop name",
+          "secret": true
+        }
+      }
+    }
+  }
+}

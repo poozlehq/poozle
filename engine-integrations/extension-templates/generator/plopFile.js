@@ -28,9 +28,10 @@ ${additionalMessage || ""}
 
 module.exports = function (plop) {
   const RestBaseInputFolder = "../extension-rest";
+  const GraphQLBaseInputFolder = "../extension-graphql";
 
   const outputDir = "../../extensions";
-  const restBasedExtensionOutput = `${outputDir}/{{dashCase name}}`;
+  const BasedExtensionOutput = `${outputDir}/{{dashCase name}}`;
 
   plop.setActionType("emitSuccess", function (answers, config, plopApi) {
     console.log(
@@ -51,7 +52,7 @@ module.exports = function (plop) {
       {
         abortOnFail: true,
         type: "addMany",
-        destination: restBasedExtensionOutput,
+        destination: BasedExtensionOutput,
         base: RestBaseInputFolder,
         templateFiles: `${RestBaseInputFolder}/**/**`,
       },
@@ -60,27 +61,27 @@ module.exports = function (plop) {
         type: "add",
         abortOnFail: true,
         templateFile: `${RestBaseInputFolder}/.gitignore.hbs`,
-        path: `${restBasedExtensionOutput}/.gitignore`,
+        path: `${BasedExtensionOutput}/.gitignore`,
       },
       {
         type: "add",
         abortOnFail: true,
         templateFile: `${RestBaseInputFolder}/Dockerfile.hbs`,
-        path: `${restBasedExtensionOutput}/Dockerfile`,
+        path: `${BasedExtensionOutput}/Dockerfile`,
       },
       {
         type: "add",
         abortOnFail: true,
         templateFile: `${RestBaseInputFolder}/.eslintrc.hbs`,
-        path: `${restBasedExtensionOutput}/.eslintrc`,
+        path: `${BasedExtensionOutput}/.eslintrc`,
       },
       {
         type: "add",
         abortOnFail: true,
         templateFile: `${RestBaseInputFolder}/.prettierrc.json.hbs`,
-        path: `${restBasedExtensionOutput}/.prettierrc.json`,
+        path: `${BasedExtensionOutput}/.prettierrc.json`,
       },
-      { type: "emitSuccess", outputPath: restBasedExtensionOutput },
+      { type: "emitSuccess", outputPath: BasedExtensionOutput },
     ],
   });
 
@@ -93,36 +94,36 @@ module.exports = function (plop) {
       {
         abortOnFail: true,
         type: "addMany",
-        destination: restBasedExtensionOutput,
-        base: RestBaseInputFolder,
-        templateFiles: `${RestBaseInputFolder}/**/**`,
+        destination: BasedExtensionOutput,
+        base: GraphQLBaseInputFolder,
+        templateFiles: `${GraphQLBaseInputFolder}/**/**`,
       },
       // plop doesn't add dotfiles by default so we manually add them
       {
         type: "add",
         abortOnFail: true,
-        templateFile: `${RestBaseInputFolder}/.gitignore.hbs`,
-        path: `${restBasedExtensionOutput}/.gitignore`,
+        templateFile: `${GraphQLBaseInputFolder}/.gitignore.hbs`,
+        path: `${BasedExtensionOutput}/.gitignore`,
       },
       {
         type: "add",
         abortOnFail: true,
-        templateFile: `${RestBaseInputFolder}/Dockerfile.hbs`,
-        path: `${restBasedExtensionOutput}/Dockerfile`,
+        templateFile: `${GraphQLBaseInputFolder}/Dockerfile.hbs`,
+        path: `${BasedExtensionOutput}/Dockerfile`,
       },
       {
         type: "add",
         abortOnFail: true,
-        templateFile: `${RestBaseInputFolder}/.eslintrc.hbs`,
-        path: `${restBasedExtensionOutput}/.eslintrc`,
+        templateFile: `${GraphQLBaseInputFolder}/.eslintrc.hbs`,
+        path: `${BasedExtensionOutput}/.eslintrc`,
       },
       {
         type: "add",
         abortOnFail: true,
-        templateFile: `${RestBaseInputFolder}/.prettierrc.json.hbs`,
-        path: `${restBasedExtensionOutput}/.prettierrc.json`,
+        templateFile: `${GraphQLBaseInputFolder}/.prettierrc.json.hbs`,
+        path: `${BasedExtensionOutput}/.prettierrc.json`,
       },
-      { type: "emitSuccess", outputPath: restBasedExtensionOutput },
+      { type: "emitSuccess", outputPath: BasedExtensionOutput },
     ],
   });
 };

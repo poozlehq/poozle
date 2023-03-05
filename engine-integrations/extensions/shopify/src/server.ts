@@ -2,8 +2,8 @@
 
 import { runGateway } from '@poozle/engine-edk';
 
-import ZohoCrmExtensionClass from './index';
+import ShopifyExtensionClass from './index';
 
-runGateway(ZohoCrmExtensionClass, 8000, {
-  graphiql: true,
+runGateway(ShopifyExtensionClass, 8000, {
+  graphiql: false,
 });

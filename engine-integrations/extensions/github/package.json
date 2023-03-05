@@ -1,6 +1,6 @@
 {
   "name": "github",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "To interact with github API",
   "license": "MIT",
   "main": "src/index.ts",

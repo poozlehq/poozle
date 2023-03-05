@@ -24,7 +24,7 @@ export default [
     input: "src/server.ts",
     output: [
       {
-        file: "zoho_crm/index.js",
+        file: "shopify/index.js",
         sourcemap: false,
         format: "cjs",
         exports: "named",

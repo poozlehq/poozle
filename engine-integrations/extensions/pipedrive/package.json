@@ -1,10 +1,10 @@
 {
   "name": "pipedrive",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Write the description",
   "license": "MIT",
   "main": "src/index.ts",
-  "keywords": [],
+  "keywords": [ ],
   "scripts": {
     "build": "rm -rf pipedrive && rollup -c",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"

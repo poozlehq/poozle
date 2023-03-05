@@ -1,6 +1,6 @@
 {
   "name": "@poozle/engine-edk",
-  "version": "0.1.13",
+  "version": "0.1.14",
   "description": "Used to develop extensions for Poozle",
   "license": "MIT",
   "author": "Poozle <support@poozle.in>",
