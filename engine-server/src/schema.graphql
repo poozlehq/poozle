@@ -117,6 +117,19 @@ type ExtensionRouter {
   workspaceId: String!
 }
 
+input ExtensionRouterRequestIdBody {
+  extensionRouterId: String!
+}
+
+input ExtensionRouterRequestUpdateBody {
+  endpoint: String!
+  extensionRouterId: String!
+}
+
+input ExtensionRouterRequestWorkspaceIdBody {
+  workspaceId: String!
+}
+
 enum ExtensionType {
   CUSTOM
   GRAPHQL
@@ -147,6 +160,7 @@ type Mutation {
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
+  updateExtensionRouter(data: ExtensionRouterRequestUpdateBody!): ExtensionRouter!
   updateUser(data: UpdateUserInput!): User!
 }
 
@@ -156,6 +170,8 @@ type Query {
   getExtensionDefinitionById(data: ExtensionDefinitionRequestIdBody!): ExtensionDefinition!
   getExtensionDefinitions: [ExtensionDefinition!]!
   getExtensionDefinitionsByWorkspace(data: ExtensionDefinitionRequestWorkspaceIdBody!): [ExtensionDefinition!]!
+  getExtensionRouterById(data: ExtensionRouterRequestIdBody!): ExtensionRouter!
+  getExtensionRoutersByWorkspace(data: ExtensionRouterRequestWorkspaceIdBody!): [ExtensionRouter!]!
   getSpecForExtensionDefinition(data: ExtensionDefinitionRequestIdBody!): ExtensionDefinitionSpec!
   getWorkspaceWithId(data: WorkspaceRequestIdBody!): Workspace!
   getWorkspaces: [Workspace!]!

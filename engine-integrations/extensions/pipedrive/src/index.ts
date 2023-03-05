@@ -2,26 +2,13 @@
 import * as fs from 'fs';
 import { resolve } from 'path';
 
-import {
-  AuthHeaderResponse,
-  BaseRestExtension,
-  Config,
-} from '@poozle/engine-edk';
+import { BaseRestExtension, Config } from '@poozle/engine-edk';
 import { SpecResponse } from '@poozle/engine-edk';
 
 class PipedriveExtension extends BaseRestExtension {
-  authHeaders(config: Config): AuthHeaderResponse {
-    // Need to return the headers the API expects
-    const token = config['api_key'] as string;
-    return {
-      Authorization: `Basic ${token}`,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } as any;
-  }
-
   qs(config: Config): Promise<Record<string, string>> {
     return {
-      api_key: config['api_key'],
+      api_token: config['api_token'],
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any;
   }

@@ -13,6 +13,7 @@ import { AuthModule } from 'modules/auth/auth.module';
 import { ControllerModule } from 'modules/controller/controller.module';
 import { ExtensionAccountModule } from 'modules/extension_account/extension_account.module';
 import { ExtensionDefinitionModule } from 'modules/extension_definition/extension_definition.module';
+import { ExtensionRouterModule } from 'modules/extension_router/extension_router.module';
 import { UserModule } from 'modules/user/user.module';
 import { WorkspaceModule } from 'modules/workspace/workspace.module';
 
@@ -40,6 +41,7 @@ import { GqlConfigService } from '../gql-config.service';
     ControllerModule,
     ExtensionAccountModule,
     ExtensionDefinitionModule,
+    ExtensionRouterModule,
     WorkspaceModule,
   ],
   controllers: [AppController],

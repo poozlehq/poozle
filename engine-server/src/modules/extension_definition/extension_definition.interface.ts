@@ -35,9 +35,6 @@ export class ExtensionDefinitionCreateBody {
 
   @Field()
   extensionType: ExtensionType;
-
-  @Field()
-  icon: string;
 }
 
 @InputType()

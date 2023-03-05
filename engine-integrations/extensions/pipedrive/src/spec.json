@@ -5,11 +5,11 @@
     "type": "object",
     "properties": {
       "credentials": {
-        "api_key": {
+        "api_token": {
           "type": "string",
-          "title": "Api Key",
+          "title": "Api Token",
           "order": 0,
-          "description": "Enter the API Key",
+          "description": "Enter the API Token",
           "secret": true
         }
       }

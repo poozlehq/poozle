@@ -1,0 +1,10 @@
+{
+  "name": "ZohoCrm extension",
+  "key": "zoho_crm",
+  "description": "write the description",
+  "icon": "zoho_crm.svg",
+  "type": "REST",
+  "inputs": [
+
+  ]
+}

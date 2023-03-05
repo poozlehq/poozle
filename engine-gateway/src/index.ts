@@ -10,7 +10,37 @@ import * as yaml from 'js-yaml';
 import { createLogger, transports, format } from 'winston';
 
 import { PrismaClient } from './client';
-import { sampleSource } from './sample_sources';
+
+/**
+ * Later move this into another file
+ * Right now it is failing because we are building with
+ */
+export const sampleSource = {
+  name: 'sample',
+  handler: {
+    graphql: {
+      endpoint: 'https://spacex-production.up.railway.app/',
+    },
+  },
+  transforms: [
+    {
+      prefix: {
+        mode: 'wrap',
+        value: `sample_`,
+      },
+    },
+    {
+      encapsulate: {
+        name: 'sample',
+        applyTo: {
+          query: true,
+          mutation: true,
+          subscription: true,
+        },
+      },
+    },
+  ],
+};
 
 const prisma = new PrismaClient({
   log: ['query', 'info', 'warn', 'error'],
