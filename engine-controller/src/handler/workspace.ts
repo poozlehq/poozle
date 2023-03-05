@@ -21,6 +21,8 @@ const deploymentSpec = {
 };
 
 const port = 4000;
+// TODO: Move this to env
+const annotations = {'beta.cloud.google.com/backend-config': '{"default": "gateway-config"}'}
 
 export function workspaceHandler(logger: Logger) {
   return async (req: Request, res: Response) => {
@@ -50,6 +52,7 @@ export function workspaceHandler(logger: Logger) {
       'engine',
       logger,
       port,
+      annotations
     );
 
     deploymentSpec.containers.map((container: Container) => {
