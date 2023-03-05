@@ -31,12 +31,18 @@ spec:
           image: poozlehq/engine-server
           imagePullPolicy: Always
           livenessProbe:
-            exec:
-              command:
-                - cat
-                - package.json
-            initialDelaySeconds: 10
-            periodSeconds: 3
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 100
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 3000
+            initialDelaySeconds: 100
+            periodSeconds: 5
+
           env:
             - name: ENGINE_VERSION
               valueFrom:

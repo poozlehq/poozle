@@ -8,4 +8,4 @@ resources:
   - manage-certificate.yaml
   - ingress.yaml
   - webapp.yaml
-  # - ingress-gateway.yaml
+  - ingress-gateway.yaml

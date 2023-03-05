@@ -1,8 +1,7 @@
 apiVersion: networking.gke.io/v1
 kind: ManagedCertificate
 metadata:
-  name: managed-cert
+  name: managed-cert-gateway
 spec:
   domains:
-    - app.poozle.dev
-    - server.poozle.dev
+    - graphql.poozle.dev
