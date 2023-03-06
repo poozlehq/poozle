@@ -127,6 +127,11 @@ export class ExtensionDefinitionService {
         extensionDefinitionId,
       },
     });
+    const workspace = await this.prisma.workspace.findUnique({
+      where: {
+        workspaceId,
+      },
+    });
 
     if (!extensionRouter) {
       /**
@@ -136,6 +141,7 @@ export class ExtensionDefinitionService {
         await this.controllerService.createExtensionDeploymentSync(
           false,
           extensionDefinition,
+          workspace.slug,
         );
 
       if (!deploymentStatus) {

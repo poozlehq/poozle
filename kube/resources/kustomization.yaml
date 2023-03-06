@@ -7,4 +7,5 @@ resources:
   - controller.yaml
   - manage-certificate.yaml
   - ingress.yaml
+  - webapp.yaml
   - ingress-gateway.yaml

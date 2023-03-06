@@ -2,8 +2,8 @@
 
 import { runGateway } from '@poozle/engine-edk';
 
-import PipedriveExtensionClass from './index';
+import ShopifyExtensionClass from './index';
 
-runGateway(PipedriveExtensionClass, 8000, {
+runGateway(ShopifyExtensionClass, 8000, {
   graphiql: false,
 });

@@ -1,7 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { lastValueFrom } from 'rxjs';
 
@@ -12,6 +12,8 @@ import { ControllerBody, ControllerResponse } from './controller.interface';
 
 @Injectable()
 export class ControllerService {
+  private readonly logger = new Logger(ControllerService.name);
+
   constructor(
     private configService: ConfigService,
     private httpService: HttpService,
@@ -22,13 +24,19 @@ export class ControllerService {
     controllerPath: string,
   ): Promise<ControllerResponse> {
     const CONTROLLER_URL = this.configService.get('CONTROLLER_URL');
+
+    this.logger.log(
+      `Hitting controller with endpoint as ${CONTROLLER_URL} and body as ${JSON.stringify(
+        controllerBody,
+      )}`,
+    );
     const response = await lastValueFrom(
       this.httpService.post(
         `${CONTROLLER_URL}/${controllerPath}`,
         controllerBody,
       ),
     );
-    return response.data
+    return response.data;
   }
   async deleteExtensionDeployment(
     restartGateway = false,
@@ -40,7 +48,7 @@ export class ControllerService {
      */
     const deleteExtensionDeploymentBody: ControllerBody = {
       event: restartGateway ? 'DELETE' : 'DELETE_WITHOUT_RESTART',
-      slug: extensionDefinition.name,
+      slug: extensionDefinition.name.toLowerCase().replace(/ /g, '_'),
       dockerImage: `${extensionDefinition.dockerRepository}:${extensionDefinition.dockerImageTag}`,
       workspaceSlug: extensionDefinition.workspace.slug,
     };
@@ -51,6 +59,7 @@ export class ControllerService {
   async createExtensionDeployment(
     restartGateway = false,
     extensionDefinition: ExtensionDefinition,
+    workspaceSlug: string,
   ) {
     /**
      * This will call controller asking to create the deployment and service
@@ -58,18 +67,23 @@ export class ControllerService {
      */
     const createExtensionBody: ControllerBody = {
       event: restartGateway ? 'CREATE' : 'CREATE_WITHOUT_RESTART',
-      slug: extensionDefinition.name,
+      slug: extensionDefinition.name.toLowerCase().replace(/ /g, '_'),
       dockerImage: `${extensionDefinition.dockerRepository}:${extensionDefinition.dockerImageTag}`,
-      workspaceSlug: extensionDefinition.workspace.slug,
+      workspaceSlug,
     };
-    await this.post(createExtensionBody, 'extension');    
+    await this.post(createExtensionBody, 'extension');
   }
 
   async createExtensionDeploymentSync(
     restartGateway = false,
     extensionDefinition: ExtensionDefinition,
+    workspaceSlug: string,
   ) {
-    await this.createExtensionDeployment(restartGateway, extensionDefinition);
+    await this.createExtensionDeployment(
+      restartGateway,
+      extensionDefinition,
+      workspaceSlug,
+    );
 
     /**
      * Now the deployment is done we need to wait for that status to be successful
@@ -102,7 +116,7 @@ export class ControllerService {
   ): Promise<boolean> {
     const controllerBody: ControllerBody = {
       event: 'STATUS',
-      slug: extensionDefinition.name,
+      slug: extensionDefinition.name.toLowerCase().replace(/ /g, '_'),
     };
 
     const deploymentStatusResponse = await this.post(
@@ -120,7 +134,7 @@ export class ControllerService {
     const createGatewayBody: ControllerBody = {
       event: 'CREATE',
       slug: workspace.slug,
-      workspaceId: workspace.workspaceId
+      workspaceId: workspace.workspaceId,
     };
 
     return await this.post(createGatewayBody, 'workspace');

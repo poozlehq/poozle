@@ -1,7 +1,9 @@
+/* eslint-disable dot-location */
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { Injectable } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { GraphQLError } from 'graphql';
 import { PrismaService } from 'nestjs-prisma';
 
@@ -24,6 +26,7 @@ export class ExtensionAccountService {
 
   constructor(
     private prisma: PrismaService,
+    private configService: ConfigService,
     private extensionDefinitionService: ExtensionDefinitionService,
     private controllerService: ControllerService,
   ) {}
@@ -88,7 +91,40 @@ export class ExtensionAccountService {
           extensionDefinitionId:
             extensionAccountCreateBody.extensionDefinitionId,
         },
+        include: {
+          workspace: true,
+        },
       });
+
+      /**
+       * When Extension router is not created
+       * TODO (harshith) move to extension_router controller
+       */
+      const extensionRouter = await this.prisma.extensionRouter.findMany({
+        where: {
+          extensionDefinitionId: extensionAccount.extensionDefinitionId,
+        },
+      });
+
+      if (extensionRouter.length === 0) {
+        /**
+         * Create extension router for the extension
+         */
+
+        const EXTENSION_BASE_HOST = this.configService.get(
+          'EXTENSION_BASE_HOST',
+        );
+
+        await this.prisma.extensionRouter.create({
+          data: {
+            endpoint: `http://${extensionDefinition.name
+              .toLowerCase()
+              .replace(/ /g, '_')}${EXTENSION_BASE_HOST}/graphql`,
+            extensionDefinitionId: extensionAccount.extensionDefinitionId,
+            workspaceId: extensionAccount.workspaceId,
+          },
+        });
+      }
 
       /**
        * Create extension deployment
@@ -96,6 +132,7 @@ export class ExtensionAccountService {
       await this.controllerService.createExtensionDeployment(
         true,
         extensionDefinition,
+        extensionAccount.workspace.slug,
       );
 
       return extensionAccount;
@@ -139,6 +176,7 @@ export class ExtensionAccountService {
           await this.controllerService.createExtensionDeploymentSync(
             false,
             extensionDefinition,
+            '',
           );
         } catch (e) {
           this.logger.error(

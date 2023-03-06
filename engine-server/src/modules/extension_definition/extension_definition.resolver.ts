@@ -70,8 +70,8 @@ export class ExtensionDefinitionResolver {
   @Mutation(() => ExtensionDefinition)
   async createExtensionDefinition(
     @Args('data') createExtensionAccountInput: ExtensionDefinitionCreateBody,
-  ) {
-    this.extensionDefinitionService.createExtensionDefinition(
+  ): Promise<ExtensionDefinition> {
+    return await this.extensionDefinitionService.createExtensionDefinition(
       createExtensionAccountInput,
     );
   }

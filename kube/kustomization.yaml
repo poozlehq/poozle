@@ -1,18 +1,18 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: default
+namespace: engine
 
 bases:
   - ./resources
 
 images:
-  - name: poozlehq/gateway
-    newTag: 0.1.0-alpha
-  - name: poozlehq/server
-    newTag: 0.1.0-alpha
+  - name: poozlehq/engine-webapp
+    newTag: 0.1.1-alpha
+  - name: poozlehq/engine-server
+    newTag: 0.1.1-alpha
   - name: poozlehq/engine-controller
-    newTag: 0.1.0-alpha
+    newTag: 0.1.1-alpha
 
 configMapGenerator:
   - name: poozle-env

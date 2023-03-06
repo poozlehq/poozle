@@ -47,6 +47,11 @@ export class BaseGraphQLExtension implements BaseExtensionInterface {
     return {};
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async getURL(_config: Config): Promise<string> {
+    return this.url;
+  }
+
   // This is configured for the GRAPHQL extension
   // We are using graphql-tools converter to generate GRAPHQL Schema
   async schema(): SchemaResponse {
@@ -58,8 +63,9 @@ export class BaseGraphQLExtension implements BaseExtensionInterface {
         const credentials = context.config;
         const query = print(document);
         const authHeaders = await this.authHeaders(credentials);
+        const url = await this.getURL(context.config);
         const fetchResult = await axios.post(
-          this.url,
+          url,
           {
             query,
             variables,

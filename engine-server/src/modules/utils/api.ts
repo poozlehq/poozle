@@ -19,14 +19,8 @@ export class ExtensionApi {
     this.configService = configService;
   }
 
+  // Remove this later
   getExtensionURL(endpoint: string) {
-    const ON_KUBERNETES = this.configService.get('ON_KUBERNETES');
-
-    if (ON_KUBERNETES === 'True') {
-      const EXTENSION_BASE_HOST = this.configService.get('EXTENSION_BASE_HOST');
-      return `http://${endpoint}${EXTENSION_BASE_HOST}/graphql`;
-    }
-
     // Done for to test in local we can remove this if we figure out a better way
     return endpoint;
   }
