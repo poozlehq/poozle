@@ -11,6 +11,11 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { Prisma, User } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
+import {
+  uniqueNamesGenerator,
+  adjectives,
+  colors,
+} from 'unique-names-generator';
 
 import { SecurityConfig } from 'common/configs/config.interface';
 
@@ -33,13 +38,17 @@ export class AuthService {
     );
 
     try {
+      const randomName: string = uniqueNamesGenerator({
+        dictionaries: [adjectives, colors],
+      }); // big_red
+
       const user = await this.prisma.user.create({
         data: {
           ...payload,
           password: hashedPassword,
           Workspace: {
             create: {
-              slug: 'default',
+              slug: randomName,
             },
           },
         },
