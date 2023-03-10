@@ -7,7 +7,6 @@ Poozle is an open-source, fast and reliable platform to integrate data from exte
 - Maintenance-free integrations you can use in minutes. Just download our integrations and authenticate your sources, and start integrating data from various sourcers in your company.
 - Building new integrations made trivial. We make it very easy to create new intgerations that you need.
 
-https://uploads-ssl.webflow.com/64097bff13689e3689d13592/640ab33c97b40fff335cc32a_6074cf359ac9d3f0ed2b9870_infra%203(1).svg
 
 # Getting started
 
