@@ -101,11 +101,11 @@ async function main(): Promise<null> {
   );
 
 
-  const gateway = await (await prisma.gateway.findMany({
+  const gateway = await prisma.gateway.findMany({
     where: {
       workspaceId: process.env.WORKSPACE_ID,
     },
-  }))[0];
+  });
 
   /*
     Loop through all the accounts and generate a base64 with the
@@ -182,6 +182,8 @@ async function main(): Promise<null> {
       .filter(Boolean),
   );
 
+
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const meshConfig: any = {
     sources: [...sources, sampleSource],
@@ -189,11 +191,13 @@ async function main(): Promise<null> {
     serve: {
       playgroundTitle: 'Poozle playground',
       playground: true,
-    },
-    plugins: [
+    }
+  };
+  if(gateway.length){
+    meshConfig.plugins = [
       {
         hive: {
-          token: gateway.hiveToken,
+          token: gateway[0].hiveToken,
           usage: {
             clientInfo: {
               name: process.env.WORKSPACE_ID,
@@ -207,8 +211,8 @@ async function main(): Promise<null> {
           },
         },
       },
-    ],
-  };
+    ]
+  }
 
   // Write the yaml to meshrc which is used to create the server
   fs.writeFileSync(
