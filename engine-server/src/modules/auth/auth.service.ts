@@ -19,6 +19,8 @@ import {
 
 import { SecurityConfig } from 'common/configs/config.interface';
 
+import { HiveService } from 'modules/hive/hive.service';
+
 import { SignupInput } from './dto/signup.input';
 import { Token } from './models/token.model';
 import { PasswordService } from './password.service';
@@ -30,6 +32,7 @@ export class AuthService {
     private readonly prisma: PrismaService,
     private readonly passwordService: PasswordService,
     private readonly configService: ConfigService,
+    private readonly hiveService: HiveService,
   ) {}
 
   async createUser(payload: SignupInput): Promise<Token> {
@@ -40,6 +43,7 @@ export class AuthService {
     try {
       const randomName: string = uniqueNamesGenerator({
         dictionaries: [adjectives, colors],
+        separator: '-',
       }); // big_red
 
       const user = await this.prisma.user.create({
@@ -52,7 +56,36 @@ export class AuthService {
             },
           },
         },
+        include: {
+          Workspace: true,
+        },
       });
+
+      /**
+       * Create Hive organisation and project for this user and workspace
+       * TODO (harshith): Change this later remove hive org and project dependency
+       */
+      const accessToken = await this.hiveService.login();
+      await this.hiveService.createOrganisation(user.userId, accessToken);
+      await this.hiveService.createProject(
+        randomName,
+        user.userId,
+        accessToken,
+      );
+      const hiveToken = await this.hiveService.createAccessToken(
+        randomName,
+        user.userId,
+        accessToken,
+      );
+      await this.prisma.gateway.create({
+        data: {
+          hiveToken,
+          workspaceId: user.Workspace[0].workspaceId,
+        },
+      });
+      /**
+       * Replace the above
+       */
 
       return this.generateTokens({
         userId: user.userId,

@@ -2,6 +2,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import {
+  ActionIcon,
   Avatar,
   Badge,
   Divider,
@@ -10,12 +11,15 @@ import {
   Text,
   Title,
   UnstyledButton,
+  createStyles,
 } from '@mantine/core';
 import {
   IconHome2,
   IconSettings,
   IconCode,
   IconApps,
+  IconArrowBarLeft,
+  IconArrowBarRight,
 } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
@@ -36,6 +40,17 @@ interface NavbarLinkProps {
   onClick?(link: string): void;
 }
 
+const useStyles = createStyles((theme) => ({
+  linkActive: {
+    background: `${
+      theme.fn.variant({
+        color: theme.primaryColor,
+        variant: 'light',
+      }).background
+    } !important`,
+  },
+}));
+
 function NavbarLink({
   icon: Icon,
   label,
@@ -44,12 +59,15 @@ function NavbarLink({
   routeKey,
   open,
 }: NavbarLinkProps) {
+  const { classes } = useStyles();
+
   return (
     <UnstyledButton
       onClick={() => onClick(routeKey)}
       className={classnames(
         styles.link,
         { [styles.linkActive]: active },
+        { [classes.linkActive]: active },
         { [styles.open]: open },
       )}
     >
@@ -75,7 +93,7 @@ interface NavbarProps {
   onToggle: () => void;
 }
 
-export function Navbar({ open }: NavbarProps) {
+export function Navbar({ open, onToggle }: NavbarProps) {
   const router = useRouter();
   const {
     query: { workspaceId },
@@ -145,17 +163,25 @@ export function Navbar({ open }: NavbarProps) {
           )}
 
           {/* Enable this later/ */}
-          {/* <Group>
+          <Group>
             {open ? (
-              <ActionIcon onClick={onToggle} size="xl">
-                <IconArrowBarLeft size={20} />
+              <ActionIcon
+                onClick={onToggle}
+                size="lg"
+                className={styles.toggleIcon}
+              >
+                <IconArrowBarLeft size={18} />
               </ActionIcon>
             ) : (
-              <ActionIcon onClick={onToggle} size="xl">
-                <IconArrowBarRight size={20} />
+              <ActionIcon
+                onClick={onToggle}
+                size="lg"
+                className={styles.toggleIcon}
+              >
+                <IconArrowBarRight size={18} />
               </ActionIcon>
             )}
-          </Group> */}
+          </Group>
         </Group>
       </MNavbar.Section>
     </MNavbar>

@@ -1,7 +1,8 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Alert, Button, Group, TextInput } from '@mantine/core';
+import { Alert, Button, Group, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { notifications } from '@mantine/notifications';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -9,6 +10,7 @@ import * as React from 'react';
 import {
   ExtensionAccount,
   useSpecForExtensionDefinitionQuery,
+  useUpdateExtensionAccountMutation,
   useValidateCredentialsForExtensionLazyQuery,
 } from 'queries/generated/graphql';
 
@@ -38,10 +40,39 @@ export function Form({ spec, workspaceId, extensionAccount }: FormProps) {
 
   const [validateCredentialsForExtension, { loading: validateLoading }] =
     useValidateCredentialsForExtensionLazyQuery();
-  const [errorMessage, setErrorMessage] = React.useState(undefined);
+  const [updateExtensionAccount, { loading: updateLoading }] =
+    useUpdateExtensionAccountMutation();
 
   const onSubmit = (values: Values) => {
+    const extensionAccountName = values.extensionAccountName;
+
     delete values['extensionAccountName'];
+
+    updateExtensionAccount({
+      variables: {
+        extensionUpdateBody: {
+          extensionAccountId: extensionAccount.extensionAccountId,
+          extensionAccountName,
+          extensionConfiguration: values,
+        },
+      },
+      onCompleted: () => {
+        notifications.show({
+          title: 'Extension',
+          color: 'red',
+          variant: 'filled',
+          message: 'Successfully updated!',
+        });
+      },
+      onError: (error) => {
+        notifications.show({
+          title: 'Error',
+          color: 'red',
+          variant: 'filled',
+          message: error.message,
+        });
+      },
+    });
   };
 
   const properties = getProperties(spec);
@@ -61,19 +92,32 @@ export function Form({ spec, workspaceId, extensionAccount }: FormProps) {
             },
             onCompleted: (data) => {
               if (data.validateExtensionCredentials.status === false) {
-                setErrorMessage('Account credentials are invalid');
-                setTimeout(() => setErrorMessage(undefined), 100000);
+                notifications.show({
+                  title: 'Error',
+                  color: 'red',
+                  variant: 'filled',
+                  message: 'Invalid credentials',
+                });
               } else {
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 onSubmit(values as any);
               }
+            },
+            onError: (error) => {
+              notifications.show({
+                title: 'Error',
+                color: 'red',
+                variant: 'filled',
+                message: error.message,
+              });
             },
           });
         })}
       >
         <TextInput
           pb="md"
-          disabled={validateLoading}
+          disabled={validateLoading || updateLoading}
+          description="This is used as an encapsulation in the graphql gateway"
           label="Extension account name"
           placeholder="Enter extension account name"
           {...form.getInputProps('extensionAccountName')}
@@ -82,25 +126,16 @@ export function Form({ spec, workspaceId, extensionAccount }: FormProps) {
           <TextInput
             key={property.key}
             pb="md"
-            disabled={validateLoading}
+            disabled={validateLoading || updateLoading}
             label={property.title}
+            description={property.description}
             placeholder={`Enter ${property.title}`}
             {...form.getInputProps(property.key)}
           />
         ))}
 
-        {errorMessage && (
-          <Alert
-            color="red"
-            mt="md"
-            icon={<IconAlertCircle size="1rem" />}
-            title="Error!"
-          >
-            {<>{errorMessage}</>}
-          </Alert>
-        )}
         <Group pt="xl" position="right">
-          <Button type="submit" loading={validateLoading}>
+          <Button type="submit" loading={validateLoading || updateLoading}>
             Update
           </Button>
         </Group>
@@ -142,10 +177,16 @@ export function UpdateExtensionForm({
   }
 
   return (
-    <Form
-      spec={data.getSpecForExtensionDefinition.spec}
-      extensionAccount={extensionAccount}
-      workspaceId={workspaceId as string}
-    />
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <Title order={6}>Update the extension configuration</Title>
+      </div>
+
+      <Form
+        spec={data.getSpecForExtensionDefinition.spec}
+        extensionAccount={extensionAccount}
+        workspaceId={workspaceId as string}
+      />
+    </div>
   );
 }

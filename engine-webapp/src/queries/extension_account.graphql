@@ -5,6 +5,7 @@ query ExtensionAccounts($workspaceId: String!) {
     extensionAccountId
     extensionDefinition {
       name
+      icon
     }
     updatedAt
   }
@@ -23,6 +24,15 @@ mutation CreateExtensionAccount(
   $extensionCreateBody: ExtensionAccountCreateBody!
 ) {
   createExtensionAccount(data: $extensionCreateBody) {
+    extensionAccountId
+    extensionAccountName
+  }
+}
+
+mutation UpdateExtensionAccount(
+  $extensionUpdateBody: ExtensionAccountUpdateBody!
+) {
+  updateExtensionAccount(data: $extensionUpdateBody) {
     extensionAccountId
     extensionAccountName
   }

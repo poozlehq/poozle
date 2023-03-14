@@ -24,15 +24,16 @@ $dim: 40;
 }
 
 .linkActive {
-  font-weight: bold;
-  color: var(--mantine-color-gray-9);
-  background-color: var(--mantine-color-gray-0) !important;
+  color: var(--mantine-color-black);
 }
+
+$min-height: 60px;
 
 .button {
   width: 100%;
   padding: var(--mantine-spacing-xs);
   border-radius: var(--mantine-radius-md);
+  min-height: $min-height;
 
   &:hover {
     background-color: var(--mantine-color-gray-0);
@@ -81,4 +82,8 @@ $dim: 40;
 
 .divider {
   border-top-color: var(--mantine-color-gray-2);
+}
+
+.toggleIcon {
+  color: var(--mantine-color-gray-7);
 }

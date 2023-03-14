@@ -1,5 +1,16 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { useRouter } from 'next/router';
+import React from 'react';
+
+import { Loader } from 'components';
+
 export default function Home() {
-  return <h1>asdfasdf</h1>;
+  const router = useRouter();
+
+  React.useEffect(() => {
+    router.replace(`${router.asPath}/home`);
+  }, []);
+
+  return <Loader />;
 }

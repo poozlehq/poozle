@@ -14,6 +14,7 @@ import { ControllerModule } from 'modules/controller/controller.module';
 import { ExtensionAccountModule } from 'modules/extension_account/extension_account.module';
 import { ExtensionDefinitionModule } from 'modules/extension_definition/extension_definition.module';
 import { ExtensionRouterModule } from 'modules/extension_router/extension_router.module';
+import { HiveModule } from 'modules/hive/hive.module';
 import { UserModule } from 'modules/user/user.module';
 import { WorkspaceModule } from 'modules/workspace/workspace.module';
 
@@ -43,6 +44,7 @@ import { GqlConfigService } from '../gql-config.service';
     ExtensionDefinitionModule,
     ExtensionRouterModule,
     WorkspaceModule,
+    HiveModule,
   ],
   controllers: [AppController],
   providers: [AppService],

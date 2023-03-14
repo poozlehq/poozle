@@ -180,6 +180,7 @@ async function main(): Promise<null> {
     sources: [...sources, sampleSource],
     // TODO (harshith): remove this playground configuration from here
     serve: {
+      playgroundTitle: 'Poozle playground',
       playground: true,
     },
   };

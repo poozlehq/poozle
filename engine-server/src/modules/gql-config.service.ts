@@ -13,8 +13,13 @@ export class GqlConfigService implements GqlOptionsFactory {
   constructor(private configService: ConfigService) {}
   createGqlOptions(): ApolloDriverConfig {
     const graphqlConfig = this.configService.get<GraphqlConfig>('graphql');
+
     return {
       // schema options
+      cors: {
+        origin: this.configService.get('FRONTEND_HOST'),
+        credentials: true,
+      },
       autoSchemaFile: graphqlConfig.schemaDestination || 'src/schema.graphql',
       sortSchema: graphqlConfig.sortSchema,
       buildSchemaOptions: {

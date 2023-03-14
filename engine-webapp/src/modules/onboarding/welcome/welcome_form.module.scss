@@ -1,0 +1,19 @@
+.container {
+  border: 1px solid var(--mantine-color-gray-2);
+  margin: var(--mantine-spacing-lg);
+  border-radius: var(--mantine-radius-md);
+  background-color: var(--mantine-color-white);
+}
+
+.header {
+  padding: var(--mantine-spacing-lg);
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+}
+
+.form {
+  padding: var(--mantine-spacing-lg);
+}
+
+.select {
+  margin-bottom: var(--mantine-spacing-lg);
+}

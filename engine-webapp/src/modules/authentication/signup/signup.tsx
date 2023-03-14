@@ -56,7 +56,7 @@ export function Signup(): ReactElement {
         },
       },
       onCompleted: () => {
-        router.replace('/home');
+        router.replace('/authentication/signin');
       },
       onError: (err: Error) => {
         form.setErrors({

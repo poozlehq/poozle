@@ -7,12 +7,11 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { UserContext } from 'store/user_context';
 
-import { SideBarLayout } from 'layouts/sidebar_layout';
-import { AuthGuard } from 'wrappers/auth_guard';
-
 import { Loader } from 'components';
 
 import styles from './playground.module.scss';
+
+const GATEWAY_HOST = process.env.NEXT_PUBLIC_GATEWAY_HOST;
 
 export function Playground() {
   const { setTheme } = useTheme();
@@ -25,7 +24,7 @@ export function Playground() {
   );
 
   const fetcher = createGraphiQLFetcher({
-    url: `https://graphql.poozle.dev/${currentWorkspace.slug}/graphql`,
+    url: `${GATEWAY_HOST}/${currentWorkspace.slug}/graphql`,
     fetch,
   });
 
@@ -47,11 +46,3 @@ export function Playground() {
     </>
   );
 }
-
-Playground.getLayout = function getLayout(page: React.ReactElement) {
-  return (
-    <AuthGuard>
-      <SideBarLayout>{page}</SideBarLayout>
-    </AuthGuard>
-  );
-};

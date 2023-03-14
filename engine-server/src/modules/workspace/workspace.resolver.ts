@@ -13,6 +13,7 @@ import { GqlAuthGuard } from 'modules/auth/gql-auth.guard';
 import {
   WorkspaceCreateBody,
   WorkspaceRequestIdBody,
+  WorkspaceUpdateBody,
 } from './workspace.interface';
 import { WorkspaceService } from './workspace.service';
 
@@ -42,6 +43,13 @@ export class WorkspaceResolver {
       createWorkspaceBody,
       user,
     );
+  }
+
+  @Mutation(() => Workspace)
+  async updateWorkspace(
+    @Args('data') updateWorkspaceBody: WorkspaceUpdateBody,
+  ) {
+    return await this.workspaceService.updateWorkspace(updateWorkspaceBody);
   }
 
   @UseGuards(GqlAuthGuard)

@@ -18,6 +18,7 @@ import {
   ExtensionAccountCreateBody,
   ExtensionAccountGetRequestBody,
   ExtensionAccountRequestIdBody,
+  ExtensionAccountUpdateBody,
 } from './extension_account.interface';
 
 @Injectable()
@@ -142,11 +143,42 @@ export class ExtensionAccountService {
     }
   }
 
+  async updateExtensionAccount(
+    extensionAccountUpdateBody: ExtensionAccountUpdateBody,
+  ) {
+    const extensionAccount = await this.prisma.extensionAccount.findUnique({
+      where: {
+        extensionAccountId: extensionAccountUpdateBody.extensionAccountId,
+      },
+      include: {
+        workspace: true,
+      },
+    });
+
+    const updatedExtensionAccount = await this.prisma.extensionAccount.update({
+      data: {
+        extensionAccountName: extensionAccountUpdateBody.extensionAccountName,
+        extensionConfiguration:
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          extensionAccountUpdateBody.extensionConfiguration as any,
+      },
+      where: {
+        extensionAccountId: extensionAccountUpdateBody.extensionAccountId,
+      },
+    });
+
+    // Restart the gateway
+    await this.controllerService.restartGatewayDeployment(
+      extensionAccount.workspace,
+    );
+
+    return updatedExtensionAccount;
+  }
+
   /**
    * Create all the deployments and services when the server starts up
    */
   async initServer() {
-    this.logger.log('Starting server');
     const extensionAccounts = await this.prisma.extensionAccount.findMany({
       distinct: ['extensionDefinitionId', 'workspaceId'],
       include: {

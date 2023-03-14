@@ -1,7 +1,7 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { HttpService } from '@nestjs/axios';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'nestjs-prisma';
 
@@ -22,6 +22,8 @@ import {
 
 @Injectable()
 export class ExtensionDefinitionService {
+  private readonly logger = new Logger(ExtensionDefinitionService.name);
+
   constructor(
     private prisma: PrismaService,
     private configService: ConfigService,
@@ -72,7 +74,7 @@ export class ExtensionDefinitionService {
   async createExtensionDefinition(
     extensionDefinitionCreateBody: ExtensionDefinitionCreateBody,
   ): Promise<ExtensionDefinition> {
-    return this.prisma.extensionDefinition.create({
+    return await this.prisma.extensionDefinition.create({
       data: {
         ...extensionDefinitionCreateBody,
       },
@@ -177,8 +179,16 @@ export class ExtensionDefinitionService {
       this.httpService,
       this.configService,
     );
+
+    this.logger.log(
+      `Sending request to ${extensionDefinition.name} with endpoint: ${endpoint}`,
+    );
+
+    this.logger.log(Buffer.from(JSON.stringify(config)).toString('base64'));
     const extensionBody: ExtensionBody = {
-      query: `{check(config:"${btoa(JSON.stringify(config))}"){status}}`,
+      query: `{check(config:"${Buffer.from(JSON.stringify(config)).toString(
+        'base64',
+      )}"){status}}`,
       endpoint: endpoint ?? extensionDefinition.name,
     };
     const checkResponse = await extensionService.check(extensionBody);

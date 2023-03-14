@@ -3,10 +3,14 @@
 # ------------------------------------------------------
 
 type Auth {
-  """JWT access token"""
+  """
+  JWT access token
+  """
   accessToken: JWT!
 
-  """JWT refresh token"""
+  """
+  JWT refresh token
+  """
   refreshToken: JWT!
   user: User!
 }
@@ -50,6 +54,12 @@ input ExtensionAccountRequestIdBody {
   extensionAccountId: String!
 }
 
+input ExtensionAccountUpdateBody {
+  extensionAccountId: String!
+  extensionAccountName: String!
+  extensionConfiguration: JSON
+}
+
 type ExtensionDefinition {
   ExtensionAccount: [ExtensionAccount!]
   ExtensionRouter: [ExtensionRouter!]
@@ -88,6 +98,7 @@ input ExtensionDefinitionCreateBody {
   dockerImageTag: String!
   dockerRepository: String!
   extensionType: String!
+  icon: String!
   name: String!
   workspaceId: String!
 }
@@ -117,6 +128,19 @@ type ExtensionRouter {
   workspaceId: String!
 }
 
+input ExtensionRouterRequestIdBody {
+  extensionRouterId: String!
+}
+
+input ExtensionRouterRequestUpdateBody {
+  endpoint: String!
+  extensionRouterId: String!
+}
+
+input ExtensionRouterRequestWorkspaceIdBody {
+  workspaceId: String!
+}
+
 enum ExtensionType {
   CUSTOM
   GRAPHQL
@@ -141,26 +165,47 @@ input LoginInput {
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   createExtensionAccount(data: ExtensionAccountCreateBody!): ExtensionAccount!
-  createExtensionDefinition(data: ExtensionDefinitionCreateBody!): ExtensionDefinition!
+  createExtensionDefinition(
+    data: ExtensionDefinitionCreateBody!
+  ): ExtensionDefinition!
   createWorkspace(data: WorkspaceCreateBody!): Workspace!
   deleteWorkspace(data: WorkspaceRequestIdBody!): Workspace!
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
+  updateExtensionAccount(data: ExtensionAccountUpdateBody!): ExtensionAccount!
+  updateExtensionRouter(
+    data: ExtensionRouterRequestUpdateBody!
+  ): ExtensionRouter!
   updateUser(data: UpdateUserInput!): User!
+  updateWorkspace(data: WorkspaceUpdateBody!): Workspace!
 }
 
 type Query {
   getExtensionAccount(data: ExtensionAccountRequestIdBody!): ExtensionAccount!
-  getExtensionAccountsByWorkspace(data: ExtensionAccountGetRequestBody!): [ExtensionAccount!]!
-  getExtensionDefinitionById(data: ExtensionDefinitionRequestIdBody!): ExtensionDefinition!
+  getExtensionAccountsByWorkspace(
+    data: ExtensionAccountGetRequestBody!
+  ): [ExtensionAccount!]!
+  getExtensionDefinitionById(
+    data: ExtensionDefinitionRequestIdBody!
+  ): ExtensionDefinition!
   getExtensionDefinitions: [ExtensionDefinition!]!
-  getExtensionDefinitionsByWorkspace(data: ExtensionDefinitionRequestWorkspaceIdBody!): [ExtensionDefinition!]!
-  getSpecForExtensionDefinition(data: ExtensionDefinitionRequestIdBody!): ExtensionDefinitionSpec!
+  getExtensionDefinitionsByWorkspace(
+    data: ExtensionDefinitionRequestWorkspaceIdBody!
+  ): [ExtensionDefinition!]!
+  getExtensionRouterById(data: ExtensionRouterRequestIdBody!): ExtensionRouter!
+  getExtensionRoutersByWorkspace(
+    data: ExtensionRouterRequestWorkspaceIdBody!
+  ): [ExtensionRouter!]!
+  getSpecForExtensionDefinition(
+    data: ExtensionDefinitionRequestIdBody!
+  ): ExtensionDefinitionSpec!
   getWorkspaceWithId(data: WorkspaceRequestIdBody!): Workspace!
   getWorkspaces: [Workspace!]!
   me: User!
-  validateExtensionCredentials(data: ExtensionDefinitionCheckBody!): ExtensionDefinitionCheck!
+  validateExtensionCredentials(
+    data: ExtensionDefinitionCheckBody!
+  ): ExtensionDefinitionCheck!
 }
 
 enum ReleaseStage {
@@ -178,10 +223,14 @@ input SignupInput {
 }
 
 type Token {
-  """JWT access token"""
+  """
+  JWT access token
+  """
   accessToken: JWT!
 
-  """JWT refresh token"""
+  """
+  JWT refresh token
+  """
   refreshToken: JWT!
 }
 
@@ -212,6 +261,7 @@ type Workspace {
   ExtensionRouter: [ExtensionRouter!]
   _count: WorkspaceCount!
   deleted: DateTime
+  initialSetupComplete: Boolean!
   slug: String!
   user: User!
   userId: String!
@@ -229,5 +279,10 @@ input WorkspaceCreateBody {
 }
 
 input WorkspaceRequestIdBody {
+  workspaceId: String!
+}
+
+input WorkspaceUpdateBody {
+  initialSetupComplete: Boolean!
   workspaceId: String!
 }

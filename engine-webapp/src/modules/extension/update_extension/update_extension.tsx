@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Button, Container, Group, Paper, UnstyledButton } from '@mantine/core';
+import { Container, Paper } from '@mantine/core';
 import { useRouter } from 'next/router';
 
 import { useGetExtensionAccountQuery } from 'queries/generated/graphql';
@@ -28,13 +28,6 @@ export function UpdateExtension() {
       <Header title="Extension" />
 
       <Container mt="lg">
-        <Group spacing="xl" position="center">
-          <Button variant="light"> Settings</Button>
-          <UnstyledButton className={styles.otherButton}>
-            Documentation
-          </UnstyledButton>
-        </Group>
-
         <Paper mt="xl" className={styles.container}>
           {loading ? (
             <Loader />

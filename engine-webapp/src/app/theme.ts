@@ -55,4 +55,7 @@ export const theme = {
       }),
     },
   },
+  other: {
+    backgroundColor: 'rgb(250, 251, 253)',
+  },
 };

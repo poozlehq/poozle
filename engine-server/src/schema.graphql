@@ -50,6 +50,12 @@ input ExtensionAccountRequestIdBody {
   extensionAccountId: String!
 }
 
+input ExtensionAccountUpdateBody {
+  extensionAccountId: String!
+  extensionAccountName: String!
+  extensionConfiguration: JSON
+}
+
 type ExtensionDefinition {
   ExtensionAccount: [ExtensionAccount!]
   ExtensionRouter: [ExtensionRouter!]
@@ -88,6 +94,7 @@ input ExtensionDefinitionCreateBody {
   dockerImageTag: String!
   dockerRepository: String!
   extensionType: String!
+  icon: String!
   name: String!
   workspaceId: String!
 }
@@ -136,6 +143,13 @@ enum ExtensionType {
   REST
 }
 
+type Gateway {
+  gatewayTokenId: ID!
+  hiveToken: String!
+  workspace: Workspace
+  workspaceId: String
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -160,8 +174,10 @@ type Mutation {
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
+  updateExtensionAccount(data: ExtensionAccountUpdateBody!): ExtensionAccount!
   updateExtensionRouter(data: ExtensionRouterRequestUpdateBody!): ExtensionRouter!
   updateUser(data: UpdateUserInput!): User!
+  updateWorkspace(data: WorkspaceUpdateBody!): Workspace!
 }
 
 type Query {
@@ -226,8 +242,10 @@ type Workspace {
   ExtensionAccount: [ExtensionAccount!]
   ExtensionDefinition: [ExtensionDefinition!]
   ExtensionRouter: [ExtensionRouter!]
+  Gateway: [Gateway!]
   _count: WorkspaceCount!
   deleted: DateTime
+  initialSetupComplete: Boolean!
   slug: String!
   user: User!
   userId: String!
@@ -238,6 +256,7 @@ type WorkspaceCount {
   ExtensionAccount: Int!
   ExtensionDefinition: Int!
   ExtensionRouter: Int!
+  Gateway: Int!
 }
 
 input WorkspaceCreateBody {
@@ -245,5 +264,10 @@ input WorkspaceCreateBody {
 }
 
 input WorkspaceRequestIdBody {
+  workspaceId: String!
+}
+
+input WorkspaceUpdateBody {
+  initialSetupComplete: Boolean!
   workspaceId: String!
 }

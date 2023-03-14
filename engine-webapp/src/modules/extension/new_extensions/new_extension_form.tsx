@@ -20,12 +20,14 @@ import { getInitialValues, getProperties } from './new_extension_form_utils';
 
 interface NewIntegrationFormProps {
   extensionDefinitionId: string;
+  onComplete?: () => void;
 }
 
 interface FormProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   spec: any;
   workspaceId: string;
+  onComplete?: () => void;
   extensionDefinitionId: string;
 }
 
@@ -34,7 +36,12 @@ interface Values {
   extensionAccountName: string;
 }
 
-export function Form({ spec, workspaceId, extensionDefinitionId }: FormProps) {
+export function Form({
+  spec,
+  workspaceId,
+  extensionDefinitionId,
+  onComplete,
+}: FormProps) {
   const form = useForm({
     initialValues: getInitialValues(spec),
   });
@@ -65,6 +72,7 @@ export function Form({ spec, workspaceId, extensionDefinitionId }: FormProps) {
           message: 'Extension successfully created',
         });
         form.reset();
+        onComplete && onComplete();
       },
     });
   };
@@ -136,6 +144,7 @@ export function Form({ spec, workspaceId, extensionDefinitionId }: FormProps) {
 
 export function NewExtensionForm({
   extensionDefinitionId,
+  onComplete,
 }: NewIntegrationFormProps) {
   const {
     query: { workspaceId },
@@ -170,6 +179,7 @@ export function NewExtensionForm({
     <Form
       spec={data.getSpecForExtensionDefinition.spec}
       workspaceId={workspaceId as string}
+      onComplete={onComplete}
       extensionDefinitionId={extensionDefinitionId}
     />
   );

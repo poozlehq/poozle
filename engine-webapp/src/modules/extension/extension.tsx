@@ -22,13 +22,11 @@ export function Extension() {
   const {
     query: { workspaceId },
   } = router;
-  const { data, loading, error } = useExtensionAccountsQuery({
+  const { data, loading } = useExtensionAccountsQuery({
     variables: {
       workspaceId: workspaceId as string,
     },
   });
-
-  console.log(data, loading, error);
 
   const columns = [
     {
@@ -46,7 +44,11 @@ export function Extension() {
       render: (data: ExtensionAccount) => (
         <div className={styles.tableDataContainer}>
           <div className={styles.extensionName}>
-            <ExtensionIcon icon="github.svg" width={25} height={25} />
+            <ExtensionIcon
+              icon={data.extensionDefinition.icon}
+              width={25}
+              height={25}
+            />
             <Text>{data['name']}</Text>
           </div>
         </div>

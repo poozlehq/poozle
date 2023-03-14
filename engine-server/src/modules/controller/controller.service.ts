@@ -140,6 +140,20 @@ export class ControllerService {
     return await this.post(createGatewayBody, 'workspace');
   }
 
+  async restartGatewayDeployment(workspace: Workspace) {
+    /**
+     * This will call controller asking to create the deployment and service
+     * for the gateway
+     */
+    const restartGatewayBody: ControllerBody = {
+      event: 'RESTART',
+      slug: workspace.slug,
+      workspaceId: workspace.workspaceId,
+    };
+
+    return await this.post(restartGatewayBody, 'workspace');
+  }
+
   async deleteGatewayDeployment(workspace: Workspace) {
     /**
      * Send event to controller to delete the workspace deployment and service
