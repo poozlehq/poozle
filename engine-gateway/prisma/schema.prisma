@@ -5,7 +5,6 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/client"
   // previewFeatures = []
 }
 
@@ -21,14 +20,16 @@ model User {
 }
 
 model Workspace {
-  workspaceId         String                @id @default(uuid())
-  slug                String                @unique
-  user                User                  @relation(references: [userId], fields: [userId])
-  userId              String
-  ExtensionDefinition ExtensionDefinition[]
-  ExtensionAccount    ExtensionAccount[]
-  ExtensionRouter     ExtensionRouter[]
-  deleted             DateTime?
+  workspaceId          String                @id @default(uuid())
+  slug                 String                @unique
+  user                 User                  @relation(references: [userId], fields: [userId])
+  userId               String
+  initialSetupComplete Boolean               @default(false)
+  ExtensionDefinition  ExtensionDefinition[]
+  ExtensionAccount     ExtensionAccount[]
+  ExtensionRouter      ExtensionRouter[]
+  deleted              DateTime?
+  Gateway              Gateway[]
 }
 
 model ExtensionDefinition {
@@ -72,6 +73,13 @@ model ExtensionRouter {
   deleted               DateTime?
   createdAt             DateTime            @default(now())
   updatedAt             DateTime            @updatedAt
+}
+
+model Gateway {
+  gatewayTokenId String     @id @default(uuid())
+  hiveToken      String
+  workspace      Workspace? @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId    String?
 }
 
 enum ExtensionType {

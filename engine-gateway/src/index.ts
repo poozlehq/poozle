@@ -100,6 +100,13 @@ async function main(): Promise<null> {
     `Total ${allExtensionAccountsForWorkspace.length} are found for this workspace`,
   );
 
+
+  const gateway = await (await prisma.gateway.findMany({
+    where: {
+      workspaceId: process.env.WORKSPACE_ID,
+    },
+  }))[0];
+
   /*
     Loop through all the accounts and generate a base64 with the
     configuration saved
@@ -183,6 +190,24 @@ async function main(): Promise<null> {
       playgroundTitle: 'Poozle playground',
       playground: true,
     },
+    plugins: [
+      {
+        hive: {
+          token: gateway.hiveToken,
+          usage: {
+            clientInfo: {
+              name: process.env.WORKSPACE_ID,
+              version: Date.now(),
+            },
+            processVariables: true,
+          },
+          reporting: {
+            author: process.env.WORKSPACE_ID,
+            commit: Date.now(),
+          },
+        },
+      },
+    ],
   };
 
   // Write the yaml to meshrc which is used to create the server
