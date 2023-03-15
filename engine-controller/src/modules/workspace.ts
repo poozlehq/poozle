@@ -20,6 +20,11 @@ export class Workspace extends Base {
           `Deployment for the workspace ${this.slug} is not found. Creating a new deployment for this workspace`,
         );
         this.createDeployment(deploymentSpec);
+        
+        this.logger.info(
+          `Creating Service if not exist for the gateway ${this.slug}`
+        )
+        this.createServiceIfNotExists();
         return {
           status: true,
         };
