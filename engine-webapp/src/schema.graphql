@@ -166,6 +166,14 @@ type Gateway {
   workspaceId: String
 }
 
+type GatewayAuthToken {
+  token: String!
+}
+
+input GatewayAuthTokenCreateInput {
+  workspaceId: String!
+}
+
 type GeneralStats {
   duration: Duration!
   durationOverTime: [DurationOverTimeObject!]!
@@ -201,6 +209,9 @@ type Mutation {
   createExtensionDefinition(
     data: ExtensionDefinitionCreateBody!
   ): ExtensionDefinition!
+  createGatewayAccessToken(
+    data: GatewayAuthTokenCreateInput!
+  ): GatewayAuthToken!
   createWorkspace(data: WorkspaceCreateBody!): Workspace!
   deleteWorkspace(data: WorkspaceRequestIdBody!): Workspace!
   login(data: LoginInput!): Auth!

@@ -1,0 +1,5 @@
+mutation createGatewayAuthToken($workspaceId: String!) {
+  createGatewayAccessToken(data: { workspaceId: $workspaceId }) {
+    token
+  }
+}

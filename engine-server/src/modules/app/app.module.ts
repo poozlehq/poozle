@@ -14,6 +14,7 @@ import { ControllerModule } from 'modules/controller/controller.module';
 import { ExtensionAccountModule } from 'modules/extension_account/extension_account.module';
 import { ExtensionDefinitionModule } from 'modules/extension_definition/extension_definition.module';
 import { ExtensionRouterModule } from 'modules/extension_router/extension_router.module';
+import { GatewayAuthModule } from 'modules/gateway_auth/gateway_auth.module';
 import { HiveModule } from 'modules/hive/hive.module';
 import { MonitoringModule } from 'modules/monitoring/monitoring.module';
 import { UserModule } from 'modules/user/user.module';
@@ -37,7 +38,6 @@ import { GqlConfigService } from '../gql-config.service';
       driver: ApolloDriver,
       useClass: GqlConfigService,
     }),
-
     AuthModule,
     UserModule,
     ControllerModule,
@@ -47,6 +47,7 @@ import { GqlConfigService } from '../gql-config.service';
     WorkspaceModule,
     HiveModule,
     MonitoringModule,
+    GatewayAuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -191,8 +191,14 @@ async function main(): Promise<null> {
     // TODO (harshith): remove this playground configuration from here
     serve: {
       playgroundTitle: 'Poozle playground',
+<<<<<<< HEAD
       playground: false,
     },
+=======
+      playground: true,
+    },
+    additionalEnvelopPlugins: './envelopPlugins',
+>>>>>>> 1ba34cc (1. Added Authentication to gateway)
   };
   if (gateway.length) {
     meshConfig.plugins = [

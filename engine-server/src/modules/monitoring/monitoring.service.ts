@@ -73,8 +73,6 @@ export class MonitoringService {
       accessToken,
     );
 
-    console.log(response.data.operationsStats);
-
     return response.data.operationsStats;
   }
 }
