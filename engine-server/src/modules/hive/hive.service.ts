@@ -133,4 +133,15 @@ export class HiveService {
 
     return response.data.data.createToken.ok.secret;
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async post(query: any, accessToken: string) {
+    const response = await lastValueFrom(
+      this.httpService.post(`${this.endpoint}/proxy`, query, {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }),
+    );
+
+    return response.data;
+  }
 }

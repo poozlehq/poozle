@@ -22,7 +22,7 @@ export function LoggedInGuard(props: Props): React.ReactElement {
 
   useEffect(() => {
     if (!isLoading && !isError && data.me.email) {
-      router.replace('/home');
+      router.replace('/workspaces');
     }
   }, [isLoading, isError, data]);
 

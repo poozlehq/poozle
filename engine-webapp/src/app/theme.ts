@@ -19,8 +19,8 @@ export const theme = {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     primary: primaryColor as any,
   },
-  primaryColor: 'blue',
-  primaryShade: 5,
+  primaryColor: 'primary',
+  primaryShade: 6,
   defaultRadius: 'md',
   components: {
     Select: {

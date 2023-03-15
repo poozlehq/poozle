@@ -8,6 +8,7 @@ import {
   Divider,
   Group,
   Navbar as MNavbar,
+  Menu,
   Text,
   Title,
   UnstyledButton,
@@ -20,11 +21,14 @@ import {
   IconApps,
   IconArrowBarLeft,
   IconArrowBarRight,
+  IconUser,
 } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { UserContext } from 'store/user_context';
+
+import { useLogoutMutation } from 'queries/generated/graphql';
 
 import { ThemeLogo } from 'components/theme_logo';
 
@@ -102,6 +106,7 @@ export function Navbar({ open, onToggle }: NavbarProps) {
   const workspace = Workspace.find(
     (workspace) => workspace.workspaceId === workspaceId,
   );
+  const [logout] = useLogoutMutation();
 
   const links = LINK_DATA.map((link) => (
     <NavbarLink
@@ -118,19 +123,36 @@ export function Navbar({ open, onToggle }: NavbarProps) {
   return (
     <MNavbar width={{ base: open ? 240 : 80 }} pt={0}>
       <MNavbar.Section px="sm">
-        <UnstyledButton className={classnames(styles.button)}>
-          <Group position="left">
-            <Avatar color="blue">{firstname.slice(0, 2).toUpperCase()}</Avatar>
-            {open && (
-              <div className={styles.flexContainer}>
-                <Title order={6}>{firstname}</Title>
-                <Text size="xs" color="gray">
-                  {workspace.slug}
-                </Text>
-              </div>
-            )}
-          </Group>
-        </UnstyledButton>
+        <Menu shadow="md" width={200}>
+          <Menu.Target>
+            <UnstyledButton className={classnames(styles.button)}>
+              <Group position="left">
+                <Avatar color="primary">
+                  {firstname.slice(0, 2).toUpperCase()}
+                </Avatar>
+                {open && (
+                  <div className={styles.flexContainer}>
+                    <Title order={6}>{firstname}</Title>
+                    <Text size="xs" color="gray">
+                      {workspace.slug}
+                    </Text>
+                  </div>
+                )}
+              </Group>
+            </UnstyledButton>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item
+              icon={<IconUser size={14} />}
+              onClick={() => {
+                logout();
+                router.replace('/authentication/signin');
+              }}
+            >
+              Logout
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
       </MNavbar.Section>
       <Divider className={classnames(styles.divider)} />
       <MNavbar.Section
@@ -162,7 +184,6 @@ export function Navbar({ open, onToggle }: NavbarProps) {
             </Group>
           )}
 
-          {/* Enable this later/ */}
           <Group>
             {open ? (
               <ActionIcon

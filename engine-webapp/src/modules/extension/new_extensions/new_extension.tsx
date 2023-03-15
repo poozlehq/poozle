@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Container, Divider, Group, Paper, Select, Title } from '@mantine/core';
+import { Container, Divider, Group, Paper, Title } from '@mantine/core';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
@@ -10,7 +10,7 @@ import { SideBarLayout } from 'layouts/sidebar_layout';
 import { AuthGuard } from 'wrappers/auth_guard';
 import { GetUserData } from 'wrappers/get_user_data';
 
-import { Header } from 'components';
+import { Header, Select } from 'components';
 
 import styles from './new_extension.module.scss';
 import { NewExtensionForm } from './new_extension_form';
@@ -33,6 +33,7 @@ export function NewExtension() {
         (extensionDefinition) => ({
           value: extensionDefinition.extensionDefinitionId,
           label: extensionDefinition.name,
+          image: `${extensionDefinition.name}.svg`,
         }),
       );
     }

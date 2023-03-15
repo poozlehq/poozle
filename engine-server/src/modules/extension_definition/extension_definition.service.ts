@@ -164,7 +164,11 @@ export class ExtensionDefinitionService {
     );
     const extensionBody: ExtensionBody = {
       query: `{getSpec{spec}}`,
-      endpoint: endpoint ?? extensionDefinition.name,
+      endpoint:
+        endpoint ??
+        `http://${extensionDefinition.name}${this.configService.get(
+          'EXTENSION_BASE_HOST',
+        )}/graphql`,
     };
     const specResponse = await extensionService.getSpec(extensionBody);
     return specResponse;
@@ -189,7 +193,11 @@ export class ExtensionDefinitionService {
       query: `{check(config:"${Buffer.from(JSON.stringify(config)).toString(
         'base64',
       )}"){status}}`,
-      endpoint: endpoint ?? extensionDefinition.name,
+      endpoint:
+        endpoint ??
+        `http://${extensionDefinition.name}${this.configService.get(
+          'EXTENSION_BASE_HOST',
+        )}/graphql`,
     };
     const checkResponse = await extensionService.check(extensionBody);
     return checkResponse;

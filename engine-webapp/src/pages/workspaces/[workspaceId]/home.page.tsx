@@ -1,5 +1,5 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Onboarding } from 'modules/onboarding';
+import { Home } from 'modules/home';
 
-export default Onboarding;
+export default Home;

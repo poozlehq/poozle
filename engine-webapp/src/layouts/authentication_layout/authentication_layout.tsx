@@ -1,5 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { useMantineTheme } from '@mantine/core';
 import { ReactElement } from 'react';
 
 import { Logo } from 'components';
@@ -12,9 +13,15 @@ interface Props {
 
 export function AuthenticationLayout(props: Props): ReactElement {
   const { children } = props;
+  const theme = useMantineTheme();
 
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      style={{
+        backgroundColor: theme.other.backgroundColor,
+      }}
+    >
       <div className={styles.childrenContainer}>
         <div className={styles.logo}>
           <Logo width={50} height={50} />
