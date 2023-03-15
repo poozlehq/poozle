@@ -44,7 +44,7 @@ export class Base {
     this.namespace = namespace;
     this.logger = logger;
     this.port = port;
-    this.annotations = annotations
+    this.annotations = annotations;
   }
 
   async createDeployment(deploymentSpec: DeploymentSpec) {
@@ -98,7 +98,7 @@ export class Base {
         this.namespace,
         this.slug,
         this.port,
-        this.annotations
+        this.annotations,
       );
       return {
         status: true,
@@ -246,13 +246,18 @@ export class Base {
     }
   }
 
-  async updateIngress(){
-
-    this.logger.info('updating ingress gateway')
-    await updateIngress(this.k8sNetworkingV1Api, this.namespace, this.slug, 'example-ingress', "CREATE")
+  async updateIngress() {
+    this.logger.info('updating ingress gateway');
+    await updateIngress(
+      this.k8sNetworkingV1Api,
+      this.namespace,
+      this.slug,
+      'example-ingress',
+      'CREATE',
+    );
 
     return {
-      status: true
-    }
+      status: true,
+    };
   }
 }

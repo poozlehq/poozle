@@ -17,14 +17,13 @@ export async function updateIngress(
     },
   );
 
-  let currentIngress = response.body;
+  const currentIngress = response.body;
 
-  let lastAppliedConfig = JSON.parse(
+  const lastAppliedConfig = JSON.parse(
     currentIngress.metadata.annotations[
       'kubectl.kubernetes.io/last-applied-configuration'
     ],
   );
-
 
   if (event === 'CREATE') {
     lastAppliedConfig.spec.rules[0].http.paths.push({
@@ -43,7 +42,6 @@ export async function updateIngress(
 
   // const updatedPaths = {paths: lastAppliedConfig.spec.rules[0].http.paths}
   // console.log(lastAppliedConfig.spec.rules[0].http.paths);
-
 
   // return currentIngress;
 
@@ -76,5 +74,5 @@ export async function updateIngress(
   // console.log(ingressResponse.body)
 
   // return ingressResponse.body;
-  return true
+  return true;
 }

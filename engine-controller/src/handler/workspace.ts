@@ -24,7 +24,7 @@ const port = 4000;
 // TODO: Move this to env
 const annotations = {
   'beta.cloud.google.com/backend-config': '{"default": "gateway-config"}',
-  'networking.gke.io/load-balancer-type': 'Internal'
+  'networking.gke.io/load-balancer-type': 'Internal',
 };
 
 export function workspaceHandler(logger: Logger) {
@@ -67,7 +67,7 @@ export function workspaceHandler(logger: Logger) {
       ];
     });
 
-    logger.info(`body event ${body.event}`)
+    logger.info(`body event ${body.event}`);
     switch (body.event) {
       case WorkspaceEventEnum.CREATE: {
         /* 

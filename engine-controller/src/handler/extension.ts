@@ -97,7 +97,7 @@ export function extensionHandler(logger: Logger) {
          * TODO: Need to remove this method, moved this to exetension account
          * Restart the engine-gateway deployment for this workspace
          */
-        // await workspace.restartDeployment(); 
+        // await workspace.restartDeployment();
         break;
       }
       case ExtensionEventEnum.DELETE_WITHOUT_RESTART: {

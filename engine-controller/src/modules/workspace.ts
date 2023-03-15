@@ -21,8 +21,8 @@ export class Workspace extends Base {
         );
         this.createDeployment(deploymentSpec);
         return {
-          status: true
-        }
+          status: true,
+        };
       }
     } catch (e) {
       this.logger.info(

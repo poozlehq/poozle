@@ -12,13 +12,13 @@ export async function createService(
   namespace: string,
   serviceName: string,
   port: number,
-  annotations?: Record<string, string>
+  annotations?: Record<string, string>,
 ) {
   return await k8sApiCore.createNamespacedService(namespace, {
     ...defaultService,
     metadata: {
       name: serviceName,
-      annotations: annotations
+      annotations,
     },
     spec: {
       selector: {
