@@ -112,6 +112,10 @@ export class ExtensionAccountService {
          * Create extension router for the extension
          */
 
+        this.logger.log(
+          `Adding extension definition ${extensionDefinition.name} to router`,
+        );
+
         const EXTENSION_BASE_HOST = this.configService.get(
           'EXTENSION_BASE_HOST',
         );
@@ -130,10 +134,18 @@ export class ExtensionAccountService {
       /**
        * Create extension deployment
        */
+      this.logger.log(
+        `Created extension account ${extensionAccount.extensionAccountId} and restarting gateway ${extensionAccount.workspace.slug}`,
+      );
       await this.controllerService.createExtensionDeployment(
-        true,
+        false,
         extensionDefinition,
         extensionAccount.workspace.slug,
+      );
+
+      // Restart the gateway
+      await this.controllerService.restartGatewayDeployment(
+        extensionAccount.workspace,
       );
 
       return extensionAccount;
@@ -155,6 +167,10 @@ export class ExtensionAccountService {
       },
     });
 
+    this.logger.log(
+      `Updating extension account for ${extensionAccount.extensionAccountId}`,
+    );
+
     const updatedExtensionAccount = await this.prisma.extensionAccount.update({
       data: {
         extensionAccountName: extensionAccountUpdateBody.extensionAccountName,
@@ -167,6 +183,7 @@ export class ExtensionAccountService {
       },
     });
 
+    this.logger.log(`Updated extension account and restarting gateway`);
     // Restart the gateway
     await this.controllerService.restartGatewayDeployment(
       extensionAccount.workspace,

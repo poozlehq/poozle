@@ -24,6 +24,7 @@ const port = 4000;
 // TODO: Move this to env
 const annotations = {
   'beta.cloud.google.com/backend-config': '{"default": "gateway-config"}',
+  'networking.gke.io/load-balancer-type': 'Internal'
 };
 
 export function workspaceHandler(logger: Logger) {
@@ -36,6 +37,7 @@ export function workspaceHandler(logger: Logger) {
     kc.loadFromDefault();
     const k8sApi = kc.makeApiClient(k8s.AppsV1Api);
     const k8sApiCore = kc.makeApiClient(k8s.CoreV1Api);
+    const k8sNetworkingV1Api = kc.makeApiClient(k8s.NetworkingV1Api);
 
     const namespace = new Namespace('engine', k8sApiCore, logger);
     /* 
@@ -50,6 +52,7 @@ export function workspaceHandler(logger: Logger) {
     const workspace = new Workspace(
       k8sApi,
       k8sApiCore,
+      k8sNetworkingV1Api,
       body.slug,
       'engine',
       logger,
@@ -64,6 +67,7 @@ export function workspaceHandler(logger: Logger) {
       ];
     });
 
+    logger.info(`body event ${body.event}`)
     switch (body.event) {
       case WorkspaceEventEnum.CREATE: {
         /* 
@@ -86,7 +90,7 @@ export function workspaceHandler(logger: Logger) {
         /* 
           This will create a new engine-gateway pods with the new credentials
         */
-        const restartStatus = await workspace.restartDeployment();
+        const restartStatus = await workspace.restartDeployment(deploymentSpec);
         res.status(restartStatus.status ? 200 : 400).json(restartStatus);
         break;
       }

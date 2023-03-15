@@ -139,6 +139,7 @@ export class ExtensionDefinitionService {
       /**
        * Deploy the extension wait for it and then hit the service
        */
+      this.logger.log(`${extensionDefinition.name} not found and create an extension`)
       const deploymentStatus =
         await this.controllerService.createExtensionDeploymentSync(
           false,
@@ -170,6 +171,9 @@ export class ExtensionDefinitionService {
           'EXTENSION_BASE_HOST',
         )}/graphql`,
     };
+
+    this.logger.log(`Getting spec for this extension ${extensionDefinition.name} with endpoint as ${extensionBody.endpoint}`)
+
     const specResponse = await extensionService.getSpec(extensionBody);
     return specResponse;
   }
@@ -199,6 +203,8 @@ export class ExtensionDefinitionService {
           'EXTENSION_BASE_HOST',
         )}/graphql`,
     };
+
+    this.logger.log(`Checking extension health for ${extensionDefinition.name} with endpoint as ${extensionBody.endpoint}`)
     const checkResponse = await extensionService.check(extensionBody);
     return checkResponse;
   }

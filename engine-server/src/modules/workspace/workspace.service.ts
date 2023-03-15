@@ -1,6 +1,6 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Workspace } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 
@@ -17,6 +17,8 @@ import {
 
 @Injectable()
 export class WorkspaceService {
+  private readonly logger = new Logger(WorkspaceService.name);
+
   constructor(
     private prisma: PrismaService,
     private hiveService: HiveService,
@@ -34,12 +36,17 @@ export class WorkspaceService {
       },
     });
 
+    this.logger.log(`Creating gateway for this workspace ${workspace.slug}`);
     await this.controllerService.createGatewayDeployment(workspace);
 
+    this.logger.log(`Gateway created for this workspace ${workspace.slug}`);
     /**
      * Create Hive organisation and project for this user and workspace
      * TODO (harshith): Change this later remove hive org and project dependency
      */
+    this.logger.log(
+      `Creating Hive organisation for this workspace ${workspace.slug}`,
+    );
     const accessToken = await this.hiveService.login();
     await this.hiveService.createOrganisation(user.userId, accessToken);
     await this.hiveService.createProject(
@@ -95,6 +102,7 @@ export class WorkspaceService {
       data: { deleted: new Date() },
     });
 
+    this.logger.log(`Deleting gateway for this workspace ${workspace.slug}`)
     await this.controllerService.deleteGatewayDeployment(workspace);
   }
 }
