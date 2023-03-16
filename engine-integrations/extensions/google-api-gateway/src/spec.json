@@ -1,0 +1,10 @@
+{
+  "name": "GoogleApiGateway extension",
+  "key": "google_api_gateway",
+  "description": "write the description",
+  "icon": "google_api_gateway.svg",
+  "type": "REST",
+  "inputs": [
+
+  ]
+}
