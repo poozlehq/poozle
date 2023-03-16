@@ -1,0 +1,10 @@
+{
+  "name": "Zoom extension",
+  "key": "zoom",
+  "description": "write the description",
+  "icon": "zoom.svg",
+  "type": "REST",
+  "inputs": [
+
+  ]
+}
