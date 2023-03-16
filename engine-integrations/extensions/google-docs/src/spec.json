@@ -1,0 +1,10 @@
+{
+  "name": "GoogleDocs extension",
+  "key": "google_docs",
+  "description": "write the description",
+  "icon": "google_docs.svg",
+  "type": "REST",
+  "inputs": [
+
+  ]
+}
