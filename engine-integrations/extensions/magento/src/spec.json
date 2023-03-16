@@ -1,0 +1,10 @@
+{
+  "name": "Magento extension",
+  "key": "magento",
+  "description": "write the description",
+  "icon": "magento.svg",
+  "type": "REST",
+  "inputs": [
+
+  ]
+}
