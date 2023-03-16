@@ -1,0 +1,10 @@
+{
+  "name": "GoogleKeep extension",
+  "key": "google_keep",
+  "description": "write the description",
+  "icon": "google_keep.svg",
+  "type": "REST",
+  "inputs": [
+
+  ]
+}
