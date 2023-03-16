@@ -1,0 +1,10 @@
+{
+  "name": "GoogleSheets extension",
+  "key": "google_sheets",
+  "description": "write the description",
+  "icon": "google_sheets.svg",
+  "type": "REST",
+  "inputs": [
+
+  ]
+}
