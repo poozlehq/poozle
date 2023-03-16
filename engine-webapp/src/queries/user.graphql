@@ -9,3 +9,10 @@ query GetUser {
     }
   }
 }
+
+mutation UpdateUser($updateUser: UpdateUserInput!) {
+  updateUser(data: $updateUser) {
+    firstname
+    lastname
+  }
+}

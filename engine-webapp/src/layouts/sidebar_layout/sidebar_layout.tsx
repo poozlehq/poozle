@@ -24,7 +24,7 @@ export function SideBarLayout({ children }: SideBarLayoutProps) {
       header={null}
       styles={(theme) => ({
         main: {
-          backgroundColor: theme.colors.gray[0],
+          backgroundColor: theme.other.backgroundColor,
           paddingLeft: 'calc(var(--mantine-navbar-width, 0px))',
           paddingTop: `calc(var(--mantine-header-height, 0px))`,
           paddingBottom: 'calc(var(--mantine-footer-height, 0px))',

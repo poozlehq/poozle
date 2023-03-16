@@ -12,7 +12,7 @@ import {
 import { SpecResponse } from "@poozle/engine-edk";
 
 class {{properCase name}}Extension extends BaseRestExtension {
-  authHeaders(config: Config): AuthHeaderResponse {
+  async authHeaders(config: Config): AuthHeaderResponse {
     // Need to return the headers the API expects
     return {};
   }

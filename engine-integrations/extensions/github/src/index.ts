@@ -43,6 +43,7 @@ class GithubExtension extends BaseGraphQLExtension {
   async checkCredentials(config: Config): CheckResponse {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
       const headers = (await this.authHeaders(config)) as any;
       const graphqlQuery = {
         query: `query me { viewer { login } }`,
@@ -51,7 +52,7 @@ class GithubExtension extends BaseGraphQLExtension {
       const options = {
         method: 'POST',
         headers,
-        body: JSON.stringify(graphqlQuery),
+        data: JSON.stringify(graphqlQuery),
       };
 
       await axios(this.url, options);

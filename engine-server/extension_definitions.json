@@ -1,14 +1,25 @@
 [ {
     "name": "Github",
     "dockerImageTag": "poozlehq/extension-github",
-    "dockerRespository": "0.1.0",
+    "dockerRepository": "0.1.0-alpha",
     "icon": "githug.svg",
-    "extensionType": "GRAPHQL"
+    "extensionType": "GRAPHQL",
+    "releaseStage": "ALPHA"
   },
   {
     "name": "Pipedrive",
     "dockerImageTag": "poozlehq/extension-pipedrive",
-    "dockerRespository": "0.1.0",
+    "dockerRepository": "0.1.0",
     "icon": "pipedrive.svg",
-    "extensionType": "REST"
+    "extensionType": "REST",
+    "releaseStage": "ALPHA"
+
+  },
+  {
+    "name": "Shopify",
+    "dockerImageTag": "poozlehq/extension-shopify",
+    "dockerRepository": "0.1.0",
+    "icon": "shopify.svg",
+    "extensionType": "GRAPHQL",
+    "releaseStage": "ALPHA"
   } ]

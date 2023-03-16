@@ -3,10 +3,14 @@
 # ------------------------------------------------------
 
 type Auth {
-  """JWT access token"""
+  """
+  JWT access token
+  """
   accessToken: JWT!
 
-  """JWT refresh token"""
+  """
+  JWT refresh token
+  """
   refreshToken: JWT!
   user: User!
 }
@@ -20,6 +24,18 @@ input ChangePasswordInput {
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type Duration {
+  p75: Int!
+  p90: Int!
+  p95: Int!
+  p99: Int!
+}
+
+type DurationOverTimeObject {
+  date: String!
+  duration: Duration!
+}
 
 type ExtensionAccount {
   createdAt: DateTime!
@@ -48,6 +64,12 @@ input ExtensionAccountGetRequestBody {
 
 input ExtensionAccountRequestIdBody {
   extensionAccountId: String!
+}
+
+input ExtensionAccountUpdateBody {
+  extensionAccountId: String!
+  extensionAccountName: String!
+  extensionConfiguration: JSON
 }
 
 type ExtensionDefinition {
@@ -88,6 +110,7 @@ input ExtensionDefinitionCreateBody {
   dockerImageTag: String!
   dockerRepository: String!
   extensionType: String!
+  icon: String!
   name: String!
   workspaceId: String!
 }
@@ -117,10 +140,48 @@ type ExtensionRouter {
   workspaceId: String!
 }
 
+input ExtensionRouterRequestIdBody {
+  extensionRouterId: String!
+}
+
+input ExtensionRouterRequestUpdateBody {
+  endpoint: String!
+  extensionRouterId: String!
+}
+
+input ExtensionRouterRequestWorkspaceIdBody {
+  workspaceId: String!
+}
+
 enum ExtensionType {
   CUSTOM
   GRAPHQL
   REST
+}
+
+type Gateway {
+  gatewayTokenId: ID!
+  hiveToken: String!
+  workspace: Workspace
+  workspaceId: String
+}
+
+type GatewayAuthToken {
+  token: String!
+}
+
+input GatewayAuthTokenCreateInput {
+  workspaceId: String!
+}
+
+type GeneralStats {
+  duration: Duration!
+  durationOverTime: [DurationOverTimeObject!]!
+  failuresOverTime: [OverTimeObject!]!
+  requestsOverTime: [OverTimeObject!]!
+  totalFailures: Int!
+  totalOperations: Int!
+  totalRequests: Int!
 }
 
 """
@@ -138,29 +199,85 @@ input LoginInput {
   password: String!
 }
 
+type Logout {
+  logout: Boolean!
+}
+
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   createExtensionAccount(data: ExtensionAccountCreateBody!): ExtensionAccount!
-  createExtensionDefinition(data: ExtensionDefinitionCreateBody!): ExtensionDefinition!
+  createExtensionDefinition(
+    data: ExtensionDefinitionCreateBody!
+  ): ExtensionDefinition!
+  createGatewayAccessToken(
+    data: GatewayAuthTokenCreateInput!
+  ): GatewayAuthToken!
   createWorkspace(data: WorkspaceCreateBody!): Workspace!
   deleteWorkspace(data: WorkspaceRequestIdBody!): Workspace!
   login(data: LoginInput!): Auth!
+  logout: Logout!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
+  updateExtensionAccount(data: ExtensionAccountUpdateBody!): ExtensionAccount!
+  updateExtensionRouter(
+    data: ExtensionRouterRequestUpdateBody!
+  ): ExtensionRouter!
   updateUser(data: UpdateUserInput!): User!
+  updateWorkspace(data: WorkspaceUpdateBody!): Workspace!
+}
+
+type Node {
+  count: Int!
+  countOk: Int!
+  duration: Duration!
+  id: String!
+  kind: String!
+  name: String!
+  operationHash: String!
+  percentage: Int!
+}
+
+type Operation {
+  nodes: [Node!]!
+  total: Int!
+}
+
+type OperationStats {
+  operations: [Operation!]!
+}
+
+type OverTimeObject {
+  date: String!
+  value: Int!
 }
 
 type Query {
   getExtensionAccount(data: ExtensionAccountRequestIdBody!): ExtensionAccount!
-  getExtensionAccountsByWorkspace(data: ExtensionAccountGetRequestBody!): [ExtensionAccount!]!
-  getExtensionDefinitionById(data: ExtensionDefinitionRequestIdBody!): ExtensionDefinition!
+  getExtensionAccountsByWorkspace(
+    data: ExtensionAccountGetRequestBody!
+  ): [ExtensionAccount!]!
+  getExtensionDefinitionById(
+    data: ExtensionDefinitionRequestIdBody!
+  ): ExtensionDefinition!
   getExtensionDefinitions: [ExtensionDefinition!]!
-  getExtensionDefinitionsByWorkspace(data: ExtensionDefinitionRequestWorkspaceIdBody!): [ExtensionDefinition!]!
-  getSpecForExtensionDefinition(data: ExtensionDefinitionRequestIdBody!): ExtensionDefinitionSpec!
+  getExtensionDefinitionsByWorkspace(
+    data: ExtensionDefinitionRequestWorkspaceIdBody!
+  ): [ExtensionDefinition!]!
+  getExtensionRouterById(data: ExtensionRouterRequestIdBody!): ExtensionRouter!
+  getExtensionRoutersByWorkspace(
+    data: ExtensionRouterRequestWorkspaceIdBody!
+  ): [ExtensionRouter!]!
+  getGeneralStats(data: StatsInput!): GeneralStats!
+  getOperations(data: StatsInput!): OperationStats!
+  getSpecForExtensionDefinition(
+    data: ExtensionDefinitionRequestIdBody!
+  ): ExtensionDefinitionSpec!
   getWorkspaceWithId(data: WorkspaceRequestIdBody!): Workspace!
   getWorkspaces: [Workspace!]!
   me: User!
-  validateExtensionCredentials(data: ExtensionDefinitionCheckBody!): ExtensionDefinitionCheck!
+  validateExtensionCredentials(
+    data: ExtensionDefinitionCheckBody!
+  ): ExtensionDefinitionCheck!
 }
 
 enum ReleaseStage {
@@ -177,11 +294,21 @@ input SignupInput {
   password: String!
 }
 
+input StatsInput {
+  from: String!
+  to: String!
+  workspace: String!
+}
+
 type Token {
-  """JWT access token"""
+  """
+  JWT access token
+  """
   accessToken: JWT!
 
-  """JWT refresh token"""
+  """
+  JWT refresh token
+  """
   refreshToken: JWT!
 }
 
@@ -210,8 +337,10 @@ type Workspace {
   ExtensionAccount: [ExtensionAccount!]
   ExtensionDefinition: [ExtensionDefinition!]
   ExtensionRouter: [ExtensionRouter!]
+  Gateway: [Gateway!]
   _count: WorkspaceCount!
   deleted: DateTime
+  initialSetupComplete: Boolean!
   slug: String!
   user: User!
   userId: String!
@@ -222,6 +351,7 @@ type WorkspaceCount {
   ExtensionAccount: Int!
   ExtensionDefinition: Int!
   ExtensionRouter: Int!
+  Gateway: Int!
 }
 
 input WorkspaceCreateBody {
@@ -229,5 +359,10 @@ input WorkspaceCreateBody {
 }
 
 input WorkspaceRequestIdBody {
+  workspaceId: String!
+}
+
+input WorkspaceUpdateBody {
+  initialSetupComplete: Boolean!
   workspaceId: String!
 }

@@ -1,0 +1,10 @@
+{
+  "name": "Youtube extension",
+  "key": "youtube",
+  "description": "write the description",
+  "icon": "youtube.svg",
+  "type": "REST",
+  "inputs": [
+
+  ]
+}

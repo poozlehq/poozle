@@ -2,25 +2,33 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import {
+  ActionIcon,
   Avatar,
   Badge,
   Divider,
   Group,
   Navbar as MNavbar,
+  Menu,
   Text,
   Title,
   UnstyledButton,
+  createStyles,
 } from '@mantine/core';
 import {
   IconHome2,
   IconSettings,
   IconCode,
   IconApps,
+  IconArrowBarLeft,
+  IconArrowBarRight,
+  IconUser,
 } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { UserContext } from 'store/user_context';
+
+import { useLogoutMutation } from 'queries/generated/graphql';
 
 import { ThemeLogo } from 'components/theme_logo';
 
@@ -36,6 +44,17 @@ interface NavbarLinkProps {
   onClick?(link: string): void;
 }
 
+const useStyles = createStyles((theme) => ({
+  linkActive: {
+    background: `${
+      theme.fn.variant({
+        color: theme.primaryColor,
+        variant: 'light',
+      }).background
+    } !important`,
+  },
+}));
+
 function NavbarLink({
   icon: Icon,
   label,
@@ -44,12 +63,15 @@ function NavbarLink({
   routeKey,
   open,
 }: NavbarLinkProps) {
+  const { classes } = useStyles();
+
   return (
     <UnstyledButton
       onClick={() => onClick(routeKey)}
       className={classnames(
         styles.link,
         { [styles.linkActive]: active },
+        { [classes.linkActive]: active },
         { [styles.open]: open },
       )}
     >
@@ -75,7 +97,7 @@ interface NavbarProps {
   onToggle: () => void;
 }
 
-export function Navbar({ open }: NavbarProps) {
+export function Navbar({ open, onToggle }: NavbarProps) {
   const router = useRouter();
   const {
     query: { workspaceId },
@@ -84,6 +106,7 @@ export function Navbar({ open }: NavbarProps) {
   const workspace = Workspace.find(
     (workspace) => workspace.workspaceId === workspaceId,
   );
+  const [logout] = useLogoutMutation();
 
   const links = LINK_DATA.map((link) => (
     <NavbarLink
@@ -100,19 +123,36 @@ export function Navbar({ open }: NavbarProps) {
   return (
     <MNavbar width={{ base: open ? 240 : 80 }} pt={0}>
       <MNavbar.Section px="sm">
-        <UnstyledButton className={classnames(styles.button)}>
-          <Group position="left">
-            <Avatar color="blue">{firstname.slice(0, 2).toUpperCase()}</Avatar>
-            {open && (
-              <div className={styles.flexContainer}>
-                <Title order={6}>{firstname}</Title>
-                <Text size="xs" color="gray">
-                  {workspace.slug}
-                </Text>
-              </div>
-            )}
-          </Group>
-        </UnstyledButton>
+        <Menu shadow="md" width={200}>
+          <Menu.Target>
+            <UnstyledButton className={classnames(styles.button)}>
+              <Group position="left">
+                <Avatar color="primary">
+                  {firstname.slice(0, 2).toUpperCase()}
+                </Avatar>
+                {open && (
+                  <div className={styles.flexContainer}>
+                    <Title order={6}>{firstname}</Title>
+                    <Text size="xs" color="gray">
+                      {workspace.slug}
+                    </Text>
+                  </div>
+                )}
+              </Group>
+            </UnstyledButton>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item
+              icon={<IconUser size={14} />}
+              onClick={() => {
+                logout();
+                router.replace('/authentication/signin');
+              }}
+            >
+              Logout
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
       </MNavbar.Section>
       <Divider className={classnames(styles.divider)} />
       <MNavbar.Section
@@ -144,18 +184,25 @@ export function Navbar({ open }: NavbarProps) {
             </Group>
           )}
 
-          {/* Enable this later/ */}
-          {/* <Group>
+          <Group>
             {open ? (
-              <ActionIcon onClick={onToggle} size="xl">
-                <IconArrowBarLeft size={20} />
+              <ActionIcon
+                onClick={onToggle}
+                size="lg"
+                className={styles.toggleIcon}
+              >
+                <IconArrowBarLeft size={18} />
               </ActionIcon>
             ) : (
-              <ActionIcon onClick={onToggle} size="xl">
-                <IconArrowBarRight size={20} />
+              <ActionIcon
+                onClick={onToggle}
+                size="lg"
+                className={styles.toggleIcon}
+              >
+                <IconArrowBarRight size={18} />
               </ActionIcon>
             )}
-          </Group> */}
+          </Group>
         </Group>
       </MNavbar.Section>
     </MNavbar>

@@ -18,6 +18,7 @@ import {
   ExtensionAccountCreateBody,
   ExtensionAccountGetRequestBody,
   ExtensionAccountRequestIdBody,
+  ExtensionAccountUpdateBody,
 } from './extension_account.interface';
 
 @Injectable()
@@ -111,6 +112,10 @@ export class ExtensionAccountService {
          * Create extension router for the extension
          */
 
+        this.logger.log(
+          `Adding extension definition ${extensionDefinition.name} to router`,
+        );
+
         const EXTENSION_BASE_HOST = this.configService.get(
           'EXTENSION_BASE_HOST',
         );
@@ -129,10 +134,18 @@ export class ExtensionAccountService {
       /**
        * Create extension deployment
        */
+      this.logger.log(
+        `Created extension account ${extensionAccount.extensionAccountId} and restarting gateway ${extensionAccount.workspace.slug}`,
+      );
       await this.controllerService.createExtensionDeployment(
-        true,
+        false,
         extensionDefinition,
         extensionAccount.workspace.slug,
+      );
+
+      // Restart the gateway
+      await this.controllerService.restartGatewayDeployment(
+        extensionAccount.workspace,
       );
 
       return extensionAccount;
@@ -142,11 +155,47 @@ export class ExtensionAccountService {
     }
   }
 
+  async updateExtensionAccount(
+    extensionAccountUpdateBody: ExtensionAccountUpdateBody,
+  ) {
+    const extensionAccount = await this.prisma.extensionAccount.findUnique({
+      where: {
+        extensionAccountId: extensionAccountUpdateBody.extensionAccountId,
+      },
+      include: {
+        workspace: true,
+      },
+    });
+
+    this.logger.log(
+      `Updating extension account for ${extensionAccount.extensionAccountId}`,
+    );
+
+    const updatedExtensionAccount = await this.prisma.extensionAccount.update({
+      data: {
+        extensionAccountName: extensionAccountUpdateBody.extensionAccountName,
+        extensionConfiguration:
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          extensionAccountUpdateBody.extensionConfiguration as any,
+      },
+      where: {
+        extensionAccountId: extensionAccountUpdateBody.extensionAccountId,
+      },
+    });
+
+    this.logger.log(`Updated extension account and restarting gateway`);
+    // Restart the gateway
+    await this.controllerService.restartGatewayDeployment(
+      extensionAccount.workspace,
+    );
+
+    return updatedExtensionAccount;
+  }
+
   /**
    * Create all the deployments and services when the server starts up
    */
   async initServer() {
-    this.logger.log('Starting server');
     const extensionAccounts = await this.prisma.extensionAccount.findMany({
       distinct: ['extensionDefinitionId', 'workspaceId'],
       include: {

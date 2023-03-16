@@ -11,6 +11,7 @@ import {
   ExtensionAccountCreateBody,
   ExtensionAccountGetRequestBody,
   ExtensionAccountRequestIdBody,
+  ExtensionAccountUpdateBody,
 } from './extension_account.interface';
 import { ExtensionAccountService } from './extension_account.service';
 
@@ -45,6 +46,15 @@ export class ExtensionAccountResolver {
   ) {
     return await this.extensionAccountService.createExtensionAccount(
       createExtensionAccountInput,
+    );
+  }
+
+  @Mutation(() => ExtensionAccount)
+  async updateExtensionAccount(
+    @Args('data') updateExtensionAccountInput: ExtensionAccountUpdateBody,
+  ) {
+    return await this.extensionAccountService.updateExtensionAccount(
+      updateExtensionAccountInput,
     );
   }
 }

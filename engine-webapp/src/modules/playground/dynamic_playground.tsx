@@ -8,7 +8,7 @@ import { GetUserData } from 'wrappers/get_user_data';
 import { Loader } from 'components';
 
 const DynamicPlaygroudCore = dynamic(
-  () => import('./playground').then((mod) => mod.Playground),
+  () => import('./playground').then((mod) => mod.PlaygroundLoader),
   {
     loading: () => <Loader />,
   },

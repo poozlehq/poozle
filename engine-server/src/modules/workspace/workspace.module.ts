@@ -5,6 +5,7 @@ import { Module } from '@nestjs/common';
 import { PrismaModule, PrismaService } from 'nestjs-prisma';
 
 import { ControllerService } from 'modules/controller/controller.service';
+import { HiveService } from 'modules/hive/hive.service';
 
 import { WorkspaceResolver } from './workspace.resolver';
 import { WorkspaceService } from './workspace.service';
@@ -17,6 +18,7 @@ import { WorkspaceService } from './workspace.service';
     PrismaService,
     WorkspaceResolver,
     ControllerService,
+    HiveService,
   ],
   exports: [WorkspaceService],
 })

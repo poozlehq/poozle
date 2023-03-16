@@ -21,6 +21,18 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type Duration {
+  p75: Int!
+  p90: Int!
+  p95: Int!
+  p99: Int!
+}
+
+type DurationOverTimeObject {
+  date: String!
+  duration: Duration!
+}
+
 type ExtensionAccount {
   createdAt: DateTime!
   deleted: DateTime
@@ -48,6 +60,12 @@ input ExtensionAccountGetRequestBody {
 
 input ExtensionAccountRequestIdBody {
   extensionAccountId: String!
+}
+
+input ExtensionAccountUpdateBody {
+  extensionAccountId: String!
+  extensionAccountName: String!
+  extensionConfiguration: JSON
 }
 
 type ExtensionDefinition {
@@ -88,7 +106,9 @@ input ExtensionDefinitionCreateBody {
   dockerImageTag: String!
   dockerRepository: String!
   extensionType: String!
+  icon: String!
   name: String!
+  releaseStage: String!
   workspaceId: String!
 }
 
@@ -103,6 +123,16 @@ input ExtensionDefinitionRequestWorkspaceIdBody {
 
 type ExtensionDefinitionSpec {
   spec: JSON!
+}
+
+input ExtensionDefinitionUpdateBody {
+  dockerImageTag: String!
+  dockerRepository: String!
+  extensionDefinitionId: String!
+  extensionType: String!
+  icon: String!
+  name: String!
+  releaseStage: String!
 }
 
 type ExtensionRouter {
@@ -136,6 +166,32 @@ enum ExtensionType {
   REST
 }
 
+type Gateway {
+  gatewayTokenId: ID!
+  hiveToken: String!
+  workspace: Workspace
+  workspaceId: String
+}
+
+type GatewayAuthToken {
+  token: String!
+}
+
+input GatewayAuthTokenCreateInput {
+  days: String
+  workspaceId: String!
+}
+
+type GeneralStats {
+  duration: Duration!
+  durationOverTime: [DurationOverTimeObject!]!
+  failuresOverTime: [OverTimeObject!]!
+  requestsOverTime: [OverTimeObject!]!
+  totalFailures: Int!
+  totalOperations: Int!
+  totalRequests: Int!
+}
+
 """
 The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
 """
@@ -151,17 +207,51 @@ input LoginInput {
   password: String!
 }
 
+type Logout {
+  logout: Boolean!
+}
+
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   createExtensionAccount(data: ExtensionAccountCreateBody!): ExtensionAccount!
   createExtensionDefinition(data: ExtensionDefinitionCreateBody!): ExtensionDefinition!
+  createGatewayAccessToken(data: GatewayAuthTokenCreateInput!): GatewayAuthToken!
   createWorkspace(data: WorkspaceCreateBody!): Workspace!
   deleteWorkspace(data: WorkspaceRequestIdBody!): Workspace!
   login(data: LoginInput!): Auth!
+  logout: Logout!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
+  updateExtensionAccount(data: ExtensionAccountUpdateBody!): ExtensionAccount!
+  updateExtensionDefinition(data: ExtensionDefinitionUpdateBody!): ExtensionDefinition!
   updateExtensionRouter(data: ExtensionRouterRequestUpdateBody!): ExtensionRouter!
   updateUser(data: UpdateUserInput!): User!
+  updateWorkspace(data: WorkspaceUpdateBody!): Workspace!
+}
+
+type Node {
+  count: Int!
+  countOk: Int!
+  duration: Duration!
+  id: String!
+  kind: String!
+  name: String!
+  operationHash: String!
+  percentage: Int!
+}
+
+type Operation {
+  nodes: [Node!]!
+  total: Int!
+}
+
+type OperationStats {
+  operations: [Operation!]!
+}
+
+type OverTimeObject {
+  date: String!
+  value: Int!
 }
 
 type Query {
@@ -172,6 +262,8 @@ type Query {
   getExtensionDefinitionsByWorkspace(data: ExtensionDefinitionRequestWorkspaceIdBody!): [ExtensionDefinition!]!
   getExtensionRouterById(data: ExtensionRouterRequestIdBody!): ExtensionRouter!
   getExtensionRoutersByWorkspace(data: ExtensionRouterRequestWorkspaceIdBody!): [ExtensionRouter!]!
+  getGeneralStats(data: StatsInput!): GeneralStats!
+  getOperations(data: StatsInput!): OperationStats!
   getSpecForExtensionDefinition(data: ExtensionDefinitionRequestIdBody!): ExtensionDefinitionSpec!
   getWorkspaceWithId(data: WorkspaceRequestIdBody!): Workspace!
   getWorkspaces: [Workspace!]!
@@ -191,6 +283,12 @@ input SignupInput {
   firstname: String
   lastname: String
   password: String!
+}
+
+input StatsInput {
+  from: String!
+  to: String!
+  workspace: String!
 }
 
 type Token {
@@ -226,8 +324,10 @@ type Workspace {
   ExtensionAccount: [ExtensionAccount!]
   ExtensionDefinition: [ExtensionDefinition!]
   ExtensionRouter: [ExtensionRouter!]
+  Gateway: [Gateway!]
   _count: WorkspaceCount!
   deleted: DateTime
+  initialSetupComplete: Boolean!
   slug: String!
   user: User!
   userId: String!
@@ -238,6 +338,7 @@ type WorkspaceCount {
   ExtensionAccount: Int!
   ExtensionDefinition: Int!
   ExtensionRouter: Int!
+  Gateway: Int!
 }
 
 input WorkspaceCreateBody {
@@ -245,5 +346,10 @@ input WorkspaceCreateBody {
 }
 
 input WorkspaceRequestIdBody {
+  workspaceId: String!
+}
+
+input WorkspaceUpdateBody {
+  initialSetupComplete: Boolean!
   workspaceId: String!
 }

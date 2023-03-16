@@ -9,6 +9,15 @@ export class WorkspaceCreateBody {
 }
 
 @InputType()
+export class WorkspaceUpdateBody {
+  @Field()
+  initialSetupComplete: boolean;
+
+  @Field()
+  workspaceId: string;
+}
+
+@InputType()
 export class WorkspaceRequestIdBody {
   @Field()
   workspaceId: string;

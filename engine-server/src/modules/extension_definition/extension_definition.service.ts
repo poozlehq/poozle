@@ -1,7 +1,8 @@
+/* eslint-disable dot-location */
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { HttpService } from '@nestjs/axios';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'nestjs-prisma';
 
@@ -18,10 +19,13 @@ import {
   ExtensionDefinitionRequestIdBody,
   ExtensionDefinitionRequestWorkspaceIdBody,
   ExtensionDefinitionSpec,
+  ExtensionDefinitionUpdateBody,
 } from './extension_definition.interface';
 
 @Injectable()
 export class ExtensionDefinitionService {
+  private readonly logger = new Logger(ExtensionDefinitionService.name);
+
   constructor(
     private prisma: PrismaService,
     private configService: ConfigService,
@@ -72,9 +76,28 @@ export class ExtensionDefinitionService {
   async createExtensionDefinition(
     extensionDefinitionCreateBody: ExtensionDefinitionCreateBody,
   ): Promise<ExtensionDefinition> {
-    return this.prisma.extensionDefinition.create({
+    return await this.prisma.extensionDefinition.create({
       data: {
         ...extensionDefinitionCreateBody,
+      },
+    });
+  }
+
+  async updateExtensionDefinition(
+    extensionDefinitionUpdateBody: ExtensionDefinitionUpdateBody,
+  ): Promise<ExtensionDefinition> {
+    return await this.prisma.extensionDefinition.update({
+      data: {
+        dockerImageTag: extensionDefinitionUpdateBody.dockerImageTag,
+        dockerRepository: extensionDefinitionUpdateBody.dockerRepository,
+        icon: extensionDefinitionUpdateBody.icon,
+        name: extensionDefinitionUpdateBody.name,
+        extensionType: extensionDefinitionUpdateBody.extensionType,
+        releaseStage: extensionDefinitionUpdateBody.releaseStage,
+      },
+      where: {
+        extensionDefinitionId:
+          extensionDefinitionUpdateBody.extensionDefinitionId,
       },
     });
   }
@@ -137,6 +160,9 @@ export class ExtensionDefinitionService {
       /**
        * Deploy the extension wait for it and then hit the service
        */
+      this.logger.log(
+        `${extensionDefinition.name} not found and create an extension`,
+      );
       const deploymentStatus =
         await this.controllerService.createExtensionDeploymentSync(
           false,
@@ -162,8 +188,19 @@ export class ExtensionDefinitionService {
     );
     const extensionBody: ExtensionBody = {
       query: `{getSpec{spec}}`,
-      endpoint: endpoint ?? extensionDefinition.name,
+      endpoint:
+        endpoint ??
+        `http://${extensionDefinition.name
+          .toLowerCase()
+          .replace(/ /g, '_')}${this.configService.get(
+          'EXTENSION_BASE_HOST',
+        )}/graphql`,
     };
+
+    this.logger.log(
+      `Getting spec for this extension ${extensionDefinition.name} with endpoint as ${extensionBody.endpoint}`,
+    );
+
     const specResponse = await extensionService.getSpec(extensionBody);
     return specResponse;
   }
@@ -177,10 +214,28 @@ export class ExtensionDefinitionService {
       this.httpService,
       this.configService,
     );
+
+    this.logger.log(
+      `Sending request to ${extensionDefinition.name} with endpoint: ${endpoint}`,
+    );
+
+    this.logger.log(Buffer.from(JSON.stringify(config)).toString('base64'));
     const extensionBody: ExtensionBody = {
-      query: `{check(config:"${btoa(JSON.stringify(config))}"){status}}`,
-      endpoint: endpoint ?? extensionDefinition.name,
+      query: `{check(config:"${Buffer.from(JSON.stringify(config)).toString(
+        'base64',
+      )}"){status}}`,
+      endpoint:
+        endpoint ??
+        `http://${extensionDefinition.name
+          .toLowerCase()
+          .replace(/ /g, '_')}${this.configService.get(
+          'EXTENSION_BASE_HOST',
+        )}/graphql`,
     };
+
+    this.logger.log(
+      `Checking extension health for ${extensionDefinition.name} with endpoint as ${extensionBody.endpoint}`,
+    );
     const checkResponse = await extensionService.check(extensionBody);
     return checkResponse;
   }

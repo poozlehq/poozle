@@ -34,7 +34,10 @@ async function bootstrap() {
 
   // Cors
   if (corsConfig.enabled) {
-    app.enableCors();
+    app.enableCors({
+      origin: configService.get('FRONTEND_HOST'),
+      credentials: true,
+    });
   }
 
   /** Check and check gateway and extension deployments */

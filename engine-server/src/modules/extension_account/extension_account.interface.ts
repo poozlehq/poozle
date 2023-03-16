@@ -25,6 +25,18 @@ export class ExtensionAccountCreateBody {
 }
 
 @InputType()
+export class ExtensionAccountUpdateBody {
+  @Field()
+  extensionAccountId: string;
+
+  @Field(() => GraphQLJSON, { nullable: true })
+  extensionConfiguration?: JSON;
+
+  @Field()
+  extensionAccountName: string;
+}
+
+@InputType()
 export class ExtensionAccountGetRequestBody {
   @Field()
   workspaceId: string;

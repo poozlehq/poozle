@@ -16,7 +16,7 @@ import { AuthService } from './auth.service';
 import { LoginInput } from './dto/login.input';
 import { RefreshTokenInput } from './dto/refresh-token.input';
 import { SignupInput } from './dto/signup.input';
-import { Auth } from './models/auth.model';
+import { Auth, Logout } from './models/auth.model';
 import { Token } from './models/token.model';
 
 @Resolver(() => Auth)
@@ -46,7 +46,7 @@ export class AuthResolver {
     const options = {
       maxAge: 1000 * 60 * 60 * 24, // expires in a day
       // httpOnly: true, // cookie is only accessible by the server
-      // secure: process.env.NODE_ENV === 'prod', // only transferred over https
+      secure: process.env.NODE_ENV === 'production', // only transferred over https
       // sameSite: true, // only sent for requests to the same FQDN as the domain in the cookie
     };
 
@@ -61,6 +61,22 @@ export class AuthResolver {
   @Mutation(() => Token)
   async refreshToken(@Args() { token }: RefreshTokenInput) {
     return this.auth.refreshToken(token);
+  }
+
+  @Mutation(() => Logout)
+  async logout(@Context('res') res: Response) {
+    const options = {
+      maxAge: 1000 * 60 * 60 * 24, // expires in a day
+      // httpOnly: true, // cookie is only accessible by the server
+      secure: process.env.NODE_ENV === 'production', // only transferred over https
+      // sameSite: true, // only sent for requests to the same FQDN as the domain in the cookie
+    };
+
+    res.cookie('token', '', options);
+
+    return {
+      logout: true,
+    };
   }
 
   @ResolveField('user', () => User)

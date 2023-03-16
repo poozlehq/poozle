@@ -1,16 +1,34 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Base } from './base';
-import { restartDeployment } from '../utils';
+import { DeploymentSpec, readDeployment, restartDeployment } from '../utils';
 
 export class Workspace extends Base {
-  async restartDeployment() {
+  async restartDeployment(deploymentSpec: DeploymentSpec) {
     try {
-      await restartDeployment(this.k8sApi, this.namespace, this.slug);
-      this.logger.info('Deployment for this workspace is restarted.');
-      return {
-        status: true,
-      };
+      try {
+        await readDeployment(this.k8sApi, this.namespace, this.slug);
+        this.logger.info('Deployment for this workspace is found.');
+
+        await restartDeployment(this.k8sApi, this.namespace, this.slug);
+        this.logger.info('Deployment for this workspace is restarted.');
+        return {
+          status: true,
+        };
+      } catch (e) {
+        this.logger.info(
+          `Deployment for the workspace ${this.slug} is not found. Creating a new deployment for this workspace`,
+        );
+        this.createDeployment(deploymentSpec);
+        
+        this.logger.info(
+          `Creating Service if not exist for the gateway ${this.slug}`
+        )
+        this.createServiceIfNotExists();
+        return {
+          status: true,
+        };
+      }
     } catch (e) {
       this.logger.info(
         'Deployment for this workspace was not restarted error occured.',

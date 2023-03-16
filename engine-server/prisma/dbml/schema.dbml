@@ -18,10 +18,12 @@ Table Workspace {
   slug String [unique, not null]
   user User [not null]
   userId String [not null]
+  initialSetupComplete Boolean [not null, default: false]
   ExtensionDefinition ExtensionDefinition [not null]
   ExtensionAccount ExtensionAccount [not null]
   ExtensionRouter ExtensionRouter [not null]
   deleted DateTime
+  Gateway Gateway [not null]
 }
 
 Table ExtensionDefinition {
@@ -67,6 +69,13 @@ Table ExtensionRouter {
   updatedAt DateTime [not null]
 }
 
+Table Gateway {
+  gatewayTokenId String [pk]
+  hiveToken String [not null]
+  workspace Workspace
+  workspaceId String
+}
+
 Enum ExtensionType {
   GRAPHQL
   REST
@@ -91,3 +100,5 @@ Ref: ExtensionAccount.workspaceId > Workspace.workspaceId
 Ref: ExtensionRouter.extensionDefinitionId > ExtensionDefinition.extensionDefinitionId
 
 Ref: ExtensionRouter.workspaceId > Workspace.workspaceId
+
+Ref: Gateway.workspaceId > Workspace.workspaceId

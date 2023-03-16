@@ -1,11 +1,14 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
 import { SecurityConfig } from 'common/configs/config.interface';
+
+import { HiveService } from 'modules/hive/hive.service';
 
 import { AuthResolver } from './auth.resolver';
 import { AuthService } from './auth.service';
@@ -28,6 +31,7 @@ import { PasswordService } from './password.service';
       },
       inject: [ConfigService],
     }),
+    HttpModule,
   ],
   providers: [
     AuthService,
@@ -35,6 +39,7 @@ import { PasswordService } from './password.service';
     JwtStrategy,
     GqlAuthGuard,
     PasswordService,
+    HiveService,
   ],
   exports: [GqlAuthGuard],
 })

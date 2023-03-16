@@ -8,7 +8,6 @@ import {
   ExtensionEventEnum,
   ExtensionRequestBody,
   Namespace,
-  Workspace,
 } from '../modules';
 
 const NAMESPACE = 'engine';
@@ -24,6 +23,7 @@ export function extensionHandler(logger: Logger) {
     kc.loadFromDefault();
     const k8sApi = kc.makeApiClient(k8s.AppsV1Api);
     const k8sApiCore = kc.makeApiClient(k8s.CoreV1Api);
+    const k8sNetworkingV1Api = kc.makeApiClient(k8s.NetworkingV1Api);
 
     const namespace = new Namespace(NAMESPACE, k8sApiCore, logger);
     /* 
@@ -38,21 +38,14 @@ export function extensionHandler(logger: Logger) {
     const extension = new Extension(
       k8sApi,
       k8sApiCore,
+      k8sNetworkingV1Api,
       body.slug,
       NAMESPACE,
       logger,
       port,
     );
 
-    const workspace = new Workspace(
-      k8sApi,
-      k8sApiCore,
-      body.workspaceSlug || "",
-      NAMESPACE,
-      logger,
-    );
-
-    logger.info(`event Body: ${body}`);
+    logger.info(`event Body for create extension: ${body}`);
 
     switch (body.event) {
       case ExtensionEventEnum.CREATE_WITHOUT_RESTART: {
@@ -87,9 +80,10 @@ export function extensionHandler(logger: Logger) {
         res.status(createStatus.status ? 200 : 400).json(createStatus);
 
         /**
+         * TODO: Need to remove this method, moved this to exetension account
          * Restart the engine-gateway deployment for this workspace
          */
-        await workspace.restartDeployment();
+        // await workspace.restartDeployment();
         break;
       }
       case ExtensionEventEnum.DELETE: {
@@ -100,9 +94,10 @@ export function extensionHandler(logger: Logger) {
         res.status(deleteStatus.status ? 200 : 400).json(deleteStatus);
 
         /**
+         * TODO: Need to remove this method, moved this to exetension account
          * Restart the engine-gateway deployment for this workspace
          */
-        await workspace.restartDeployment();
+        // await workspace.restartDeployment();
         break;
       }
       case ExtensionEventEnum.DELETE_WITHOUT_RESTART: {

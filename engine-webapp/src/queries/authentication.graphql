@@ -21,3 +21,9 @@ mutation SignupUser($data: SignupInput!) {
     }
   }
 }
+
+mutation Logout {
+  logout {
+    logout
+  }
+}

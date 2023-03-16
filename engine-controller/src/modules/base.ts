@@ -11,10 +11,15 @@ import {
   readDeployment,
   readService,
 } from '../utils';
+import { updateIngress } from '../utils/ingress';
 
 export class Base {
+  /**
+   * K8s clients
+   */
   k8sApi: k8s.AppsV1Api;
   k8sApiCore: k8s.CoreV1Api;
+  k8sNetworkingV1Api: k8s.NetworkingV1Api;
 
   slug: string;
   namespace: string;
@@ -25,6 +30,7 @@ export class Base {
   constructor(
     k8sApi: k8s.AppsV1Api,
     k8sApiCore: k8s.CoreV1Api,
+    k8sNetworkingV1Api: k8s.NetworkingV1Api,
     slug: string,
     namespace: string,
     logger: Logger,
@@ -33,11 +39,12 @@ export class Base {
   ) {
     this.k8sApi = k8sApi;
     this.k8sApiCore = k8sApiCore;
+    this.k8sNetworkingV1Api = k8sNetworkingV1Api;
     this.slug = slug;
     this.namespace = namespace;
     this.logger = logger;
     this.port = port;
-    this.annotations = annotations
+    this.annotations = annotations;
   }
 
   async createDeployment(deploymentSpec: DeploymentSpec) {
@@ -91,7 +98,7 @@ export class Base {
         this.namespace,
         this.slug,
         this.port,
-        this.annotations
+        this.annotations,
       );
       return {
         status: true,
@@ -237,5 +244,20 @@ export class Base {
         error: 'Deployment not found for this Workspace',
       };
     }
+  }
+
+  async updateIngress() {
+    this.logger.info('updating ingress gateway');
+    await updateIngress(
+      this.k8sNetworkingV1Api,
+      this.namespace,
+      this.slug,
+      'example-ingress',
+      'CREATE',
+    );
+
+    return {
+      status: true,
+    };
   }
 }

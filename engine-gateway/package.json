@@ -15,8 +15,10 @@
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "dependencies": {
+    "@envelop/generic-auth": "^5.0.6",
     "@graphql-mesh/cli": "^0.82.20",
     "@graphql-mesh/graphql": "^0.34.6",
+    "@graphql-mesh/plugin-hive": "^0.1.5",
     "@graphql-mesh/transform-encapsulate": "^0.4.12",
     "@graphql-mesh/transform-naming-convention": "^0.13.12",
     "@graphql-mesh/transform-prefix": "^0.12.12",
@@ -24,6 +26,7 @@
     "dotenv": "^16.0.3",
     "graphql": "^16.6.0",
     "js-yaml": "^4.1.0",
+    "jsonwebtoken": "^9.0.0",
     "winston": "^3.8.2"
   },
   "devDependencies": {
@@ -34,6 +37,7 @@
     "@rollup/plugin-replace": "^5.0.1",
     "@types/jest": "^29.2.5",
     "@types/js-yaml": "^4.0.5",
+    "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.11.18",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.47.1",

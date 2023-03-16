@@ -1,0 +1,10 @@
+{
+  "name": "Gmail extension",
+  "key": "gmail",
+  "description": "write the description",
+  "icon": "gmail.svg",
+  "type": "REST",
+  "inputs": [
+
+  ]
+}

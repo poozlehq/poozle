@@ -100,6 +100,12 @@ async function main(): Promise<null> {
     `Total ${allExtensionAccountsForWorkspace.length} are found for this workspace`,
   );
 
+  const gateway = await prisma.gateway.findMany({
+    where: {
+      workspaceId: process.env.WORKSPACE_ID,
+    },
+  });
+
   /*
     Loop through all the accounts and generate a base64 with the
     configuration saved
@@ -111,6 +117,10 @@ async function main(): Promise<null> {
           JSON.stringify(account.extensionConfiguration),
         ).toString('base64');
         const accountName = account.name.replace(/ /g, '_');
+        const extensionAccountName = account.extensionAccountName.replace(
+          / /g,
+          '_',
+        );
 
         const extensionRouter = await prisma.extensionRouter.findUnique({
           where: {
@@ -126,7 +136,7 @@ async function main(): Promise<null> {
         }
 
         return {
-          name: account.extensionAccountName,
+          name: extensionAccountName,
           handler: {
             graphql: {
               // TODO (harshith): Remove static URL and move this to ExtensionRouter based
@@ -161,7 +171,7 @@ async function main(): Promise<null> {
                 }
               */
               encapsulate: {
-                name: account.extensionAccountName,
+                name: extensionAccountName,
                 applyTo: {
                   query: true,
                   mutation: true,
@@ -180,9 +190,32 @@ async function main(): Promise<null> {
     sources: [...sources, sampleSource],
     // TODO (harshith): remove this playground configuration from here
     serve: {
+      playgroundTitle: 'Poozle playground',
       playground: true,
     },
+    additionalEnvelopPlugins: './envelopPlugins',
   };
+  if (gateway.length) {
+    meshConfig.plugins = [
+      {
+        hive: {
+          token: gateway[0].hiveToken,
+          usage: {
+            clientInfo: {
+              name: process.env.WORKSPACE_ID,
+              version: Date.now().toString(),
+            },
+            processVariables: true,
+            exclude: ['Sample', 'IntrospectionQuery'],
+          },
+          reporting: {
+            author: process.env.WORKSPACE_ID,
+            commit: Date.now().toString(),
+          },
+        },
+      },
+    ];
+  }
 
   // Write the yaml to meshrc which is used to create the server
   fs.writeFileSync(
