@@ -1,11 +1,11 @@
-FROM node:16.17.0-bullseye-slim as builder
+FROM node:18-bullseye-slim as builder
 
 WORKDIR /usr/src/app
 COPY . .
 RUN yarn
 RUN yarn build
 
-FROM node:16.17.0-bullseye-slim as runner
+FROM node:18-bullseye-slim as runner
 ENV NODE_ENV=production
 COPY --from=builder /usr/src/app/magento /usr/src/app/magento
 COPY --from=builder /usr/src/app/schema /usr/src/app/schema
