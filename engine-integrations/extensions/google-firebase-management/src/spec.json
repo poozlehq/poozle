@@ -1,0 +1,10 @@
+{
+  "name": "GoogleFirebaseManagement extension",
+  "key": "google_firebase_management",
+  "description": "write the description",
+  "icon": "google_firebase_management.svg",
+  "type": "REST",
+  "inputs": [
+
+  ]
+}
