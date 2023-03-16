@@ -1,0 +1,10 @@
+{
+  "name": "Instagram extension",
+  "key": "instagram",
+  "description": "write the description",
+  "icon": "instagram.svg",
+  "type": "REST",
+  "inputs": [
+
+  ]
+}
