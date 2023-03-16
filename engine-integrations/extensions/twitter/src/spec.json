@@ -1,0 +1,10 @@
+{
+  "name": "Twitter extension",
+  "key": "twitter",
+  "description": "write the description",
+  "icon": "twitter.svg",
+  "type": "REST",
+  "inputs": [
+
+  ]
+}
