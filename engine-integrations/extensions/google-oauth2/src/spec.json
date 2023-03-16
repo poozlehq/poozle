@@ -1,0 +1,10 @@
+{
+  "name": "GoogleOauth2 extension",
+  "key": "google_oauth2",
+  "description": "write the description",
+  "icon": "google_oauth2.svg",
+  "type": "REST",
+  "inputs": [
+
+  ]
+}
