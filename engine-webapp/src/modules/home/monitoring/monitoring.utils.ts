@@ -20,7 +20,7 @@ export function getStatsFromAndTo(value: string) {
     goBack = 1;
   }
 
-  if (value.includes('hour')) {
+  if (value.includes('Last hour')) {
     const today = new Date();
     const priorDate = new Date(new Date().setHours(today.getHours() - 1));
 

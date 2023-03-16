@@ -4,16 +4,18 @@ import { resolve } from 'path';
 
 import {
   AuthHeaderResponse,
-  BaseRestExtension,
+  BaseRestExtensionNew,
   Config,
 } from '@poozle/engine-edk';
 import { SpecResponse } from '@poozle/engine-edk';
 
-class GmailExtension extends BaseRestExtension {
-  async authHeaders(_config: Config): AuthHeaderResponse {
+class GmailExtension extends BaseRestExtensionNew {
+  name = 'gmail';
+
+  async authHeaders(config: Config): AuthHeaderResponse {
     // Need to return the headers the API expects
     return {
-      Authorization: 'Bearer',
+      Authorization: `Bearer ${config.config.token}`,
     };
   }
 

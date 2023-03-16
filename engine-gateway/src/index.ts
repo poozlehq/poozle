@@ -191,7 +191,7 @@ async function main(): Promise<null> {
     // TODO (harshith): remove this playground configuration from here
     serve: {
       playgroundTitle: 'Poozle playground',
-      playground: false,
+      playground: true,
     },
     additionalEnvelopPlugins: './envelopPlugins',
   };
@@ -206,6 +206,7 @@ async function main(): Promise<null> {
               version: Date.now().toString(),
             },
             processVariables: true,
+            exclude: ['Sample', 'IntrospectionQuery'],
           },
           reporting: {
             author: process.env.WORKSPACE_ID,

@@ -1,7 +1,7 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { ExtensionType } from '@prisma/client';
+import { ExtensionType, ReleaseStage } from '@prisma/client';
 import GraphQLJSON from 'graphql-type-json';
 
 @InputType()
@@ -37,7 +37,34 @@ export class ExtensionDefinitionCreateBody {
   extensionType: ExtensionType;
 
   @Field()
+  releaseStage: ReleaseStage;
+
+  @Field()
   icon: string;
+}
+
+@InputType()
+export class ExtensionDefinitionUpdateBody {
+  @Field()
+  name: string;
+
+  @Field()
+  dockerImageTag: string;
+
+  @Field()
+  dockerRepository: string;
+
+  @Field()
+  extensionType: ExtensionType;
+
+  @Field()
+  releaseStage: ReleaseStage;
+
+  @Field()
+  icon: string;
+
+  @Field()
+  extensionDefinitionId: string;
 }
 
 @InputType()

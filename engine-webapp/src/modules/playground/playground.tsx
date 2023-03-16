@@ -17,7 +17,11 @@ import { useCreateGatewayAuthTokenMutation } from '../../queries/generated/graph
 
 const GATEWAY_HOST = process.env.NEXT_PUBLIC_GATEWAY_HOST;
 
-export function Playground() {
+interface PlaygroundProps {
+  token: string;
+}
+
+export function Playground({ token }: PlaygroundProps) {
   const { setTheme } = useTheme();
   const {
     query: { workspaceId },
@@ -30,6 +34,9 @@ export function Playground() {
 
   const fetcher = createGraphiQLFetcher({
     url: GatewayURL,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
     fetch,
   });
 
@@ -62,7 +69,7 @@ export function PlaygroundLoader() {
   );
 
   const [token, setToken] = React.useState(undefined);
-  const [hosted, setHosted] = React.useState(false);
+  const [hosted, setHosted] = React.useState(undefined);
   const GatewayURL = `${process.env.NEXT_PUBLIC_GATEWAY_HOST}/${currentWorkspace.slug}/graphql`;
 
   const [createGatewayAuthToken] = useCreateGatewayAuthTokenMutation({
@@ -106,7 +113,7 @@ export function PlaygroundLoader() {
     }
   }, [token]);
 
-  if (!token) {
+  if (!token || typeof hosted === 'undefined') {
     return (
       <>
         <Header title="Playground" />
@@ -134,5 +141,5 @@ export function PlaygroundLoader() {
     );
   }
 
-  return <Playground />;
+  return <Playground token={token} />;
 }

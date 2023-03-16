@@ -2,3 +2,4 @@
 
 export * from "./base_rest";
 export * from "./base_graphql";
+export * from "./base_rest_new";

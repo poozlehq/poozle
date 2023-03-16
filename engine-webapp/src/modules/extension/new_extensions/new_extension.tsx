@@ -33,7 +33,7 @@ export function NewExtension() {
         (extensionDefinition) => ({
           value: extensionDefinition.extensionDefinitionId,
           label: extensionDefinition.name,
-          image: `${extensionDefinition.name}.svg`,
+          image: extensionDefinition.icon,
         }),
       );
     }

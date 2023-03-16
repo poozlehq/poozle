@@ -14,6 +14,7 @@ import {
   ExtensionDefinitionSpec,
   ExtensionDefinitionCheck,
   ExtensionDefinitionCheckBody,
+  ExtensionDefinitionUpdateBody,
 } from './extension_definition.interface';
 import { ExtensionDefinitionService } from './extension_definition.service';
 
@@ -73,6 +74,15 @@ export class ExtensionDefinitionResolver {
   ): Promise<ExtensionDefinition> {
     return await this.extensionDefinitionService.createExtensionDefinition(
       createExtensionAccountInput,
+    );
+  }
+
+  @Mutation(() => ExtensionDefinition)
+  async updateExtensionDefinition(
+    @Args('data') extensionDefinitionUpdateBody: ExtensionDefinitionUpdateBody,
+  ): Promise<ExtensionDefinition> {
+    return await this.extensionDefinitionService.updateExtensionDefinition(
+      extensionDefinitionUpdateBody,
     );
   }
 }

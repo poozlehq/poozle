@@ -11,8 +11,8 @@ export class MonitoringService {
   constructor(private hiveService: HiveService) {}
 
   async getOperations(
-    _organisation: string,
-    _project: string,
+    organization: string,
+    project: string,
     from: string,
     to: string,
   ) {
@@ -24,8 +24,8 @@ export class MonitoringService {
       operationName: 'operationsStats',
       variables: {
         selector: {
-          organization: 'cleienp9m0000gnmx50e1quxx',
-          project: 'default',
+          organization,
+          project,
           target: 'production',
           period: {
             from,
@@ -42,8 +42,8 @@ export class MonitoringService {
   }
 
   async getGeneralStats(
-    _organisation: string,
-    _project: string,
+    organization: string,
+    project: string,
     from: string,
     to: string,
   ) {
@@ -54,8 +54,8 @@ export class MonitoringService {
       operationName: 'generalOperationsStats',
       variables: {
         selector: {
-          organization: 'cleienp9m0000gnmx50e1quxx',
-          project: 'default',
+          organization,
+          project,
           target: 'production',
           period: {
             from,

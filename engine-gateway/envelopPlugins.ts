@@ -14,12 +14,12 @@ interface Payload {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const resolveUserFn: ResolveUserFn<UserType> = async (context: any) => {
   try {
-    const payload = jwt.verify(
-      context.headers.authorization,
-      process.env.JWT_SECRET,
-    ) as Payload;
+    const token = context.headers.authorization.split(' ')[1];
+    const payload = jwt.verify(token, process.env.JWT_SECRET) as Payload;
+
     return { id: payload.workspaceId, ...payload };
   } catch (e) {
+    console.log(e);
     console.error('Failed to validate token');
 
     return null;
@@ -28,7 +28,12 @@ const resolveUserFn: ResolveUserFn<UserType> = async (context: any) => {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const validateUser: ValidateUserFn<any> = (params: any) => {
-  if (params.user.workspaceId !== process.env.WORKSPACE_ID) {
+  try {
+    if (params.user.workspaceId !== process.env.WORKSPACE_ID) {
+      throw new Error(`Unauthenticated!. Unable to verify access token`);
+    }
+  } catch (e) {
+    console.log(e);
     throw new Error(`Unauthenticated!. Unable to verify access token`);
   }
 };

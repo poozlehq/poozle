@@ -1,3 +1,4 @@
+/* eslint-disable dot-location */
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
 import { HttpService } from '@nestjs/axios';
@@ -18,6 +19,7 @@ import {
   ExtensionDefinitionRequestIdBody,
   ExtensionDefinitionRequestWorkspaceIdBody,
   ExtensionDefinitionSpec,
+  ExtensionDefinitionUpdateBody,
 } from './extension_definition.interface';
 
 @Injectable()
@@ -81,6 +83,25 @@ export class ExtensionDefinitionService {
     });
   }
 
+  async updateExtensionDefinition(
+    extensionDefinitionUpdateBody: ExtensionDefinitionUpdateBody,
+  ): Promise<ExtensionDefinition> {
+    return await this.prisma.extensionDefinition.update({
+      data: {
+        dockerImageTag: extensionDefinitionUpdateBody.dockerImageTag,
+        dockerRepository: extensionDefinitionUpdateBody.dockerRepository,
+        icon: extensionDefinitionUpdateBody.icon,
+        name: extensionDefinitionUpdateBody.name,
+        extensionType: extensionDefinitionUpdateBody.extensionType,
+        releaseStage: extensionDefinitionUpdateBody.releaseStage,
+      },
+      where: {
+        extensionDefinitionId:
+          extensionDefinitionUpdateBody.extensionDefinitionId,
+      },
+    });
+  }
+
   async getSpecForExtensionDefinition(
     extensionDefinitionRequestIdBody: ExtensionDefinitionRequestIdBody,
   ): Promise<ExtensionDefinitionSpec> {
@@ -139,7 +160,9 @@ export class ExtensionDefinitionService {
       /**
        * Deploy the extension wait for it and then hit the service
        */
-      this.logger.log(`${extensionDefinition.name} not found and create an extension`)
+      this.logger.log(
+        `${extensionDefinition.name} not found and create an extension`,
+      );
       const deploymentStatus =
         await this.controllerService.createExtensionDeploymentSync(
           false,
@@ -167,12 +190,16 @@ export class ExtensionDefinitionService {
       query: `{getSpec{spec}}`,
       endpoint:
         endpoint ??
-        `http://${extensionDefinition.name}${this.configService.get(
+        `http://${extensionDefinition.name
+          .toLowerCase()
+          .replace(/ /g, '_')}${this.configService.get(
           'EXTENSION_BASE_HOST',
         )}/graphql`,
     };
 
-    this.logger.log(`Getting spec for this extension ${extensionDefinition.name} with endpoint as ${extensionBody.endpoint}`)
+    this.logger.log(
+      `Getting spec for this extension ${extensionDefinition.name} with endpoint as ${extensionBody.endpoint}`,
+    );
 
     const specResponse = await extensionService.getSpec(extensionBody);
     return specResponse;
@@ -199,12 +226,16 @@ export class ExtensionDefinitionService {
       )}"){status}}`,
       endpoint:
         endpoint ??
-        `http://${extensionDefinition.name}${this.configService.get(
+        `http://${extensionDefinition.name
+          .toLowerCase()
+          .replace(/ /g, '_')}${this.configService.get(
           'EXTENSION_BASE_HOST',
         )}/graphql`,
     };
 
-    this.logger.log(`Checking extension health for ${extensionDefinition.name} with endpoint as ${extensionBody.endpoint}`)
+    this.logger.log(
+      `Checking extension health for ${extensionDefinition.name} with endpoint as ${extensionBody.endpoint}`,
+    );
     const checkResponse = await extensionService.check(extensionBody);
     return checkResponse;
   }

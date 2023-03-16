@@ -102,7 +102,7 @@ export class WorkspaceService {
       data: { deleted: new Date() },
     });
 
-    this.logger.log(`Deleting gateway for this workspace ${workspace.slug}`)
+    this.logger.log(`Deleting gateway for this workspace ${workspace.slug}`);
     await this.controllerService.deleteGatewayDeployment(workspace);
   }
 }

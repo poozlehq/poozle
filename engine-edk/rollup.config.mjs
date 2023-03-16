@@ -23,7 +23,12 @@ const plugins = [
 export default [
   {
     input: "src/index.ts",
-    external: ["graphql", "graphql-yoga", "openapi-to-graphql-poozle-fork"],
+    external: [
+      "graphql",
+      "graphql-yoga",
+      "openapi-to-graphql-poozle-fork",
+      "@omnigraph/openapi",
+    ],
     output: [
       {
         file: "edk/index.esm.js",
@@ -35,7 +40,12 @@ export default [
   },
   {
     input: "src/index.ts",
-    external: ["graphql", "graphql-yoga", "openapi-to-graphql-poozle-fork"],
+    external: [
+      "graphql",
+      "graphql-yoga",
+      "openapi-to-graphql-poozle-fork",
+      "@omnigraph/openapi",
+    ],
     output: [
       {
         file: "edk/index.js",
@@ -47,7 +57,12 @@ export default [
   },
   {
     input: "src/index.ts",
-    external: ["graphql", "graphql-yoga", "openapi-to-graphql-poozle-fork"],
+    external: [
+      "graphql",
+      "graphql-yoga",
+      "openapi-to-graphql-poozle-fork",
+      "@omnigraph/openapi",
+    ],
     output: [
       {
         file: "edk/index.d.ts",

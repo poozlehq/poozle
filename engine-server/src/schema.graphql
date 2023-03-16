@@ -108,6 +108,7 @@ input ExtensionDefinitionCreateBody {
   extensionType: String!
   icon: String!
   name: String!
+  releaseStage: String!
   workspaceId: String!
 }
 
@@ -122,6 +123,16 @@ input ExtensionDefinitionRequestWorkspaceIdBody {
 
 type ExtensionDefinitionSpec {
   spec: JSON!
+}
+
+input ExtensionDefinitionUpdateBody {
+  dockerImageTag: String!
+  dockerRepository: String!
+  extensionDefinitionId: String!
+  extensionType: String!
+  icon: String!
+  name: String!
+  releaseStage: String!
 }
 
 type ExtensionRouter {
@@ -212,6 +223,7 @@ type Mutation {
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
   updateExtensionAccount(data: ExtensionAccountUpdateBody!): ExtensionAccount!
+  updateExtensionDefinition(data: ExtensionDefinitionUpdateBody!): ExtensionDefinition!
   updateExtensionRouter(data: ExtensionRouterRequestUpdateBody!): ExtensionRouter!
   updateUser(data: UpdateUserInput!): User!
   updateWorkspace(data: WorkspaceUpdateBody!): Workspace!

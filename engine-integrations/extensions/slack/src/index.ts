@@ -4,16 +4,18 @@ import { resolve } from 'path';
 
 import {
   AuthHeaderResponse,
-  BaseRestExtension,
+  BaseRestExtensionNew,
   Config,
 } from '@poozle/engine-edk';
 import { SpecResponse } from '@poozle/engine-edk';
 
-class SpotifyExtension extends BaseRestExtension {
+class SlackExtension extends BaseRestExtensionNew {
+  name = 'slack';
+
   async authHeaders(config: Config): AuthHeaderResponse {
     // Need to return the headers the API expects
     return {
-      Authorization: `Bearer ${config.api_key}`,
+      Authorization: `Bearer ${config.config.token}`,
     };
   }
 
@@ -32,4 +34,4 @@ class SpotifyExtension extends BaseRestExtension {
   }
 }
 
-export default SpotifyExtension;
+export default SlackExtension;

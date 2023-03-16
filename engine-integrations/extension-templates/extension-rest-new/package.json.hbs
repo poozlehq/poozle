@@ -1,23 +1,26 @@
 {
-  "name": "spotify",
+  "name": "{{snakeCase name}}",
   "version": "0.0.0",
   "description": "Write the description",
   "license": "MIT",
   "main": "src/index.ts",
   "keywords": [ ],
   "scripts": {
-    "build": "rm -rf spotify && rollup -c",
+    "build": "rm -rf {{snakeCase name}} && rollup -c",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "engines": {
     "node": ">=10"
   },
   "dependencies": {
-    "@poozle/engine-edk": "0.1.13",
+    "@omnigraph/openapi": "^0.19.23",
+    "@poozle/engine-edk": "^0.1.18",
+    "ajv": "^8.12.0",
     "axios": "^1.3.2",
+    "graphql": "^16.6.0",
     "graphql-yoga": "^3.5.1",
     "node-fetch": "^3.3.0",
-    "openapi-to-graphql-poozle-fork": "^2.6.14"
+    "openapi-to-graphql-poozle-fork": "^2.6.17"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^23.0.2",
@@ -43,8 +46,5 @@
     "ts-node": "^9.0.0",
     "typedoc": "^0.19.0",
     "typescript": "^4.7.2"
-  },
-  "resolutions": {
-    "graphql": "^15.3.0"
   }
 }

@@ -53,12 +53,12 @@ export function Keys() {
         </Group>
 
         {token && (
-          <Group position="center" mt="xl">
+          <Group position="center" mt="xl" grow>
             <TextInput value={token} />
             <CopyButton value={token}>
               {({ copied, copy }) => (
                 <Button color={copied ? 'teal' : 'primary'} onClick={copy}>
-                  {copied ? 'Copied url' : 'Copy url'}
+                  {copied ? 'Copied token' : 'Copy token'}
                 </Button>
               )}
             </CopyButton>

@@ -2,8 +2,8 @@
 
 import { runGateway } from '@poozle/engine-edk';
 
-import SpotifyExtensionClass from './index';
+import SlackExtensionClass from './index';
 
-runGateway(SpotifyExtensionClass, 8000, {
+runGateway(SlackExtensionClass, 8000, {
   graphiql: true,
 });
