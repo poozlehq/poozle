@@ -1,13 +1,35 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 import * as k8s from '@kubernetes/client-node';
+import { Logger } from 'winston';
+
+export interface port {
+  number: Number;
+}
+
+export interface service {
+  name: string;
+  port: port;
+}
+
+export interface backend {
+  service: service;
+}
+
+export interface path {
+  backend: backend;
+  path: string;
+  pathType: string;
+}
 
 export async function updateIngress(
+  logger: Logger,
   k8sApiNetwork: k8s.NetworkingV1Api,
   namespace: string,
   serviceName: string,
   ingressName: string,
   event: string,
 ) {
+  logger.info(`Reading ingress ${ingressName} in this namespace ${namespace}`);
   const response = await k8sApiNetwork.readNamespacedIngress(
     ingressName,
     namespace,
@@ -17,16 +39,21 @@ export async function updateIngress(
     },
   );
 
-  const currentIngress = response.body;
+  let currentIngress = response.body;
 
-  const lastAppliedConfig = JSON.parse(
+  let lastAppliedConfig = JSON.parse(
     currentIngress.metadata.annotations[
       'kubectl.kubernetes.io/last-applied-configuration'
     ],
   );
 
+  let servicePaths = lastAppliedConfig.spec.rules[0].http.paths;
+
   if (event === 'CREATE') {
-    lastAppliedConfig.spec.rules[0].http.paths.push({
+    logger.info(
+      `Creating Path for this service ${serviceName} in this ingress ${ingressName}`,
+    );
+    servicePaths.push({
       backend: {
         service: {
           name: serviceName,
@@ -38,41 +65,53 @@ export async function updateIngress(
       path: `/${serviceName}/*`,
       pathType: 'ImplementationSpecific',
     });
+  } else if (event === 'DELETE') {
+    logger.info(
+      `Deleting Path for this service ${serviceName} in this ingress ${ingressName}`,
+    );
+    servicePaths = servicePaths.filter(function (path: path) {
+      return path.backend.service.name !== serviceName;
+    });
   }
 
-  // const updatedPaths = {paths: lastAppliedConfig.spec.rules[0].http.paths}
-  // console.log(lastAppliedConfig.spec.rules[0].http.paths);
-
-  // return currentIngress;
+  // As we changed the headers to json-path, we need to send the body in the JSON Patch format
+  const spec = [
+    {
+      op: 'replace',
+      path: '/spec/rules/0/http',
+      value: { paths: servicePaths },
+    },
+  ];
 
   // we get this error `unsupported media type back by the api` without this headers
-  // const headers = {
-  //   headers: { 'content-type': 'application/json-patch+json' },
-  // };
+  const headers = {
+    headers: { 'content-type': 'application/json-patch+json' },
+  };
 
-  // // As we changed the headers to json-path, we need to send the body in the JSON Patch format
-  // const spec = [
-  //   {
-  //     op: 'replace',
-  //     path: '/spec/rules/0/http',
-  //     value: JSON.stringify(updatedPaths),
-  //   },
-  // ];
+  try {
+    await k8sApiNetwork.patchNamespacedIngress(
+      ingressName,
+      namespace,
+      spec,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      headers,
+    );
 
-  // const ingressResponse = await k8sApiNetwork.patchNamespacedIngress(
-  //   'example-ingress',
-  //   'engine',
-  //   spec,
-  //   null,
-  //   null,
-  //   null,
-  //   null,
-  //   null,
-  //   headers,
-  // );
+    logger.info(`Patched Ingress ${ingressName} successfully`);
 
-  // console.log(ingressResponse.body)
-
-  // return ingressResponse.body;
-  return true;
+    return {
+      status: true,
+    };
+  } catch (e) {
+    logger.info(`Patch Ingress ${ingressName} failed with an error`);
+    logger.error(e);
+    return {
+      status: false,
+      error: e,
+    };
+  }
 }
