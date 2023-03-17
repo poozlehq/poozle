@@ -20,6 +20,8 @@ const deploymentSpec = {
   ],
 };
 
+const ingressName = process.env.INGRESS_NAME
+
 const port = 4000;
 // TODO: Move this to env
 const annotations = {
@@ -76,7 +78,8 @@ export function workspaceHandler(logger: Logger) {
           if not found
         */
         const createStatus = await workspace.startCreate(deploymentSpec);
-        res.status(createStatus.status ? 200 : 400).json(createStatus);
+        const ingressStatus = await workspace.updateIngress(ingressName, 'CREATE');
+        res.status(createStatus.status && ingressStatus.status ? 200 : 400).json(ingressStatus);
         break;
       }
       case WorkspaceEventEnum.DELETE: {
@@ -84,7 +87,8 @@ export function workspaceHandler(logger: Logger) {
           Deleting the deployment and service for the workspace
         */
         const deleteStatus = await workspace.startDelete();
-        res.status(deleteStatus.status ? 200 : 400).json(deleteStatus);
+        const ingressStatus = await workspace.updateIngress(ingressName, 'DELETE');
+        res.status(deleteStatus.status && ingressStatus.status ? 200 : 400).json(ingressStatus);
         break;
       }
       case WorkspaceEventEnum.RESTART: {

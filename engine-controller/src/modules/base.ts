@@ -246,18 +246,28 @@ export class Base {
     }
   }
 
-  async updateIngress() {
-    this.logger.info('updating ingress gateway');
-    await updateIngress(
-      this.k8sNetworkingV1Api,
-      this.namespace,
-      this.slug,
-      'example-ingress',
-      'CREATE',
-    );
+  async updateIngress(ingressName: string, event: string) {
+    this.logger.info(`updating ingress gateway ${ingressName}`);
+    try {
+      await updateIngress(
+        this.logger,
+        this.k8sNetworkingV1Api,
+        this.namespace,
+        this.slug,
+        ingressName,
+        event,
+      );
 
-    return {
-      status: true,
-    };
+      return {
+        status: true,
+      };
+    } catch (e) {
+      this.logger.info(`Failed to update ingress gateway ${ingressName}`);
+      this.logger.error(e);
+      return {
+        status: true,
+        error: e,
+      };
+    }
   }
 }
