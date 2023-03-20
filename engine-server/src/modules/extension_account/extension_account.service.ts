@@ -20,6 +20,8 @@ import {
   ExtensionAccountRequestIdBody,
   ExtensionAccountUpdateBody,
 } from './extension_account.interface';
+import { AnalyticsService } from 'modules/analytics/analytics.service';
+import { EVENT_TYPES } from 'common/constants';
 
 @Injectable()
 export class ExtensionAccountService {
@@ -28,6 +30,7 @@ export class ExtensionAccountService {
   constructor(
     private prisma: PrismaService,
     private configService: ConfigService,
+    private readonly analyticsService: AnalyticsService,
     private extensionDefinitionService: ExtensionDefinitionService,
     private controllerService: ControllerService,
   ) {}
@@ -94,6 +97,7 @@ export class ExtensionAccountService {
         },
         include: {
           workspace: true,
+          extensionDefinition: true,
         },
       });
 
@@ -130,6 +134,22 @@ export class ExtensionAccountService {
           },
         });
       }
+
+      /**
+       * Track
+       */
+      /** Track */
+      this.analyticsService.track(
+        extensionAccount.workspaceId,
+        EVENT_TYPES.NEW_EXTENSION_ACCOUNT,
+        {
+          name: extensionAccount.name,
+          extensionDockerImage:
+            extensionAccount.extensionDefinition.dockerRepository,
+          extensionDockerVersion:
+            extensionAccount.extensionDefinition.dockerImageTag,
+        },
+      );
 
       /**
        * Create extension deployment

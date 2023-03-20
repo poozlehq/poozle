@@ -9,7 +9,12 @@ import { UserEntity } from 'common/decorators/user.decorator';
 
 import { GqlAuthGuard } from 'modules/auth/gql-auth.guard';
 
-import { ChangePasswordInput, UpdateUserInput } from './user.interface';
+import {
+  BaseInformationRequest,
+  BaseInformationResponse,
+  ChangePasswordInput,
+  UpdateUserInput,
+} from './user.interface';
 import { UserService } from './user.service';
 
 @Resolver(() => User)

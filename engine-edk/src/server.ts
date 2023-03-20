@@ -5,6 +5,8 @@ import { createServer } from "http";
 import { stitchSchemas } from "@graphql-tools/stitch";
 import { YogaServerOptions, createYoga } from "graphql-yoga";
 
+import { getJSONFrombase64 } from "./bases/utils";
+
 const PORT = 8000;
 
 export async function runGateway(
@@ -27,22 +29,12 @@ export async function runGateway(
     maskedErrors: false,
     context: async ({ request }: { request: Request }) => {
       const config64 = request.headers.get("config") ?? null;
-      if (config64) {
-        const buff = new Buffer(config64, "base64");
-        let config = buff.toString("utf8");
-        config = JSON.parse(config);
+      const parsedHeaders64 = request.headers.get("authHeaders") ?? null;
 
-        // This to check if the base64 is still not parsed to JSON
-        if (typeof config === "string") {
-          config = JSON.parse(config);
-        }
+      const config = getJSONFrombase64(config64);
+      const parsedHeaders = getJSONFrombase64(parsedHeaders64);
 
-        return {
-          config,
-        };
-      }
-
-      return {};
+      return { config, parsedHeaders };
     },
     ...yogaOptions,
   });

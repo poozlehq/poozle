@@ -1,8 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 export const typeDefs = /* GraphQL */ `
-  scalar Spec
-  scalar Config
   scalar Headers
 
   type HeaderConfig {
@@ -11,17 +9,17 @@ export const typeDefs = /* GraphQL */ `
 
   type CheckConfig {
     status: Boolean
-    error: String!
+    error: String
   }
 
   type SpecConfig {
-    spec: Spec
+    spec: SpecT0
   }
 
   # the schema allows the following query:
   type Query {
     getSpec: SpecConfig
-    getHeaders(config: Config): HeaderConfig
-    check(config: Config): CheckConfig
+    getHeaders(config: CredentialsT0): HeaderConfig
+    check(config: CredentialsT0): CheckConfig
   }
 `;

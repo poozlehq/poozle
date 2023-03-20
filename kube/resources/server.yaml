@@ -109,11 +109,6 @@ spec:
                 configMapKeyRef:
                   name: poozle-env
                   key: EXTENSION_BASE_HOST
-            - name: ON_KUBERNETES
-              valueFrom:
-                configMapKeyRef:
-                  name: poozle-env
-                  key: ON_KUBERNETES
 
           ports:
             - containerPort: 3000

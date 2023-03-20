@@ -13,7 +13,6 @@ class YoutubeExtension extends BaseRestExtensionNew {
   name = 'youtube';
 
   async authHeaders(config: Config): AuthHeaderResponse {
-    // Need to return the headers the API expects
     return {
       Authorization: `Bearer ${config.config.token}`,
     };

@@ -1,11 +1,13 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { mergeTypeDefs } from "@graphql-tools/merge";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { GraphQLSchema } from "graphql";
 import { GraphQLJSON } from "graphql-scalars";
 import { createGraphQLSchema } from "openapi-to-graphql-poozle-fork";
 
 import { typeDefs } from "./base_typeDefs";
+import { getTypedefsForCredentialsAndSpec } from "./utils";
 import {
   AuthHeaderResponse,
   BaseExtensionInterface,
@@ -42,11 +44,16 @@ export class BaseRestExtension implements BaseExtensionInterface {
   // This is to used to check if the credentials are valid
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async checkCredentials(_config: Config): CheckResponse {
-    return { status: false };
+    return { status: false, error: "" };
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async authHeaders(_config: Config): AuthHeaderResponse {
+    return {};
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async headers(_config: Config): AuthHeaderResponse {
     return {};
   }
 
@@ -86,11 +93,15 @@ export class BaseRestExtension implements BaseExtensionInterface {
       ) => {
         if (context) {
           const credentials = context?.context.config;
+          const parsedHeaders = context?.context.parsedHeaders;
 
-          return this.authHeaders({
-            ...credentials,
-            context: { method, path },
-          });
+          return {
+            ...this.headers({
+              ...credentials,
+              context: { method, path },
+            }),
+            ...parsedHeaders,
+          };
         }
 
         return {};
@@ -104,10 +115,8 @@ export class BaseRestExtension implements BaseExtensionInterface {
    * Will return additionalSchema adding
    * check, authHeaders, spec
    */
-  additionalSchema(): GraphQLSchema {
+  async additionalSchema(): Promise<GraphQLSchema> {
     const resolvers = {
-      Spec: GraphQLJSON,
-      Config: GraphQLJSON,
       Headers: GraphQLJSON,
       Query: {
         getSpec: async () => ({ spec: await this.spec() }),
@@ -120,7 +129,14 @@ export class BaseRestExtension implements BaseExtensionInterface {
       },
     };
 
-    return makeExecutableSchema({ typeDefs, resolvers });
+    const spec = await this.getSpec();
+    const { typeDefinitions, typesInput } =
+      getTypedefsForCredentialsAndSpec(spec);
+
+    return makeExecutableSchema({
+      typeDefs: mergeTypeDefs([...typeDefinitions, ...typesInput, typeDefs]),
+      resolvers,
+    });
   }
 
   /*

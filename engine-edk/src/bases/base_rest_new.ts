@@ -5,13 +5,14 @@
  * and some with the openapi-to-graphql package.
  * We will be moving to mesh based extensions soon
  */
+import { mergeTypeDefs } from "@graphql-tools/merge";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import { loadGraphQLSchemaFromOpenAPI } from "@omnigraph/openapi";
 import { GraphQLError, GraphQLSchema } from "graphql";
 import { GraphQLJSON } from "graphql-scalars";
 
 import { typeDefs } from "./base_typeDefs";
-import { getConfigJSON } from "./utils";
+import { getJSONFrombase64, getTypedefsForCredentialsAndSpec } from "./utils";
 import {
   AuthHeaderResponse,
   BaseExtensionInterface,
@@ -50,11 +51,16 @@ export class BaseRestExtensionNew implements BaseExtensionInterface {
   // This is to used to check if the credentials are valid
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async checkCredentials(_config: Config): CheckResponse {
-    return { status: false };
+    return { status: false, error: "" };
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async authHeaders(_config: Config): AuthHeaderResponse {
+    return {};
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async headers(_config: Config): AuthHeaderResponse {
     return {};
   }
 
@@ -70,8 +76,12 @@ export class BaseRestExtensionNew implements BaseExtensionInterface {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         context?: any
       ): Promise<Response> => {
-        const config = getConfigJSON(context.req.headers.config);
-        const headers = await this.authHeaders({
+        const config = getJSONFrombase64(context.req.headers.config);
+        const parsedHeaders = getJSONFrombase64(
+          context.req.headers.authHeaders
+        );
+
+        const headers = await this.headers({
           config,
           context: { method: options.method, path: url },
         });
@@ -83,6 +93,7 @@ export class BaseRestExtensionNew implements BaseExtensionInterface {
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               ...(options?.headers as any),
               ...headers,
+              ...parsedHeaders,
             },
           });
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -99,10 +110,8 @@ export class BaseRestExtensionNew implements BaseExtensionInterface {
    * Will return additionalSchema adding
    * check, authHeaders, spec
    */
-  additionalSchema(): GraphQLSchema {
+  async additionalSchema(): Promise<GraphQLSchema> {
     const resolvers = {
-      Spec: GraphQLJSON,
-      Config: GraphQLJSON,
       Headers: GraphQLJSON,
       Query: {
         getSpec: async () => ({ spec: await this.spec() }),
@@ -115,7 +124,15 @@ export class BaseRestExtensionNew implements BaseExtensionInterface {
       },
     };
 
-    return makeExecutableSchema({ typeDefs, resolvers });
+    const spec = await this.getSpec();
+
+    const { typeDefinitions, typesInput } =
+      getTypedefsForCredentialsAndSpec(spec);
+
+    return makeExecutableSchema({
+      typeDefs: mergeTypeDefs([...typeDefinitions, ...typesInput, typeDefs]),
+      resolvers,
+    });
   }
 
   /*

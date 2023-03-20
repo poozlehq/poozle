@@ -4,6 +4,7 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { PrismaModule, PrismaService } from 'nestjs-prisma';
 
+import { AnalyticsService } from 'modules/analytics/analytics.service';
 import { ControllerService } from 'modules/controller/controller.service';
 import { ExtensionDefinitionModule } from 'modules/extension_definition/extension_definition.module';
 import { ExtensionDefinitionService } from 'modules/extension_definition/extension_definition.service';
@@ -19,6 +20,7 @@ import { ExtensionAccountService } from './extension_account.service';
     PrismaService,
     ExtensionAccountResolver,
     ControllerService,
+    AnalyticsService,
     ExtensionDefinitionService,
   ],
   exports: [ExtensionAccountService],

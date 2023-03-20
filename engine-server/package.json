@@ -59,6 +59,7 @@
     "@nestjs/passport": "9.0.0",
     "@nestjs/platform-express": "9.2.1",
     "@prisma/client": "^4.9.0",
+    "@segment/analytics-node": "^1.0.0-beta.24",
     "apollo-server-express": "3.11.1",
     "axios": "^1.3.4",
     "bcrypt": "5.1.0",

@@ -1,5 +1,5 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
-import { Group, Select, Text, Title } from '@mantine/core';
+import { Group, Text, Title } from '@mantine/core';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
@@ -9,6 +9,8 @@ import {
 } from 'queries/generated/graphql';
 
 import { NewExtensionForm } from 'modules/extension/new_extensions/new_extension_form';
+
+import { Select } from 'components';
 
 import styles from './first_extension.module.scss';
 
@@ -31,6 +33,7 @@ export function FirstExtension() {
         (extensionDefinition) => ({
           value: extensionDefinition.extensionDefinitionId,
           label: extensionDefinition.name,
+          image: extensionDefinition.icon,
         }),
       );
     }
@@ -41,11 +44,11 @@ export function FirstExtension() {
   return (
     <div>
       <Group mt="xl" spacing={1}>
-        <Title order={1}>Set your first extension</Title>
+        <Title order={1}>👋 Welcome to Poozle! </Title>
         <Text>
-          Your extension represents the API you want to talk to. You will
-          connect a new extension. Common examples of extension are Shopify,
-          Stripe, Github, etc.
+          Set your first extension. Extension represents the API you want to
+          talk to. You will connect a new extension. Common examples of
+          extension are Shopify, Stripe, Github, etc.
         </Text>
       </Group>
 
@@ -61,7 +64,7 @@ export function FirstExtension() {
             searchable
             onChange={(value: string) => setExtensionDefinition(value)}
             className={styles.integrationSelect}
-          ></Select>
+          />
         </Group>
 
         <Group>

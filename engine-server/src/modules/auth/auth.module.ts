@@ -15,6 +15,7 @@ import { AuthService } from './auth.service';
 import { GqlAuthGuard } from './gql-auth.guard';
 import { JwtStrategy } from './jwt.strategy';
 import { PasswordService } from './password.service';
+import { AnalyticsService } from '../analytics/analytics.service';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { PasswordService } from './password.service';
     JwtStrategy,
     GqlAuthGuard,
     PasswordService,
+    AnalyticsService,
     HiveService,
   ],
   exports: [GqlAuthGuard],

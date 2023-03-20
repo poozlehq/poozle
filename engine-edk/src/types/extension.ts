@@ -14,21 +14,9 @@ const enum InputType {
 
 // This will be used to generate form in the UI
 // and then later passed to respective queries
-export interface Input {
-  name: string;
-  key: string;
-  description: string;
-  type: InputType;
-}
 
-export interface Spec {
-  name: string;
-  key: string;
-  description?: string;
-  icon: string;
-  type: SchemaType;
-  inputBlocks: Input[];
-}
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Spec = Record<string, any>;
 
 // This is used to fetch the parsed credentails from the header
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,7 +39,7 @@ export type AuthHeaderResponse = Promise<
 export type SpecResponse = Promise<Spec | undefined>;
 export interface CheckResponseType {
   status: boolean;
-  error?: string;
+  error: string;
 }
 export type CheckResponse = Promise<CheckResponseType>;
 

@@ -9,6 +9,7 @@ import { PrismaModule } from 'nestjs-prisma';
 import config from 'common/configs/config';
 import { loggingMiddleware } from 'common/middleware/logging.middleware';
 
+import { AnalyticsModule } from 'modules/analytics/analytics.module';
 import { AuthModule } from 'modules/auth/auth.module';
 import { ControllerModule } from 'modules/controller/controller.module';
 import { ExtensionAccountModule } from 'modules/extension_account/extension_account.module';
@@ -48,6 +49,7 @@ import { GqlConfigService } from '../gql-config.service';
     HiveModule,
     MonitoringModule,
     GatewayAuthModule,
+    AnalyticsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

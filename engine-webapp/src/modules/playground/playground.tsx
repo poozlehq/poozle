@@ -133,8 +133,10 @@ export function PlaygroundLoader() {
             className={styles.alert}
             color="red"
           >
-            Something terrible happened! Please reach out to us at
-            support@poozle.dev
+            Kindly check if you have connected extensions with us. We only
+            enable this feature once you connect your first extension. Incase
+            it's still not solved something terrible happened! Please reach out
+            to us at support@poozle.dev
           </Alert>
         </Group>
       </>

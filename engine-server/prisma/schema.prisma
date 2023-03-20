@@ -31,16 +31,17 @@ model User {
 }
 
 model Workspace {
-  workspaceId          String                @id @default(uuid())
-  slug                 String                @unique
-  user                 User                  @relation(references: [userId], fields: [userId])
-  userId               String
-  initialSetupComplete Boolean               @default(false)
-  ExtensionDefinition  ExtensionDefinition[]
-  ExtensionAccount     ExtensionAccount[]
-  ExtensionRouter      ExtensionRouter[]
-  deleted              DateTime?
-  Gateway              Gateway[]
+  workspaceId             String                @id @default(uuid())
+  slug                    String                @unique
+  user                    User                  @relation(references: [userId], fields: [userId])
+  userId                  String
+  initialSetupComplete    Boolean               @default(false)
+  anonymousDataCollection Boolean               @default(false)
+  ExtensionDefinition     ExtensionDefinition[]
+  ExtensionAccount        ExtensionAccount[]
+  ExtensionRouter         ExtensionRouter[]
+  deleted                 DateTime?
+  Gateway                 Gateway[]
 }
 
 model ExtensionDefinition {

@@ -143,6 +143,11 @@ async function main(): Promise<null> {
               endpoint,
               operationHeaders: {
                 config: configHeaders,
+                name: extensionAccountName,
+                /**
+                 * TODO(harshith): Change this later to value fetched from database
+                 */
+                redisExpiry: "'60'",
               },
             },
           },
@@ -193,7 +198,7 @@ async function main(): Promise<null> {
       playgroundTitle: 'Poozle playground',
       playground: true,
     },
-    additionalEnvelopPlugins: './envelopPlugins',
+    additionalEnvelopPlugins: './src/envelopPlugins',
   };
   if (gateway.length) {
     meshConfig.plugins = [

@@ -6,6 +6,8 @@ query GetUser {
     Workspace {
       workspaceId
       slug
+      anonymousDataCollection
+      initialSetupComplete
     }
   }
 }

@@ -11,7 +11,7 @@ ENV NODE_ENV=production
 COPY --from=builder /usr/src/app/index.js /usr/src/app/
 COPY --from=builder /usr/src/app/src/client/ /usr/src/app/client
 COPY --from=builder /usr/src/app/package.json /usr/src/app/
-COPY --from=builder /usr/src/app/envelopPlugins.ts /usr/src/app/
+COPY --from=builder /usr/src/app/src/envelopPlugins.ts /usr/src/app/src/
 
 
 WORKDIR /usr/src/app

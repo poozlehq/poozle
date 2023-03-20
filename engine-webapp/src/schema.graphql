@@ -15,6 +15,15 @@ type Auth {
   user: User!
 }
 
+input BaseInformationRequest {
+  companyName: String!
+  organisationSize: String!
+}
+
+type BaseInformationResponse {
+  status: Boolean!
+}
+
 input ChangePasswordInput {
   newPassword: String!
   oldPassword: String!
@@ -112,6 +121,7 @@ input ExtensionDefinitionCreateBody {
   extensionType: String!
   icon: String!
   name: String!
+  releaseStage: String!
   workspaceId: String!
 }
 
@@ -126,6 +136,16 @@ input ExtensionDefinitionRequestWorkspaceIdBody {
 
 type ExtensionDefinitionSpec {
   spec: JSON!
+}
+
+input ExtensionDefinitionUpdateBody {
+  dockerImageTag: String!
+  dockerRepository: String!
+  extensionDefinitionId: String!
+  extensionType: String!
+  icon: String!
+  name: String!
+  releaseStage: String!
 }
 
 type ExtensionRouter {
@@ -171,6 +191,7 @@ type GatewayAuthToken {
 }
 
 input GatewayAuthTokenCreateInput {
+  days: String
   workspaceId: String!
 }
 
@@ -217,8 +238,12 @@ type Mutation {
   login(data: LoginInput!): Auth!
   logout: Logout!
   refreshToken(token: JWT!): Token!
+  sendBasicInformation(data: BaseInformationRequest!): BaseInformationResponse!
   signup(data: SignupInput!): Auth!
   updateExtensionAccount(data: ExtensionAccountUpdateBody!): ExtensionAccount!
+  updateExtensionDefinition(
+    data: ExtensionDefinitionUpdateBody!
+  ): ExtensionDefinition!
   updateExtensionRouter(
     data: ExtensionRouterRequestUpdateBody!
   ): ExtensionRouter!
@@ -339,6 +364,7 @@ type Workspace {
   ExtensionRouter: [ExtensionRouter!]
   Gateway: [Gateway!]
   _count: WorkspaceCount!
+  anonymousDataCollection: Boolean!
   deleted: DateTime
   initialSetupComplete: Boolean!
   slug: String!

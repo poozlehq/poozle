@@ -5,6 +5,8 @@ import * as React from 'react';
 
 import { useGetUserQuery } from 'queries/generated/graphql';
 
+import { AuthGuard } from 'wrappers/auth_guard';
+
 import { Loader } from 'components';
 
 export function WorkspaceHome() {
@@ -20,4 +22,10 @@ export function WorkspaceHome() {
   return <Loader />;
 }
 
-export default WorkspaceHome;
+export default () => {
+  return (
+    <AuthGuard>
+      <WorkspaceHome />
+    </AuthGuard>
+  );
+};

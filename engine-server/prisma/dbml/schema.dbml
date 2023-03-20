@@ -19,6 +19,7 @@ Table Workspace {
   user User [not null]
   userId String [not null]
   initialSetupComplete Boolean [not null, default: false]
+  anonymousDataCollection Boolean [not null, default: false]
   ExtensionDefinition ExtensionDefinition [not null]
   ExtensionAccount ExtensionAccount [not null]
   ExtensionRouter ExtensionRouter [not null]

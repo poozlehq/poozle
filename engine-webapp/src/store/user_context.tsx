@@ -5,6 +5,8 @@ import { createContext } from 'react';
 interface Workspace {
   slug: string;
   workspaceId: string;
+  anonymousDataCollection: boolean;
+  initialSetupComplete: boolean;
 }
 
 export interface User {

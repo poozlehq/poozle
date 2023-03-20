@@ -18,7 +18,9 @@ import {
 } from 'unique-names-generator';
 
 import { SecurityConfig } from 'common/configs/config.interface';
+import { EVENT_TYPES } from 'common/constants';
 
+import { AnalyticsService } from 'modules/analytics/analytics.service';
 import { HiveService } from 'modules/hive/hive.service';
 
 import { SignupInput } from './dto/signup.input';
@@ -31,6 +33,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
     private readonly prisma: PrismaService,
     private readonly passwordService: PasswordService,
+    private readonly analyticsService: AnalyticsService,
     private readonly configService: ConfigService,
     private readonly hiveService: HiveService,
   ) {}
@@ -86,6 +89,9 @@ export class AuthService {
       /**
        * Replace the above
        */
+
+      /** Track */
+      this.analyticsService.track(payload.email, EVENT_TYPES.NEW_USER);
 
       return this.generateTokens({
         userId: user.userId,

@@ -27,6 +27,7 @@
     "graphql": "^16.6.0",
     "js-yaml": "^4.1.0",
     "jsonwebtoken": "^9.0.0",
+    "redis": "^4.6.5",
     "winston": "^3.8.2"
   },
   "devDependencies": {

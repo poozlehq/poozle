@@ -1,11 +1,13 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { mergeTypeDefs } from "@graphql-tools/merge";
 import { makeExecutableSchema } from "@graphql-tools/schema";
 import axios from "axios";
 import { print, GraphQLSchema, GraphQLError } from "graphql";
 import { GraphQLJSON } from "graphql-scalars";
 
 import { typeDefs } from "./base_typeDefs";
+import { getTypedefsForCredentialsAndSpec } from "./utils";
 import {
   AuthHeaderResponse,
   BaseExtensionInterface,
@@ -39,11 +41,16 @@ export class BaseGraphQLExtension implements BaseExtensionInterface {
   // This is to used to check if the credentials are valid
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async checkCredentials(_config: Config): CheckResponse {
-    return { status: false };
+    return { status: false, error: "" };
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async authHeaders(_config: Config): AuthHeaderResponse {
+    return {};
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async headers(_config: Config): AuthHeaderResponse {
     return {};
   }
 
@@ -61,8 +68,9 @@ export class BaseGraphQLExtension implements BaseExtensionInterface {
     const remoteExecutor = async ({ document, variables, context }: any) => {
       try {
         const credentials = context.config;
+        const parsedHeaders = context.parsedHeaders;
         const query = print(document);
-        const authHeaders = await this.authHeaders(credentials);
+        const headers = await this.headers(credentials);
         const url = await this.getURL(context.config);
         const fetchResult = await axios.post(
           url,
@@ -73,7 +81,8 @@ export class BaseGraphQLExtension implements BaseExtensionInterface {
           {
             headers: {
               "Content-Type": "application/json",
-              ...authHeaders,
+              ...headers,
+              ...parsedHeaders,
             },
           }
         );
@@ -93,10 +102,8 @@ export class BaseGraphQLExtension implements BaseExtensionInterface {
    * Will return additionalSchema adding
    * check, authHeaders, spec
    */
-  additionalSchema(): GraphQLSchema {
+  async additionalSchema(): Promise<GraphQLSchema> {
     const resolvers = {
-      Spec: GraphQLJSON,
-      Config: GraphQLJSON,
       Headers: GraphQLJSON,
       Query: {
         getSpec: async () => ({ spec: await this.spec() }),
@@ -109,7 +116,14 @@ export class BaseGraphQLExtension implements BaseExtensionInterface {
       },
     };
 
-    return makeExecutableSchema({ typeDefs, resolvers });
+    const spec = await this.getSpec();
+    const { typeDefinitions, typesInput } =
+      getTypedefsForCredentialsAndSpec(spec);
+
+    return makeExecutableSchema({
+      typeDefs: mergeTypeDefs([...typeDefinitions, ...typesInput, typeDefs]),
+      resolvers,
+    });
   }
 
   /*

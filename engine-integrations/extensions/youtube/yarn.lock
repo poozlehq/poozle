@@ -121,7 +121,7 @@
     "@graphql-typed-document-node/core" "3.1.2"
     tslib "^2.4.0"
 
-"@graphql-mesh/utils@0.43.17", "@graphql-mesh/utils@^0.43.17":
+"@graphql-mesh/utils@0.43.17":
   version "0.43.17"
   resolved "https://registry.yarnpkg.com/@graphql-mesh/utils/-/utils-0.43.17.tgz#3574e7bd5fdf1d24b671151228b21e465711c7d8"
   integrity sha512-huTgWOePnzZIp+alMNw6JL/qnxObJb0CGLd1G5WWKdNnQttZRjzZx/jz2oJ7fmbFvPsrG2YpOW0HYNVD+2Flbw==
