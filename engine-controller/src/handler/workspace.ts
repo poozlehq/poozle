@@ -67,6 +67,7 @@ export function workspaceHandler(logger: Logger) {
         { name: 'WORKSPACE_ID', value: body.workspaceId },
         { name: 'DATABASE_URL', value: process.env.DATABASE_URL },
         { name: 'JWT_SECRET', value: process.env.JWT_ACCESS_SECRET },
+        { name: 'REDIS_URL', value: process.env.REDIS_URL },
       ];
     });
 
