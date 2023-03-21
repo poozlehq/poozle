@@ -42,11 +42,15 @@ function convertToString(config: Record<string, any>) {
   return Buffer.from(JSON.stringify(config)).toString('base64');
 }
 
-async function saveToRedis(key: string, value: string, expiresIn: number) {
-  const client = getRedisClient();
+async function saveToRedis(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  client: any,
+  key: string,
+  value: string,
+  expiresIn: number,
+) {
   if (client) {
     try {
-      await client.connect();
       const setValue = await client.set(
         `${process.env.WORKSPACE_ID}__${key}`,
         value,
@@ -54,7 +58,6 @@ async function saveToRedis(key: string, value: string, expiresIn: number) {
           EX: expiresIn,
         },
       );
-      await client.quit();
       return setValue;
     } catch (e) {
       console.log(e);
@@ -66,30 +69,26 @@ async function saveToRedis(key: string, value: string, expiresIn: number) {
   return undefined;
 }
 
-async function getFromRedis(key: string) {
-  const client = getRedisClient();
-  if (client) {
-    try {
-      await client.connect();
-      const value = await client.get(key);
-      await client.quit();
-      return value;
-    } catch (e) {
-      console.log(e);
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function getFromRedis(client: any, key: string) {
+  try {
+    const value = await client.get(key);
+    return value;
+  } catch (e) {
+    console.log(e);
 
-      return undefined;
-    }
+    return undefined;
   }
-
-  return undefined;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function getAuthHeades(
+export async function getAuthHeaders(
   url: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   options: any,
 ) {
+  let redisIsAvailable = false;
+
   try {
     const headers = options.headers;
 
@@ -97,12 +96,24 @@ export async function getAuthHeades(
      * These values will only passed once mesh is build and we running queries through mesh
      */
     if (headers.config && headers.name) {
-      const redisValue = await getFromRedis(headers.name);
+      const client = getRedisClient();
+
+      if (client) {
+        redisIsAvailable = true;
+        await client.connect();
+      }
+
       /**
-       * If the redis has the key return the key without fetching it again
+       * Run redis only if the client is available
        */
-      if (redisValue) {
-        return { authHeaders: redisValue, ...headers };
+      if (redisIsAvailable) {
+        const redisValue = await getFromRedis(client, headers.name);
+        /**
+         * If the redis has the key return the key without fetching it again
+         */
+        if (redisValue) {
+          return { authHeaders: redisValue, ...headers };
+        }
       }
 
       const document = `
@@ -132,12 +143,18 @@ export async function getAuthHeades(
         authHeaders: convertToString(parsedHeaders),
       };
 
-      await saveToRedis(
-        headers.name,
-        convertToString(parsedHeaders),
-        headers.redisExpiry || 60,
-      );
-
+      /**
+       * Run redis only if the client is available
+       */
+      if (redisIsAvailable) {
+        await saveToRedis(
+          client,
+          headers.name,
+          convertToString(parsedHeaders),
+          headers.redisExpiry || 60,
+        );
+        await client.disconnect();
+      }
       return finalHeaders;
     }
   } catch (e) {

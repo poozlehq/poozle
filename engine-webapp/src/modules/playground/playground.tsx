@@ -117,7 +117,7 @@ export function PlaygroundLoader() {
     return (
       <>
         <Header title="Playground" />
-        <Loader />;
+        <Loader />
       </>
     );
   }

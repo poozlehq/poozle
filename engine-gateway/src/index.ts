@@ -147,7 +147,7 @@ async function main(): Promise<null> {
                 /**
                  * TODO(harshith): Change this later to value fetched from database
                  */
-                redisExpiry: "'60'",
+                redisExpiry: '60',
               },
             },
           },

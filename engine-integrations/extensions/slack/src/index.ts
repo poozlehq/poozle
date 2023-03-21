@@ -18,7 +18,7 @@ class SlackExtension extends BaseRestExtensionNew {
   async authHeaders(config: Config): AuthHeaderResponse {
     // Need to return the headers the API expects
     return {
-      Authorization: `Bearer ${config.config.token}`,
+      Authorization: `Bearer ${config.token}`,
     };
   }
 

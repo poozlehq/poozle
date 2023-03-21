@@ -12,13 +12,13 @@ import {
 import { fetch } from '@whatwg-node/fetch';
 
 import { resolveUserFn, validateUser } from './authPlugin';
-import { getAuthHeades } from './utils';
+import { getAuthHeaders } from './utils';
 
 const myPlugin: MeshPlugin<any> = {
   onFetch: async (
     params: OnFetchHookPayload<any>,
   ): Promise<OnFetchHookDone> => {
-    const headers = await getAuthHeades(params.url, params.options);
+    const headers = await getAuthHeaders(params.url, params.options);
     const fetchFunction = async (
       url: string,
       options?: RequestInit,
