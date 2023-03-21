@@ -2,6 +2,7 @@
 
 export const typeDefs = /* GraphQL */ `
   scalar Headers
+  scalar Spec
 
   type HeaderConfig {
     headers: Headers
@@ -13,7 +14,7 @@ export const typeDefs = /* GraphQL */ `
   }
 
   type SpecConfig {
-    spec: SpecT0
+    spec: Spec
   }
 
   # the schema allows the following query:

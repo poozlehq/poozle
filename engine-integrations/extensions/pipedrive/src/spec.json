@@ -5,14 +5,19 @@
     "type": "object",
     "properties": {
       "credentials": {
-        "api_token": {
-          "type": "string",
-          "title": "Api Token",
-          "order": 0,
-          "description": "Enter the API Token",
-          "secret": true
-        }
+        "type": "object",
+        "properties": {
+          "api_token": {
+            "type": "string",
+            "title": "Api Token",
+            "order": 0,
+            "description": "Enter the API Token",
+            "secret": true
+          }
+        },
+        "additionalProperties": false
       }
-    }
+    },
+    "additionalProperties": false
   }
 }

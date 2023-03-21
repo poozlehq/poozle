@@ -5,9 +5,12 @@ import { resolve } from 'path';
 import {
   AuthHeaderResponse,
   BaseRestExtensionNew,
+  CheckResponse,
   Config,
 } from '@poozle/engine-edk';
 import { SpecResponse } from '@poozle/engine-edk';
+
+import { getConversations } from './utils';
 
 class SlackExtension extends BaseRestExtensionNew {
   name = 'slack';
@@ -31,6 +34,13 @@ class SlackExtension extends BaseRestExtensionNew {
     const data = fs.readFileSync('./spec.json', 'utf8');
 
     return JSON.parse(data) as SpecResponse;
+  }
+
+  async checkCredentials(config: Config): CheckResponse {
+    const headers = await this.authHeaders(config);
+    await getConversations(headers);
+
+    return { status: true, error: '' };
   }
 }
 

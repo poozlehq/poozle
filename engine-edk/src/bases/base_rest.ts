@@ -118,6 +118,7 @@ export class BaseRestExtension implements BaseExtensionInterface {
   async additionalSchema(): Promise<GraphQLSchema> {
     const resolvers = {
       Headers: GraphQLJSON,
+      Spec: GraphQLJSON,
       Query: {
         getSpec: async () => ({ spec: await this.spec() }),
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -150,11 +151,9 @@ export class BaseRestExtension implements BaseExtensionInterface {
     This function will be used when the extension is getting configured. We will use this to test with the
     credentials are valid.
   */
-  async check(config: string): CheckResponse {
+  async check(config: Config): CheckResponse {
     try {
-      const buff = new Buffer(config, "base64");
-      const configJSON = buff.toString("utf8");
-      return await this.checkCredentials(JSON.parse(configJSON) as Config);
+      return await this.checkCredentials(config);
     } catch (err) {
       return {
         status: false,

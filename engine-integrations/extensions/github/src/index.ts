@@ -57,7 +57,7 @@ class GithubExtension extends BaseGraphQLExtension {
 
       await axios(this.url, options);
 
-      return { status: true };
+      return { status: true, error: '' };
     } catch (e) {
       return { status: false, error: e };
     }

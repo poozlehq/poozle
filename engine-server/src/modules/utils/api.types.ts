@@ -15,6 +15,7 @@ export interface ControllerResponse {
 export interface ExtensionBody {
   query: string;
   endpoint: string;
+  variables?: Record<string, string | number | boolean>;
 }
 
 export interface SpecConfig {

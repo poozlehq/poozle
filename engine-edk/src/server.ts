@@ -29,7 +29,7 @@ export async function runGateway(
     maskedErrors: false,
     context: async ({ request }: { request: Request }) => {
       const config64 = request.headers.get("config") ?? null;
-      const parsedHeaders64 = request.headers.get("authHeaders") ?? null;
+      const parsedHeaders64 = request.headers.get("authheaders") ?? null;
 
       const config = getJSONFrombase64(config64);
       const parsedHeaders = getJSONFrombase64(parsedHeaders64);

@@ -2,9 +2,19 @@
 import { fetch } from '@whatwg-node/fetch';
 import { createClient } from 'redis';
 
-const client = createClient({
-  url: process.env.REDIS_URL,
-});
+function getRedisClient() {
+  try {
+    const client = createClient({
+      url: process.env.REDIS_URL,
+    });
+
+    return client;
+  } catch (e) {
+    console.log(e);
+
+    return undefined;
+  }
+}
 
 function getConfigJSON(config64: string) {
   try {
@@ -33,25 +43,45 @@ function convertToString(config: Record<string, any>) {
 }
 
 async function saveToRedis(key: string, value: string, expiresIn: number) {
-  await client.connect();
-  const setValue = await client.set(
-    `${process.env.WORKSPACE_ID}__${key}`,
-    value,
-    {
-      EX: expiresIn,
-    },
-  );
-  await client.quit();
+  const client = getRedisClient();
+  if (client) {
+    try {
+      await client.connect();
+      const setValue = await client.set(
+        `${process.env.WORKSPACE_ID}__${key}`,
+        value,
+        {
+          EX: expiresIn,
+        },
+      );
+      await client.quit();
+      return setValue;
+    } catch (e) {
+      console.log(e);
 
-  return setValue;
+      return undefined;
+    }
+  }
+
+  return undefined;
 }
 
 async function getFromRedis(key: string) {
-  await client.connect();
-  const value = await client.get(key);
-  await client.quit();
+  const client = getRedisClient();
+  if (client) {
+    try {
+      await client.connect();
+      const value = await client.get(key);
+      await client.quit();
+      return value;
+    } catch (e) {
+      console.log(e);
 
-  return value;
+      return undefined;
+    }
+  }
+
+  return undefined;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -5,20 +5,30 @@ import { resolve } from 'path';
 import {
   AuthHeaderResponse,
   BaseRestExtensionNew,
+  CheckResponse,
   Config,
 } from '@poozle/engine-edk';
 import { SpecResponse } from '@poozle/engine-edk';
+
+import { fetchAccessToken } from './utils';
 
 class GmailExtension extends BaseRestExtensionNew {
   name = 'gmail';
 
   async authHeaders(config: Config): AuthHeaderResponse {
-    // Need to return the headers the API expects
-    return {
-      Authorization: `Bearer ${config.config.token}`,
-    };
+    try {
+      const { access_token } = await fetchAccessToken(
+        config.client_id,
+        config.client_secret,
+        config.refresh_token,
+      );
+      return {
+        Authorization: `Bearer ${access_token}`,
+      };
+    } catch (e) {
+      return {};
+    }
   }
-
   async getSchema(): Promise<string> {
     const schemaJSON = JSON.parse(
       fs.readFileSync(resolve('schema/schema.json'), 'utf8'),
@@ -31,6 +41,16 @@ class GmailExtension extends BaseRestExtensionNew {
     const data = fs.readFileSync('./spec.json', 'utf8');
 
     return JSON.parse(data) as SpecResponse;
+  }
+
+  async checkCredentials(config: Config): CheckResponse {
+    await fetchAccessToken(
+      config.client_id,
+      config.client_secret,
+      config.refresh_token,
+    );
+
+    return { status: true, error: '' };
   }
 }
 

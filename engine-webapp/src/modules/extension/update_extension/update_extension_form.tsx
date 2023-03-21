@@ -17,7 +17,8 @@ import {
 import { Loader } from 'components';
 
 import styles from './update_extension_form.module.scss';
-import { getInitialValues, getProperties } from './update_extension_form_utils';
+import { getInitialValues } from './update_extension_form_utils';
+import { getProperties } from '../new_extensions/new_extension_form_utils';
 
 interface UpdateExtensionFormProps {
   extensionAccount: ExtensionAccount;

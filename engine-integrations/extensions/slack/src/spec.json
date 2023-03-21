@@ -1,18 +1,20 @@
 {
   "integrationSpecification": {
-    "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "Slack Spec",
     "type": "object",
     "properties": {
       "credentials": {
-        "token": {
-          "type": "string",
-          "title": "Token",
-          "order": 0,
-          "description": "Enter the Token",
-          "secret": true
-        }
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Bearer token",
+            "description": "Enter the Bearer token"
+          }
+        },
+        "additionalProperties": false
       }
-    }
+    },
+    "additionalProperties": false
   }
 }

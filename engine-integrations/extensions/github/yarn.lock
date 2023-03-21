@@ -563,10 +563,10 @@
     tslib "^2.4.1"
     webcrypto-core "^1.7.4"
 
-"@poozle/engine-edk@^0.1.27":
-  version "0.1.27"
-  resolved "https://registry.yarnpkg.com/@poozle/engine-edk/-/engine-edk-0.1.27.tgz#c89e286222317f5e77ab84631e5a5f554abeb993"
-  integrity sha512-oe6SY81dEGG4wRTvp95J/WaNAGmAc8zgim6IxZcK6PmbKvgkH7MJ8Dtn7bE3A1ra1mItGEXdvH5qBbanA4QsHg==
+"@poozle/engine-edk@^0.1.33":
+  version "0.1.33"
+  resolved "https://registry.yarnpkg.com/@poozle/engine-edk/-/engine-edk-0.1.33.tgz#8bf5b3b1299dd5e36e70998f18a5edf9f4c1cbfa"
+  integrity sha512-5OoOTpHRmqVEF++qbmXcZmrZ2I10nsiKeiYWxoCvUnjxNkANiLkW2OYk1rMOVo379qGp/kj4lm7Cw9ee60Grkw==
   dependencies:
     "@graphql-tools/merge" "^8.4.0"
     "@graphql-tools/schema" "^9.0.16"

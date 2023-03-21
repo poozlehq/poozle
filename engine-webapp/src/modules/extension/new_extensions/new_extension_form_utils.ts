@@ -4,7 +4,8 @@
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getProperties(spec: any) {
-  const specProperties = spec.integrationSpecification.properties.credentials;
+  const specProperties =
+    spec.integrationSpecification.properties.credentials.properties;
 
   return Object.keys(specProperties).map((key) => ({
     key,

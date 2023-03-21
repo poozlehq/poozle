@@ -5,5 +5,5 @@ import { runGateway } from '@poozle/engine-edk';
 import GithubExtensionClass from './index';
 
 runGateway(GithubExtensionClass, 8000, {
-  graphiql: true,
+  graphiql: false,
 });

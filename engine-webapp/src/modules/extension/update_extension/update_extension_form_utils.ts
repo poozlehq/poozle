@@ -2,17 +2,7 @@
 
 import { ExtensionAccount } from 'queries/generated/graphql';
 
-// TODO (harshith): Set current types for spec
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getProperties(spec: any) {
-  const specProperties = spec.integrationSpecification.properties.credentials;
-
-  return Object.keys(specProperties).map((key) => ({
-    key,
-    ...specProperties[key],
-  }));
-}
+import { getProperties } from '../new_extensions/new_extension_form_utils';
 
 export function getInitialValues(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

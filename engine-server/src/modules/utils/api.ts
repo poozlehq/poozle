@@ -39,7 +39,10 @@ export class ExtensionApi {
     const extensionURL = this.getExtensionURL(extensionBody.endpoint);
 
     const response = await lastValueFrom(
-      this.httpService.post(extensionURL, { query: extensionBody.query }),
+      this.httpService.post(extensionURL, {
+        query: extensionBody.query,
+        variables: extensionBody.variables,
+      }),
     );
 
     return response.data.data.check;

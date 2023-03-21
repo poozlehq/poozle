@@ -219,11 +219,16 @@ export class ExtensionDefinitionService {
       `Sending request to ${extensionDefinition.name} with endpoint: ${endpoint}`,
     );
 
-    this.logger.log(Buffer.from(JSON.stringify(config)).toString('base64'));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const configForExtension = { ...config } as any;
+
+    /**
+     * Delete extensionAccountName as that is not a valid field for extension
+     */
+    delete configForExtension['extensionAccountName'];
+
     const extensionBody: ExtensionBody = {
-      query: `{check(config:"${Buffer.from(JSON.stringify(config)).toString(
-        'base64',
-      )}"){status}}`,
+      query: `query Check($config: CredentialsT0){check(config:$config){status}}`,
       endpoint:
         endpoint ??
         `http://${extensionDefinition.name
@@ -231,6 +236,10 @@ export class ExtensionDefinitionService {
           .replace(/ /g, '_')}${this.configService.get(
           'EXTENSION_BASE_HOST',
         )}/graphql`,
+      variables: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        config: configForExtension,
+      },
     };
 
     this.logger.log(

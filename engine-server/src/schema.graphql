@@ -11,15 +11,6 @@ type Auth {
   user: User!
 }
 
-input BaseInformationRequest {
-  companyName: String!
-  organisationSize: String!
-}
-
-type BaseInformationResponse {
-  status: Boolean!
-}
-
 input ChangePasswordInput {
   newPassword: String!
   oldPassword: String!
@@ -230,7 +221,6 @@ type Mutation {
   login(data: LoginInput!): Auth!
   logout: Logout!
   refreshToken(token: JWT!): Token!
-  sendBasicInformation(data: BaseInformationRequest!): BaseInformationResponse!
   signup(data: SignupInput!): Auth!
   updateExtensionAccount(data: ExtensionAccountUpdateBody!): ExtensionAccount!
   updateExtensionDefinition(data: ExtensionDefinitionUpdateBody!): ExtensionDefinition!

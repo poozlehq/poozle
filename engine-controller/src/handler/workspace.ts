@@ -1,3 +1,4 @@
+/* eslint-disable dot-location */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 import * as k8s from '@kubernetes/client-node';
 import { Request, Response } from 'express';
@@ -20,7 +21,7 @@ const deploymentSpec = {
   ],
 };
 
-const ingressName = process.env.INGRESS_NAME
+const ingressName = process.env.INGRESS_NAME;
 
 const port = 4000;
 // TODO: Move this to env
@@ -79,8 +80,13 @@ export function workspaceHandler(logger: Logger) {
           if not found
         */
         const createStatus = await workspace.startCreate(deploymentSpec);
-        const ingressStatus = await workspace.updateIngress(ingressName, 'CREATE');
-        res.status(createStatus.status && ingressStatus.status ? 200 : 400).json(ingressStatus);
+        const ingressStatus = await workspace.updateIngress(
+          ingressName,
+          'CREATE',
+        );
+        res
+          .status(createStatus.status && ingressStatus.status ? 200 : 400)
+          .json(ingressStatus);
         break;
       }
       case WorkspaceEventEnum.DELETE: {
@@ -88,8 +94,13 @@ export function workspaceHandler(logger: Logger) {
           Deleting the deployment and service for the workspace
         */
         const deleteStatus = await workspace.startDelete();
-        const ingressStatus = await workspace.updateIngress(ingressName, 'DELETE');
-        res.status(deleteStatus.status && ingressStatus.status ? 200 : 400).json(ingressStatus);
+        const ingressStatus = await workspace.updateIngress(
+          ingressName,
+          'DELETE',
+        );
+        res
+          .status(deleteStatus.status && ingressStatus.status ? 200 : 400)
+          .json(ingressStatus);
         break;
       }
       case WorkspaceEventEnum.RESTART: {

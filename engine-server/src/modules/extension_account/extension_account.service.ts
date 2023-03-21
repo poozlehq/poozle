@@ -9,6 +9,9 @@ import { PrismaService } from 'nestjs-prisma';
 
 import { ExtensionAccount } from '@generated/extension-account/extension-account.model';
 
+import { EVENT_TYPES } from 'common/constants';
+
+import { AnalyticsService } from 'modules/analytics/analytics.service';
 import { ControllerService } from 'modules/controller/controller.service';
 import { ExtensionDefinitionRequestIdBody } from 'modules/extension_definition/extension_definition.interface';
 import { ExtensionDefinitionService } from 'modules/extension_definition/extension_definition.service';
@@ -20,8 +23,6 @@ import {
   ExtensionAccountRequestIdBody,
   ExtensionAccountUpdateBody,
 } from './extension_account.interface';
-import { AnalyticsService } from 'modules/analytics/analytics.service';
-import { EVENT_TYPES } from 'common/constants';
 
 @Injectable()
 export class ExtensionAccountService {

@@ -5,21 +5,26 @@
     "type": "object",
     "properties": {
       "credentials": {
-        "token": {
-          "type": "string",
-          "title": "Token",
-          "order": 0,
-          "description": "Enter the Token",
-          "secret": true
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token",
+            "order": 0,
+            "description": "Enter the Token",
+            "secret": true
+          },
+          "shop_name": {
+            "type": "string",
+            "title": "Shop name",
+            "order": 0,
+            "description": "Enter the Shop name",
+            "secret": true
+          }
         },
-        "shop_name": {
-          "type": "string",
-          "title": "Shop name",
-          "order": 0,
-          "description": "Enter the Shop name",
-          "secret": true
-        }
+        "additionalProperties": false
       }
-    }
+    },
+    "additionalProperties": false
   }
 }

@@ -12,6 +12,8 @@ COPY --from=builder /usr/src/app/index.js /usr/src/app/
 COPY --from=builder /usr/src/app/src/client/ /usr/src/app/client
 COPY --from=builder /usr/src/app/package.json /usr/src/app/
 COPY --from=builder /usr/src/app/src/envelopPlugins.ts /usr/src/app/src/
+COPY --from=builder /usr/src/app/src/authPlugin.ts /usr/src/app/src/
+COPY --from=builder /usr/src/app/src/utils.ts /usr/src/app/src/
 
 
 WORKDIR /usr/src/app
