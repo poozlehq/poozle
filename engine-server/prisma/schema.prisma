@@ -40,6 +40,7 @@ model Workspace {
   ExtensionDefinition     ExtensionDefinition[]
   ExtensionAccount        ExtensionAccount[]
   ExtensionRouter         ExtensionRouter[]
+  ExtensionAuth           ExtensionAuth[]
   deleted                 DateTime?
   Gateway                 Gateway[]
 }
@@ -56,9 +57,22 @@ model ExtensionDefinition {
   workspaceId           String?
   ExtensionAccount      ExtensionAccount[]
   ExtensionRouter       ExtensionRouter[]
+  ExtensionAuth         ExtensionAuth[]
   deleted               DateTime?
   createdAt             DateTime           @default(now())
   updatedAt             DateTime           @updatedAt
+}
+
+model ExtensionAuth {
+  extensionAuthId  String              @id @default(uuid())
+  extensionDefinition   ExtensionDefinition @relation(references: [extensionDefinitionId], fields: [extensionDefinitionId])
+  extensionDefinitionId String
+  credential            Json
+  workspace             Workspace?          @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId           String?
+  deleted               DateTime?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
 }
 
 model ExtensionAccount {
