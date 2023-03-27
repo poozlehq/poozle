@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./app
+        working-directory: ./docs
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -42,9 +42,12 @@ jobs:
         with:
           node-version: 16.x
           cache: yarn
+          cache-dependency-path: docs/yarn.lock
       - name: Install dependencies
+        working-directory: ./docs
         run: yarn install --frozen-lockfile --non-interactive
       - name: Build
+        working-directory: ./docs
         run: yarn build
       - name: Setup Pages
         uses: actions/configure-pages@v1
@@ -52,7 +55,7 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           # Upload entire repository
-          path: build
+          path: ./docs/build
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
