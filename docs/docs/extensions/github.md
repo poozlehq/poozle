@@ -16,7 +16,7 @@ Create a [GitHub Account](https://github.com).
 
 **Poozle Open Source additional setup steps**
 
-Log into [GitHub](https://github.com) and then generate a [personal access token](https://github.com/settings/tokens). To load balance your API quota consumption across multiple API tokens, input multiple tokens separated with `,`.
+Log into [GitHub](https://github.com) and then generate a [personal access token](https://github.com/settings/tokens).
 
 <!-- /env:oss -->
 

@@ -25,6 +25,11 @@ const sidebars = {
       id: "intro",
     },
     {
+      type: "doc",
+      label: "Quickstart",
+      id: "quickstart",
+    },
+    {
       type: "category",
       label: "Extensions",
       items: [
