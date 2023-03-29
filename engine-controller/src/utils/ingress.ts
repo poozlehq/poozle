@@ -63,7 +63,7 @@ export async function updateIngress(
         status: true,
       };
     }
-    console.log(`Service path is not present in the ingress ${ingressName}`);
+    logger.info(`Service path is not present in the ingress ${ingressName}`);
     event = 'CREATE';
   }
 
