@@ -4,7 +4,7 @@ import { Base } from './base';
 import { DeploymentSpec, readDeployment, restartDeployment } from '../utils';
 
 export class Workspace extends Base {
-  async restartDeployment(deploymentSpec: DeploymentSpec) {
+  async restartDeployment(deploymentSpec: DeploymentSpec, ingressName: string) {
     try {
       try {
         await readDeployment(this.k8sApi, this.namespace, this.slug);
@@ -25,6 +25,11 @@ export class Workspace extends Base {
           `Creating Service if not exist for the gateway ${this.slug}`
         )
         this.createServiceIfNotExists();
+
+        this.logger.info(
+          `Add gateway service to the gateway ingress`
+        )
+        this.updateIngress(ingressName, 'CREATE_IF_NOT_EXISTS');
         return {
           status: true,
         };

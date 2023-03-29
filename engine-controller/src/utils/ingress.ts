@@ -49,6 +49,24 @@ export async function updateIngress(
 
   let servicePaths = lastAppliedConfig.spec.rules[0].http.paths;
 
+  if (event === 'CREATE_IF_NOT_EXISTS') {
+    logger.info(
+      `Cheking Path for this service ${serviceName} present in the ingress ${ingressName}`,
+    );
+    const servicePresent =
+      servicePaths.filter(function (path: path) {
+        return path.backend.service.name === serviceName;
+      }).length > 0;
+
+    if (servicePresent) {
+      return {
+        status: true,
+      };
+    }
+    console.log(`Service path is not present in the ingress ${ingressName}`);
+    event = 'CREATE';
+  }
+
   if (event === 'CREATE') {
     logger.info(
       `Creating Path for this service ${serviceName} in this ingress ${ingressName}`,
