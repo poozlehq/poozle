@@ -30,7 +30,6 @@ export function Home() {
   return (
     <>
       <Header title="Home" />
-
       {currentWorkspace.initialSetupComplete ? (
         <>
           <Group position="right" p="xl">

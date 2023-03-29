@@ -22,6 +22,7 @@ import {
   IconArrowBarLeft,
   IconArrowBarRight,
   IconUser,
+  IconLogicAnd,
 } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
@@ -89,6 +90,7 @@ const LINK_DATA = [
   { icon: IconHome2, label: 'Home', routeKey: '/home' },
   { icon: IconApps, label: 'Extensions', routeKey: '/extensions' },
   { icon: IconCode, label: 'Playground', routeKey: '/playground' },
+  { icon: IconLogicAnd, label: 'Gateway', routeKey: '/gateway' },
   { icon: IconSettings, label: 'Settings', routeKey: '/settings' },
 ];
 

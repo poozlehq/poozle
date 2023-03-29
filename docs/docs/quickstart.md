@@ -35,6 +35,14 @@ Go to Playground page by clicking on it on the left sidebar.
 
 3. Finally you can use the above query in your application to fetch the information from the Extension
 
+## Step 4: Use the query back in your code
+
+1. Get the gateway URL. Every workspace will be given a unique name which you will see below the name. For example if it is `spicy-salmon`. Then your gateway URL will be `https://gateway.poozle.dev/spicy-salmon/graphql`
+
+2. Get the access token. You can go to settings and then in the API Keys tab you can generate a new token. After which you can use that as a header `Authorization: Bearer {token}`
+
+3. Pass the query in the body.
+
 Go ahead & try it! 🙌
 
 ## Need help?

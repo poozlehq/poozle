@@ -10,12 +10,10 @@ import { GetUserData } from 'wrappers/get_user_data';
 import { Header } from 'components';
 
 import { Account } from './account/account';
-import { Keys } from './keys/keys';
 import styles from './settings.module.scss';
 
 const enum TAB_KEYS {
   'ACCOUNT' = 'account',
-  'API_KEYS' = 'api_keys',
 }
 
 export function Settings() {
@@ -58,16 +56,10 @@ export function Settings() {
             TAB_KEYS.ACCOUNT,
             currentTab === TAB_KEYS.ACCOUNT,
           )}
-          {getComponent(
-            'API Keys',
-            TAB_KEYS.API_KEYS,
-            currentTab === TAB_KEYS.API_KEYS,
-          )}
         </Group>
 
         <Group mt="xl" grow>
           {currentTab === TAB_KEYS.ACCOUNT && <Account />}
-          {currentTab === TAB_KEYS.API_KEYS && <Keys />}
         </Group>
       </Container>
     </div>
