@@ -40,6 +40,28 @@ const sidebars = {
         },
       ],
     },
+    {
+      type: "category",
+      label: "Building extension",
+      items: [
+        {
+          type: "doc",
+          id: "building_extension/overview",
+          label: "Overview",
+        },
+      ],
+    },
+    {
+      type: "category",
+      label: "Understanding Poozle",
+      items: [
+        {
+          type: "doc",
+          id: "understanding_poozle/protocol",
+          label: "Protocol",
+        },
+      ],
+    },
   ],
 };
 
