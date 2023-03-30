@@ -12,11 +12,9 @@ You can implement Poozle extensions in typescript language and take the form of 
 
 - The [Typescript EDK](https://docs.poozle.dev/)
 
-## Extension UI and Playground
+## Demo
 
-![Poozle OSS Extensions UI](https://user-images.githubusercontent.com/17528887/228322421-35d84caf-d6d0-4a6e-820e-cc4ca9694267.png)
-
-![Poozle OSS Playground](https://user-images.githubusercontent.com/17528887/221165613-cb1ded30-823f-4fbe-b509-d940489a1b42.mov)
+https://user-images.githubusercontent.com/17528887/228720583-17161990-2526-4b87-9e2e-3928e932ac81.mp4
 
 ## Quick start
 
