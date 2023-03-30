@@ -47,4 +47,5 @@ export class ExtensionApi {
 
     return response.data.data.check;
   }
+
 }

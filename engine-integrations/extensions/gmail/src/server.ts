@@ -5,5 +5,5 @@ import { runGateway } from '@poozle/engine-edk';
 import GmailExtensionClass from './index';
 
 runGateway(GmailExtensionClass, 8000, {
-  graphiql: false,
+  graphiql: true,
 });

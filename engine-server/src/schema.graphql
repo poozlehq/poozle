@@ -68,8 +68,21 @@ input ExtensionAccountUpdateBody {
   extensionConfiguration: JSON
 }
 
+type ExtensionAuth {
+  createdAt: DateTime!
+  credential: JSON!
+  deleted: DateTime
+  extensionAuthId: ID!
+  extensionDefinition: ExtensionDefinition!
+  extensionDefinitionId: String!
+  updatedAt: DateTime!
+  workspace: Workspace
+  workspaceId: String
+}
+
 type ExtensionDefinition {
   ExtensionAccount: [ExtensionAccount!]
+  ExtensionAuth: [ExtensionAuth!]
   ExtensionRouter: [ExtensionRouter!]
   _count: ExtensionDefinitionCount!
   createdAt: DateTime!
@@ -99,6 +112,7 @@ input ExtensionDefinitionCheckBody {
 
 type ExtensionDefinitionCount {
   ExtensionAccount: Int!
+  ExtensionAuth: Int!
   ExtensionRouter: Int!
 }
 
@@ -322,6 +336,7 @@ type UserCount {
 
 type Workspace {
   ExtensionAccount: [ExtensionAccount!]
+  ExtensionAuth: [ExtensionAuth!]
   ExtensionDefinition: [ExtensionDefinition!]
   ExtensionRouter: [ExtensionRouter!]
   Gateway: [Gateway!]
@@ -337,6 +352,7 @@ type Workspace {
 
 type WorkspaceCount {
   ExtensionAccount: Int!
+  ExtensionAuth: Int!
   ExtensionDefinition: Int!
   ExtensionRouter: Int!
   Gateway: Int!

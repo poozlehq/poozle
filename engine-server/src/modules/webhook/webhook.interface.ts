@@ -46,4 +46,12 @@ export class WebhookAuthUrlBody {
 
   @Field()
   extensionAccountName: string;
+
+  @Field()
+  extensionAuthId?: string
+}
+
+export type ResponseQueryParameters = {
+  state: string
+  code: string
 }

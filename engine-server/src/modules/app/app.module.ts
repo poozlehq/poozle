@@ -20,6 +20,7 @@ import { HiveModule } from 'modules/hive/hive.module';
 import { MonitoringModule } from 'modules/monitoring/monitoring.module';
 import { UserModule } from 'modules/user/user.module';
 import { WorkspaceModule } from 'modules/workspace/workspace.module';
+import { WebhookModule } from 'modules/webhook/webhook.module';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -50,6 +51,7 @@ import { GqlConfigService } from '../gql-config.service';
     MonitoringModule,
     GatewayAuthModule,
     AnalyticsModule,
+    WebhookModule,
   ],
   controllers: [AppController],
   providers: [AppService],
