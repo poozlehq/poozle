@@ -9,7 +9,7 @@ import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
 
 import type { CorsConfig, NestConfig } from 'common/configs/config.interface';
 
-// import { ExtensionAccountService } from 'modules/extension_account/extension_account.service';
+import { ExtensionAccountService } from 'modules/extension_account/extension_account.service';
 
 import { AppModule } from './modules/app/app.module';
 
@@ -35,14 +35,14 @@ async function bootstrap() {
   // Cors
   if (corsConfig.enabled) {
     app.enableCors({
-      origin: configService.get('FRONTEND_HOST'),
+      origin: [configService.get('FRONTEND_HOST'), '*'],
       credentials: true,
     });
   }
 
   /** Check and check gateway and extension deployments */
-  // const extensionAccountService = app.get(ExtensionAccountService);
-  // extensionAccountService.initServer();
+  const extensionAccountService = app.get(ExtensionAccountService);
+  extensionAccountService.initServer();
 
   await app.listen(process.env.PORT || nestConfig.port || 3000);
 }

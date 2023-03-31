@@ -19,6 +19,7 @@ import styles from './o_auth_apps.module.scss';
 
 export function OAuthApps() {
   const router = useRouter();
+
   const {
     query: { workspaceId },
   } = router;

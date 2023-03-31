@@ -69,7 +69,7 @@ export function OAuthAppForm({
         <TextInput
           pb="md"
           label="Scope"
-          placeholder="Enter cope"
+          placeholder="Enter scopes"
           {...form.getInputProps('scopes')}
         />
 

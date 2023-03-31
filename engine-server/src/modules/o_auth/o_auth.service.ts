@@ -50,7 +50,7 @@ export class OAuthService {
       (eA) => eA.extensionAuthName === extensionAuthName,
     );
 
-    if (extensionAuth === null) {
+    if (!extensionAuth) {
       throw new BadRequestException('No extension Auth found');
     }
 
@@ -132,7 +132,10 @@ export class OAuthService {
         `OAuth 2.0 for ${extensionAuth.extensionAuthName} - redirecting to: ${authorizationUri}`,
       );
 
-      return authorizationUri;
+      return {
+        status: 200,
+        redirectURL: authorizationUri,
+      };
     } catch (e) {
       console.log(e);
       throw new BadRequestException({

@@ -9,7 +9,6 @@ import {
   TextInput,
   Text,
   Title,
-  Code,
 } from '@mantine/core';
 import { Prism } from '@mantine/prism';
 import { useRouter } from 'next/router';
