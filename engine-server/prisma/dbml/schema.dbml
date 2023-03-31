@@ -48,14 +48,21 @@ Table ExtensionDefinition {
 
 Table ExtensionAuth {
   extensionAuthId String [pk]
+  extensionAuthName String [not null]
   extensionDefinition ExtensionDefinition [not null]
   extensionDefinitionId String [not null]
-  credential Json [not null]
+  clientId String [not null]
+  clientSecret String [not null]
+  scopes String [not null]
   workspace Workspace
   workspaceId String
   deleted DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+
+  indexes {
+    (extensionAuthName, workspaceId) [unique]
+  }
 }
 
 Table ExtensionAccount {
@@ -70,6 +77,10 @@ Table ExtensionAccount {
   deleted DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+
+  indexes {
+    (extensionAccountName, workspaceId) [unique]
+  }
 }
 
 Table ExtensionRouter {

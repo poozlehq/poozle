@@ -43,19 +43,6 @@ export interface CheckResponseType {
 }
 export type CheckResponse = Promise<CheckResponseType>;
 
-export interface AuthResponseType {
-  authUrl: string;
-  error: string
-}
-export type AuthResponse = Promise<AuthResponseType>
-
-export interface AuthTokenType {
-  tokens: Record<string, any>
-  error?: string
-}
-
-export type TokenResponse = Promise<AuthTokenType>
-
 export interface BaseExtensionInterface {
   // This will return GRAPHQL Schema
   schema(): SchemaResponse;
@@ -65,8 +52,6 @@ export interface BaseExtensionInterface {
   check(config: Config): CheckResponse;
   // Return Auth headers to send to be sent in the query
   authHeaders(config: Config): AuthHeaderResponse;
-  
-  generateAuthUrl(config: Config): AuthResponse; 
 }
 
 export type BaseURLResponse = Promise<string | undefined>;

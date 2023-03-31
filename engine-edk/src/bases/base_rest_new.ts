@@ -15,7 +15,6 @@ import { typeDefs } from "./base_typeDefs";
 import { getJSONFrombase64, getTypedefsForCredentialsAndSpec } from "./utils";
 import {
   AuthHeaderResponse,
-  AuthResponse,
   BaseExtensionInterface,
   BaseURLResponse,
   CheckResponse,
@@ -23,7 +22,6 @@ import {
   Context,
   SchemaResponse,
   SpecResponse,
-  TokenResponse,
 } from "../types";
 
 export class BaseRestExtensionNew implements BaseExtensionInterface {
@@ -124,8 +122,6 @@ export class BaseRestExtensionNew implements BaseExtensionInterface {
         getHeaders: async (_: any, { config }: any) => ({
           headers: await this.authHeaders(config),
         }),
-        getAuthUrl: async (_: any, { config }: any) => await this.getAuthUrl(config),
-        getTokens: async (_: any, { config }: any) => await this.tokens(config),
       },
     };
 
@@ -160,29 +156,5 @@ export class BaseRestExtensionNew implements BaseExtensionInterface {
         error: err.message as string,
       };
     }
-  }
-  
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async generateAuthUrl(_extensionConfig: Config): AuthResponse {
-    return {
-      authUrl: "",
-      error: ""
-    };
-  }
-
-  async getAuthUrl(extensionConfig: Config): AuthResponse {
-    try {
-      return await this.generateAuthUrl(extensionConfig)
-    } catch (err) {
-      return { authUrl: undefined, error: err.message as string };
-    }
-  }
-
-  async fetchTokens(_tokenConfig: Config): TokenResponse {
-    return {tokens: {}}
-  }
-
-  async tokens(tokenConfig: Config): TokenResponse{
-    return this.fetchTokens(tokenConfig)
   }
 }

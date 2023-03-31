@@ -10,7 +10,6 @@ import { typeDefs } from "./base_typeDefs";
 import { getTypedefsForCredentialsAndSpec } from "./utils";
 import {
   AuthHeaderResponse,
-  AuthResponse,
   BaseExtensionInterface,
   BaseURLResponse,
   CheckResponse,
@@ -160,22 +159,6 @@ export class BaseRestExtension implements BaseExtensionInterface {
         status: false,
         error: err.message as string,
       };
-    }
-  }
-  
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async generateAuthUrl(_extensionConfig: Config): AuthResponse {
-    return {
-      authUrl: "",
-      error: ""
-    };
-  }
-
-  async getAuthUrl(extensionConfig: Config): AuthResponse {
-    try {
-      return await this.generateAuthUrl(extensionConfig)
-    } catch (err) {
-      return { authUrl: undefined, error: err.message as string };
     }
   }
 }

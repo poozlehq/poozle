@@ -24,13 +24,13 @@ export class ExtensionAuthResolver {
     @Args('data')
     ExtensionAuthRequestWorkspaceIdBody: ExtensionAuthRequestWorkspaceIdBody,
   ) {
-    return await this.extensionAuthService.getExtensionAuthForWorkspace(
+    return await this.extensionAuthService.getExtensionAuthsForWorkspace(
       ExtensionAuthRequestWorkspaceIdBody,
     );
   }
 
   @Mutation(() => ExtensionAuth)
-  async createExtensionDefinition(
+  async createExtensionAuth(
     @Args('data') createExtensionAuthInput: ExtensionAuthCreateBody,
   ): Promise<ExtensionAuth> {
     return await this.extensionAuthService.createExtensionAuth(

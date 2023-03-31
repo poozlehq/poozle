@@ -58,6 +58,19 @@ input ExtensionAccountGetRequestBody {
   workspaceId: String!
 }
 
+type ExtensionAccountMasked {
+  createdAt: DateTime!
+  deleted: DateTime
+  extensionAccountId: ID!
+  extensionAccountName: String!
+  extensionDefinition: ExtensionDefinition!
+  extensionDefinitionId: String!
+  name: String!
+  updatedAt: DateTime!
+  workspace: Workspace!
+  workspaceId: String!
+}
+
 input ExtensionAccountRequestIdBody {
   extensionAccountId: String!
 }
@@ -69,12 +82,15 @@ input ExtensionAccountUpdateBody {
 }
 
 type ExtensionAuth {
+  clientId: String!
+  clientSecret: String!
   createdAt: DateTime!
-  credential: JSON!
   deleted: DateTime
   extensionAuthId: ID!
+  extensionAuthName: String!
   extensionDefinition: ExtensionDefinition!
   extensionDefinitionId: String!
+  scopes: String!
   updatedAt: DateTime!
   workspace: Workspace
   workspaceId: String
@@ -227,7 +243,7 @@ type Logout {
 
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
-  createExtensionAccount(data: ExtensionAccountCreateBody!): ExtensionAccount!
+  createExtensionAccount(data: ExtensionAccountCreateBody!): ExtensionAccountMasked!
   createExtensionDefinition(data: ExtensionDefinitionCreateBody!): ExtensionDefinition!
   createGatewayAccessToken(data: GatewayAuthTokenCreateInput!): GatewayAuthToken!
   createWorkspace(data: WorkspaceCreateBody!): Workspace!
@@ -236,7 +252,7 @@ type Mutation {
   logout: Logout!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
-  updateExtensionAccount(data: ExtensionAccountUpdateBody!): ExtensionAccount!
+  updateExtensionAccount(data: ExtensionAccountUpdateBody!): ExtensionAccountMasked!
   updateExtensionDefinition(data: ExtensionDefinitionUpdateBody!): ExtensionDefinition!
   updateExtensionRouter(data: ExtensionRouterRequestUpdateBody!): ExtensionRouter!
   updateUser(data: UpdateUserInput!): User!
@@ -269,8 +285,8 @@ type OverTimeObject {
 }
 
 type Query {
-  getExtensionAccount(data: ExtensionAccountRequestIdBody!): ExtensionAccount!
-  getExtensionAccountsByWorkspace(data: ExtensionAccountGetRequestBody!): [ExtensionAccount!]!
+  getExtensionAccount(data: ExtensionAccountRequestIdBody!): ExtensionAccountMasked!
+  getExtensionAccountsByWorkspace(data: ExtensionAccountGetRequestBody!): [ExtensionAccountMasked!]!
   getExtensionDefinitionById(data: ExtensionDefinitionRequestIdBody!): ExtensionDefinition!
   getExtensionDefinitions: [ExtensionDefinition!]!
   getExtensionDefinitionsByWorkspace(data: ExtensionDefinitionRequestWorkspaceIdBody!): [ExtensionDefinition!]!

@@ -15,6 +15,12 @@ export class ExtensionAuthRequestWorkspaceIdBody {
 }
 
 @InputType()
+export class ExtensionAuthRequestWorkspaceSlugBody {
+  @Field()
+  slug: string;
+}
+
+@InputType()
 export class ExtensionAuthCreateBody {
   @Field()
   workspaceId?: string;
@@ -23,7 +29,16 @@ export class ExtensionAuthCreateBody {
   extensionDefinitionId: string;
 
   @Field()
-  credential: JSON;
+  clientId: string;
+
+  @Field()
+  clientSecret: string;
+
+  @Field()
+  scopes: string;
+
+  @Field()
+  extensionAuthName: string;
 }
 
 @InputType()
@@ -32,5 +47,14 @@ export class ExtensionAuthRequestUpdateBody {
   extensionAuthId: string;
 
   @Field()
-  credential: JSON;
+  clientId: string;
+
+  @Field()
+  clientSecret: string;
+
+  @Field()
+  scopes: string;
+
+  @Field()
+  extensionAuthName: string;
 }

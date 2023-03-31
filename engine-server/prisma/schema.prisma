@@ -64,15 +64,22 @@ model ExtensionDefinition {
 }
 
 model ExtensionAuth {
-  extensionAuthId  String              @id @default(uuid())
+  extensionAuthId       String              @id @default(uuid())
+  extensionAuthName     String
   extensionDefinition   ExtensionDefinition @relation(references: [extensionDefinitionId], fields: [extensionDefinitionId])
   extensionDefinitionId String
-  credential            Json
-  workspace             Workspace?          @relation(references: [workspaceId], fields: [workspaceId])
-  workspaceId           String?
-  deleted               DateTime?
-  createdAt             DateTime            @default(now())
-  updatedAt             DateTime            @updatedAt
+
+  clientId     String
+  clientSecret String
+  scopes       String
+
+  workspace   Workspace? @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId String?
+  deleted     DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@unique([extensionAuthName, workspaceId])
 }
 
 model ExtensionAccount {
@@ -87,6 +94,8 @@ model ExtensionAccount {
   deleted                DateTime?
   createdAt              DateTime            @default(now())
   updatedAt              DateTime            @updatedAt
+
+  @@unique([extensionAccountName, workspaceId])
 }
 
 model ExtensionRouter {
