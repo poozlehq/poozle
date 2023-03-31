@@ -12,4 +12,4 @@ import { ExtensionAuthService } from './extension_auth.service';
   providers: [ExtensionAuthService, PrismaService, ExtensionAuthResolver],
   exports: [ExtensionAuthService],
 })
-export class ExtensionRouterModule {}
+export class ExtensionAuthModule {}

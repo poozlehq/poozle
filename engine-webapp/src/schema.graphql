@@ -15,15 +15,6 @@ type Auth {
   user: User!
 }
 
-input BaseInformationRequest {
-  companyName: String!
-  organisationSize: String!
-}
-
-type BaseInformationResponse {
-  status: Boolean!
-}
-
 input ChangePasswordInput {
   newPassword: String!
   oldPassword: String!
@@ -71,6 +62,19 @@ input ExtensionAccountGetRequestBody {
   workspaceId: String!
 }
 
+type ExtensionAccountMasked {
+  createdAt: DateTime!
+  deleted: DateTime
+  extensionAccountId: ID!
+  extensionAccountName: String!
+  extensionDefinition: ExtensionDefinition!
+  extensionDefinitionId: String!
+  name: String!
+  updatedAt: DateTime!
+  workspace: Workspace!
+  workspaceId: String!
+}
+
 input ExtensionAccountRequestIdBody {
   extensionAccountId: String!
 }
@@ -81,8 +85,49 @@ input ExtensionAccountUpdateBody {
   extensionConfiguration: JSON
 }
 
+type ExtensionAuth {
+  clientId: String!
+  clientSecret: String!
+  createdAt: DateTime!
+  deleted: DateTime
+  extensionAuthId: ID!
+  extensionAuthName: String!
+  extensionDefinition: ExtensionDefinition!
+  extensionDefinitionId: String!
+  scopes: String!
+  updatedAt: DateTime!
+  workspace: Workspace
+  workspaceId: String
+}
+
+input ExtensionAuthCreateBody {
+  clientId: String!
+  clientSecret: String!
+  extensionAuthName: String!
+  extensionDefinitionId: String!
+  scopes: String!
+  workspaceId: String!
+}
+
+input ExtensionAuthRequestIdBody {
+  extensionAuthId: String!
+}
+
+input ExtensionAuthRequestUpdateBody {
+  clientId: String!
+  clientSecret: String!
+  extensionAuthId: String!
+  extensionAuthName: String!
+  scopes: String!
+}
+
+input ExtensionAuthRequestWorkspaceIdBody {
+  workspaceId: String!
+}
+
 type ExtensionDefinition {
   ExtensionAccount: [ExtensionAccount!]
+  ExtensionAuth: [ExtensionAuth!]
   ExtensionRouter: [ExtensionRouter!]
   _count: ExtensionDefinitionCount!
   createdAt: DateTime!
@@ -112,6 +157,7 @@ input ExtensionDefinitionCheckBody {
 
 type ExtensionDefinitionCount {
   ExtensionAccount: Int!
+  ExtensionAuth: Int!
   ExtensionRouter: Int!
 }
 
@@ -226,7 +272,10 @@ type Logout {
 
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
-  createExtensionAccount(data: ExtensionAccountCreateBody!): ExtensionAccount!
+  createExtensionAccount(
+    data: ExtensionAccountCreateBody!
+  ): ExtensionAccountMasked!
+  createExtensionAuth(data: ExtensionAuthCreateBody!): ExtensionAuth!
   createExtensionDefinition(
     data: ExtensionDefinitionCreateBody!
   ): ExtensionDefinition!
@@ -238,9 +287,11 @@ type Mutation {
   login(data: LoginInput!): Auth!
   logout: Logout!
   refreshToken(token: JWT!): Token!
-  sendBasicInformation(data: BaseInformationRequest!): BaseInformationResponse!
   signup(data: SignupInput!): Auth!
-  updateExtensionAccount(data: ExtensionAccountUpdateBody!): ExtensionAccount!
+  updateExtensionAccount(
+    data: ExtensionAccountUpdateBody!
+  ): ExtensionAccountMasked!
+  updateExtensionAuth(data: ExtensionAuthRequestUpdateBody!): ExtensionAuth!
   updateExtensionDefinition(
     data: ExtensionDefinitionUpdateBody!
   ): ExtensionDefinition!
@@ -277,10 +328,16 @@ type OverTimeObject {
 }
 
 type Query {
-  getExtensionAccount(data: ExtensionAccountRequestIdBody!): ExtensionAccount!
+  getExtensionAccount(
+    data: ExtensionAccountRequestIdBody!
+  ): ExtensionAccountMasked!
   getExtensionAccountsByWorkspace(
     data: ExtensionAccountGetRequestBody!
-  ): [ExtensionAccount!]!
+  ): [ExtensionAccountMasked!]!
+  getExtensionAuth(data: ExtensionAuthRequestIdBody!): ExtensionAuth!
+  getExtensionAuthsByWorkspace(
+    data: ExtensionAuthRequestWorkspaceIdBody!
+  ): [ExtensionAuth!]!
   getExtensionDefinitionById(
     data: ExtensionDefinitionRequestIdBody!
   ): ExtensionDefinition!
@@ -360,6 +417,7 @@ type UserCount {
 
 type Workspace {
   ExtensionAccount: [ExtensionAccount!]
+  ExtensionAuth: [ExtensionAuth!]
   ExtensionDefinition: [ExtensionDefinition!]
   ExtensionRouter: [ExtensionRouter!]
   Gateway: [Gateway!]
@@ -375,6 +433,7 @@ type Workspace {
 
 type WorkspaceCount {
   ExtensionAccount: Int!
+  ExtensionAuth: Int!
   ExtensionDefinition: Int!
   ExtensionRouter: Int!
   Gateway: Int!

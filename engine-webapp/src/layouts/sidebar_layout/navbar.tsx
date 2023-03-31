@@ -23,6 +23,7 @@ import {
   IconArrowBarRight,
   IconUser,
   IconLogicAnd,
+  IconKey,
 } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
@@ -89,6 +90,7 @@ function NavbarLink({
 const LINK_DATA = [
   { icon: IconHome2, label: 'Home', routeKey: '/home' },
   { icon: IconApps, label: 'Extensions', routeKey: '/extensions' },
+  { icon: IconKey, label: 'OAuth', routeKey: '/o_auth' },
   { icon: IconCode, label: 'Playground', routeKey: '/playground' },
   { icon: IconLogicAnd, label: 'Gateway', routeKey: '/gateway' },
   { icon: IconSettings, label: 'Settings', routeKey: '/settings' },

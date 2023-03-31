@@ -16,7 +16,7 @@ export function getInitialValues(
     const key: string = property.key;
     // TODO (harshith): Check for the right type here
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    initialValues[key] = (extensionAccount.extensionConfiguration as any)[key];
+    initialValues[key] = '';
   });
 
   // Adding extensionAccountName to the initial Values

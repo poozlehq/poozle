@@ -5,12 +5,16 @@ import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 
 import { ExtensionAuth } from '@generated/extension-auth/extension-auth.model';
 
+import { exclude } from 'common/utils';
+
 import { GqlAuthGuard } from 'modules/auth/gql-auth.guard';
 
 import {
   ExtensionAuthRequestUpdateBody,
   ExtensionAuthCreateBody,
   ExtensionAuthRequestWorkspaceIdBody,
+  ExtensionAuthMask,
+  ExtensionAuthRequestIdBody,
 } from './extension_auth.interface';
 import { ExtensionAuthService } from './extension_auth.service';
 
@@ -46,5 +50,17 @@ export class ExtensionAuthResolver {
     return await this.extensionAuthService.updateExtensionAuth(
       extensionAuthRequestUpdateBody,
     );
+  }
+
+  @Query(() => ExtensionAuth)
+  async getExtensionAuth(
+    @Args('data')
+    extensionAuthRequestIdBody: ExtensionAuthRequestIdBody,
+  ): Promise<ExtensionAuthMask> {
+    const extensionAuth = await this.extensionAuthService.getExtensionAuth(
+      extensionAuthRequestIdBody,
+    );
+
+    return exclude(extensionAuth, ['clientSecret']);
   }
 }

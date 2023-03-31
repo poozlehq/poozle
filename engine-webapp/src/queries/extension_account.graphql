@@ -15,7 +15,6 @@ query GetExtensionAccount($extensionAccountId: String!) {
   getExtensionAccount(data: { extensionAccountId: $extensionAccountId }) {
     extensionAccountId
     extensionAccountName
-    extensionConfiguration
     extensionDefinitionId
   }
 }

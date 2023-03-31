@@ -24,6 +24,9 @@ export class ExtensionAuthService {
       where: {
         workspaceId: extensionAuthRequestWorkspaceIdBody.workspaceId,
       },
+      include: {
+        extensionDefinition: true,
+      },
     });
   }
 
