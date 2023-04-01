@@ -23,6 +23,7 @@ Table Workspace {
   ExtensionDefinition ExtensionDefinition [not null]
   ExtensionAccount ExtensionAccount [not null]
   ExtensionRouter ExtensionRouter [not null]
+  ExtensionAuth ExtensionAuth [not null]
   deleted DateTime
   Gateway Gateway [not null]
 }
@@ -39,9 +40,29 @@ Table ExtensionDefinition {
   workspaceId String
   ExtensionAccount ExtensionAccount [not null]
   ExtensionRouter ExtensionRouter [not null]
+  ExtensionAuth ExtensionAuth [not null]
   deleted DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+}
+
+Table ExtensionAuth {
+  extensionAuthId String [pk]
+  extensionAuthName String [not null]
+  extensionDefinition ExtensionDefinition [not null]
+  extensionDefinitionId String [not null]
+  clientId String [not null]
+  clientSecret String [not null]
+  scopes String [not null]
+  workspace Workspace
+  workspaceId String
+  deleted DateTime
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+
+  indexes {
+    (extensionAuthName, workspaceId) [unique]
+  }
 }
 
 Table ExtensionAccount {
@@ -56,6 +77,10 @@ Table ExtensionAccount {
   deleted DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+
+  indexes {
+    (extensionAccountName, workspaceId) [unique]
+  }
 }
 
 Table ExtensionRouter {
@@ -93,6 +118,10 @@ Enum ReleaseStage {
 Ref: Workspace.userId > User.userId
 
 Ref: ExtensionDefinition.workspaceId > Workspace.workspaceId
+
+Ref: ExtensionAuth.extensionDefinitionId > ExtensionDefinition.extensionDefinitionId
+
+Ref: ExtensionAuth.workspaceId > Workspace.workspaceId
 
 Ref: ExtensionAccount.extensionDefinitionId > ExtensionDefinition.extensionDefinitionId
 

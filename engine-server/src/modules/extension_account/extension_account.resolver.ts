@@ -3,35 +3,34 @@
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 
-import { ExtensionAccount } from '@generated/extension-account/extension-account.model';
-
 import { GqlAuthGuard } from 'modules/auth/gql-auth.guard';
 
 import {
   ExtensionAccountCreateBody,
   ExtensionAccountGetRequestBody,
+  ExtensionAccountMasked,
   ExtensionAccountRequestIdBody,
   ExtensionAccountUpdateBody,
 } from './extension_account.interface';
 import { ExtensionAccountService } from './extension_account.service';
 
-@Resolver(() => ExtensionAccount)
+@Resolver(() => ExtensionAccountMasked)
 @UseGuards(GqlAuthGuard)
 export class ExtensionAccountResolver {
   constructor(private extensionAccountService: ExtensionAccountService) {}
 
   // TODO (harshith): Later check here if the accountId belongs to the workspace
   // the user has access to otherwise don't allow the request
-  @Query(() => ExtensionAccount)
+  @Query(() => ExtensionAccountMasked)
   async getExtensionAccount(
     @Args('data') getExtensionAccountInput: ExtensionAccountRequestIdBody,
-  ): Promise<ExtensionAccount> {
+  ): Promise<ExtensionAccountMasked> {
     return await this.extensionAccountService.getExtensionAccountWithId(
       getExtensionAccountInput,
     );
   }
 
-  @Query(() => [ExtensionAccount])
+  @Query(() => [ExtensionAccountMasked])
   async getExtensionAccountsByWorkspace(
     @Args('data') getAllExtensionAccounts: ExtensionAccountGetRequestBody,
   ) {
@@ -40,7 +39,7 @@ export class ExtensionAccountResolver {
     );
   }
 
-  @Mutation(() => ExtensionAccount)
+  @Mutation(() => ExtensionAccountMasked)
   async createExtensionAccount(
     @Args('data') createExtensionAccountInput: ExtensionAccountCreateBody,
   ) {
@@ -49,7 +48,7 @@ export class ExtensionAccountResolver {
     );
   }
 
-  @Mutation(() => ExtensionAccount)
+  @Mutation(() => ExtensionAccountMasked)
   async updateExtensionAccount(
     @Args('data') updateExtensionAccountInput: ExtensionAccountUpdateBody,
   ) {

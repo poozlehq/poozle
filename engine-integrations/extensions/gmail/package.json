@@ -14,9 +14,10 @@
   },
   "dependencies": {
     "@omnigraph/openapi": "^0.19.23",
-    "@poozle/engine-edk": "^0.1.33",
+    "@poozle/engine-edk": "file:../../../engine-edk/edk",
     "ajv": "^8.12.0",
     "axios": "^1.3.2",
+    "common-tags": "^1.8.2",
     "graphql": "^16.6.0",
     "graphql-yoga": "^3.5.1",
     "node-fetch": "^3.3.0",

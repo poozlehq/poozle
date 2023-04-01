@@ -1,0 +1,40 @@
+query ExtensionAuths($workspaceId: String!) {
+  getExtensionAuthsByWorkspace(data: { workspaceId: $workspaceId }) {
+    extensionAuthName
+    extensionAuthId
+    extensionDefinition {
+      name
+      icon
+    }
+    updatedAt
+  }
+}
+
+query GetExtensionAuth($extensionAuthId: String!) {
+  getExtensionAuth(data: { extensionAuthId: $extensionAuthId }) {
+    extensionAuthId
+    extensionAuthName
+    extensionDefinitionId
+    clientId
+    scopes
+  }
+}
+
+mutation CreateExtensionAuth($extensionCreateBody: ExtensionAuthCreateBody!) {
+  createExtensionAuth(data: $extensionCreateBody) {
+    extensionAuthId
+    extensionAuthName
+  }
+}
+
+mutation UpdateExtensionAuth(
+  $extensionUpdateBody: ExtensionAuthRequestUpdateBody!
+) {
+  updateExtensionAuth(data: $extensionUpdateBody) {
+    extensionAuthId
+    extensionAuthName
+    clientId
+    clientSecret
+    scopes
+  }
+}

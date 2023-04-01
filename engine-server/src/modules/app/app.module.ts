@@ -13,11 +13,13 @@ import { AnalyticsModule } from 'modules/analytics/analytics.module';
 import { AuthModule } from 'modules/auth/auth.module';
 import { ControllerModule } from 'modules/controller/controller.module';
 import { ExtensionAccountModule } from 'modules/extension_account/extension_account.module';
+import { ExtensionAuthModule } from 'modules/extension_auth/extension_auth.module';
 import { ExtensionDefinitionModule } from 'modules/extension_definition/extension_definition.module';
 import { ExtensionRouterModule } from 'modules/extension_router/extension_router.module';
 import { GatewayAuthModule } from 'modules/gateway_auth/gateway_auth.module';
 import { HiveModule } from 'modules/hive/hive.module';
 import { MonitoringModule } from 'modules/monitoring/monitoring.module';
+import { OAuthModule } from 'modules/o_auth/o_auth.module';
 import { UserModule } from 'modules/user/user.module';
 import { WorkspaceModule } from 'modules/workspace/workspace.module';
 
@@ -50,6 +52,8 @@ import { GqlConfigService } from '../gql-config.service';
     MonitoringModule,
     GatewayAuthModule,
     AnalyticsModule,
+    OAuthModule,
+    ExtensionAuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

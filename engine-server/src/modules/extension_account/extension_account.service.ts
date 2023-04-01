@@ -7,9 +7,8 @@ import { ConfigService } from '@nestjs/config';
 import { GraphQLError } from 'graphql';
 import { PrismaService } from 'nestjs-prisma';
 
-import { ExtensionAccount } from '@generated/extension-account/extension-account.model';
-
 import { EVENT_TYPES } from 'common/constants';
+import { exclude } from 'common/utils';
 
 import { AnalyticsService } from 'modules/analytics/analytics.service';
 import { ControllerService } from 'modules/controller/controller.service';
@@ -20,6 +19,7 @@ import {
   ExtensionAccountByEDGetRequestBody,
   ExtensionAccountCreateBody,
   ExtensionAccountGetRequestBody,
+  ExtensionAccountMasked,
   ExtensionAccountRequestIdBody,
   ExtensionAccountUpdateBody,
 } from './extension_account.interface';
@@ -38,8 +38,8 @@ export class ExtensionAccountService {
 
   async getAllExtensionAccountsInWorkspace(
     extensionAccountGetRequestBody: ExtensionAccountGetRequestBody,
-  ): Promise<ExtensionAccount[]> {
-    return this.prisma.extensionAccount.findMany({
+  ): Promise<ExtensionAccountMasked[]> {
+    const accounts = await this.prisma.extensionAccount.findMany({
       where: {
         workspaceId: extensionAccountGetRequestBody.workspaceId,
       },
@@ -47,12 +47,16 @@ export class ExtensionAccountService {
         extensionDefinition: true,
       },
     });
+
+    return accounts.map((account) =>
+      exclude(account, ['extensionConfiguration']),
+    );
   }
 
   async getAllExtensionAccountsForExtensionDefinition(
     extensionAccountByEDGetRequestBody: ExtensionAccountByEDGetRequestBody,
-  ): Promise<ExtensionAccount[]> {
-    return this.prisma.extensionAccount.findMany({
+  ): Promise<ExtensionAccountMasked[]> {
+    const accounts = await this.prisma.extensionAccount.findMany({
       where: {
         workspaceId: extensionAccountByEDGetRequestBody.workspaceId,
         extensionDefinitionId:
@@ -62,21 +66,45 @@ export class ExtensionAccountService {
         extensionDefinition: true,
       },
     });
+
+    return accounts.map((account) =>
+      exclude(account, ['extensionConfiguration']),
+    );
   }
 
   async getExtensionAccountWithId(
     extensionAccountRequestIdBody: ExtensionAccountRequestIdBody,
-  ): Promise<ExtensionAccount> {
-    return this.prisma.extensionAccount.findUnique({
+  ): Promise<ExtensionAccountMasked> {
+    const account = await this.prisma.extensionAccount.findUnique({
       where: {
         extensionAccountId: extensionAccountRequestIdBody.extensionAccountId,
       },
     });
+
+    return exclude(account, ['extensionConfiguration']);
+  }
+
+  async checkForExtensionAccountName(
+    workspaceId: string,
+    extensionAccountName: string,
+  ): Promise<boolean> {
+    const accounts = await this.prisma.extensionAccount.findMany({
+      where: {
+        workspaceId,
+        extensionAccountName,
+      },
+    });
+
+    if (accounts.length === 0) {
+      return true;
+    }
+
+    return false;
   }
 
   async createExtensionAccount(
     extensionAccountCreateBody: ExtensionAccountCreateBody,
-  ): Promise<ExtensionAccount> {
+  ): Promise<ExtensionAccountMasked> {
     try {
       const extensionDefinition =
         await this.extensionDefinitionService.getExtensionDefinitionWithId({
@@ -169,7 +197,7 @@ export class ExtensionAccountService {
         extensionAccount.workspace,
       );
 
-      return extensionAccount;
+      return exclude(extensionAccount, ['extensionConfiguration']);
     } catch (e) {
       console.log(e);
       throw new GraphQLError(e.message);
@@ -178,7 +206,7 @@ export class ExtensionAccountService {
 
   async updateExtensionAccount(
     extensionAccountUpdateBody: ExtensionAccountUpdateBody,
-  ) {
+  ): Promise<ExtensionAccountMasked> {
     const extensionAccount = await this.prisma.extensionAccount.findUnique({
       where: {
         extensionAccountId: extensionAccountUpdateBody.extensionAccountId,
@@ -210,7 +238,7 @@ export class ExtensionAccountService {
       extensionAccount.workspace,
     );
 
-    return updatedExtensionAccount;
+    return exclude(updatedExtensionAccount, ['extensionConfiguration']);
   }
 
   /**

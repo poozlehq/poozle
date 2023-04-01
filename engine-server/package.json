@@ -26,8 +26,8 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/main",
-    "start:migrate:prod": "yarn migrate:deploy && node dist/main",
+    "start:prod": "node dist/src/main",
+    "start:migrate:prod": "yarn migrate:deploy && node dist/src/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "migrate:dev": "prisma migrate dev --preview-feature",
     "migrate:dev:create": "prisma migrate dev --create-only --preview-feature",
@@ -76,6 +76,7 @@
     "reflect-metadata": "0.1.13",
     "rimraf": "4.1.1",
     "rxjs": "7.8.0",
+    "simple-oauth2": "^5.0.0",
     "unique-names-generator": "^4.7.1"
   },
   "devDependencies": {
@@ -89,6 +90,7 @@
     "@types/jest": "28.1.6",
     "@types/node": "^18.11.18",
     "@types/passport-jwt": "^3.0.8",
+    "@types/simple-oauth2": "^5.0.4",
     "@types/supertest": "2.0.12",
     "@typescript-eslint/eslint-plugin": "5.48.2",
     "@typescript-eslint/parser": "5.48.2",
