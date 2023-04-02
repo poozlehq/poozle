@@ -226,7 +226,6 @@ export class OAuthService {
         ...sessionRecord.config,
         scope: tokensResponse.token.scope,
         refresh_token: tokensResponse.token.refresh_token,
-        token_type: tokensResponse.token.token_type,
         client_id: extensionAuth.clientId,
         client_secret: extensionAuth.clientSecret,
       };
