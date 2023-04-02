@@ -1,18 +1,20 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
-import * as fs from "fs";
-import { resolve } from "path";
+import * as fs from 'fs';
+import { resolve } from 'path';
 
 import {
   AuthHeaderResponse,
   BaseRestExtensionNew,
   Config,
   CheckResponse,
-} from "@poozle/engine-edk";
-import { SpecResponse } from "@poozle/engine-edk";
-import { fetchAccessToken } from "./utils";
+} from '@poozle/engine-edk';
+import { SpecResponse } from '@poozle/engine-edk';
+
+import { fetchAccessToken } from './utils';
 
 class GoogleAdminExtension extends BaseRestExtensionNew {
   name = 'google admin';
+
   async authHeaders(config: Config): AuthHeaderResponse {
     try {
       const { access_token } = await fetchAccessToken(
@@ -30,14 +32,14 @@ class GoogleAdminExtension extends BaseRestExtensionNew {
 
   async getSchema(): Promise<string> {
     const schemaJSON = JSON.parse(
-      fs.readFileSync(resolve("schema/schema.json"), "utf8")
+      fs.readFileSync(resolve('schema/schema.json'), 'utf8'),
     );
 
     return schemaJSON;
   }
 
   getSpec(): SpecResponse {
-    const data = fs.readFileSync("./spec.json", "utf8");
+    const data = fs.readFileSync('./spec.json', 'utf8');
 
     return JSON.parse(data) as SpecResponse;
   }

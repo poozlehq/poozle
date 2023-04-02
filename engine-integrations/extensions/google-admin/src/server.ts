@@ -5,5 +5,5 @@ import { runGateway } from '@poozle/engine-edk';
 import GoogleAdminExtensionClass from './index';
 
 runGateway(GoogleAdminExtensionClass, 8000, {
-  graphiql: true,
+  graphiql: false,
 });
