@@ -157,7 +157,7 @@ export class ExtensionAccountService {
           data: {
             endpoint: `http://${extensionDefinition.name
               .toLowerCase()
-              .replace(/ /g, '_')}${EXTENSION_BASE_HOST}/graphql`,
+              .replace(/ /g, '-')}${EXTENSION_BASE_HOST}/graphql`,
             extensionDefinitionId: extensionAccount.extensionDefinitionId,
             workspaceId: extensionAccount.workspaceId,
           },

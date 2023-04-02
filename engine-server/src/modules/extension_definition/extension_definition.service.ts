@@ -192,7 +192,7 @@ export class ExtensionDefinitionService {
         endpoint ??
         `http://${extensionDefinition.name
           .toLowerCase()
-          .replace(/ /g, '_')}${this.configService.get(
+          .replace(/ /g, '-')}${this.configService.get(
           'EXTENSION_BASE_HOST',
         )}/graphql`,
     };
@@ -233,7 +233,7 @@ export class ExtensionDefinitionService {
         endpoint ??
         `http://${extensionDefinition.name
           .toLowerCase()
-          .replace(/ /g, '_')}${this.configService.get(
+          .replace(/ /g, '-')}${this.configService.get(
           'EXTENSION_BASE_HOST',
         )}/graphql`,
       variables: {

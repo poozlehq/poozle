@@ -48,7 +48,7 @@ export class ControllerService {
      */
     const deleteExtensionDeploymentBody: ControllerBody = {
       event: restartGateway ? 'DELETE' : 'DELETE_WITHOUT_RESTART',
-      slug: extensionDefinition.name.toLowerCase().replace(/ /g, '_'),
+      slug: extensionDefinition.name.toLowerCase().replace(/ /g, '-'),
       dockerImage: `${extensionDefinition.dockerRepository}:${extensionDefinition.dockerImageTag}`,
       workspaceSlug: extensionDefinition.workspace.slug,
     };
@@ -67,7 +67,7 @@ export class ControllerService {
      */
     const createExtensionBody: ControllerBody = {
       event: restartGateway ? 'CREATE' : 'CREATE_WITHOUT_RESTART',
-      slug: extensionDefinition.name.toLowerCase().replace(/ /g, '_'),
+      slug: extensionDefinition.name.toLowerCase().replace(/ /g, '-'),
       dockerImage: `${extensionDefinition.dockerRepository}:${extensionDefinition.dockerImageTag}`,
       workspaceSlug,
     };
@@ -116,7 +116,7 @@ export class ControllerService {
   ): Promise<boolean> {
     const controllerBody: ControllerBody = {
       event: 'STATUS',
-      slug: extensionDefinition.name.toLowerCase().replace(/ /g, '_'),
+      slug: extensionDefinition.name.toLowerCase().replace(/ /g, '-'),
     };
 
     const deploymentStatusResponse = await this.post(
