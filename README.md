@@ -18,7 +18,7 @@ You can implement Poozle extensions in typescript language and take the form of 
 
 ## Demo
 
-https://user-images.githubusercontent.com/17528887/228720583-17161990-2526-4b87-9e2e-3928e932ac81.mp4
+https://www.loom.com/share/1d93d082e97f4ef0be5035644e9823dc
 
 ## Quick start
 
