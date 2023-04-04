@@ -12,6 +12,10 @@ You can implement Poozle extensions in typescript language and take the form of 
 
 - The [Typescript EDK](https://docs.poozle.dev/)
 
+## Architecture
+
+![Untitled-2022-02-15-1005](https://user-images.githubusercontent.com/17528887/229798038-0d804e31-27a6-4d02-ac0b-e231d0745453.svg)
+
 ## Demo
 
 https://user-images.githubusercontent.com/17528887/228720583-17161990-2526-4b87-9e2e-3928e932ac81.mp4
