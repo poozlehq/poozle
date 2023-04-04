@@ -21,12 +21,25 @@ import { Token } from './models/token.model';
 
 @Resolver(() => Auth)
 export class AuthResolver {
+  cookieOptions = {
+    maxAge: 1000 * 60 * 60 * 24, // expires in a day
+    // httpOnly: true, // cookie is only accessible by the server
+    secure: process.env.NODE_ENV === 'production', // only transferred over https
+    // sameSite: true, // only sent for requests to the same FQDN as the domain in the cookie
+  };
+
   constructor(private readonly auth: AuthService) {}
 
   @Mutation(() => Auth)
-  async signup(@Args('data') data: SignupInput) {
+  async signup(
+    @Args('data') data: SignupInput, 
+    @Context('res') res: Response,
+  ) {
     data.email = data.email.toLowerCase();
     const { accessToken, refreshToken } = await this.auth.createUser(data);
+
+    res.cookie('token', accessToken, this.cookieOptions);
+
     return {
       accessToken,
       refreshToken,
@@ -43,14 +56,7 @@ export class AuthResolver {
       password,
     );
 
-    const options = {
-      maxAge: 1000 * 60 * 60 * 24, // expires in a day
-      // httpOnly: true, // cookie is only accessible by the server
-      secure: process.env.NODE_ENV === 'production', // only transferred over https
-      // sameSite: true, // only sent for requests to the same FQDN as the domain in the cookie
-    };
-
-    res.cookie('token', accessToken, options);
+    res.cookie('token', accessToken, this.cookieOptions);
 
     return {
       accessToken,
@@ -65,14 +71,8 @@ export class AuthResolver {
 
   @Mutation(() => Logout)
   async logout(@Context('res') res: Response) {
-    const options = {
-      maxAge: 1000 * 60 * 60 * 24, // expires in a day
-      // httpOnly: true, // cookie is only accessible by the server
-      secure: process.env.NODE_ENV === 'production', // only transferred over https
-      // sameSite: true, // only sent for requests to the same FQDN as the domain in the cookie
-    };
 
-    res.cookie('token', '', options);
+    res.cookie('token', '', this.cookieOptions);
 
     return {
       logout: true,
