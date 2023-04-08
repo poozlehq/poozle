@@ -1,0 +1,29 @@
+{
+  "integrationSpecification": {
+    "title": "Mailchimp extension",
+    "type": "object",
+    "properties": {
+      "credentials": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "API Key",
+            "order": 0,
+            "description": "Enter the api key",
+            "secret": true
+          },
+          "shop_name": {
+            "type": "string",
+            "title": "Data Center",
+            "order": 0,
+            "description": "Enter the data center",
+            "secret": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  }
+}
