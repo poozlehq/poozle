@@ -1,0 +1,30 @@
+{
+  "integrationSpecification": {
+    "title": "Jira Spec",
+    "type": "object",
+    "properties": {
+      "credentials": {
+        "type": "object",
+        "properties": {
+          "domain_name": {
+            "type": "string",
+            "title": "Domain Name",
+            "description": "Enter the Domain Name"
+          },
+          "email_id": {
+            "type": "string",
+            "title": "Email Id",
+            "description": "Enter the Email Id"
+          },
+          "api_key": {
+            "type": "string",
+            "title": "API Key",
+            "description": "Enter the API Key"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  }
+}
