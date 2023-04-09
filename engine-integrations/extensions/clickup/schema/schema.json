@@ -1,0 +1,3364 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+      "title": "ClickUp Public API",
+      "description": "# Introduction\n\nLet's make people more productive, together.\n\nPlease use our [feedback board](https://clickup.canny.io/) to report bugs, feature requests, and collaborate with the community.\n\nIf you'd like to import our entire API library, click [here](https://t333.s.clickup-attachments.com/t333/3bf59291-47c0-4f1a-ae91-5d9f26a8daca/ClickUp API V2.postman_collection.json) to download the file needed to import through Postman.\n\n# Authentication\n\nThere are two ways to authenticate with ClickUp API 2.0, with a personal token or creating an application and authenticating with an OAuth2 flow. Once you receive one of those two tokens, use that in the `Authorization` header of your API requests.\n\n**IMPORTANT** - *If you are creating an application for others to use, it is highly recommended that you use the OAuth2 flow.*\n\n## Personal Token\n\nIf you are using the API for personal use, it is safe to use the personal API token. You can find this token in your user settings, under the `Apps` section. At the top of the page you have the option to generate a personal token. These tokens will always begin with `pk_`.\n\n![](https://attachments3.clickup.com/343f245e-7d27-411d-96d0-9ad3a6f2f8a7/personal_token.png)\n\nIf your token becomes compromised, you can regenerate it. However, be aware that any applications that were using the old token will lose access once it has been regenerated.\n\n## OAuth2 Flow\n\nWhen you want to develop an application that others can use, you must go through the OAuth2 flow so that every user that uses your application gets assigned an individualized token. This way each user of your application is able to access their own ClickUp resources. If you are unfamiliar with OAuth2, Digital Ocean has put together a great [guide](https://www.digitalocean.com/community/tutorials/an-introduction-to-oauth-2) that should get you started.\n\n***Note:*** *ClickUp uses the authorization code grant type.*\n\n### How To Use the ClickUp OAuth2 Flow\n\n1.  **Create An OAuth App** - As an admin, navigate to your team settings and click on the `Integrations` section. Once there, click on the icon that is labeled \"ClickUp API\" and create a new app. When you create an app, you will be prompted to enter a name, and at least one redirect url. When your app is created, you will be provided with a `client_id` and a `secret`.\n2.  **Authorization Code** - You must first retrieve an authorization code from your user before you can get an access token for their account.\n    *   To start this process, redirect the user to `https://app.clickup.com/api?client_id={client_id}&redirect_uri={redirect_uri}` with the redirect query parameter set to a redirect uri that you specified when creating the oauth app. The host of the redirect uri must match one of those redirect uris or the request will fail. The protocol will default to https if not provided, and non-ssl redirect uris may not be supported in the future.\n    *   Once the user has accepted or rejected the authorization request, they will be redirected back to the `redirect_uri` with the necessary query parameters for getting an access token.\n3.  **Access Token** - Once you have retrieved the authorization code in the previous step, you can then use the route `POST /oauth/token` with the parameters `client_id`, `client_secret` , and `code` to get the user access token. This is the token that is used in the `Authorization` header for all requests in the ClickUp API. Skip to the authorization section below for more information on this route.\n4.  **Token Teams** - When you redirect your user in step 2 of this flow, they will be prompted which teams (Workspaces) they want to grant you access to. Therefore in order to access a specific Workspace for the user, you need to ensure that they have given you access. You can use the route `GET /team` to see which Workspaces they have authorized you to access. If they have not given you access to the appropriate Workspaces, you can redirect them to the authorization code URL from step 2 at any time to reauthorize your app. Below is a screenshot of what the user sees when they visit this URL.\n    \n\n![](https://attachments3.clickup.com/49988c04-bf0f-42a5-96cc-82ce213b7f5e/token_teams.png)\n\n## Rate Limiting\n\nThe API is rate limited per OAuth and personal token. You will receive a 429 HTTP status code if you exceed the rate limit. The rate limit varies based on [plan](https://clickup.com/expandplans):\n\n*   **Free Forever**, **Unlimited**, and **Business Plan**: 100 requests per minute per token\n*   **Business Plus Plan**: 1,000 requests per minute per token\n*   **Enterprise Plan**: 10,000 requests per minute per token\n    \n\nLearn more about our [ClickUp Plans](https://clickup.com/pricing).\n\n## Error Handling\n\nErrors responses will return a non-200 status code and a json err message and error code.\n\nCommon errors include:\n\n**`Team not authorized`**: This error is thrown when a team was not authorized by the user for a particular access token. Refer to the `Token Teams` section of the OAuth instructions for more information on how to fix this error. Error codes that are associated with this message include `OAUTH_023`, `OAUTH_026`, `OAUTH_027`, and `OAUTH_029` to `OAUTH_045`\n\n**`Token not found`**: This error is thrown if authorization is revoked by the user, as described in the \"Personal Token\" section. Error codes that are associated with this message include `OAUTH_019`, `OAUTH_021`, `OAUTH_025`, and `OAUTH_077`\n\n**`Authorization Header Required`**: The authorization token was missing in the `Authorization` http header. `OAUTH_017`\n\n**`Client Not Found`**: The client application was not created correctly. `OAUTH_010`\n\n**`Redirect URI not passed`**: The redirect URI was not present during the OAuth authentication flow. Refer to the section \"Create An OAuth App\" to resolve this error. `OAUTH_017`\n\n**`Redirect URI does not match the redirect uris of this application`**: The redirect URI must be registered with your client application. Refer to the section \"Create An OAuth App\" to resolve this error. `OAUTH_007`\n\n## FAQ\n\n> What is `team` in reference to?\n\nTeams is the legacy term for what are now called Workspaces in ClickUp. For compatibility, the term `team` is still used in this API to refer to Workspaces. In our API documentation, `team_id` refers to the id of a Workspace, and `group_id` refers to the id of a user group.\n\n> What `Content-Type` should I use?\n\nWhen formatting your requests to ClickUp, please always use the content type `application/json`. Using form encoded data is not fully supported and can result in unexpected consequences.\n\n> How are projects and Folders related?\n\nProjects are what we used to call Folders in ClickUp V1. If you use the first version of the API, the items that are returned to you as projects are the same as Folders in the second version of the API. You must use the correct nomenclature depending on the version of the API you are using (`project` for V1 and `folder` for V2) and cannot interchange them.\n\n> Does the access token returned from `POST /oauth/token` expire?\n\nThe access token does not expire at this time.\n\n> Is it possible to move a task between lists using the API?\n\nIt is not possible to move a task between lists at this time. This is a complicated process, however we hope to implement this on the public API in the near future.\n\n> Will tasks created via API generate notifications?\n\nYes, all actions you take with the public api will trigger all of the same process that would occur through the UI. This includes notifications, websocket messages, webhooks, etc.\n\n> How do I tell who has access to a particular task?\n\nTo get a list of team members that have access to a particular task or list, use the routes `GET /task/{{task_id}}/member` and `GET /list/{{list_id}}/member` under the \"Members\" section of this documentation.\n\n> How are dates formatted in ClickUp?\n\nClickUp will always display dates in [Unix time](https://en.wikipedia.org/wiki/Unix_time) in milliseconds. You can use a website like [Epoch Converter](https://epochconverter.com/) to convert dates between Unix and human readable date formats.\n\n> What timezone does your API use for timestamps?\n\nOur API always returns timestamps in [UTC (Coordinated Universal Time)](https://en.wikipedia.org/wiki/Coordinated_Universal_Time).\n\n> How are subtasks represented in the API?\n\nSubtasks are identical to tasks in every way. Therefore, you can manipulate subtasks the same way you would update any task with the API. To check if a task object is a subtask or not, locate the `parent` property. If this value is `null` then it is not a subtask, otherwise it will contain the task ID of the subtask's parent.\n\nTo create a subtask, use `POST /list/:list_id/task` and make sure to set the `parent` property in the body of the request. Similarly, to update or delete existing subtasks, use the routes `PUT /task/:task_id` and `DELETE /task/:task_id` respectively. To fetch subtasks, get the parent task and add the subtask query param (`GET /task/:parent_id?include_subtasks=true`) or use the search team route with that same query param (`GET /team/:team_id/task?subtasks=true`).\n\n> The code examples shown here aren't working\n\nOur code examples are automatically generated and may require customization for specific coding languages and implementation. They are included for reference purposes only.",
+      "version": "1.0.0"
+  },
+  "servers": [
+      {
+          "url": "https://api.clickup.com/api/v2"
+      }
+  ],
+  "components": {
+      "securitySchemes": {
+          "apikeyAuth": {
+              "type": "http",
+              "scheme": "apikey"
+          }
+      }
+  },
+  "security": [
+      {
+          "apikeyAuth": []
+      }
+  ],
+  "tags": [
+      {
+          "name": "Attachments"
+      },
+      {
+          "name": "Authorization"
+      },
+      {
+          "name": "Checklists"
+      },
+      {
+          "name": "Comments"
+      },
+      {
+          "name": "Custom Fields"
+      },
+      {
+          "name": "Dependencies"
+      },
+      {
+          "name": "Folders"
+      },
+      {
+          "name": "Goals"
+      },
+      {
+          "name": "Guests",
+          "description": "Ability to add and remove guests in certain contexts\n"
+      },
+      {
+          "name": "Lists"
+      },
+      {
+          "name": "Members"
+      },
+      {
+          "name": "Roles"
+      },
+      {
+          "name": "Shared Hierarchy"
+      },
+      {
+          "name": "Spaces"
+      },
+      {
+          "name": "Tags"
+      },
+      {
+          "name": "Tasks"
+      },
+      {
+          "name": "Task Templates"
+      },
+      {
+          "name": "Teams (User Groups)"
+      },
+      {
+          "name": "Teams (Workspaces)"
+      },
+      {
+          "name": "Time Tracking Legacy"
+      },
+      {
+          "name": "Time Tracking 2.0"
+      },
+      {
+          "name": "Users"
+      },
+      {
+          "name": "Views"
+      },
+      {
+          "name": "Webhooks"
+      }
+  ],
+  "paths": {
+      "/task/task_id/attachment": {
+          "post": {
+              "tags": [
+                  "Attachments"
+              ],
+              "summary": "Create Task Attachment",
+              "requestBody": {
+                  "content": {
+                      "multipart/form-data": {
+                          "schema": {
+                              "type": "object",
+                              "properties": {
+                                  "attachment": {
+                                      "type": "string",
+                                      "format": "binary"
+                                  }
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/oauth/token": {
+          "post": {
+              "tags": [
+                  "Authorization"
+              ],
+              "summary": "Get Access Token",
+              "requestBody": {
+                  "content": {}
+              },
+              "parameters": [
+                  {
+                      "name": "client_id",
+                      "in": "query",
+                      "schema": {
+                          "type": "string"
+                      }
+                  },
+                  {
+                      "name": "client_secret",
+                      "in": "query",
+                      "schema": {
+                          "type": "string"
+                      }
+                  },
+                  {
+                      "name": "code",
+                      "in": "query",
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/user": {
+          "get": {
+              "tags": [
+                  "Authorization"
+              ],
+              "summary": "Get Authorized User",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team": {
+          "get": {
+              "tags": [
+                  "Teams (Workspaces)"
+              ],
+              "summary": "Get Teams",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/task/task_id/checklist": {
+          "post": {
+              "tags": [
+                  "Checklists"
+              ],
+              "summary": "Create Checklist",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"Checklist\\\"\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/checklist/checklist_id": {
+          "put": {
+              "tags": [
+                  "Checklists"
+              ],
+              "summary": "Edit Checklist",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"Updated Checklist\\\",\\n  \\\"position\\\": 0\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Checklists"
+              ],
+              "summary": "Delete Checklist",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/checklist/checklist_id/checklist_item": {
+          "post": {
+              "tags": [
+                  "Checklists"
+              ],
+              "summary": "Create Checklist Item",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"Checklist Item\\\",\\n  \\\"assignee\\\": 546\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/checklist/checklist_id/checklist_item/checklist_item_id": {
+          "put": {
+              "tags": [
+                  "Checklists"
+              ],
+              "summary": "Edit Checklist Item",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"Updated Checklist Item\\\",\\n  \\\"assignee\\\": null,\\n  \\\"resolved\\\": true,\\n  \\\"parent\\\": null\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Checklists"
+              ],
+              "summary": "Delete Checklist Item",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/task/task_id/comment": {
+          "post": {
+              "tags": [
+                  "Comments"
+              ],
+              "summary": "Create Task Comment",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"comment_text\\\": \\\"Task comment content\\\",\\n  \\\"assignee\\\": 53480,\\n  \\\"notify_all\\\": true\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Comments"
+              ],
+              "summary": "Get Task Comments",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/view/view_id/comment": {
+          "post": {
+              "tags": [
+                  "Comments"
+              ],
+              "summary": "Create Chat View Comment",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"comment_text\\\": \\\"View comment content\\\",\\n  \\\"notify_all\\\": true\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Comments"
+              ],
+              "summary": "Get Chat View Comments",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/list/list_id/comment": {
+          "post": {
+              "tags": [
+                  "Comments"
+              ],
+              "summary": "Create List Comment",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"comment_text\\\": \\\"Task comment content\\\",\\n  \\\"assignee\\\": 53480,\\n  \\\"notify_all\\\": true\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Comments"
+              ],
+              "summary": "Get List Comments",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/comment/comment_id": {
+          "put": {
+              "tags": [
+                  "Comments"
+              ],
+              "summary": "Update Comment",
+              "description": "Please paste comment_id from original task comment created for continuity",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n    \\\"comment_text\\\": \\\"Updated comment text\\\",\\n    \\\"assignee\\\": 53480,\\n    \\\"resolved\\\": true\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Comments"
+              ],
+              "summary": "Delete Comment",
+              "description": "Please paste comment_id from original task comment created for continuity",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/list/list_id/field": {
+          "get": {
+              "tags": [
+                  "Custom Fields"
+              ],
+              "summary": "Get Accessible Custom Fields",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/task/task_id/field/field_id": {
+          "post": {
+              "tags": [
+                  "Custom Fields"
+              ],
+              "summary": "Set Custom Field Value",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n\\t\\\"value\\\": 0\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Custom Fields"
+              ],
+              "summary": "Remove Custom Field Value",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/task/task_id/dependency": {
+          "post": {
+              "tags": [
+                  "Dependencies"
+              ],
+              "summary": "Add Dependency",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n\\t\\\"depends_on\\\": \\\"task_id\\\"\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Dependencies"
+              ],
+              "summary": "Remove Dependency",
+              "parameters": [
+                  {
+                      "name": "depends_on",
+                      "in": "query",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "task_id"
+                  },
+                  {
+                      "name": "dependency_of",
+                      "in": "query",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "task_id"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/task/task_id/link/links_to": {
+          "post": {
+              "tags": [
+                  "Dependencies"
+              ],
+              "summary": "Add Task Link",
+              "requestBody": {
+                  "content": {}
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Dependencies"
+              ],
+              "summary": "Delete Task Link",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/space/space_id/folder": {
+          "post": {
+              "tags": [
+                  "Folders"
+              ],
+              "summary": "Create a Folder",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"New Folder From API V2\\\"\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Folders"
+              ],
+              "summary": "Get Folders",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/folder/folder_id": {
+          "put": {
+              "tags": [
+                  "Folders"
+              ],
+              "summary": "Update a Folder",
+              "description": "Please paste previously created folder_id for continuity",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"Updated Folder Name\\\"\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Folders"
+              ],
+              "summary": "Delete a Folder",
+              "description": "Please paste previously updated folder_id for continuity",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Folders"
+              ],
+              "summary": "Get Folder",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/goal": {
+          "post": {
+              "tags": [
+                  "Goals"
+              ],
+              "summary": "Create a Goal",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"Goal From API V2\\\",\\n  \\\"due_date\\\": 1577811600000,\\n  \\\"description\\\": \\\"Goal Description\\\",\\n  \\\"multiple_owners\\\": true,\\n  \\\"owners\\\": [\\n    53480\\n  ],\\n  \\\"color\\\": \\\"#32a852\\\"\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Goals"
+              ],
+              "summary": "Get Goals",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/goal/goal_id": {
+          "put": {
+              "tags": [
+                  "Goals"
+              ],
+              "summary": "Update a Goal",
+              "description": "Please paste goal_id from previously created Goal for continuity",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n    \\\"name\\\": \\\"Updated Goal Name\\\",\\n    \\\"due_date\\\": 1577811600000,\\n    \\\"description\\\": \\\"Updated Goal Description\\\",\\n    \\\"rem_owners\\\": [53480],\\n    \\\"add_owners\\\": [53480],\\n    \\\"color\\\": \\\"#32a852\\\"\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Goals"
+              ],
+              "summary": "Delete a Goal",
+              "description": "Please paste goal_id from previously updated Goal for continuity",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Goals"
+              ],
+              "summary": "Get Goal",
+              "description": "Please paste goal_id after creating another Goal for continuity. ",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/goal/goal_id/key_result": {
+          "post": {
+              "tags": [
+                  "Goals"
+              ],
+              "summary": "Create a Key Result",
+              "description": "Please use previously created goal_id created before \"Get Goal\" for continuity",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"New Key Result From API V2\\\",\\n  \\\"owners\\\": [\\n    53480\\n  ],\\n  \\\"type\\\": \\\"number\\\",\\n  \\\"steps_start\\\": 0,\\n  \\\"steps_end\\\": 10,\\n  \\\"unit\\\": \\\"km\\\",\\n  \\\"task_ids\\\": [],\\n  \\\"list_ids\\\": []\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/key_result/key_result_id": {
+          "put": {
+              "tags": [
+                  "Goals"
+              ],
+              "summary": "Edit a Key Result",
+              "description": "Please paste key_result_id from previously created key_result for continuity",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"steps_current\\\": 5,\\n  \\\"note\\\": \\\"Target achieved\\\"\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Goals"
+              ],
+              "summary": "Delete a Key Result",
+              "description": "Please post key_result_id from the previously edited key_result for continuity. Please also delete the previously created Goal created for testing the \"Get Goal\" endpoint.",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/guest": {
+          "post": {
+              "tags": [
+                  "Guests"
+              ],
+              "summary": "Invite Guest to Workspace",
+              "description": "The type of JSON to fill out:\n{\n  \"email\": \"example@gmail.com\",\n  \"can_edit_tags\": true || false,\n  \"can_see_time_estimated\": true || false,\n  \"can_see_time_spent\": true || false\n}",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "example": {
+                                  "email": "bspry.testuser4@gmail.com",
+                                  "can_edit_tags": true,
+                                  "can_see_time_estimated": true,
+                                  "can_see_time_spent": true,
+                                  "can_create_views": true,
+                                  "custom_role_id": 12345
+                              }
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/guest/guest_id": {
+          "put": {
+              "tags": [
+                  "Guests"
+              ],
+              "summary": "Edit Guest on Workspace",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "example": {
+                                  "can_edit_tags": true,
+                                  "can_see_time_spent": true,
+                                  "can_see_time_estimated": true,
+                                  "can_create_views": true,
+                                  "custom_role_id": 12345
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Guests"
+              ],
+              "summary": "Remove Guest from Workspace",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Guests"
+              ],
+              "summary": "Get Guest",
+              "description": "All the locations on the Workspace the guest has access too",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/task/task_id/guest/guest_id": {
+          "post": {
+              "tags": [
+                  "Guests"
+              ],
+              "summary": "Add Guest to Task",
+              "description": "JSON Body:\n{\n  \"permission_level\": \"read\" || \"comment\" || \"edit\" || \"create\"\n}",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "example": {
+                                  "permission_level": "read"
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Guests"
+              ],
+              "summary": "Remove Guest from Task",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/list/list_id/guest/guest_id": {
+          "post": {
+              "tags": [
+                  "Guests"
+              ],
+              "summary": "Add Guest to List",
+              "description": "JSON Body:\n{\n  \"permission_level\": \"read\" || \"comment\" || \"edit\" || \"create\"\n}",
+              "requestBody": {
+                  "content": {}
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Guests"
+              ],
+              "summary": "Remove Guest from List",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/folder/folder_id/guest/guest_id": {
+          "post": {
+              "tags": [
+                  "Guests"
+              ],
+              "summary": "Add Guest to Folder",
+              "description": "JSON Body:\n{\n  \"permission_level\": \"read\" || \"comment\" || \"edit\" || \"create\"\n}",
+              "requestBody": {
+                  "content": {}
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Guests"
+              ],
+              "summary": "Remove Guest from Folder",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/folder/folder_id/list": {
+          "post": {
+              "tags": [
+                  "Lists"
+              ],
+              "summary": "Create a List",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"New List Name\\\",\\n  \\\"content\\\": \\\"Sent from API V2\\\",\\n  \\\"due_date\\\": 1577811600000,\\n  \\\"due_date_time\\\": false,\\n  \\\"priority\\\": 1,\\n  \\\"assignee\\\": 53480,\\n  \\\"status\\\": \\\"red\\\"\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Lists"
+              ],
+              "summary": "Get Lists",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/space/space_id/list": {
+          "post": {
+              "tags": [
+                  "Lists"
+              ],
+              "summary": "Create Folderless List",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "example": {
+                                  "name": "New List Name",
+                                  "content": "New List Content",
+                                  "due_date": 1567780450202,
+                                  "due_date_time": false,
+                                  "priority": 1,
+                                  "assignee": 183,
+                                  "status": "red"
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Lists"
+              ],
+              "summary": "Get Folderless Lists",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/list/list_id": {
+          "put": {
+              "tags": [
+                  "Lists"
+              ],
+              "summary": "Update a List",
+              "description": "Please paste previously created list_id for continuity",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"Updated List Name\\\",\\n  \\\"content\\\": \\\"Updated List Content\\\",\\n  \\\"due_date\\\": 1577811600000,\\n  \\\"due_date_time\\\": true,\\n  \\\"priority\\\": 2,\\n  \\\"assignee\\\": \\\"none\\\"\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Lists"
+              ],
+              "summary": "Delete a List",
+              "description": "Please paste previously updated list_id for continuity",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Lists"
+              ],
+              "summary": "Get List",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/list/list_id/task/task_id": {
+          "post": {
+              "tags": [
+                  "Lists"
+              ],
+              "summary": "Add Task To List",
+              "requestBody": {
+                  "content": {}
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Lists"
+              ],
+              "summary": "Remove Task From List",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/task/task_id/member": {
+          "get": {
+              "tags": [
+                  "Members"
+              ],
+              "summary": "Get Task members",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/list/list_id/member": {
+          "get": {
+              "tags": [
+                  "Members"
+              ],
+              "summary": "Get List Members",
+              "description": "    ",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team_id/customRoles": {
+          "get": {
+              "tags": [
+                  "Roles"
+              ],
+              "summary": "Get Custom Roles",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/shared": {
+          "get": {
+              "tags": [
+                  "Shared Hierarchy"
+              ],
+              "summary": "Get Shared Hierarchy",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/space": {
+          "post": {
+              "tags": [
+                  "Spaces"
+              ],
+              "summary": "Create a Space",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"\\n{\\n  \\\"name\\\": \\\"New Space From API V2\\\",\\n  \\\"multiple_assignees\\\": true,\\n  \\\"features\\\": {\\n    \\\"due_dates\\\": {\\n      \\\"enabled\\\": true,\\n      \\\"start_date\\\": false,\\n      \\\"remap_due_dates\\\": true,\\n      \\\"remap_closed_due_date\\\": false\\n    },\\n    \\\"time_tracking\\\": {\\n      \\\"enabled\\\": false\\n    },\\n    \\\"tags\\\": {\\n      \\\"enabled\\\": true\\n    },\\n    \\\"time_estimates\\\": {\\n      \\\"enabled\\\": true\\n    },\\n    \\\"checklists\\\": {\\n      \\\"enabled\\\": true\\n    },\\n    \\\"custom_fields\\\": {\\n      \\\"enabled\\\": true\\n    },\\n    \\\"remap_dependencies\\\": {\\n      \\\"enabled\\\": true\\n    },\\n    \\\"dependency_warning\\\": {\\n      \\\"enabled\\\": true\\n    },\\n    \\\"portfolios\\\": {\\n      \\\"enabled\\\": true\\n    }\\n  }\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Spaces"
+              ],
+              "summary": "Get Spaces",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/space/space_id": {
+          "put": {
+              "tags": [
+                  "Spaces"
+              ],
+              "summary": "Update a Space",
+              "description": "Please paste the previously created space_id for continuity",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"\\n{\\n  \\\"name\\\": \\\"Updated Space Name\\\",\\n  \\\"color\\\": \\\"#7B68EE\\\",\\n  \\\"private\\\": false,\\n  \\\"admin_can_manage\\\": false,\\n  \\\"multiple_assignees\\\": true,\\n  \\\"features\\\": {\\n    \\\"due_dates\\\": {\\n      \\\"enabled\\\": true,\\n      \\\"start_date\\\": false,\\n      \\\"remap_due_dates\\\": true,\\n      \\\"remap_closed_due_date\\\": false\\n    },\\n    \\\"time_tracking\\\": {\\n      \\\"enabled\\\": true\\n    },\\n    \\\"tags\\\": {\\n      \\\"enabled\\\": true\\n    },\\n    \\\"time_estimates\\\": {\\n      \\\"enabled\\\": true\\n    },\\n    \\\"checklists\\\": {\\n      \\\"enabled\\\": true\\n    },\\n    \\\"custom_fields\\\": {\\n      \\\"enabled\\\": true\\n    },\\n    \\\"remap_dependencies\\\": {\\n      \\\"enabled\\\": true\\n    },\\n    \\\"dependency_warning\\\": {\\n      \\\"enabled\\\": false\\n    },\\n    \\\"portfolios\\\": {\\n      \\\"enabled\\\": true\\n    }\\n  }\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Spaces"
+              ],
+              "summary": "Delete a Space",
+              "description": "Please paste the previously updated space_id for continuity",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Spaces"
+              ],
+              "summary": "Get Space",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/space/space_id/tag": {
+          "get": {
+              "tags": [
+                  "Tags"
+              ],
+              "summary": "Get Space Tags",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "post": {
+              "tags": [
+                  "Tags"
+              ],
+              "summary": "Create a Space Tag",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"tag\\\": {\\n    \\\"name\\\": \\\"API V2\\\",\\n    \\\"tag_fg\\\": \\\"#ffffff\\\",\\n    \\\"tag_bg\\\": \\\"#3c9d9b\\\"\\n  }\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/space/space_id/tag/tag_name": {
+          "put": {
+              "tags": [
+                  "Tags"
+              ],
+              "summary": "Edit a Space Tag",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"tag\\\": {\\n    \\\"name\\\": \\\"API V2 PUT\\\",\\n    \\\"tag_fg\\\": \\\"#ffffff\\\",\\n    \\\"tag_bg\\\": \\\"#3e3d9f\\\"\\n  }\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Tags"
+              ],
+              "summary": "Delete a Space Tag",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/task/task_id/tag/tag_name": {
+          "post": {
+              "tags": [
+                  "Tags"
+              ],
+              "summary": "Add Tag To Task",
+              "requestBody": {
+                  "content": {}
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Tags"
+              ],
+              "summary": "Remove Tag From Task",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/list/list_id/task": {
+          "post": {
+              "tags": [
+                  "Tasks"
+              ],
+              "summary": "Create a Task",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"\\n{\\n  \\\"name\\\": \\\"New Task Name\\\",\\n  \\\"description\\\": \\\"New Task Description\\\",\\n  \\\"assignees\\\": [\\n    183\\n  ],\\n  \\\"tags\\\": [\\n    \\\"tag name 1\\\"\\n  ],\\n  \\\"status\\\": \\\"Open\\\",\\n  \\\"priority\\\": 3,\\n  \\\"due_date\\\": 1508369194377,\\n  \\\"due_date_time\\\": false,\\n  \\\"time_estimate\\\": 8640000,\\n  \\\"start_date\\\": 1567780450202,\\n  \\\"start_date_time\\\": false,\\n  \\\"notify_all\\\": true,\\n  \\\"parent\\\": null,\\n  \\\"links_to\\\": null,\\n  \\\"custom_fields\\\": [\\n    {\\n      \\\"id\\\": \\\"0a52c486-5f05-403b-b4fd-c512ff05131c\\\",\\n      \\\"value\\\": 23\\n    },\\n    {\\n      \\\"id\\\": \\\"03efda77-c7a0-42d3-8afd-fd546353c2f5\\\",\\n      \\\"value\\\": \\\"Text field input\\\"\\n    }\\n  ]\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Tasks"
+              ],
+              "summary": "Get Tasks",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/task/task_id": {
+          "put": {
+              "tags": [
+                  "Tasks"
+              ],
+              "summary": "Update a Task",
+              "description": "Paste task_id from previously created task.\n\nMake sure to update all fields when testing to make sure they are all updated.",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n    \\\"name\\\": \\\"Updated Task Name\\\",\\n    \\\"description\\\": \\\"Updated Task Content\\\",\\n    \\\"status\\\": \\\"in progress\\\",\\n    \\\"priority\\\": 1,\\n    \\\"time_estimate\\\": 8640000,\\n    \\\"assignees\\\": {\\n        \\\"add\\\": [182],\\n        \\\"rem\\\": [183]\\n    },\\n    \\\"archived\\\": false,\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Tasks"
+              ],
+              "summary": "Delete a Task",
+              "description": "Please delete previously created/updated task for continuity",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Tasks"
+              ],
+              "summary": "Get Task",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/task": {
+          "get": {
+              "tags": [
+                  "Tasks"
+              ],
+              "summary": "Get Filtered Team Tasks",
+              "parameters": [
+                  {
+                      "name": "",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      }
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/task/task_id/time_in_status": {
+          "get": {
+              "tags": [
+                  "Tasks"
+              ],
+              "summary": "Get Task's Time in Status",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/task/bulk_time_in_status/task_ids": {
+          "get": {
+              "tags": [
+                  "Tasks"
+              ],
+              "summary": "Get Bulk Tasks' Time in Status",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/taskTemplate": {
+          "get": {
+              "tags": [
+                  "Task Templates"
+              ],
+              "summary": "Get Task Templates",
+              "parameters": [
+                  {
+                      "name": "page",
+                      "in": "query",
+                      "schema": {
+                          "type": "integer"
+                      },
+                      "example": "0"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/list/list_id/taskTemplate/template_id": {
+          "post": {
+              "tags": [
+                  "Task Templates"
+              ],
+              "summary": "Create Task From Template",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n\\t\\\"name\\\": \\\"API V2 Test\\\"\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/group": {
+          "post": {
+              "tags": [
+                  "Teams (User Groups)"
+              ],
+              "summary": "Create a Team",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "example": "{\n    \"name\": \"Team name\"\n    \"member_ids\": [123456, 987654]\n}"
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/6931406/group": {
+          "get": {
+              "tags": [
+                  "Teams (User Groups)"
+              ],
+              "summary": "Get Teams",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/group/group_id": {
+          "put": {
+              "tags": [
+                  "Teams (User Groups)"
+              ],
+              "summary": "Update Team",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "example": "{\n    \"name\": \"team name\"\n    \"handle\": \"handle\"\n    \"members\": {\n        \"add\":[123456],\n        \"rem\": [654564]\n    }\n}"
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Teams (User Groups)"
+              ],
+              "summary": "Delete a Team",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/workspace_id/seats": {
+          "get": {
+              "tags": [
+                  "Teams (Workspaces)"
+              ],
+              "summary": "Get Workspace Seats",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/task/task_id/time": {
+          "post": {
+              "tags": [
+                  "Time Tracking Legacy"
+              ],
+              "summary": "Track Time",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"start\\\": 1567780450202,\\n  \\\"end\\\": 1508369194377,\\n  \\\"time\\\": 8640000\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/task/task_id/time/": {
+          "get": {
+              "tags": [
+                  "Time Tracking Legacy"
+              ],
+              "summary": "Get Time Tracked",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/task/task_id/time/interval_id": {
+          "put": {
+              "tags": [
+                  "Time Tracking Legacy"
+              ],
+              "summary": "Edit Time Tracked",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"start\\\": 1567780450202,\\n  \\\"end\\\": 1508369194377,\\n  \\\"time\\\": 8640000\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Time Tracking Legacy"
+              ],
+              "summary": "Delete Time Tracked",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/time_entries": {
+          "get": {
+              "tags": [
+                  "Time Tracking 2.0"
+              ],
+              "summary": "Get time entries within a date range",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "post": {
+              "tags": [
+                  "Time Tracking 2.0"
+              ],
+              "summary": "Create a time entry",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "example": {
+                                  "description": "from api",
+                                  "tags": [
+                                      {
+                                          "name": "josh1",
+                                          "tag_bg": "#BF55EC",
+                                          "tag_fg": "#BF55EC"
+                                      }
+                                  ],
+                                  "start": 1595282645000,
+                                  "created_with": "string",
+                                  "billable": true,
+                                  "duration": 50000,
+                                  "assignee": 300528
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_Id/time_entries/timer_id/history": {
+          "get": {
+              "tags": [
+                  "Time Tracking 2.0"
+              ],
+              "summary": "Get time entry history",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/time_entries/time_entry_id": {
+          "get": {
+              "tags": [
+                  "Time Tracking 2.0"
+              ],
+              "summary": "Get singular time entry",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Time Tracking 2.0"
+              ],
+              "summary": "Delete time a time entry",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/time_entries/current": {
+          "get": {
+              "tags": [
+                  "Time Tracking 2.0"
+              ],
+              "summary": "Get running time entry",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/time_entries/tags": {
+          "delete": {
+              "tags": [
+                  "Time Tracking 2.0"
+              ],
+              "summary": "Remove tags from timer entry",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "post": {
+              "tags": [
+                  "Time Tracking 2.0"
+              ],
+              "summary": "Add tags from time entries",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "example": {
+                                  "time_entry_ids": [
+                                      "2043908062133112350"
+                                  ],
+                                  "tags": [
+                                      {
+                                          "name": "test tag",
+                                          "tag_bg": "#000000",
+                                          "tag_fg": "#000000"
+                                      }
+                                  ]
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Time Tracking 2.0"
+              ],
+              "summary": "Get all tags from time entries",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "put": {
+              "tags": [
+                  "Time Tracking 2.0"
+              ],
+              "summary": "Change tag names from time entries",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "example": {
+                                  "name": "joshy",
+                                  "new_name": "MAMA",
+                                  "tag_bg": "#000000",
+                                  "tag_fg": "#000000"
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/time_entries/start/{timer_id}": {
+          "post": {
+              "tags": [
+                  "Time Tracking 2.0"
+              ],
+              "summary": "Start a time entry",
+              "requestBody": {
+                  "content": {}
+              },
+              "parameters": [
+                  {
+                      "name": "timer_id",
+                      "in": "path",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "required": true
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/time_entries/stop": {
+          "post": {
+              "tags": [
+                  "Time Tracking 2.0"
+              ],
+              "summary": "Stop current time entry",
+              "requestBody": {
+                  "content": {}
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/time_entries/timer_id": {
+          "put": {
+              "tags": [
+                  "Time Tracking 2.0"
+              ],
+              "summary": "Update a time entry",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "example": {
+                                  "description": "string",
+                                  "tags": [
+                                      "string"
+                                  ],
+                                  "tag_action": "replace",
+                                  "start": 0,
+                                  "end": 0,
+                                  "tid": "JOSH-720",
+                                  "billable": true,
+                                  "duration": 40000,
+                                  "assignee": 0
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/user": {
+          "post": {
+              "tags": [
+                  "Users"
+              ],
+              "summary": "Invite User to Workspace",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "example": {
+                                  "email": "user@example.com",
+                                  "admin": true,
+                                  "custom_role_id": 123456
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/user/user_id": {
+          "put": {
+              "tags": [
+                  "Users"
+              ],
+              "summary": "Edit User on Workspace",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "example": {
+                                  "username": "User Name",
+                                  "admin": false,
+                                  "custom_role_id": 12345
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Users"
+              ],
+              "summary": "Remove User From Workspace",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Users"
+              ],
+              "summary": "Get User",
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/view": {
+          "post": {
+              "tags": [
+                  "Views"
+              ],
+              "summary": "Create Team View",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"New Team View Name\\\",\\n  \\\"type\\\": \\\"list\\\",\\n  \\\"grouping\\\": {\\n    \\\"field\\\": \\\"status\\\",\\n    \\\"dir\\\": 1,\\n    \\\"collapsed\\\": [],\\n    \\\"ignore\\\": false\\n  },\\n  \\\"divide\\\": {\\n    \\\"field\\\": null,\\n    \\\"dir\\\": null,\\n    \\\"collapsed\\\": []\\n  },\\n  \\\"sorting\\\": {\\n    \\\"fields\\\": []\\n  },\\n  \\\"filters\\\": {\\n    \\\"op\\\": \\\"AND\\\",\\n    \\\"fields\\\": [],\\n    \\\"search\\\": \\\"\\\",\\n    \\\"show_closed\\\": false\\n  },\\n  \\\"columns\\\": {\\n    \\\"fields\\\": []\\n  },\\n  \\\"team_sidebar\\\": {\\n    \\\"assignees\\\": [],\\n    \\\"assigned_comments\\\": false,\\n    \\\"unassigned_tasks\\\": false\\n  },\\n  \\\"settings\\\": {\\n    \\\"show_task_locations\\\": false,\\n    \\\"show_subtasks\\\": 3,\\n    \\\"show_subtask_parent_names\\\": false,\\n    \\\"show_closed_subtasks\\\": false,\\n    \\\"show_assignees\\\": true,\\n    \\\"show_images\\\": true,\\n    \\\"collapse_empty_columns\\\": null,\\n    \\\"me_comments\\\": true,\\n    \\\"me_subtasks\\\": true,\\n    \\\"me_checklists\\\": true\\n  }\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Views"
+              ],
+              "summary": "Get Team Views",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/space/space_id/view": {
+          "post": {
+              "tags": [
+                  "Views"
+              ],
+              "summary": "Create Space View",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"API V2 View\\\",\\n  \\\"type\\\": \\\"list\\\",\\n  \\\"grouping\\\": {\\n    \\\"field\\\": \\\"status\\\",\\n    \\\"dir\\\": 1,\\n    \\\"collapsed\\\": [],\\n    \\\"ignore\\\": false\\n  },\\n  \\\"divide\\\": {\\n    \\\"field\\\": null,\\n    \\\"dir\\\": null,\\n    \\\"collapsed\\\": []\\n  },\\n  \\\"sorting\\\": {\\n    \\\"fields\\\": []\\n  },\\n  \\\"filters\\\": {\\n    \\\"op\\\": \\\"AND\\\",\\n    \\\"fields\\\": [],\\n    \\\"search\\\": \\\"\\\",\\n    \\\"show_closed\\\": false\\n  },\\n  \\\"columns\\\": {\\n    \\\"fields\\\": []\\n  },\\n  \\\"team_sidebar\\\": {\\n    \\\"assignees\\\": [],\\n    \\\"assigned_comments\\\": false,\\n    \\\"unassigned_tasks\\\": false\\n  },\\n  \\\"settings\\\": {\\n    \\\"show_task_locations\\\": false,\\n    \\\"show_subtasks\\\": 3,\\n    \\\"show_subtask_parent_names\\\": false,\\n    \\\"show_closed_subtasks\\\": false,\\n    \\\"show_assignees\\\": true,\\n    \\\"show_images\\\": true,\\n    \\\"collapse_empty_columns\\\": null,\\n    \\\"me_comments\\\": true,\\n    \\\"me_subtasks\\\": true,\\n    \\\"me_checklists\\\": true\\n  }\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Views"
+              ],
+              "summary": "Get Space Views",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/folder/folder_id/view": {
+          "post": {
+              "tags": [
+                  "Views"
+              ],
+              "summary": "Create Folder View",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"API V2 View\\\",\\n  \\\"type\\\": \\\"list\\\",\\n  \\\"grouping\\\": {\\n    \\\"field\\\": \\\"status\\\",\\n    \\\"dir\\\": 1,\\n    \\\"collapsed\\\": [],\\n    \\\"ignore\\\": false\\n  },\\n  \\\"divide\\\": {\\n    \\\"field\\\": null,\\n    \\\"dir\\\": null,\\n    \\\"collapsed\\\": []\\n  },\\n  \\\"sorting\\\": {\\n    \\\"fields\\\": []\\n  },\\n  \\\"filters\\\": {\\n    \\\"op\\\": \\\"AND\\\",\\n    \\\"fields\\\": [],\\n    \\\"search\\\": \\\"\\\",\\n    \\\"show_closed\\\": false\\n  },\\n  \\\"columns\\\": {\\n    \\\"fields\\\": []\\n  },\\n  \\\"team_sidebar\\\": {\\n    \\\"assignees\\\": [],\\n    \\\"assigned_comments\\\": false,\\n    \\\"unassigned_tasks\\\": false\\n  },\\n  \\\"settings\\\": {\\n    \\\"show_task_locations\\\": false,\\n    \\\"show_subtasks\\\": 3,\\n    \\\"show_subtask_parent_names\\\": false,\\n    \\\"show_closed_subtasks\\\": false,\\n    \\\"show_assignees\\\": true,\\n    \\\"show_images\\\": true,\\n    \\\"collapse_empty_columns\\\": null,\\n    \\\"me_comments\\\": true,\\n    \\\"me_subtasks\\\": true,\\n    \\\"me_checklists\\\": true\\n  }\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Views"
+              ],
+              "summary": "Get Folder Views",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/list/list_id/view": {
+          "post": {
+              "tags": [
+                  "Views"
+              ],
+              "summary": "Create List View",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"API V2 View\\\",\\n  \\\"type\\\": \\\"list\\\",\\n  \\\"grouping\\\": {\\n    \\\"field\\\": \\\"status\\\",\\n    \\\"dir\\\": 1,\\n    \\\"collapsed\\\": [],\\n    \\\"ignore\\\": false\\n  },\\n  \\\"divide\\\": {\\n    \\\"field\\\": null,\\n    \\\"dir\\\": null,\\n    \\\"collapsed\\\": []\\n  },\\n  \\\"sorting\\\": {\\n    \\\"fields\\\": []\\n  },\\n  \\\"filters\\\": {\\n    \\\"op\\\": \\\"AND\\\",\\n    \\\"fields\\\": [],\\n    \\\"search\\\": \\\"\\\",\\n    \\\"show_closed\\\": false\\n  },\\n  \\\"columns\\\": {\\n    \\\"fields\\\": []\\n  },\\n  \\\"team_sidebar\\\": {\\n    \\\"assignees\\\": [],\\n    \\\"assigned_comments\\\": false,\\n    \\\"unassigned_tasks\\\": false\\n  },\\n  \\\"settings\\\": {\\n    \\\"show_task_locations\\\": false,\\n    \\\"show_subtasks\\\": 3,\\n    \\\"show_subtask_parent_names\\\": false,\\n    \\\"show_closed_subtasks\\\": false,\\n    \\\"show_assignees\\\": true,\\n    \\\"show_images\\\": true,\\n    \\\"collapse_empty_columns\\\": null,\\n    \\\"me_comments\\\": true,\\n    \\\"me_subtasks\\\": true,\\n    \\\"me_checklists\\\": true\\n  }\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Views"
+              ],
+              "summary": "Get List Views",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/view/view_id": {
+          "get": {
+              "tags": [
+                  "Views"
+              ],
+              "summary": "Get View",
+              "description": "Please paste view_id from \"API V2 View\" on \"API V2 Test Space\" for continuity",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "put": {
+              "tags": [
+                  "Views"
+              ],
+              "summary": "Update View",
+              "description": "Please paste view_id from \"API V2 View\" on \"API V2 Test Space\" for continuity",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"name\\\": \\\"API V2 View\\\",\\n  \\\"type\\\": \\\"list\\\",\\n  \\\"parent\\\": {\\n    \\\"id\\\": \\\"512\\\",\\n    \\\"type\\\": 7\\n  },\\n  \\\"grouping\\\": {\\n    \\\"field\\\": \\\"status\\\",\\n    \\\"dir\\\": 1,\\n    \\\"collapsed\\\": [],\\n    \\\"ignore\\\": false\\n  },\\n  \\\"divide\\\": {\\n    \\\"field\\\": null,\\n    \\\"dir\\\": null,\\n    \\\"collapsed\\\": []\\n  },\\n  \\\"sorting\\\": {\\n    \\\"fields\\\": []\\n  },\\n  \\\"filters\\\": {\\n    \\\"op\\\": \\\"AND\\\",\\n    \\\"fields\\\": [],\\n    \\\"search\\\": \\\"\\\",\\n    \\\"show_closed\\\": false\\n  },\\n  \\\"columns\\\": {\\n    \\\"fields\\\": []\\n  },\\n  \\\"team_sidebar\\\": {\\n    \\\"assignees\\\": [],\\n    \\\"assigned_comments\\\": false,\\n    \\\"unassigned_tasks\\\": false\\n  },\\n  \\\"settings\\\": {\\n    \\\"show_task_locations\\\": false,\\n    \\\"show_subtasks\\\": 3,\\n    \\\"show_subtask_parent_names\\\": true,\\n    \\\"show_closed_subtasks\\\": true,\\n    \\\"show_assignees\\\": false,\\n    \\\"show_images\\\": true,\\n    \\\"collapse_empty_columns\\\": null,\\n    \\\"me_comments\\\": true,\\n    \\\"me_subtasks\\\": true,\\n    \\\"me_checklists\\\": true\\n  }\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Views"
+              ],
+              "summary": "Delete a View",
+              "description": "Please paste view_id from a view on \"Everything\" for continuity",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/view/view_id/task": {
+          "get": {
+              "tags": [
+                  "Views"
+              ],
+              "summary": "Get View Tasks",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  },
+                  {
+                      "name": "page",
+                      "in": "query",
+                      "schema": {
+                          "type": "integer"
+                      },
+                      "example": "0"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/team/team_id/webhook": {
+          "post": {
+              "tags": [
+                  "Webhooks"
+              ],
+              "summary": "Create a Webhook",
+              "requestBody": {
+                  "content": {
+                      "*/*": {
+                          "schema": {
+                              "type": "string",
+                              "example": "\"{\\n  \\\"endpoint\\\": \\\"https://af4a0f62.ngrok.io\\\",\\n  \\\"events\\\": [\\n    \\\"taskCreated\\\",\\n    \\\"taskUpdated\\\",\\n    \\\"taskDeleted\\\",\\n    \\\"taskPriorityUpdated\\\",\\n    \\\"taskStatusUpdated\\\",\\n    \\\"taskAssigneeUpdated\\\",\\n    \\\"taskDueDateUpdated\\\",\\n    \\\"taskTagUpdated\\\",\\n    \\\"taskMoved\\\",\\n    \\\"taskCommentPosted\\\",\\n    \\\"taskCommentUpdated\\\",\\n    \\\"taskTimeEstimateUpdated\\\",\\n    \\\"taskTimeTrackedUpdated\\\",\\n    \\\"listCreated\\\",\\n    \\\"listUpdated\\\",\\n    \\\"listDeleted\\\",\\n    \\\"folderCreated\\\",\\n    \\\"folderUpdated\\\",\\n    \\\"folderDeleted\\\",\\n    \\\"spaceCreated\\\",\\n    \\\"spaceUpdated\\\",\\n    \\\"spaceDeleted\\\",\\n    \\\"goalCreated\\\",\\n    \\\"goalUpdated\\\",\\n    \\\"goalDeleted\\\",\\n    \\\"keyResultCreated\\\",\\n    \\\"keyResultUpdated\\\",\\n    \\\"keyResultDelted\\\"\\n  ]\\n}\""
+                          }
+                      }
+                  }
+              },
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "get": {
+              "tags": [
+                  "Webhooks"
+              ],
+              "summary": "Get Webhooks",
+              "description": "Please create another webhook and test afterward",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      },
+      "/webhook/webhook_id": {
+          "put": {
+              "tags": [
+                  "Webhooks"
+              ],
+              "summary": "Update Webhook",
+              "requestBody": {
+                  "content": {
+                      "application/json": {
+                          "schema": {
+                              "type": "object",
+                              "example": {
+                                  "endpoint": "https://yourdomain.com/webhook",
+                                  "events": "*",
+                                  "status": "active"
+                              }
+                          }
+                      }
+                  }
+              },
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          },
+          "delete": {
+              "tags": [
+                  "Webhooks"
+              ],
+              "summary": "Delete a Webhook",
+              "description": "Please paste webhook_id from previously created webhook for continuity",
+              "parameters": [
+                  {
+                      "name": "Content-Type",
+                      "in": "header",
+                      "schema": {
+                          "type": "string"
+                      },
+                      "example": "application/json"
+                  }
+              ],
+              "responses": {
+                  "200": {
+                      "description": "Successful response",
+                      "content": {
+                          "application/json": {}
+                      }
+                  }
+              }
+          }
+      }
+  }
+}
