@@ -1,0 +1,20 @@
+{
+  "integrationSpecification": {
+    "title": "Linear Spec",
+    "type": "object",
+    "properties": {
+      "credentials": {
+        "type": "object",
+        "properties": {
+          "api_key": {
+            "type": "string",
+            "title": "Api Key",
+            "description": "Enter the API Key"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  }
+}
