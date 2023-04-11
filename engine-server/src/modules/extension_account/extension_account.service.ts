@@ -1,7 +1,7 @@
 /* eslint-disable dot-location */
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GraphQLError } from 'graphql';
@@ -82,6 +82,25 @@ export class ExtensionAccountService {
     });
 
     return exclude(account, ['extensionConfiguration']);
+  }
+
+  async checkIfExtensionAccountIsActive(
+    extensionAccountRequestIdBody: ExtensionAccountRequestIdBody,
+  ) {
+    const { extensionAccountId } = extensionAccountRequestIdBody;
+
+    const extensionAccount = await this.prisma.extensionAccount.findUnique({
+      where: {
+        extensionAccountId,
+      },
+      include: {
+        workspace: true,
+      },
+    });
+
+    if (!extensionAccount) {
+      throw new NotFoundException('Extension account is not found');
+    }
   }
 
   async checkForExtensionAccountName(

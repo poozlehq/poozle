@@ -60,6 +60,11 @@ const sidebars = {
           id: "understanding_poozle/protocol",
           label: "Protocol",
         },
+        {
+          type: "doc",
+          id: "understanding_poozle/architecture",
+          label: "Architecture overview",
+        },
       ],
     },
   ],
