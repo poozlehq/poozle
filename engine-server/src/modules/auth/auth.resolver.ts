@@ -68,13 +68,6 @@ export class AuthResolver {
 
   @Mutation(() => Logout)
   async logout(@Context('res') res: Response) {
-    const options = {
-      maxAge: 1000 * 60 * 60 * 24, // expires in a day
-      httpOnly: true, // cookie is only accessible by the server
-      secure: process.env.NODE_ENV === 'production', // only transferred over https
-      sameSite: true, // only sent for requests to the same FQDN as the domain in the cookie
-    };
-
     res.cookie('token', '', this.cookieOptions);
 
     return {
