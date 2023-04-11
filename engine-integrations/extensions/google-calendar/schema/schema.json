@@ -78,12 +78,6 @@
                     "$ref": "#/components/parameters/fields"
                 },
                 {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
-                },
-                {
                     "$ref": "#/components/parameters/prettyPrint"
                 },
                 {
@@ -182,12 +176,6 @@
                 },
                 {
                     "$ref": "#/components/parameters/fields"
-                },
-                {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
                 },
                 {
                     "$ref": "#/components/parameters/prettyPrint"
@@ -350,12 +338,6 @@
                     "$ref": "#/components/parameters/fields"
                 },
                 {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
-                },
-                {
                     "$ref": "#/components/parameters/prettyPrint"
                 },
                 {
@@ -420,12 +402,6 @@
                 },
                 {
                     "$ref": "#/components/parameters/fields"
-                },
-                {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
                 },
                 {
                     "$ref": "#/components/parameters/prettyPrint"
@@ -590,12 +566,6 @@
                     "$ref": "#/components/parameters/fields"
                 },
                 {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
-                },
-                {
                     "$ref": "#/components/parameters/prettyPrint"
                 },
                 {
@@ -725,12 +695,6 @@
                 },
                 {
                     "$ref": "#/components/parameters/fields"
-                },
-                {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
                 },
                 {
                     "$ref": "#/components/parameters/prettyPrint"
@@ -957,12 +921,6 @@
                     "$ref": "#/components/parameters/fields"
                 },
                 {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
-                },
-                {
                     "$ref": "#/components/parameters/prettyPrint"
                 },
                 {
@@ -1069,12 +1027,6 @@
                     "$ref": "#/components/parameters/fields"
                 },
                 {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
-                },
-                {
                     "$ref": "#/components/parameters/prettyPrint"
                 },
                 {
@@ -1149,12 +1101,6 @@
                 },
                 {
                     "$ref": "#/components/parameters/fields"
-                },
-                {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
                 },
                 {
                     "$ref": "#/components/parameters/prettyPrint"
@@ -1234,12 +1180,6 @@
                 },
                 {
                     "$ref": "#/components/parameters/fields"
-                },
-                {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
                 },
                 {
                     "$ref": "#/components/parameters/prettyPrint"
@@ -1567,12 +1507,6 @@
                 },
                 {
                     "$ref": "#/components/parameters/fields"
-                },
-                {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
                 },
                 {
                     "$ref": "#/components/parameters/prettyPrint"
@@ -1915,12 +1849,6 @@
                     "$ref": "#/components/parameters/fields"
                 },
                 {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
-                },
-                {
                     "$ref": "#/components/parameters/prettyPrint"
                 },
                 {
@@ -1938,12 +1866,6 @@
                 },
                 {
                     "$ref": "#/components/parameters/fields"
-                },
-                {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
                 },
                 {
                     "$ref": "#/components/parameters/prettyPrint"
@@ -2034,12 +1956,6 @@
                     "$ref": "#/components/parameters/fields"
                 },
                 {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
-                },
-                {
                     "$ref": "#/components/parameters/prettyPrint"
                 },
                 {
@@ -2099,12 +2015,6 @@
                     "$ref": "#/components/parameters/fields"
                 },
                 {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
-                },
-                {
                     "$ref": "#/components/parameters/prettyPrint"
                 },
                 {
@@ -2122,12 +2032,6 @@
                 },
                 {
                     "$ref": "#/components/parameters/fields"
-                },
-                {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
                 },
                 {
                     "$ref": "#/components/parameters/prettyPrint"
@@ -2253,12 +2157,6 @@
                     "$ref": "#/components/parameters/fields"
                 },
                 {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
-                },
-                {
                     "$ref": "#/components/parameters/prettyPrint"
                 },
                 {
@@ -2314,12 +2212,6 @@
                 },
                 {
                     "$ref": "#/components/parameters/fields"
-                },
-                {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
                 },
                 {
                     "$ref": "#/components/parameters/prettyPrint"
@@ -2477,12 +2369,6 @@
                 },
                 {
                     "$ref": "#/components/parameters/fields"
-                },
-                {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
                 },
                 {
                     "$ref": "#/components/parameters/prettyPrint"
@@ -2644,12 +2530,6 @@
                     "$ref": "#/components/parameters/fields"
                 },
                 {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
-                },
-                {
                     "$ref": "#/components/parameters/prettyPrint"
                 },
                 {
@@ -2667,12 +2547,6 @@
                 },
                 {
                     "$ref": "#/components/parameters/fields"
-                },
-                {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
                 },
                 {
                     "$ref": "#/components/parameters/prettyPrint"
@@ -2779,12 +2653,6 @@
                     "$ref": "#/components/parameters/fields"
                 },
                 {
-                    "$ref": "#/components/parameters/key"
-                },
-                {
-                    "$ref": "#/components/parameters/oauth_token"
-                },
-                {
                     "$ref": "#/components/parameters/prettyPrint"
                 },
                 {
@@ -2813,22 +2681,6 @@
                 "description": "Selector specifying which fields to include in a partial response.",
                 "in": "query",
                 "name": "fields",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "key": {
-                "description": "API key. Your API key identifies your project and provides you with API access, quota, and reports. Required unless you provide an OAuth 2.0 token.",
-                "in": "query",
-                "name": "key",
-                "schema": {
-                    "type": "string"
-                }
-            },
-            "oauth_token": {
-                "description": "OAuth 2.0 token for the current user.",
-                "in": "query",
-                "name": "oauth_token",
                 "schema": {
                     "type": "string"
                 }

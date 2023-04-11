@@ -1,10 +1,35 @@
 {
-  "name": "GoogleCalendar extension",
-  "key": "google_calendar",
-  "description": "write the description",
-  "icon": "google_calendar.svg",
-  "type": "REST",
-  "inputs": [
-
-  ]
+  "integrationSpecification": {
+    "title": "Google Calendar Spec",
+    "type": "object",
+    "properties": {
+      "credentials": {
+        "type": "object",
+        "properties": {
+          "client_secret": {
+            "type": "string",
+            "title": "Client Secret",
+            "description": "Enter the Client Secret"
+          },
+          "client_id": {
+            "type": "string",
+            "title": "Client Id",
+            "description": "Enter the Client Id"
+          },
+          "refresh_token": {
+            "type": "string",
+            "title": "Refresh Token",
+            "description": "Enter the Refresh Token"
+          },
+          "scope": {
+            "type": "string",
+            "title": "Scope",
+            "description": "Enter the Scope"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  }
 }
