@@ -1,0 +1,1113 @@
+directive @resolveRootField(field: String) on FIELD_DEFINITION | ARGUMENT_DEFINITION | INPUT_FIELD_DEFINITION
+
+directive @globalOptions(sourceName: String, endpoint: String, operationHeaders: ObjMap, queryStringOptions: ObjMap, queryParams: ObjMap) on OBJECT
+
+directive @httpOperation(path: String, operationSpecificHeaders: ObjMap, httpMethod: HTTPMethod, isBinary: Boolean, requestBaseBody: ObjMap, queryParamArgMap: ObjMap, queryStringOptionsByParam: ObjMap) on FIELD_DEFINITION
+
+type Query {
+  """Retrieve a block"""
+  retrieveABlock(id: String!): retrieveABlock_200_response
+
+  """Retrieve block children"""
+  retrieveBlockChildren(id: String!, page_size: String): retrieveBlockChildren_200_response
+
+  """
+  Retrieves a database object using the ID specified in the request path. 
+  """
+  retrieveADatabase(id: String!): retrieveADatabase_200_response
+
+  """
+  Retrieves a Page object using the ID in the request path. This endpoint exposes page properties, not page content. 
+  """
+  retrieveAPage(id: String!): retrieveAPage_200_response
+
+  """Retrieve a user object using the ID specified in the request path."""
+  retrieveAUser(id: String!): retrieveAUser_200_response
+}
+
+type retrieveABlock_200_response {
+  created_time: DateTime
+  has_children: Boolean
+  id: String
+  last_edited_time: DateTime
+  object: String
+  paragraph: query_retrieveABlock_paragraph
+  type: String
+}
+
+"""
+A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar.
+"""
+scalar DateTime
+
+type query_retrieveABlock_paragraph {
+  text: [query_retrieveABlock_paragraph_text_items]
+}
+
+type query_retrieveABlock_paragraph_text_items {
+  annotations: query_retrieveABlock_paragraph_text_items_annotations
+  href: JSON
+  plain_text: String
+  text: query_retrieveABlock_paragraph_text_items_text
+  type: String
+}
+
+type query_retrieveABlock_paragraph_text_items_annotations {
+  bold: Boolean
+  code: Boolean
+  color: String
+  italic: Boolean
+  strikethrough: Boolean
+  underline: Boolean
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON @specifiedBy(url: "http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf")
+
+type query_retrieveABlock_paragraph_text_items_text {
+  content: String
+  link: JSON
+}
+
+type retrieveBlockChildren_200_response {
+  has_more: Boolean
+  next_cursor: JSON
+  object: String
+  results: [query_retrieveBlockChildren_results_items]
+}
+
+type query_retrieveBlockChildren_results_items {
+  created_time: DateTime
+  has_children: Boolean
+  id: String
+  last_edited_time: DateTime
+  object: String
+  type: String
+  unsupported: JSON
+}
+
+type retrieveADatabase_200_response {
+  created_time: DateTime
+  id: String
+  last_edited_time: DateTime
+  object: String
+  properties: query_retrieveADatabase
+  title: [query_retrieveADatabase_title_items]
+}
+
+type query_retrieveADatabase {
+  Author: query_retrieveADatabase_Author
+  Link: query_retrieveADatabase_Link
+  Name: query_retrieveADatabase_Name
+  Publisher: query_retrieveADatabase_Publisher
+  Publishing_Release_Date: query_retrieveADatabase_Publishing_Release_Date
+  Read: query_retrieveADatabase_Read
+  Score__5: query_retrieveADatabase_Score__5
+  Status: query_retrieveADatabase_Status
+  Summary: query_retrieveADatabase_Summary
+  Type: query_retrieveADatabase_Type
+}
+
+type query_retrieveADatabase_Author {
+  id: String
+  multi_select: query_retrieveADatabase_Author_multi_select
+  type: String
+}
+
+type query_retrieveADatabase_Author_multi_select {
+  options: [query_retrieveADatabase_Author_multi_select_options_items]
+}
+
+type query_retrieveADatabase_Author_multi_select_options_items {
+  color: String
+  id: String
+  name: String
+}
+
+type query_retrieveADatabase_Link {
+  id: String
+  type: String
+  url: JSON
+}
+
+type query_retrieveADatabase_Name {
+  id: String
+  title: JSON
+  type: String
+}
+
+type query_retrieveADatabase_Publisher {
+  id: String
+  select: query_retrieveADatabase_Publisher_select
+  type: String
+}
+
+type query_retrieveADatabase_Publisher_select {
+  options: [query_retrieveADatabase_Publisher_select_options_items]
+}
+
+type query_retrieveADatabase_Publisher_select_options_items {
+  color: String
+  id: String
+  name: String
+}
+
+type query_retrieveADatabase_Publishing_Release_Date {
+  date: JSON
+  id: String
+  type: String
+}
+
+type query_retrieveADatabase_Read {
+  checkbox: JSON
+  id: String
+  type: String
+}
+
+type query_retrieveADatabase_Score__5 {
+  id: String
+  select: query_retrieveADatabase_Score__5_select
+  type: String
+}
+
+type query_retrieveADatabase_Score__5_select {
+  options: [query_retrieveADatabase_Score__5_select_options_items]
+}
+
+type query_retrieveADatabase_Score__5_select_options_items {
+  color: String
+  id: String
+  name: String
+}
+
+type query_retrieveADatabase_Status {
+  id: String
+  select: query_retrieveADatabase_Status_select
+  type: String
+}
+
+type query_retrieveADatabase_Status_select {
+  options: [query_retrieveADatabase_Status_select_options_items]
+}
+
+type query_retrieveADatabase_Status_select_options_items {
+  color: String
+  id: String
+  name: String
+}
+
+type query_retrieveADatabase_Summary {
+  id: String
+  text: JSON
+  type: String
+}
+
+type query_retrieveADatabase_Type {
+  id: String
+  select: query_retrieveADatabase_Type_select
+  type: String
+}
+
+type query_retrieveADatabase_Type_select {
+  options: [query_retrieveADatabase_Type_select_options_items]
+}
+
+type query_retrieveADatabase_Type_select_options_items {
+  color: String
+  id: String
+  name: String
+}
+
+type query_retrieveADatabase_title_items {
+  annotations: query_retrieveADatabase_title_items_annotations
+  href: JSON
+  plain_text: String
+  text: query_retrieveADatabase_title_items_text
+  type: String
+}
+
+type query_retrieveADatabase_title_items_annotations {
+  bold: Boolean
+  code: Boolean
+  color: String
+  italic: Boolean
+  strikethrough: Boolean
+  underline: Boolean
+}
+
+type query_retrieveADatabase_title_items_text {
+  content: String
+  link: JSON
+}
+
+type retrieveAPage_200_response {
+  archived: Boolean
+  created_time: DateTime
+  id: String
+  last_edited_time: DateTime
+  object: String
+  parent: query_retrieveAPage_parent
+  properties: query_retrieveAPage
+}
+
+type query_retrieveAPage_parent {
+  database_id: String
+  type: String
+}
+
+type query_retrieveAPage {
+  Author: query_retrieveAPage_Author
+  Link: query_retrieveAPage_Link
+  Name: query_retrieveAPage_Name
+  Publisher: query_retrieveAPage_Publisher
+  Publishing_Release_Date: query_retrieveAPage_Publishing_Release_Date
+  Read: query_retrieveAPage_Read
+  Status: query_retrieveAPage_Status
+  Summary: query_retrieveAPage_Summary
+  Type: query_retrieveAPage_Type
+}
+
+type query_retrieveAPage_Author {
+  id: String
+  multi_select: [query_retrieveAPage_Author_multi_select_items]
+  type: String
+}
+
+type query_retrieveAPage_Author_multi_select_items {
+  color: String
+  id: String
+  name: String
+}
+
+type query_retrieveAPage_Link {
+  id: String
+  type: String
+  url: URL
+}
+
+"""
+A field whose value conforms to the standard URL format as specified in RFC3986: https://www.ietf.org/rfc/rfc3986.txt.
+"""
+scalar URL
+
+type query_retrieveAPage_Name {
+  id: String
+  title: [query_retrieveAPage_Name_title_items]
+  type: String
+}
+
+type query_retrieveAPage_Name_title_items {
+  annotations: query_retrieveAPage_Name_title_items_annotations
+  href: JSON
+  plain_text: String
+  text: query_retrieveAPage_Name_title_items_text
+  type: String
+}
+
+type query_retrieveAPage_Name_title_items_annotations {
+  bold: Boolean
+  code: Boolean
+  color: String
+  italic: Boolean
+  strikethrough: Boolean
+  underline: Boolean
+}
+
+type query_retrieveAPage_Name_title_items_text {
+  content: String
+  link: JSON
+}
+
+type query_retrieveAPage_Publisher {
+  id: String
+  select: query_retrieveAPage_Publisher_select
+  type: String
+}
+
+type query_retrieveAPage_Publisher_select {
+  color: String
+  id: String
+  name: String
+}
+
+type query_retrieveAPage_Publishing_Release_Date {
+  date: query_retrieveAPage_Publishing_Release_Date_date
+  id: String
+  type: String
+}
+
+type query_retrieveAPage_Publishing_Release_Date_date {
+  end: JSON
+  start: Date
+}
+
+"""Represents date values"""
+scalar Date
+
+type query_retrieveAPage_Read {
+  checkbox: Boolean
+  id: String
+  type: String
+}
+
+type query_retrieveAPage_Status {
+  id: String
+  select: query_retrieveAPage_Status_select
+  type: String
+}
+
+type query_retrieveAPage_Status_select {
+  color: String
+  id: String
+  name: String
+}
+
+type query_retrieveAPage_Summary {
+  id: String
+  text: [query_retrieveAPage_Summary_text_items]
+  type: String
+}
+
+type query_retrieveAPage_Summary_text_items {
+  annotations: query_retrieveAPage_Summary_text_items_annotations
+  href: JSON
+  plain_text: String
+  text: query_retrieveAPage_Summary_text_items_text
+  type: String
+}
+
+type query_retrieveAPage_Summary_text_items_annotations {
+  bold: Boolean
+  code: Boolean
+  color: String
+  italic: Boolean
+  strikethrough: Boolean
+  underline: Boolean
+}
+
+type query_retrieveAPage_Summary_text_items_text {
+  content: String
+  link: JSON
+}
+
+type query_retrieveAPage_Type {
+  id: String
+  select: query_retrieveAPage_Type_select
+  type: String
+}
+
+type query_retrieveAPage_Type_select {
+  color: String
+  id: String
+  name: String
+}
+
+type retrieveAUser_200_response {
+  avatar_url: JSON
+  id: String
+  name: String
+  object: String
+  person: query_retrieveAUser_person
+  type: String
+}
+
+type query_retrieveAUser_person {
+  email: EmailAddress
+}
+
+"""
+A field whose value conforms to the standard internet email address format as specified in HTML Spec: https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address.
+"""
+scalar EmailAddress @specifiedBy(url: "https://html.spec.whatwg.org/multipage/input.html#valid-e-mail-address")
+
+type Mutation {
+  """
+  This endpoint allows you to update block content. [See Full Documentation](https://developers.notion.com/reference/update-a-block)
+  """
+  updateABlock(id: String!, input: updateABlock_request_Input): updateABlock_200_response
+
+  """Append block children"""
+  appendBlockChildren(id: String!, input: appendBlockChildren_request_Input): appendBlockChildren_200_response
+
+  """Update a database"""
+  updateADatabase(id: String!, input: updateADatabase_request_Input): updateADatabase_200_response
+
+  """Query a database"""
+  queryADatabase(id: String!, input: queryADatabase_request_Input): queryADatabase_200_response
+
+  """
+  Updates a page by setting the values of any properties specified in the JSON body of the request. Properties not updated via parameters will remain unchanged. 
+  """
+  updatePageProperties(id: String!, input: updatePageProperties_request_Input): updatePageProperties_200_response
+}
+
+type updateABlock_200_response {
+  created_time: DateTime
+  has_children: Boolean
+  id: String
+  last_edited_time: DateTime
+  object: String
+  paragraph: mutation_updateABlock_paragraph
+  type: String
+}
+
+type mutation_updateABlock_paragraph {
+  text: [mutation_updateABlock_paragraph_text_items]
+}
+
+type mutation_updateABlock_paragraph_text_items {
+  annotations: mutation_updateABlock_paragraph_text_items_annotations
+  href: JSON
+  plain_text: String
+  text: mutation_updateABlock_paragraph_text_items_text
+  type: String
+}
+
+type mutation_updateABlock_paragraph_text_items_annotations {
+  bold: Boolean
+  code: Boolean
+  color: String
+  italic: Boolean
+  strikethrough: Boolean
+  underline: Boolean
+}
+
+type mutation_updateABlock_paragraph_text_items_text {
+  content: String
+  link: JSON
+}
+
+input updateABlock_request_Input {
+  paragraph: mutationInput_updateABlock_input_paragraph_Input
+}
+
+input mutationInput_updateABlock_input_paragraph_Input {
+  text: [mutationInput_updateABlock_input_paragraph_text_items_Input]
+}
+
+input mutationInput_updateABlock_input_paragraph_text_items_Input {
+  text: mutationInput_updateABlock_input_paragraph_text_items_text_Input
+  type: String
+}
+
+input mutationInput_updateABlock_input_paragraph_text_items_text_Input {
+  content: String
+}
+
+type appendBlockChildren_200_response {
+  child_page: mutation_appendBlockChildren_child_page
+  created_time: DateTime
+  has_children: Boolean
+  id: String
+  last_edited_time: DateTime
+  object: String
+  type: String
+}
+
+type mutation_appendBlockChildren_child_page {
+  title: String
+}
+
+input appendBlockChildren_request_Input {
+  children: [mutationInput_appendBlockChildren_input_children_items_Input]
+}
+
+input mutationInput_appendBlockChildren_input_children_items_Input {
+  heading_2: mutationInput_appendBlockChildren_input_children_items_heading_2_Input
+  object: String
+  type: String
+}
+
+input mutationInput_appendBlockChildren_input_children_items_heading_2_Input {
+  text: [mutationInput_appendBlockChildren_input_children_items_heading_2_text_items_Input]
+}
+
+input mutationInput_appendBlockChildren_input_children_items_heading_2_text_items_Input {
+  text: mutationInput_appendBlockChildren_input_children_items_heading_2_text_items_text_Input
+  type: String
+}
+
+input mutationInput_appendBlockChildren_input_children_items_heading_2_text_items_text_Input {
+  content: String
+}
+
+type updateADatabase_200_response {
+  created_time: DateTime
+  id: String
+  last_edited_time: DateTime
+  object: String
+  parent: mutation_updateADatabase_parent
+  properties: mutation_updateADatabase
+  title: [mutation_updateADatabase_title_items]
+}
+
+type mutation_updateADatabase_parent {
+  page_id: String
+  type: String
+}
+
+type mutation_updateADatabase {
+  Author: mutation_updateADatabase_Author
+  Link: mutation_updateADatabase_Link
+  Name: mutation_updateADatabase_Name
+  Publisher: mutation_updateADatabase_Publisher
+  Publishing_Release_Date: mutation_updateADatabase_Publishing_Release_Date
+  Read: mutation_updateADatabase_Read
+  Score__5: mutation_updateADatabase_Score__5
+  Status: mutation_updateADatabase_Status
+  Summary: mutation_updateADatabase_Summary
+  Type: mutation_updateADatabase_Type
+  Wine_Pairing: mutation_updateADatabase_Wine_Pairing
+  date: mutation_updateADatabase_date
+}
+
+type mutation_updateADatabase_Author {
+  id: String
+  multi_select: mutation_updateADatabase_Author_multi_select
+  name: String
+  type: String
+}
+
+type mutation_updateADatabase_Author_multi_select {
+  options: [mutation_updateADatabase_Author_multi_select_options_items]
+}
+
+type mutation_updateADatabase_Author_multi_select_options_items {
+  color: String
+  id: String
+  name: String
+}
+
+type mutation_updateADatabase_Link {
+  id: String
+  name: String
+  type: String
+  url: JSON
+}
+
+type mutation_updateADatabase_Name {
+  id: String
+  name: String
+  title: JSON
+  type: String
+}
+
+type mutation_updateADatabase_Publisher {
+  id: String
+  name: String
+  select: mutation_updateADatabase_Publisher_select
+  type: String
+}
+
+type mutation_updateADatabase_Publisher_select {
+  options: [mutation_updateADatabase_Publisher_select_options_items]
+}
+
+type mutation_updateADatabase_Publisher_select_options_items {
+  color: String
+  id: String
+  name: String
+}
+
+type mutation_updateADatabase_Publishing_Release_Date {
+  date: JSON
+  id: String
+  name: String
+  type: String
+}
+
+type mutation_updateADatabase_Read {
+  checkbox: JSON
+  id: String
+  name: String
+  type: String
+}
+
+type mutation_updateADatabase_Score__5 {
+  id: String
+  name: String
+  select: mutation_updateADatabase_Score__5_select
+  type: String
+}
+
+type mutation_updateADatabase_Score__5_select {
+  options: [mutation_updateADatabase_Score__5_select_options_items]
+}
+
+type mutation_updateADatabase_Score__5_select_options_items {
+  color: String
+  id: String
+  name: String
+}
+
+type mutation_updateADatabase_Status {
+  id: String
+  name: String
+  select: mutation_updateADatabase_Status_select
+  type: String
+}
+
+type mutation_updateADatabase_Status_select {
+  options: [mutation_updateADatabase_Status_select_options_items]
+}
+
+type mutation_updateADatabase_Status_select_options_items {
+  color: String
+  id: String
+  name: String
+}
+
+type mutation_updateADatabase_Summary {
+  id: String
+  name: String
+  rich_text: JSON
+  type: String
+}
+
+type mutation_updateADatabase_Type {
+  id: String
+  name: String
+  select: mutation_updateADatabase_Type_select
+  type: String
+}
+
+type mutation_updateADatabase_Type_select {
+  options: [mutation_updateADatabase_Type_select_options_items]
+}
+
+type mutation_updateADatabase_Type_select_options_items {
+  color: String
+  id: String
+  name: String
+}
+
+type mutation_updateADatabase_Wine_Pairing {
+  id: String
+  name: String
+  rich_text: JSON
+  type: String
+}
+
+type mutation_updateADatabase_date {
+  date: JSON
+  id: String
+  name: String
+  type: String
+}
+
+type mutation_updateADatabase_title_items {
+  annotations: mutation_updateADatabase_title_items_annotations
+  href: JSON
+  plain_text: String
+  text: mutation_updateADatabase_title_items_text
+  type: String
+}
+
+type mutation_updateADatabase_title_items_annotations {
+  bold: Boolean
+  code: Boolean
+  color: String
+  italic: Boolean
+  strikethrough: Boolean
+  underline: Boolean
+}
+
+type mutation_updateADatabase_title_items_text {
+  content: String
+  link: JSON
+}
+
+input updateADatabase_request_Input {
+  properties: mutationInput_updateADatabase_input_Input
+  title: [mutationInput_updateADatabase_input_title_items_Input]
+}
+
+input mutationInput_updateADatabase_input_Input {
+  Wine_Pairing: mutationInput_updateADatabase_input_Wine_Pairing_Input
+}
+
+input mutationInput_updateADatabase_input_Wine_Pairing_Input {
+  rich_text: JSON
+}
+
+input mutationInput_updateADatabase_input_title_items_Input {
+  text: mutationInput_updateADatabase_input_title_items_text_Input
+}
+
+input mutationInput_updateADatabase_input_title_items_text_Input {
+  content: String
+}
+
+type queryADatabase_200_response {
+  has_more: Boolean
+  next_cursor: JSON
+  object: String
+  results: [mutation_queryADatabase_results_items]
+}
+
+type mutation_queryADatabase_results_items {
+  archived: Boolean
+  created_time: DateTime
+  id: String
+  last_edited_time: DateTime
+  object: String
+  parent: mutation_queryADatabase_results_items_parent
+  properties: mutation_queryADatabase_results_items2
+}
+
+type mutation_queryADatabase_results_items_parent {
+  database_id: String
+  type: String
+}
+
+type mutation_queryADatabase_results_items2 {
+  Author: mutation_queryADatabase_results_items_Author
+  Link: mutation_queryADatabase_results_items_Link
+  Name: mutation_queryADatabase_results_items_Name
+  Publisher: mutation_queryADatabase_results_items_Publisher
+  Publishing_Release_Date: mutation_queryADatabase_results_items_Publishing_Release_Date
+  Read: mutation_queryADatabase_results_items_Read
+  Score__5: mutation_queryADatabase_results_items_Score__5
+  Status: mutation_queryADatabase_results_items_Status
+  Summary: mutation_queryADatabase_results_items_Summary
+  Type: mutation_queryADatabase_results_items_Type
+}
+
+type mutation_queryADatabase_results_items_Author {
+  id: String
+  multi_select: [mutation_queryADatabase_results_items_Author_multi_select_items]
+  type: String
+}
+
+type mutation_queryADatabase_results_items_Author_multi_select_items {
+  color: String
+  id: String
+  name: String
+}
+
+type mutation_queryADatabase_results_items_Link {
+  id: String
+  type: String
+  url: URL
+}
+
+type mutation_queryADatabase_results_items_Name {
+  id: String
+  title: [mutation_queryADatabase_results_items_Name_title_items]
+  type: String
+}
+
+type mutation_queryADatabase_results_items_Name_title_items {
+  annotations: mutation_queryADatabase_results_items_Name_title_items_annotations
+  href: JSON
+  plain_text: String
+  text: mutation_queryADatabase_results_items_Name_title_items_text
+  type: String
+}
+
+type mutation_queryADatabase_results_items_Name_title_items_annotations {
+  bold: Boolean
+  code: Boolean
+  color: String
+  italic: Boolean
+  strikethrough: Boolean
+  underline: Boolean
+}
+
+type mutation_queryADatabase_results_items_Name_title_items_text {
+  content: String
+  link: JSON
+}
+
+type mutation_queryADatabase_results_items_Publisher {
+  id: String
+  select: mutation_queryADatabase_results_items_Publisher_select
+  type: String
+}
+
+type mutation_queryADatabase_results_items_Publisher_select {
+  color: String
+  id: String
+  name: String
+}
+
+type mutation_queryADatabase_results_items_Publishing_Release_Date {
+  date: mutation_queryADatabase_results_items_Publishing_Release_Date_date
+  id: String
+  type: String
+}
+
+type mutation_queryADatabase_results_items_Publishing_Release_Date_date {
+  end: JSON
+  start: Date
+}
+
+type mutation_queryADatabase_results_items_Read {
+  checkbox: Boolean
+  id: String
+  type: String
+}
+
+type mutation_queryADatabase_results_items_Score__5 {
+  id: String
+  select: mutation_queryADatabase_results_items_Score__5_select
+  type: String
+}
+
+type mutation_queryADatabase_results_items_Score__5_select {
+  color: String
+  id: String
+  name: String
+}
+
+type mutation_queryADatabase_results_items_Status {
+  id: String
+  select: mutation_queryADatabase_results_items_Status_select
+  type: String
+}
+
+type mutation_queryADatabase_results_items_Status_select {
+  color: String
+  id: String
+  name: String
+}
+
+type mutation_queryADatabase_results_items_Summary {
+  id: String
+  text: [JSON]
+  type: String
+}
+
+type mutation_queryADatabase_results_items_Type {
+  id: String
+  select: mutation_queryADatabase_results_items_Type_select
+  type: String
+}
+
+type mutation_queryADatabase_results_items_Type_select {
+  color: String
+  id: String
+  name: String
+}
+
+input queryADatabase_request_Input {
+  filter: mutationInput_queryADatabase_input_filter_Input
+  sorts: [mutationInput_queryADatabase_input_sorts_items_Input]
+}
+
+input mutationInput_queryADatabase_input_filter_Input {
+  or: [mutationInput_queryADatabase_input_filter_or_items_Input]
+}
+
+input mutationInput_queryADatabase_input_filter_or_items_Input {
+  property: String
+  select: mutationInput_queryADatabase_input_filter_or_items_select_Input
+}
+
+input mutationInput_queryADatabase_input_filter_or_items_select_Input {
+  equals: String
+}
+
+input mutationInput_queryADatabase_input_sorts_items_Input {
+  direction: String
+  property: String
+}
+
+type updatePageProperties_200_response {
+  archived: Boolean
+  created_time: DateTime
+  id: String
+  last_edited_time: DateTime
+  object: String
+  parent: mutation_updatePageProperties_parent
+  properties: mutation_updatePageProperties
+}
+
+type mutation_updatePageProperties_parent {
+  database_id: String
+  type: String
+}
+
+type mutation_updatePageProperties {
+  Author: mutation_updatePageProperties_Author
+  Link: mutation_updatePageProperties_Link
+  Name: mutation_updatePageProperties_Name
+  Publisher: mutation_updatePageProperties_Publisher
+  Publishing_Release_Date: mutation_updatePageProperties_Publishing_Release_Date
+  Read: mutation_updatePageProperties_Read
+  Score__5: mutation_updatePageProperties_Score__5
+  Status: mutation_updatePageProperties_Status
+  Summary: mutation_updatePageProperties_Summary
+  Type: mutation_updatePageProperties_Type
+}
+
+type mutation_updatePageProperties_Author {
+  id: String
+  multi_select: [mutation_updatePageProperties_Author_multi_select_items]
+  type: String
+}
+
+type mutation_updatePageProperties_Author_multi_select_items {
+  color: String
+  id: String
+  name: String
+}
+
+type mutation_updatePageProperties_Link {
+  id: String
+  type: String
+  url: URL
+}
+
+type mutation_updatePageProperties_Name {
+  id: String
+  title: [mutation_updatePageProperties_Name_title_items]
+  type: String
+}
+
+type mutation_updatePageProperties_Name_title_items {
+  annotations: mutation_updatePageProperties_Name_title_items_annotations
+  href: JSON
+  plain_text: String
+  text: mutation_updatePageProperties_Name_title_items_text
+  type: String
+}
+
+type mutation_updatePageProperties_Name_title_items_annotations {
+  bold: Boolean
+  code: Boolean
+  color: String
+  italic: Boolean
+  strikethrough: Boolean
+  underline: Boolean
+}
+
+type mutation_updatePageProperties_Name_title_items_text {
+  content: String
+  link: JSON
+}
+
+type mutation_updatePageProperties_Publisher {
+  id: String
+  select: mutation_updatePageProperties_Publisher_select
+  type: String
+}
+
+type mutation_updatePageProperties_Publisher_select {
+  color: String
+  id: String
+  name: String
+}
+
+type mutation_updatePageProperties_Publishing_Release_Date {
+  date: mutation_updatePageProperties_Publishing_Release_Date_date
+  id: String
+  type: String
+}
+
+type mutation_updatePageProperties_Publishing_Release_Date_date {
+  end: JSON
+  start: Date
+}
+
+type mutation_updatePageProperties_Read {
+  checkbox: Boolean
+  id: String
+  type: String
+}
+
+type mutation_updatePageProperties_Score__5 {
+  id: String
+  select: mutation_updatePageProperties_Score__5_select
+  type: String
+}
+
+type mutation_updatePageProperties_Score__5_select {
+  color: String
+  id: String
+  name: String
+}
+
+type mutation_updatePageProperties_Status {
+  id: String
+  select: mutation_updatePageProperties_Status_select
+  type: String
+}
+
+type mutation_updatePageProperties_Status_select {
+  color: String
+  id: String
+  name: String
+}
+
+type mutation_updatePageProperties_Summary {
+  id: String
+  rich_text: [mutation_updatePageProperties_Summary_rich_text_items]
+  type: String
+}
+
+type mutation_updatePageProperties_Summary_rich_text_items {
+  annotations: mutation_updatePageProperties_Summary_rich_text_items_annotations
+  href: JSON
+  plain_text: String
+  text: mutation_updatePageProperties_Summary_rich_text_items_text
+  type: String
+}
+
+type mutation_updatePageProperties_Summary_rich_text_items_annotations {
+  bold: Boolean
+  code: Boolean
+  color: String
+  italic: Boolean
+  strikethrough: Boolean
+  underline: Boolean
+}
+
+type mutation_updatePageProperties_Summary_rich_text_items_text {
+  content: String
+  link: JSON
+}
+
+type mutation_updatePageProperties_Type {
+  id: String
+  select: mutation_updatePageProperties_Type_select
+  type: String
+}
+
+type mutation_updatePageProperties_Type_select {
+  color: String
+  id: String
+  name: String
+}
+
+input updatePageProperties_request_Input {
+  properties: mutationInput_updatePageProperties_input_Input
+}
+
+input mutationInput_updatePageProperties_input_Input {
+  Status: mutationInput_updatePageProperties_input_Status_Input
+}
+
+input mutationInput_updatePageProperties_input_Status_Input {
+  select: mutationInput_updatePageProperties_input_Status_select_Input
+}
+
+input mutationInput_updatePageProperties_input_Status_select_Input {
+  name: String
+}
+
+scalar ObjMap
+
+enum HTTPMethod {
+  GET
+  HEAD
+  POST
+  PUT
+  DELETE
+  CONNECT
+  OPTIONS
+  TRACE
+  PATCH
+}

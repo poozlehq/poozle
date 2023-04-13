@@ -55,6 +55,7 @@ model ExtensionDefinition {
   extensionType         ExtensionType      @default(GRAPHQL)
   workspace             Workspace?         @relation(references: [workspaceId], fields: [workspaceId])
   workspaceId           String?
+  schemaSource          String?
   ExtensionAccount      ExtensionAccount[]
   ExtensionRouter       ExtensionRouter[]
   ExtensionAuth         ExtensionAuth[]

@@ -17,7 +17,7 @@ export class GqlConfigService implements GqlOptionsFactory {
     return {
       // schema options
       cors: {
-        origin: this.configService.get('FRONTEND_HOST').split(','),
+        origin: this.configService.get('FRONTEND_HOST') ? this.configService.get('FRONTEND_HOST').split(','): null,
         credentials: true,
       },
       autoSchemaFile: graphqlConfig.schemaDestination || 'src/schema.graphql',

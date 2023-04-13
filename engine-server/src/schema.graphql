@@ -135,6 +135,7 @@ type ExtensionDefinition {
   icon: String
   name: String!
   releaseStage: ReleaseStage!
+  schemaSource: String
   updatedAt: DateTime!
   workspace: Workspace
   workspaceId: String

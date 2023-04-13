@@ -21,16 +21,18 @@ model User {
 }
 
 model Workspace {
-  workspaceId          String                @id @default(uuid())
-  slug                 String                @unique
-  user                 User                  @relation(references: [userId], fields: [userId])
-  userId               String
-  initialSetupComplete Boolean               @default(false)
-  ExtensionDefinition  ExtensionDefinition[]
-  ExtensionAccount     ExtensionAccount[]
-  ExtensionRouter      ExtensionRouter[]
-  deleted              DateTime?
-  Gateway              Gateway[]
+  workspaceId             String                @id @default(uuid())
+  slug                    String                @unique
+  user                    User                  @relation(references: [userId], fields: [userId])
+  userId                  String
+  initialSetupComplete    Boolean               @default(false)
+  anonymousDataCollection Boolean               @default(false)
+  ExtensionDefinition     ExtensionDefinition[]
+  ExtensionAccount        ExtensionAccount[]
+  ExtensionRouter         ExtensionRouter[]
+  ExtensionAuth           ExtensionAuth[]
+  deleted                 DateTime?
+  Gateway                 Gateway[]
 }
 
 model ExtensionDefinition {
@@ -43,11 +45,32 @@ model ExtensionDefinition {
   extensionType         ExtensionType      @default(GRAPHQL)
   workspace             Workspace?         @relation(references: [workspaceId], fields: [workspaceId])
   workspaceId           String?
+  schemaSource          String?
   ExtensionAccount      ExtensionAccount[]
   ExtensionRouter       ExtensionRouter[]
+  ExtensionAuth         ExtensionAuth[]
   deleted               DateTime?
   createdAt             DateTime           @default(now())
   updatedAt             DateTime           @updatedAt
+}
+
+model ExtensionAuth {
+  extensionAuthId       String              @id @default(uuid())
+  extensionAuthName     String
+  extensionDefinition   ExtensionDefinition @relation(references: [extensionDefinitionId], fields: [extensionDefinitionId])
+  extensionDefinitionId String
+
+  clientId     String
+  clientSecret String
+  scopes       String
+
+  workspace   Workspace? @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId String?
+  deleted     DateTime?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  @@unique([extensionAuthName, workspaceId])
 }
 
 model ExtensionAccount {
@@ -62,6 +85,8 @@ model ExtensionAccount {
   deleted                DateTime?
   createdAt              DateTime            @default(now())
   updatedAt              DateTime            @updatedAt
+
+  @@unique([extensionAccountName, workspaceId])
 }
 
 model ExtensionRouter {
