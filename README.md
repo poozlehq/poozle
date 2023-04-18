@@ -16,9 +16,9 @@ You can implement Poozle extensions in typescript language and take the form of 
 
 ![Untitled-2022-02-15-1005](https://user-images.githubusercontent.com/17528887/229798038-0d804e31-27a6-4d02-ac0b-e231d0745453.svg)
 
-## Demo
+## Product Demo
 
-https://www.loom.com/share/1d93d082e97f4ef0be5035644e9823dc
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uGIssARKYec" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## Quick start
 
