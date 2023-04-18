@@ -18,9 +18,7 @@ You can implement Poozle extensions in typescript language and take the form of 
 
 ## Product Demo
 
-<a href="http://www.youtube.com/watch?feature=player_embedded&v=uGIssARKYec
-" target="_blank"><img src="http://img.youtube.com/vi/uGIssARKYec/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="560" height="315" border="10" /></a>
+[![Product Demo](http://img.youtube.com/vi/uGIssARKYec/0.jpg)](http://www.youtube.com/watch?v=uGIssARKYec)
 
 ## Quick start
 
