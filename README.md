@@ -18,7 +18,9 @@ You can implement Poozle extensions in typescript language and take the form of 
 
 ## Product Demo
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/uGIssARKYec" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=uGIssARKYec
+" target="_blank"><img src="http://img.youtube.com/vi/uGIssARKYec/0.jpg" 
+alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
 
 ## Quick start
 
