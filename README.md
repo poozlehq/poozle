@@ -20,7 +20,7 @@ You can implement Poozle extensions in typescript language and take the form of 
 
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=uGIssARKYec
 " target="_blank"><img src="http://img.youtube.com/vi/uGIssARKYec/0.jpg" 
-alt="IMAGE ALT TEXT HERE" width="240" height="180" border="10" /></a>
+alt="IMAGE ALT TEXT HERE" width="560" height="315" border="10" /></a>
 
 ## Quick start
 
