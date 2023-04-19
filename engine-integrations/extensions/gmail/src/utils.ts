@@ -8,11 +8,6 @@ interface TokenResponse {
   access_token: string;
 }
 
-interface GoogleTokens {
-  refresh_token: string;
-  access_token: string;
-}
-
 export async function fetchAccessToken(
   client_id: string,
   client_secret: string,
