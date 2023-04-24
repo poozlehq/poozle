@@ -398,7 +398,7 @@
     tslib "^2.4.1"
     webcrypto-core "^1.7.4"
 
-"@poozle/engine-edk@^0.1.18":
+"@poozle/engine-edk@^0.1.33":
   version "0.1.33"
   resolved "https://registry.yarnpkg.com/@poozle/engine-edk/-/engine-edk-0.1.33.tgz#8bf5b3b1299dd5e36e70998f18a5edf9f4c1cbfa"
   integrity sha512-5OoOTpHRmqVEF++qbmXcZmrZ2I10nsiKeiYWxoCvUnjxNkANiLkW2OYk1rMOVo379qGp/kj4lm7Cw9ee60Grkw==
