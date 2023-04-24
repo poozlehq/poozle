@@ -1,0 +1,22 @@
+{
+  "integrationSpecification": {
+    "title": "OpenAI Spec",
+    "type": "object",
+    "properties": {
+      "credentials": {
+        "type": "object",
+        "properties": {
+          "api_token": {
+            "type": "string",
+            "title": "Api Token",
+            "order": 0,
+            "description": "Enter the API Token",
+            "secret": true
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  }
+}
