@@ -32,6 +32,13 @@ const sidebars = {
     {
       type: "category",
       label: "Extensions",
+      link: {
+        type: "generated-index",
+        title: "Poozle Supported extensions",
+        description:
+          "For every extension that Poozle supports we maintain a small wiki with all our learnings. Feel free to contribute yours as well!",
+        slug: "/extensions",
+      },
       items: [
         {
           type: "doc",
