@@ -1,28 +1,45 @@
 <p align="center">
   <a href="https://poozle.dev"><img src="https://user-images.githubusercontent.com/17528887/221166175-706c5ce3-756e-49b5-985b-1dc5bf40b8e1.svg" width="200" height="100" /></a>
 </p>
+
+<div align="center">
+
+[![Star us on GitHub](https://img.shields.io/github/stars/poozlehq/engine?color=FFD700&label=Stars&logo=Github)](https://github.com/poozlehq/engine)
+[![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://docs.poozle.dev/contributing)
+
+[Quickstart](https://docs.poozle.dev/quickstart)
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+[Website](https://poozle.dev/)
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+[Docs](https://docs.poozle.dev)
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+[Examples](https://docs.poozle.dev/examples)
+<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
+[Blog](https://blog.poozle.dev/)
+
+[![Join our Slack Server](https://img.shields.io/badge/Slack-chat%20with%20us-%235865F2?style=flat&logo=slack&logoColor=%23fff)](https://join.slack.com/t/poozle-community/shared_invite/zt-1u4mz911h-FeWpOA82wA8kyrz3xg58xQ)
+[![Tweet at us on Twitter](https://img.shields.io/badge/Twitter-tweet%20at%20us-1da1f2?style=flat&logo=twitter&logoColor=%23fff)](https://twitter.com/poozlehq)
+
+[Love Poozle? Give us a ⭐ on GitHub!](https://github.com/poozlehq/engine)
+
+</div>
+
 <p align="center">
     <em>Poozle is an open-source, fast and reliable platform to integrate data from external APIs via a single integration layer.
 </em>
 </p>
 
-We believe that only an **open-source** solution to API integration can cover the **long tail of API sources** while empowering developers to **customize existing extensions**. Our ultimate vision is to help you integrate with any API.
+API Composition is a powerful pattern that enables you to interact with a diverse set of APIs as though they were a unified whole. By eliminating the need for glue code, it streamlines the integration process and provides a clearer understanding of an application's API dependencies. But do you truly understand the APIs your application relies on? Poozle can provide the answer, along with analytics and observability to assess the quality of service your API dependencies offer.
 
-You can implement Poozle extensions in typescript language and take the form of a Docker image that follows the Poozle specification. You can create new extensions very fast with:
+At Poozle, we're committed to an open-source approach to API integration, as we believe it's the only way to accommodate the long tail of API sources while allowing developers to tailor existing extensions to their needs. Our ultimate goal is to enable seamless integration with any API, and we offer extensions that can be implemented in [TypeScript](https://docs.poozle.dev/building_extension/overview) and packaged as Docker images in accordance with the Poozle specification. With this framework, creating new extensions is simple and fast.
 
-- The [Typescript EDK](https://docs.poozle.dev/)
-
-## Architecture
-
-![Untitled-2022-02-15-1005](https://user-images.githubusercontent.com/17528887/229798038-0d804e31-27a6-4d02-ac0b-e231d0745453.svg)
+Overall, Poozle makes API integration more manageable, efficient, and adaptable, allowing developers to focus on building great applications without being bogged down by integration challenges.
 
 ## Product Demo
 
 [![Product Demo](http://img.youtube.com/vi/uGIssARKYec/0.jpg)](http://www.youtube.com/watch?v=uGIssARKYec)
 
 ## Quick start
-
-### Use Poozle Cloud
 
 Poozle Cloud is the fastest and most reliable way to run Poozle. It is a cloud-based API integration platform that allows you to integrate multiple APIs into a single, unified system.
 
@@ -49,9 +66,3 @@ Note that this security address should be used only for undisclosed vulnerabilit
 ## License
 
 The product is under the [MIT License](https://github.com/poozlehq/engine/blob/main/LICENSE.md)
-
-## Resources
-
-- [Slack](https://join.slack.com/t/poozle-community/shared_invite/zt-1pwu2hmj9-xtG~DGsW2aEWZc~QtOnVMQo) for quick discussion with the Community and Poozle team
-- [GitHub](https://github.com/poozlehq/poozle) for code, issues and pull requests
-- [Docs](https://docs.poozle.dev/) for Poozle features

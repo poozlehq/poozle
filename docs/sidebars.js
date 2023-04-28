@@ -74,6 +74,22 @@ const sidebars = {
         },
       ],
     },
+    {
+      type: "category",
+      label: "Contributing to Poozle",
+      items: [
+        {
+          type: "doc",
+          id: "contributing/contributing",
+          label: "Contributing to Poozle",
+        },
+        {
+          type: "doc",
+          id: "contributing/code_of_conduct",
+          label: "Code of Conduct",
+        },
+      ],
+    },
   ],
 };
 
