@@ -37,7 +37,7 @@ Overall, Poozle makes API integration more manageable, efficient, and adaptable,
 
 ## Product Demo
 
-[![Product Demo](http://img.youtube.com/vi/uGIssARKYec/0.jpg)](http://www.youtube.com/watch?v=uGIssARKYec)
+http://www.youtube.com/watch?v=uGIssARKYec
 
 ## Quick start
 
