@@ -20,5 +20,7 @@ Poozle is easy to try in 5 minutes and can be deployed in 15:
 
 - Developer tools: GitHub, Jira
 - Communication: Gmail, Slack, Zoom
+- CRM Tools: Pipedrive
+- E-Commerce: Shopify
 
 If your favorite API is missing [open a GitHub issue](https://github.com/poozlehq/engine/issues) or contribute it right away: The API configurations are just simple input of tokens or button clicks.
