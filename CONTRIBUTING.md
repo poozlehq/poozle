@@ -1,2 +1,2 @@
 # Contributing
-View on [docs.airbyte.io](https://docs.poozle.dev/contributing)
+View on [docs.poozle.dev](https://docs.poozle.dev/contributing)
