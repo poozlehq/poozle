@@ -35,7 +35,7 @@ async function bootstrap() {
   // Cors
   if (corsConfig.enabled) {
     app.enableCors({
-      origin: configService.get('FRONTEND_HOST').split(','),
+      origin: configService.get('FRONTEND_HOST').split(',') || '',
       credentials: true,
     });
   }

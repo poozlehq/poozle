@@ -38,6 +38,7 @@ Table ExtensionDefinition {
   extensionType ExtensionType [not null, default: 'GRAPHQL']
   workspace Workspace
   workspaceId String
+  schemaSource String
   ExtensionAccount ExtensionAccount [not null]
   ExtensionRouter ExtensionRouter [not null]
   ExtensionAuth ExtensionAuth [not null]

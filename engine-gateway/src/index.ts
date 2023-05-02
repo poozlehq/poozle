@@ -95,6 +95,7 @@ async function main(): Promise<null> {
       where: {
         workspaceId: process.env.WORKSPACE_ID,
       },
+      include: { extensionDefinition: true },
     });
   logger.info(
     `Total ${allExtensionAccountsForWorkspace.length} are found for this workspace`,
@@ -121,6 +122,8 @@ async function main(): Promise<null> {
           / /g,
           '_',
         );
+
+        const extensionDefinition = account.extensionDefinition
 
         const extensionRouter = await prisma.extensionRouter.findUnique({
           where: {
@@ -149,6 +152,7 @@ async function main(): Promise<null> {
                  */
                 redisExpiry: '60',
               },
+              source: extensionDefinition.schemaSource
             },
           },
           transforms: [

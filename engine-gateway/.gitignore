@@ -11,8 +11,6 @@ index.js
 
 storage
 
-.mesh
-
-.meshrc.yml
-
 enve
+.mesh*
+sources
