@@ -1,6 +1,6 @@
 name: New Extension Request
-about: Use this to request a new extension
-title: ""
+description: Use this to request a new extension
+title: "New Extension Request: "
 labels: [extension, new-extension]
 body:
   - type: input
@@ -23,5 +23,5 @@ body:
       label: Contribute
       description: Are you willing to submit the fix?
       options:
-        - label: Yes
+        - label: Yes, I want to contribute
           required: true
