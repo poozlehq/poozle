@@ -3,7 +3,6 @@ description: Use this when you're facing issue with extension
 title: "Extension Issue: "
 labels: [type/bug, extension, needs-triage]
 body:
-
 - type: input
   id: extension-name
   attributes:
