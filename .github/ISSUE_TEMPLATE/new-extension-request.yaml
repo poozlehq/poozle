@@ -3,7 +3,6 @@ about: Use this to request a new extension
 title: ""
 labels: [extension, new-extension]
 body:
-
 - type: input
   id: extension-name
   attributes:
