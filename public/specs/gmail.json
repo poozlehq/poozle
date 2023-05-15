@@ -1,0 +1,11 @@
+{
+  "auth_supported": [ "OAUTH2" ],
+  "auth_specification": {
+    "OAUTH2": {
+      "token_url": "https://oauth2.googleapis.com/token",
+      "token_params": {
+        "grant_type": "refresh"
+      }
+    }
+  }
+}

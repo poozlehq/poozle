@@ -3,5 +3,3 @@
 // export all seeds from here
 
 export * from './extension_definition.seed';
-// export * from './extension_account.seed';
-// export * from './extension_router.seed';

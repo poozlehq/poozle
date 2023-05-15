@@ -123,7 +123,7 @@ async function main(): Promise<null> {
           '_',
         );
 
-        const extensionDefinition = account.extensionDefinition
+        const extensionDefinition = account.extensionDefinition;
 
         const extensionRouter = await prisma.extensionRouter.findUnique({
           where: {
@@ -152,7 +152,7 @@ async function main(): Promise<null> {
                  */
                 redisExpiry: '60',
               },
-              source: extensionDefinition.schemaSource
+              source: extensionDefinition.schemaSource,
             },
           },
           transforms: [

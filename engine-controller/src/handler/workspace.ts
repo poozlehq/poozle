@@ -107,7 +107,10 @@ export function workspaceHandler(logger: Logger) {
         /* 
           This will create a new engine-gateway pods with the new credentials
         */
-        const restartStatus = await workspace.restartDeployment(deploymentSpec, ingressName);
+        const restartStatus = await workspace.restartDeployment(
+          deploymentSpec,
+          ingressName,
+        );
         res.status(restartStatus.status ? 200 : 400).json(restartStatus);
         break;
       }

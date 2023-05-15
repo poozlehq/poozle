@@ -3,7 +3,6 @@
 
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { GraphQLError } from 'graphql';
 import { PrismaService } from 'nestjs-prisma';
 
@@ -30,7 +29,6 @@ export class ExtensionAccountService {
 
   constructor(
     private prisma: PrismaService,
-    private configService: ConfigService,
     private readonly analyticsService: AnalyticsService,
     private extensionDefinitionService: ExtensionDefinitionService,
     private controllerService: ControllerService,
@@ -150,40 +148,6 @@ export class ExtensionAccountService {
       });
 
       /**
-       * When Extension router is not created
-       * TODO (harshith) move to extension_router controller
-       */
-      const extensionRouter = await this.prisma.extensionRouter.findMany({
-        where: {
-          extensionDefinitionId: extensionAccount.extensionDefinitionId,
-        },
-      });
-
-      if (extensionRouter.length === 0) {
-        /**
-         * Create extension router for the extension
-         */
-
-        this.logger.log(
-          `Adding extension definition ${extensionDefinition.name} to router`,
-        );
-
-        const EXTENSION_BASE_HOST = this.configService.get(
-          'EXTENSION_BASE_HOST',
-        );
-
-        await this.prisma.extensionRouter.create({
-          data: {
-            endpoint: `http://${extensionDefinition.name
-              .toLowerCase()
-              .replace(/ /g, '-')}${EXTENSION_BASE_HOST}/graphql`,
-            extensionDefinitionId: extensionAccount.extensionDefinitionId,
-            workspaceId: extensionAccount.workspaceId,
-          },
-        });
-      }
-
-      /**
        * Track
        */
       /** Track */
@@ -192,10 +156,8 @@ export class ExtensionAccountService {
         EVENT_TYPES.NEW_EXTENSION_ACCOUNT,
         {
           name: extensionAccount.name,
-          extensionDockerImage:
-            extensionAccount.extensionDefinition.dockerRepository,
-          extensionDockerVersion:
-            extensionAccount.extensionDefinition.dockerImageTag,
+          extensionVersion: extensionAccount.extensionDefinition.version,
+          extensionSource: extensionAccount.extensionDefinition.source,
         },
       );
 
@@ -204,11 +166,6 @@ export class ExtensionAccountService {
        */
       this.logger.log(
         `Created extension account ${extensionAccount.extensionAccountId} and restarting gateway ${extensionAccount.workspace.slug}`,
-      );
-      await this.controllerService.createExtensionDeployment(
-        false,
-        extensionDefinition,
-        extensionAccount.workspace.slug,
       );
 
       // Restart the gateway
@@ -272,36 +229,6 @@ export class ExtensionAccountService {
     });
 
     const workspaces = extensionAccounts.map((account) => account.workspace);
-
-    const extensionDefinitions = await Promise.all(
-      extensionAccounts.map(
-        async (account) =>
-          await this.extensionDefinitionService.getExtensionDefinitionWithId({
-            extensionDefinitionId: account.extensionDefinitionId,
-            workspaceId: account.workspaceId,
-          }),
-      ),
-    );
-
-    /** Create extension deployments */
-    await Promise.all(
-      extensionDefinitions.map(async (extensionDefinition) => {
-        this.logger.log(
-          `Creating deployment for extension ${extensionDefinition.name}:${extensionDefinition.extensionDefinitionId}`,
-        );
-        try {
-          await this.controllerService.createExtensionDeploymentSync(
-            false,
-            extensionDefinition,
-            '',
-          );
-        } catch (e) {
-          this.logger.error(
-            `Creating failed for extension: ${extensionDefinition.extensionDefinitionId} with ${e}`,
-          );
-        }
-      }),
-    );
 
     /** Create gateway deployments */
     await Promise.all(

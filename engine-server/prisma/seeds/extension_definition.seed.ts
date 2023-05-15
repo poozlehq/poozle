@@ -1,3 +1,4 @@
+/* eslint-disable dot-location */
 /* eslint-disable prettier/prettier */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
@@ -17,14 +18,23 @@ async function main() {
 
   if (extensionDefinitions.length === 0) {
     const extensionDefinitions = JSON.parse(
-      fs.readFileSync(resolve('extension_definition.json'), 'utf8'),
+      fs.readFileSync(resolve('../public/extensions.json'), 'utf8'),
     );
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const extensionDefinitionCreate = extensionDefinitions.map((ed: any) => ({
-      ...ed,
-      releaseStage: ReleaseStage[ed.releaseStage as ReleaseStage],
-      extensionType: ExtensionType[ed.extensionType as ExtensionType],
-    }));
+
+    const extensionDefinitionCreate = Object.keys(extensionDefinitions).map(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (key: any) => {
+        const ed = {
+          key,
+          ...extensionDefinitions[key],
+        };
+        return {
+          ...ed,
+          releaseStage: ReleaseStage[ed.releaseStage as ReleaseStage],
+          extensionType: ExtensionType[ed.extensionType as ExtensionType],
+        };
+      },
+    );
 
     const createdExtensionDefinitions =
       await prisma.extensionDefinition.createMany({

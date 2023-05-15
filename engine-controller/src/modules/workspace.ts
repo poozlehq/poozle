@@ -20,15 +20,13 @@ export class Workspace extends Base {
           `Deployment for the workspace ${this.slug} is not found. Creating a new deployment for this workspace`,
         );
         this.createDeployment(deploymentSpec);
-        
-        this.logger.info(
-          `Creating Service if not exist for the gateway ${this.slug}`
-        )
-        this.createServiceIfNotExists();
 
         this.logger.info(
-          `Add gateway service to the gateway ingress`
-        )
+          `Creating Service if not exist for the gateway ${this.slug}`,
+        );
+        this.createServiceIfNotExists();
+
+        this.logger.info(`Add gateway service to the gateway ingress`);
         this.updateIngress(ingressName, 'CREATE_IF_NOT_EXISTS');
         return {
           status: true,
