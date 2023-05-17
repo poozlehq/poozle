@@ -2,7 +2,7 @@
 
 // TODO (harshith): Set current types for spec
 
-const inputSpec = {
+export const OAuthInputSpec = {
   type: 'object',
   properties: {
     client_id: {
@@ -31,7 +31,6 @@ const inputSpec = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getProperties(spec: any) {
   const specProperties = spec.properties;
-  console.log(specProperties);
 
   return Object.keys(specProperties).map((key) => ({
     key,
@@ -42,7 +41,7 @@ export function getProperties(spec: any) {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getInitialValues(authType: string, spec: any) {
   const specProperties = getProperties(
-    authType === 'OAuth2' ? inputSpec : spec.inputSpecification,
+    authType === 'OAuth2' ? OAuthInputSpec : spec.input_specification,
   );
   const initialValues: Record<string, string> = {};
 

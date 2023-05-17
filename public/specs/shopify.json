@@ -2,7 +2,7 @@
   "auth_supported": [ "Token", "OAuth2" ],
   "auth_specification": {
     "Token": {
-      "inputSpecification": {
+      "input_specification": {
         "type": "object",
         "properties": {
           "token": {

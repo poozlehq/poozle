@@ -2,7 +2,7 @@
   "auth_supported": [ "Api Key", "OAuth2" ],
   "auth_specification": {
     "Api Key": {
-      "inputSpecification": {
+      "input_specification": {
         "type": "object",
         "properties": {
           "api_key": {

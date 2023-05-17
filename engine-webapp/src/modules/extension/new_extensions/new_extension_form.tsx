@@ -16,16 +16,26 @@ import {
 import { Loader } from 'components';
 
 import styles from './new_extension_form.module.scss';
-import { getInitialValues, getProperties } from './new_extension_form_utils';
+import {
+  OAuthInputSpec,
+  getInitialValues,
+  getProperties,
+} from './new_extension_form_utils';
 
 interface NewIntegrationFormProps {
   extensionDefinitionId: string;
   onComplete?: () => void;
 }
 
+interface Spec {
+  auth_supported: string[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  auth_specification: Record<string, any>;
+}
+
 interface FormProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  spec: any;
+  spec: Spec;
   workspaceId: string;
   onComplete?: () => void;
   extensionDefinitionId: string;
@@ -81,7 +91,11 @@ export function Form({
     });
   };
 
-  const properties = getProperties(spec);
+  const properties = getProperties(
+    authType === 'OAuth2'
+      ? OAuthInputSpec
+      : spec.auth_specification[authType].input_specification,
+  );
 
   return (
     <Group p="md" pt={0} className={styles.formContainer}>
