@@ -38,6 +38,7 @@ type DurationOverTimeObject {
 }
 
 type ExtensionAccount {
+  authType: String!
   createdAt: DateTime!
   deleted: DateTime
   extensionAccountId: ID!
@@ -52,6 +53,7 @@ type ExtensionAccount {
 }
 
 input ExtensionAccountCreateBody {
+  authType: String!
   extensionAccountName: String!
   extensionConfiguration: JSON
   extensionDefinitionId: String!
@@ -128,18 +130,19 @@ input ExtensionAuthRequestWorkspaceIdBody {
 type ExtensionDefinition {
   ExtensionAccount: [ExtensionAccount!]
   ExtensionAuth: [ExtensionAuth!]
-  ExtensionRouter: [ExtensionRouter!]
   _count: ExtensionDefinitionCount!
   createdAt: DateTime!
   deleted: DateTime
-  dockerImageTag: String!
-  dockerRepository: String!
   extensionDefinitionId: ID!
   extensionType: ExtensionType!
   icon: String
+  key: String!
   name: String!
   releaseStage: ReleaseStage!
+  source: String!
+  spec: String!
   updatedAt: DateTime!
+  version: String!
   workspace: Workspace
   workspaceId: String
 }
@@ -158,22 +161,23 @@ input ExtensionDefinitionCheckBody {
 type ExtensionDefinitionCount {
   ExtensionAccount: Int!
   ExtensionAuth: Int!
-  ExtensionRouter: Int!
 }
 
 input ExtensionDefinitionCreateBody {
-  dockerImageTag: String!
-  dockerRepository: String!
   extensionType: String!
   icon: String!
+  key: String!
   name: String!
   releaseStage: String!
+  source: String!
+  spec: String!
+  version: String!
   workspaceId: String!
 }
 
 input ExtensionDefinitionRequestIdBody {
   extensionDefinitionId: String!
-  workspaceId: String!
+  workspaceId: String
 }
 
 input ExtensionDefinitionRequestWorkspaceIdBody {
@@ -185,38 +189,15 @@ type ExtensionDefinitionSpec {
 }
 
 input ExtensionDefinitionUpdateBody {
-  dockerImageTag: String!
-  dockerRepository: String!
   extensionDefinitionId: String!
   extensionType: String!
   icon: String!
+  key: String!
   name: String!
   releaseStage: String!
-}
-
-type ExtensionRouter {
-  createdAt: DateTime!
-  deleted: DateTime
-  endpoint: String!
-  extensionDefinition: ExtensionDefinition!
-  extensionDefinitionId: String!
-  extensionRouterId: ID!
-  updatedAt: DateTime!
-  workspace: Workspace!
-  workspaceId: String!
-}
-
-input ExtensionRouterRequestIdBody {
-  extensionRouterId: String!
-}
-
-input ExtensionRouterRequestUpdateBody {
-  endpoint: String!
-  extensionRouterId: String!
-}
-
-input ExtensionRouterRequestWorkspaceIdBody {
-  workspaceId: String!
+  source: String!
+  spec: String!
+  version: String!
 }
 
 enum ExtensionType {
@@ -295,9 +276,6 @@ type Mutation {
   updateExtensionDefinition(
     data: ExtensionDefinitionUpdateBody!
   ): ExtensionDefinition!
-  updateExtensionRouter(
-    data: ExtensionRouterRequestUpdateBody!
-  ): ExtensionRouter!
   updateUser(data: UpdateUserInput!): User!
   updateWorkspace(data: WorkspaceUpdateBody!): Workspace!
 }
@@ -345,10 +323,6 @@ type Query {
   getExtensionDefinitionsByWorkspace(
     data: ExtensionDefinitionRequestWorkspaceIdBody!
   ): [ExtensionDefinition!]!
-  getExtensionRouterById(data: ExtensionRouterRequestIdBody!): ExtensionRouter!
-  getExtensionRoutersByWorkspace(
-    data: ExtensionRouterRequestWorkspaceIdBody!
-  ): [ExtensionRouter!]!
   getGeneralStats(data: StatsInput!): GeneralStats!
   getOperations(data: StatsInput!): OperationStats!
   getSpecForExtensionDefinition(
@@ -419,7 +393,6 @@ type Workspace {
   ExtensionAccount: [ExtensionAccount!]
   ExtensionAuth: [ExtensionAuth!]
   ExtensionDefinition: [ExtensionDefinition!]
-  ExtensionRouter: [ExtensionRouter!]
   Gateway: [Gateway!]
   _count: WorkspaceCount!
   anonymousDataCollection: Boolean!
@@ -435,7 +408,6 @@ type WorkspaceCount {
   ExtensionAccount: Int!
   ExtensionAuth: Int!
   ExtensionDefinition: Int!
-  ExtensionRouter: Int!
   Gateway: Int!
 }
 

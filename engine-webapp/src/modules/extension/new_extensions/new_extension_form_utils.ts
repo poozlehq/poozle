@@ -28,6 +28,10 @@ export const OAuthInputSpec = {
   },
 };
 
+export function getPropertyName(propertyName: string): string {
+  return propertyName.toLowerCase().replace(/ /g, '');
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getProperties(spec: any) {
   const specProperties = spec.properties;
@@ -39,18 +43,30 @@ export function getProperties(spec: any) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getInitialValues(authType: string, spec: any) {
-  const specProperties = getProperties(
-    authType === 'OAuth2' ? OAuthInputSpec : spec.input_specification,
-  );
-  const initialValues: Record<string, string> = {};
+export function getInitialValues(spec: any) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const initialValues: Record<string, any> = {};
 
-  specProperties.forEach((property) => {
-    initialValues[property.key] = '';
+  Object.keys(spec.auth_specification).forEach((key) => {
+    initialValues[getPropertyName(key)] = {};
+
+    const specProperties = getProperties(
+      key === 'OAuth2'
+        ? OAuthInputSpec
+        : spec.auth_specification[key].input_specification,
+    );
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    specProperties.forEach((property: any) => {
+      initialValues[getPropertyName(key)][property.key] = '';
+    });
   });
 
   // Adding extensionAccountName to the initial Values
   initialValues['extensionAccountName'] = '';
+
+  // eslint-disable-next-line prefer-destructuring
+  initialValues['authType'] = spec.auth_supported[0];
 
   return initialValues;
 }

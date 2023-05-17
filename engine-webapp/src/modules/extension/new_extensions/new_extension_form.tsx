@@ -20,6 +20,7 @@ import {
   OAuthInputSpec,
   getInitialValues,
   getProperties,
+  getPropertyName,
 } from './new_extension_form_utils';
 
 interface NewIntegrationFormProps {
@@ -41,23 +42,14 @@ interface FormProps {
   extensionDefinitionId: string;
 }
 
-interface Values {
-  api_key: string;
-  extensionAccountName: string;
-}
-
 export function Form({
   spec,
   workspaceId,
   extensionDefinitionId,
   onComplete,
 }: FormProps) {
-  const [authType, setAuthType] = React.useState(spec.auth_supported[0]);
   const form = useForm({
-    initialValues: getInitialValues(
-      authType,
-      spec.auth_specification[authType],
-    ),
+    initialValues: getInitialValues(spec),
   });
   const [validateCredentialsForExtension, { loading: validateLoading }] =
     useValidateCredentialsForExtensionLazyQuery();
@@ -65,9 +57,12 @@ export function Form({
     useCreateExtensionAccountMutation();
   const [errorMessage, setErrorMessage] = React.useState(undefined);
 
-  const onSubmit = (values: Values) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = (values: any) => {
     const extensionAccountName = values.extensionAccountName;
+    const authType = values.authType;
     delete values['extensionAccountName'];
+    delete values['authType'];
 
     createExtensionAccount({
       variables: {
@@ -75,7 +70,8 @@ export function Form({
           extensionDefinitionId,
           workspaceId,
           extensionAccountName,
-          extensionConfiguration: values,
+          authType,
+          extensionConfiguration: values[getPropertyName(authType)],
         },
       },
       onCompleted: () => {
@@ -91,11 +87,13 @@ export function Form({
     });
   };
 
-  const properties = getProperties(
-    authType === 'OAuth2'
-      ? OAuthInputSpec
-      : spec.auth_specification[authType].input_specification,
-  );
+  const properties = form.values.authType
+    ? getProperties(
+        form.values.authType === 'OAuth2'
+          ? OAuthInputSpec
+          : spec.auth_specification[form.values.authType].input_specification,
+      )
+    : [];
 
   return (
     <Group p="md" pt={0} className={styles.formContainer}>
@@ -132,7 +130,7 @@ export function Form({
 
         <Select
           pb="md"
-          data={['OAuth2']}
+          data={spec.auth_supported}
           disabled={loading || validateLoading}
           label="Choose authentication type"
           placeholder="Choose authentication type"
@@ -146,7 +144,9 @@ export function Form({
             disabled={loading || validateLoading}
             label={property.title}
             placeholder={`Enter ${property.title}`}
-            {...form.getInputProps(property.key)}
+            {...form.getInputProps(
+              `${getPropertyName(form.values.authType)}.${property.key}`,
+            )}
           />
         ))}
 
