@@ -9,7 +9,7 @@ import axios from 'axios';
 import * as yaml from 'js-yaml';
 import { createLogger, transports, format } from 'winston';
 
-import { PrismaClient } from './client';
+import { ExtensionType, PrismaClient } from './client';
 
 /**
  * Later move this into another file
@@ -57,29 +57,6 @@ const logger = createLogger({
   ),
 });
 
-async function testSource(endpoint: string, config: string) {
-  logger.info(`Testing the endpoint ${endpoint}`);
-  try {
-    const response = await axios.post(
-      endpoint,
-      {
-        query: '{getSpec{spec}}',
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${config}`,
-        },
-      },
-    );
-
-    return response.status === 200;
-  } catch (e) {
-    logger.error(`Testing the endpoint ${endpoint} failed ${e}`);
-
-    return false;
-  }
-}
-
 async function main(): Promise<null> {
   // Don't let this through if WORKSPACE_ID is not found in the process
 
@@ -123,38 +100,42 @@ async function main(): Promise<null> {
           '_',
         );
 
-        const extensionDefinition = account.extensionDefinition
+        const extensionDefinition = account.extensionDefinition;
+        const specLink = extensionDefinition.spec;
 
-        const extensionRouter = await prisma.extensionRouter.findUnique({
-          where: {
-            extensionDefinitionId: account.extensionDefinitionId,
-          },
-        });
+        const specResponse = await axios.get(specLink);
+        const spec = specResponse.data;
+        const specForAuthType = spec[account.authType];
 
-        const endpoint = extensionRouter.endpoint;
-        const testStatus = await testSource(endpoint, configHeaders);
-
-        if (!testStatus) {
-          return undefined;
-        }
+        const operationHeaders = {
+          config: configHeaders,
+          spec: JSON.stringify(specForAuthType),
+          name: extensionAccountName,
+          /**
+           * TODO(harshith): Change this later to value fetched from database
+           */
+          redisExpiry: 60,
+          authType: account.authType,
+        };
 
         return {
           name: extensionAccountName,
-          handler: {
-            graphql: {
-              // TODO (harshith): Remove static URL and move this to ExtensionRouter based
-              endpoint,
-              operationHeaders: {
-                config: configHeaders,
-                name: extensionAccountName,
-                /**
-                 * TODO(harshith): Change this later to value fetched from database
-                 */
-                redisExpiry: '60',
-              },
-              source: extensionDefinition.schemaSource
-            },
-          },
+          handler:
+            extensionDefinition.extensionType === ExtensionType.GRAPHQL
+              ? {
+                  graphql: {
+                    // TODO (harshith): Remove static URL and move this to ExtensionRouter based
+                    endpoint: extensionDefinition.source,
+                    operationHeaders,
+                  },
+                }
+              : {
+                  openapi: {
+                    // TODO (harshith): Remove static URL and move this to ExtensionRouter based
+                    source: extensionDefinition.source,
+                    operationHeaders,
+                  },
+                },
           transforms: [
             {
               /* 

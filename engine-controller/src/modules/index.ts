@@ -3,4 +3,3 @@
 export * from './namespace';
 export * from './workspace';
 export * from './types';
-export * from './extension';

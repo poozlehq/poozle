@@ -5,7 +5,7 @@ datasource db {
 
 generator client {
   provider = "prisma-client-js"
-  output = "../src/client"
+  output   = "../src/client"
   // previewFeatures = []
 }
 
@@ -29,7 +29,6 @@ model Workspace {
   anonymousDataCollection Boolean               @default(false)
   ExtensionDefinition     ExtensionDefinition[]
   ExtensionAccount        ExtensionAccount[]
-  ExtensionRouter         ExtensionRouter[]
   ExtensionAuth           ExtensionAuth[]
   deleted                 DateTime?
   Gateway                 Gateway[]
@@ -38,20 +37,23 @@ model Workspace {
 model ExtensionDefinition {
   extensionDefinitionId String             @id @default(uuid())
   name                  String
-  dockerImageTag        String
-  dockerRepository      String
+  key                   String
+  version               String
+  spec                  String
   icon                  String?
+  // This will be endpoint for GRAPHQL and openapi spec link for REST
+  source                String
   releaseStage          ReleaseStage       @default(ALPHA)
   extensionType         ExtensionType      @default(GRAPHQL)
   workspace             Workspace?         @relation(references: [workspaceId], fields: [workspaceId])
   workspaceId           String?
-  schemaSource          String?
   ExtensionAccount      ExtensionAccount[]
-  ExtensionRouter       ExtensionRouter[]
   ExtensionAuth         ExtensionAuth[]
   deleted               DateTime?
   createdAt             DateTime           @default(now())
   updatedAt             DateTime           @updatedAt
+
+  @@unique([extensionDefinitionId, key])
 }
 
 model ExtensionAuth {
@@ -78,6 +80,7 @@ model ExtensionAccount {
   extensionDefinition    ExtensionDefinition @relation(references: [extensionDefinitionId], fields: [extensionDefinitionId])
   extensionDefinitionId  String
   extensionConfiguration Json?
+  authType               String
   workspace              Workspace           @relation(references: [workspaceId], fields: [workspaceId])
   workspaceId            String
   name                   String
@@ -87,18 +90,6 @@ model ExtensionAccount {
   updatedAt              DateTime            @updatedAt
 
   @@unique([extensionAccountName, workspaceId])
-}
-
-model ExtensionRouter {
-  extensionRouterId     String              @id @default(uuid())
-  extensionDefinition   ExtensionDefinition @relation(references: [extensionDefinitionId], fields: [extensionDefinitionId])
-  extensionDefinitionId String              @unique
-  endpoint              String
-  workspace             Workspace           @relation(references: [workspaceId], fields: [workspaceId])
-  workspaceId           String
-  deleted               DateTime?
-  createdAt             DateTime            @default(now())
-  updatedAt             DateTime            @updatedAt
 }
 
 model Gateway {

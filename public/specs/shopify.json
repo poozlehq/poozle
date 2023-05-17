@@ -1,0 +1,32 @@
+{
+  "auth_supported": [ "Token", "OAuth2" ],
+  "auth_specification": {
+    "Token": {
+      "input_specification": {
+        "type": "object",
+        "properties": {
+          "token": {
+            "type": "string",
+            "title": "Token",
+            "description": "Enter the Token"
+          },
+          "shop_name": {
+            "type": "string",
+            "title": "Shop name",
+            "order": 0,
+            "description": "Enter the Shop name",
+            "secret": true
+          }
+        }
+      },
+      "url": "https://${shop_name}.myshopify.com/admin/api/2023-01/graphql.json",
+      "headers": {
+        "Authorization": "token ${token}"
+      }
+    },
+    "OAuth2": {
+      "token_url": "https://${shop_name}.myshopify.com/admin/oauth/access_token",
+      "url": "https://${shop_name}.myshopify.com/admin/api/2023-01/graphql.json"
+    }
+  }
+}

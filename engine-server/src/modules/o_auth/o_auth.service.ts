@@ -234,6 +234,7 @@ export class OAuthService {
         extensionAccountName: sessionRecord.extensionAccountName,
         extensionDefinitionId: extensionAuth.extensionDefinitionId,
         workspaceId: extensionAuth.workspaceId,
+        authType: 'OAUTH2',
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         extensionConfiguration: extensionConfiguration as any,
       });

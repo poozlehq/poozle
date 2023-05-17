@@ -9,8 +9,8 @@ export class ExtensionDefinitionRequestIdBody {
   @Field()
   extensionDefinitionId: string;
 
-  @Field()
-  workspaceId: string;
+  @Field({ nullable: true })
+  workspaceId?: string;
 }
 
 @InputType()
@@ -25,10 +25,16 @@ export class ExtensionDefinitionCreateBody {
   name: string;
 
   @Field()
-  dockerImageTag: string;
+  spec: string;
 
   @Field()
-  dockerRepository: string;
+  version: string;
+
+  @Field()
+  source: string;
+
+  @Field()
+  key: string;
 
   @Field()
   workspaceId: string;
@@ -49,10 +55,16 @@ export class ExtensionDefinitionUpdateBody {
   name: string;
 
   @Field()
-  dockerImageTag: string;
+  spec: string;
 
   @Field()
-  dockerRepository: string;
+  version: string;
+
+  @Field()
+  source: string;
+
+  @Field()
+  key: string;
 
   @Field()
   extensionType: ExtensionType;

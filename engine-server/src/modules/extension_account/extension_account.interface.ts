@@ -4,6 +4,7 @@ import { Field, ID, InputType, ObjectType } from '@nestjs/graphql';
 import GraphQLJSON from 'graphql-type-json';
 
 import { ExtensionDefinition } from '@generated/extension-definition/extension-definition.model';
+
 import { Workspace } from '@generated/workspace/workspace.model';
 
 @ObjectType()
@@ -52,6 +53,9 @@ export class ExtensionAccountCreateBody {
 
   @Field(() => GraphQLJSON, { nullable: true })
   extensionConfiguration?: JSON;
+
+  @Field()
+  authType: string;
 
   @Field()
   extensionAccountName: string;

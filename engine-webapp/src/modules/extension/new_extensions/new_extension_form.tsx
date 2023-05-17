@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Alert, Button, Group, TextInput } from '@mantine/core';
+import { Alert, Button, Group, Select, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { IconAlertCircle } from '@tabler/icons-react';
@@ -16,24 +16,30 @@ import {
 import { Loader } from 'components';
 
 import styles from './new_extension_form.module.scss';
-import { getInitialValues, getProperties } from './new_extension_form_utils';
+import {
+  OAuthInputSpec,
+  getInitialValues,
+  getProperties,
+  getPropertyName,
+} from './new_extension_form_utils';
 
 interface NewIntegrationFormProps {
   extensionDefinitionId: string;
   onComplete?: () => void;
 }
 
+interface Spec {
+  auth_supported: string[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  auth_specification: Record<string, any>;
+}
+
 interface FormProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  spec: any;
+  spec: Spec;
   workspaceId: string;
   onComplete?: () => void;
   extensionDefinitionId: string;
-}
-
-interface Values {
-  api_key: string;
-  extensionAccountName: string;
 }
 
 export function Form({
@@ -51,9 +57,12 @@ export function Form({
     useCreateExtensionAccountMutation();
   const [errorMessage, setErrorMessage] = React.useState(undefined);
 
-  const onSubmit = (values: Values) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onSubmit = (values: any) => {
     const extensionAccountName = values.extensionAccountName;
+    const authType = values.authType;
     delete values['extensionAccountName'];
+    delete values['authType'];
 
     createExtensionAccount({
       variables: {
@@ -61,7 +70,8 @@ export function Form({
           extensionDefinitionId,
           workspaceId,
           extensionAccountName,
-          extensionConfiguration: values,
+          authType,
+          extensionConfiguration: values[getPropertyName(authType)],
         },
       },
       onCompleted: () => {
@@ -77,7 +87,13 @@ export function Form({
     });
   };
 
-  const properties = getProperties(spec);
+  const properties = form.values.authType
+    ? getProperties(
+        form.values.authType === 'OAuth2'
+          ? OAuthInputSpec
+          : spec.auth_specification[form.values.authType].input_specification,
+      )
+    : [];
 
   return (
     <Group p="md" pt={0} className={styles.formContainer}>
@@ -111,6 +127,16 @@ export function Form({
           placeholder="Enter extension account name"
           {...form.getInputProps('extensionAccountName')}
         />
+
+        <Select
+          pb="md"
+          data={spec.auth_supported}
+          disabled={loading || validateLoading}
+          label="Choose authentication type"
+          placeholder="Choose authentication type"
+          {...form.getInputProps('authType')}
+        />
+
         {properties.map((property) => (
           <TextInput
             key={property.key}
@@ -118,7 +144,9 @@ export function Form({
             disabled={loading || validateLoading}
             label={property.title}
             placeholder={`Enter ${property.title}`}
-            {...form.getInputProps(property.key)}
+            {...form.getInputProps(
+              `${getPropertyName(form.values.authType)}.${property.key}`,
+            )}
           />
         ))}
 

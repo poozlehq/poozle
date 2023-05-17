@@ -1,0 +1,47 @@
+{
+  "github": {
+    "extensionType": "GRAPHQL",
+    "name": "Github",
+    "version": "0.1.0",
+    "icon": "github.svg",
+    "source": "https://api.github.com/graphql",
+    "spec": "https://raw.githubusercontent.com/poozlehq/engine/main/public/specs/github.json",
+    "releaseStage": "ALPHA"
+  },
+  "shopify": {
+    "extensionType": "GRAPHQL",
+    "name": "Shopify",
+    "version": "0.1.0",
+    "icon": "shopify.svg",
+    "source": "https://api.github.com/graphql",
+    "spec": "https://raw.githubusercontent.com/poozlehq/engine/main/public/specs/shopify.json",
+    "releaseStage": "ALPHA"
+  },
+  "zoom": {
+    "extensionType": "REST",
+    "name": "Zoom",
+    "version": "0.1.0",
+    "icon": "zoom.svg",
+    "source": "https://raw.githubusercontent.com/poozlehq/engine/main/public/openapi/zoom/0.1.0.json",
+    "spec": "https://raw.githubusercontent.com/poozlehq/engine/main/public/specs/zoom.json",
+    "releaseStage": "ALPHA"
+  },
+  "gmail": {
+    "extensionType": "REST",
+    "name": "Gmail",
+    "version": "0.1.0",
+    "icon": "gmail.svg",
+    "source": "https://raw.githubusercontent.com/poozlehq/engine/main/public/openapi/gmail/0.1.0.json",
+    "spec": "https://raw.githubusercontent.com/poozlehq/engine/main/public/specs/gmail.json",
+    "releaseStage": "ALPHA"
+  },
+  "pipedrive": {
+    "extensionType": "REST",
+    "name": "Pipedrive",
+    "version": "0.1.0",
+    "icon": "pipedrive.svg",
+    "source": "https://raw.githubusercontent.com/poozlehq/engine/main/public/openapi/pipedrive/0.1.0.json",
+    "spec": "https://raw.githubusercontent.com/poozlehq/engine/main/public/specs/pipedrive.json",
+    "releaseStage": "ALPHA"
+  }
+}
