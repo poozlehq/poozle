@@ -5,15 +5,10 @@
       "inputSpecification": {
         "type": "object",
         "properties": {
-          "credentials": {
-            "type": "object",
-            "properties": {
-              "api_key": {
-                "type": "string",
-                "title": "Api Token",
-                "description": "Enter the API Token"
-              }
-            }
+          "api_key": {
+            "type": "string",
+            "title": "Api Token",
+            "description": "Enter the API Token"
           }
         }
       },

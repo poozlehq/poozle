@@ -2,10 +2,36 @@
 
 // TODO (harshith): Set current types for spec
 
+const inputSpec = {
+  type: 'object',
+  properties: {
+    client_id: {
+      type: 'string',
+      title: 'Client Id',
+      description: 'Enter the Client Id',
+    },
+    client_secret: {
+      type: 'string',
+      title: 'Client secret',
+      description: 'Enter the Client secret',
+    },
+    refresh_token: {
+      type: 'string',
+      title: 'Refresh token',
+      description: 'Enter the Refresh token',
+    },
+    scope: {
+      type: 'string',
+      title: 'Scope',
+      description: 'Enter the Scope',
+    },
+  },
+};
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function getProperties(spec: any) {
-  const specProperties =
-    spec.integrationSpecification.properties.credentials.properties;
+  const specProperties = spec.properties;
+  console.log(specProperties);
 
   return Object.keys(specProperties).map((key) => ({
     key,
@@ -14,8 +40,10 @@ export function getProperties(spec: any) {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getInitialValues(spec: any) {
-  const specProperties = getProperties(spec);
+export function getInitialValues(authType: string, spec: any) {
+  const specProperties = getProperties(
+    authType === 'OAuth2' ? inputSpec : spec.inputSpecification,
+  );
   const initialValues: Record<string, string> = {};
 
   specProperties.forEach((property) => {

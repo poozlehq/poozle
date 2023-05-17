@@ -43,6 +43,10 @@ async function main() {
 
     console.log(createdExtensionDefinitions);
   }
+
+  /**
+   * TODO (harshith): Add more logic to add new extensions from integrations.json
+   */
 }
 
 main()

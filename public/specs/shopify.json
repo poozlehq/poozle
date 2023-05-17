@@ -5,22 +5,17 @@
       "inputSpecification": {
         "type": "object",
         "properties": {
-          "credentials": {
-            "type": "object",
-            "properties": {
-              "token": {
-                "type": "string",
-                "title": "Token",
-                "description": "Enter the Token"
-              },
-              "shop_name": {
-                "type": "string",
-                "title": "Shop name",
-                "order": 0,
-                "description": "Enter the Shop name",
-                "secret": true
-              }
-            }
+          "token": {
+            "type": "string",
+            "title": "Token",
+            "description": "Enter the Token"
+          },
+          "shop_name": {
+            "type": "string",
+            "title": "Shop name",
+            "order": 0,
+            "description": "Enter the Shop name",
+            "secret": true
           }
         }
       },

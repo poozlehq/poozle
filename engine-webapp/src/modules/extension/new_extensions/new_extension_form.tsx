@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Alert, Button, Group, TextInput } from '@mantine/core';
+import { Alert, Button, Group, Select, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { IconAlertCircle } from '@tabler/icons-react';
@@ -42,8 +42,12 @@ export function Form({
   extensionDefinitionId,
   onComplete,
 }: FormProps) {
+  const [authType, setAuthType] = React.useState(spec.auth_supported[0]);
   const form = useForm({
-    initialValues: getInitialValues(spec),
+    initialValues: getInitialValues(
+      authType,
+      spec.auth_specification[authType],
+    ),
   });
   const [validateCredentialsForExtension, { loading: validateLoading }] =
     useValidateCredentialsForExtensionLazyQuery();
@@ -111,6 +115,16 @@ export function Form({
           placeholder="Enter extension account name"
           {...form.getInputProps('extensionAccountName')}
         />
+
+        <Select
+          pb="md"
+          data={['OAuth2']}
+          disabled={loading || validateLoading}
+          label="Choose authentication type"
+          placeholder="Choose authentication type"
+          {...form.getInputProps('authType')}
+        />
+
         {properties.map((property) => (
           <TextInput
             key={property.key}
