@@ -48,8 +48,12 @@ export function Form({
   extensionDefinitionId,
   onComplete,
 }: FormProps) {
+  const [authType, setAuthType] = React.useState(spec.auth_supported[0]);
   const form = useForm({
-    initialValues: getInitialValues(spec),
+    initialValues: getInitialValues(
+      authType,
+      spec.auth_specification[authType],
+    ),
   });
   const [validateCredentialsForExtension, { loading: validateLoading }] =
     useValidateCredentialsForExtensionLazyQuery();
