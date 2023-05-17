@@ -1,5 +1,5 @@
 {
-  "auth_supported": [ "Api Key", "OAUTH2" ],
+  "auth_supported": [ "Api Key", "OAuth2" ],
   "auth_specification": {
     "Api Key": {
       "inputSpecification": {
@@ -18,10 +18,10 @@
         }
       },
       "headers": {
-        "Authorization": "token {api_key}"
+        "Authorization": "token ${api_key}"
       }
     },
-    "OAUTH2": {
+    "OAuth2": {
       "token_url": "https://github.com/login/oauth/access_token"
     }
   }

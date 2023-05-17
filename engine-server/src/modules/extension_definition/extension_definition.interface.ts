@@ -9,8 +9,8 @@ export class ExtensionDefinitionRequestIdBody {
   @Field()
   extensionDefinitionId: string;
 
-  @Field()
-  workspaceId: string;
+  @Field({ nullable: true })
+  workspaceId?: string;
 }
 
 @InputType()

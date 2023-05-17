@@ -1,7 +1,7 @@
 /* eslint-disable dot-location */
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import axios from 'axios';
 import { PrismaService } from 'nestjs-prisma';
 
@@ -97,13 +97,16 @@ export class ExtensionDefinitionService {
       extensionDefinitionRequestIdBody,
     );
 
+    if (!extensionDefinition) {
+      throw new NotFoundException('Extension Definition not found');
+    }
     const specLink = extensionDefinition.spec;
 
     const spec = await axios.get(specLink);
 
     return {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      spec: spec as any,
+      spec: spec.data as any,
     };
   }
 

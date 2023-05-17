@@ -18,7 +18,7 @@
         }
       },
       "query_params": {
-        "api_token": "{api_token}"
+        "api_token": "${api_token}"
       }
     }
   }

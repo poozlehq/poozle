@@ -1,6 +1,17 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
-import { fetch } from '@whatwg-node/fetch';
 import { createClient } from 'redis';
+
+import { convertToString, getConfigJSON } from './commonUtils';
+import {
+  getAccessToken,
+  interpolateHeaders,
+  interpolateString,
+} from './oAuthUtils';
+
+interface Spec {
+  token_url: string;
+  headers: Record<string, string>;
+}
 
 function getRedisClient() {
   try {
@@ -16,32 +27,9 @@ function getRedisClient() {
   }
 }
 
-function getConfigJSON(config64: string) {
-  try {
-    if (config64) {
-      const buff = new Buffer(config64, 'base64');
-      let config = buff.toString('utf8');
-      config = JSON.parse(config);
-
-      // This to check if the base64 is still not parsed to JSON
-      if (typeof config === 'string') {
-        config = JSON.parse(config);
-      }
-
-      return config;
-    }
-
-    return {};
-  } catch (e) {
-    return {};
-  }
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function convertToString(config: Record<string, any>) {
-  return Buffer.from(JSON.stringify(config)).toString('base64');
-}
-
+/**
+ * To save the built credentails to redis cache
+ */
 async function saveToRedis(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   client: any,
@@ -81,8 +69,30 @@ async function getFromRedis(client: any, key: string) {
   }
 }
 
+async function getHeaders(
+  authType: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  config: any,
+  spec: Spec,
+) {
+  let token = '';
+  let headers = spec.headers;
+
+  if (authType === 'OAuth2') {
+    token = await getAccessToken(spec.token_url, config);
+    headers = {
+      Authorization: 'Bearer ${token}',
+    };
+  }
+
+  return interpolateHeaders(headers ? headers : {}, {
+    token,
+    ...config,
+  });
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function getAuthHeaders(
+export async function getAuthHeadersAndURL(
   url: string,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   options: any,
@@ -97,6 +107,7 @@ export async function getAuthHeaders(
      */
     if (headers.config && headers.name) {
       const client = getRedisClient();
+      const config = getConfigJSON(headers.config);
 
       if (client) {
         redisIsAvailable = true;
@@ -112,36 +123,15 @@ export async function getAuthHeaders(
          * If the redis has the key return the key without fetching it again
          */
         if (redisValue) {
-          return { authHeaders: redisValue, ...headers };
+          return { ...getConfigJSON(redisValue), ...headers };
         }
       }
 
-      const document = `
-        query GetHeaders($config: CredentialsT0!) {
-          getHeaders(config: $config) {
-            headers
-          }
-        }
-      `;
-      const config = getConfigJSON(headers.config);
-
-      const variables = {
+      const finalHeaders = await getHeaders(
+        headers.authtype,
         config,
-      };
-
-      const result = await fetch(url, {
-        ...options,
-        body: JSON.stringify({
-          query: document,
-          variables,
-        }),
-      });
-      const jsonBody = await result.json();
-      const parsedHeaders = jsonBody.data.getHeaders.headers;
-      const finalHeaders = {
-        ...headers,
-        authHeaders: convertToString(parsedHeaders),
-      };
+        getConfigJSON(headers.spec) as Spec,
+      );
 
       /**
        * Run redis only if the client is available
@@ -150,16 +140,23 @@ export async function getAuthHeaders(
         await saveToRedis(
           client,
           headers.name,
-          convertToString(parsedHeaders),
+          convertToString(finalHeaders),
           headers.redisExpiry || 60,
         );
         await client.disconnect();
       }
-      return finalHeaders;
+
+      return {
+        url: interpolateString(url, config),
+        headers: finalHeaders,
+      };
     }
   } catch (e) {
     console.log(e);
-    return {};
+    return {
+      url,
+      headers: {},
+    };
   }
 
   return {};

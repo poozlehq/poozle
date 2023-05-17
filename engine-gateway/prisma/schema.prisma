@@ -37,6 +37,7 @@ model Workspace {
 model ExtensionDefinition {
   extensionDefinitionId String             @id @default(uuid())
   name                  String
+  key                   String
   version               String
   spec                  String
   icon                  String?
@@ -51,6 +52,8 @@ model ExtensionDefinition {
   deleted               DateTime?
   createdAt             DateTime           @default(now())
   updatedAt             DateTime           @updatedAt
+
+  @@unique([extensionDefinitionId, key])
 }
 
 model ExtensionAuth {
@@ -77,6 +80,7 @@ model ExtensionAccount {
   extensionDefinition    ExtensionDefinition @relation(references: [extensionDefinitionId], fields: [extensionDefinitionId])
   extensionDefinitionId  String
   extensionConfiguration Json?
+  authType               String
   workspace              Workspace           @relation(references: [workspaceId], fields: [workspaceId])
   workspaceId            String
   name                   String

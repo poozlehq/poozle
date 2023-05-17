@@ -74,6 +74,7 @@ Table ExtensionAccount {
   extensionDefinition ExtensionDefinition [not null]
   extensionDefinitionId String [not null]
   extensionConfiguration Json
+  authType String [not null]
   workspace Workspace [not null]
   workspaceId String [not null]
   name String [not null]

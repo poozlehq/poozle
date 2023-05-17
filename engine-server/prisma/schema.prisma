@@ -90,6 +90,7 @@ model ExtensionAccount {
   extensionDefinition    ExtensionDefinition @relation(references: [extensionDefinitionId], fields: [extensionDefinitionId])
   extensionDefinitionId  String
   extensionConfiguration Json?
+  authType               String
   workspace              Workspace           @relation(references: [workspaceId], fields: [workspaceId])
   workspaceId            String
   name                   String

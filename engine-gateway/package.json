@@ -18,6 +18,7 @@
     "@envelop/generic-auth": "^5.0.6",
     "@graphql-mesh/cli": "^0.82.20",
     "@graphql-mesh/graphql": "^0.34.6",
+    "@graphql-mesh/openapi": "^0.93.1",
     "@graphql-mesh/plugin-hive": "^0.1.5",
     "@graphql-mesh/transform-encapsulate": "^0.4.12",
     "@graphql-mesh/transform-naming-convention": "^0.13.12",

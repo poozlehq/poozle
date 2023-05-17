@@ -133,6 +133,7 @@ export class ExtensionAccountService {
         data: {
           name: extensionDefinition.name,
           workspaceId: extensionAccountCreateBody.workspaceId,
+          authType: extensionAccountCreateBody.authType,
           extensionAccountName: extensionAccountCreateBody.extensionAccountName,
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           extensionConfiguration:

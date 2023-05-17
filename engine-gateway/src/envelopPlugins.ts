@@ -12,18 +12,21 @@ import {
 import { fetch } from '@whatwg-node/fetch';
 
 import { resolveUserFn, validateUser } from './authPlugin';
-import { getAuthHeaders } from './utils';
+import { getAuthHeadersAndURL } from './utils';
 
 const myPlugin: MeshPlugin<any> = {
   onFetch: async (
     params: OnFetchHookPayload<any>,
   ): Promise<OnFetchHookDone> => {
-    const headers = await getAuthHeaders(params.url, params.options);
+    const { url: interpolatedURL, headers } = await getAuthHeadersAndURL(
+      params.url,
+      params.options,
+    );
     const fetchFunction = async (
-      url: string,
+      _url: string,
       options?: RequestInit,
     ): Promise<Response> => {
-      return fetch(url, {
+      return fetch(interpolatedURL, {
         ...options,
         headers: {
           ...options.headers,
