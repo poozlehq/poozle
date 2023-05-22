@@ -83,6 +83,9 @@ export class ExtensionAccountUpdateBody {
 
   @Field()
   extensionAccountName: string;
+
+  @Field()
+  authType: string;
 }
 
 @InputType()

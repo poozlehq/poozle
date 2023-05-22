@@ -18,7 +18,10 @@ import { Loader } from 'components';
 
 import styles from './update_extension_form.module.scss';
 import { getInitialValues } from './update_extension_form_utils';
-import { getProperties } from '../new_extensions/new_extension_form_utils';
+import {
+  getProperties,
+  getPropertyName,
+} from '../new_extensions/new_extension_form_utils';
 
 interface UpdateExtensionFormProps {
   extensionAccount: ExtensionAccount;
@@ -46,15 +49,18 @@ export function Form({ spec, workspaceId, extensionAccount }: FormProps) {
 
   const onSubmit = (values: Values) => {
     const extensionAccountName = values.extensionAccountName;
+    const authType = values.authType;
 
     delete values['extensionAccountName'];
+    delete values['authType'];
 
     updateExtensionAccount({
       variables: {
         extensionUpdateBody: {
           extensionAccountId: extensionAccount.extensionAccountId,
           extensionAccountName,
-          extensionConfiguration: values,
+          authType,
+          extensionConfiguration: values[getPropertyName(authType)],
         },
       },
       onCompleted: () => {

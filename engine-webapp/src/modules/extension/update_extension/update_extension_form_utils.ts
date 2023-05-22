@@ -2,25 +2,40 @@
 
 import { ExtensionAccount } from 'queries/generated/graphql';
 
-import { getProperties } from '../new_extensions/new_extension_form_utils';
+import {
+  OAuthInputSpec,
+  getProperties,
+  getPropertyName,
+} from '../new_extensions/new_extension_form_utils';
 
 export function getInitialValues(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   spec: any,
   extensionAccount: ExtensionAccount,
 ) {
-  const specProperties = getProperties(spec);
-  const initialValues: Record<string, string> = {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const initialValues: Record<string, any> = {};
 
-  specProperties.forEach((property) => {
-    const key: string = property.key;
-    // TODO (harshith): Check for the right type here
+  Object.keys(spec.auth_specification).forEach((key) => {
+    initialValues[getPropertyName(key)] = {};
+
+    const specProperties = getProperties(
+      key === 'OAuth2'
+        ? OAuthInputSpec
+        : spec.auth_specification[key].input_specification,
+    );
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    initialValues[key] = '';
+    specProperties.forEach((property: any) => {
+      initialValues[getPropertyName(key)][property.key] = '';
+    });
   });
 
   // Adding extensionAccountName to the initial Values
   initialValues['extensionAccountName'] = extensionAccount.extensionAccountName;
+
+  // eslint-disable-next-line prefer-destructuring
+  initialValues['authType'] = extensionAccount.authType;
 
   return initialValues;
 }

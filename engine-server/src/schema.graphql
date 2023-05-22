@@ -78,6 +78,7 @@ input ExtensionAccountRequestIdBody {
 }
 
 input ExtensionAccountUpdateBody {
+  authType: String!
   extensionAccountId: String!
   extensionAccountName: String!
   extensionConfiguration: JSON

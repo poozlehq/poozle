@@ -3,7 +3,7 @@ import * as k8s from '@kubernetes/client-node';
 import { Logger } from 'winston';
 
 export interface port {
-  number: Number;
+  number: number;
 }
 
 export interface service {
@@ -39,9 +39,9 @@ export async function updateIngress(
     },
   );
 
-  let currentIngress = response.body;
+  const currentIngress = response.body;
 
-  let lastAppliedConfig = JSON.parse(
+  const lastAppliedConfig = JSON.parse(
     currentIngress.metadata.annotations[
       'kubectl.kubernetes.io/last-applied-configuration'
     ],
@@ -54,7 +54,7 @@ export async function updateIngress(
       `Cheking Path for this service ${serviceName} present in the ingress ${ingressName}`,
     );
     const servicePresent =
-      servicePaths.filter(function (path: path) {
+      servicePaths.filter((path: path) => {
         return path.backend.service.name === serviceName;
       }).length > 0;
 
@@ -87,7 +87,7 @@ export async function updateIngress(
     logger.info(
       `Deleting Path for this service ${serviceName} in this ingress ${ingressName}`,
     );
-    servicePaths = servicePaths.filter(function (path: path) {
+    servicePaths = servicePaths.filter((path: path) => {
       return path.backend.service.name !== serviceName;
     });
   }
