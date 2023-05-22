@@ -1,61 +1,27 @@
 /* eslint-disable dot-location */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
-import * as k8s from '@kubernetes/client-node';
 import { Request, Response } from 'express';
 import { Logger } from 'winston';
 
+import { annotations, deploymentSpec, ingressName } from '../constants/k8s';
 import {
-  Namespace,
   Workspace,
   WorkspaceEventEnum,
   WorkspaceRequestBody,
 } from '../modules';
-import { Container } from '../utils';
-
-const deploymentSpec = {
-  containers: [
-    {
-      image: `poozlehq/engine-gateway:${process.env.ENGINE_VERSION}`,
-      name: 'gateway',
-    },
-  ],
-};
-
-const ingressName = process.env.INGRESS_NAME;
 
 const port = 4000;
 // TODO: Move this to env
-const annotations = {
-  'beta.cloud.google.com/backend-config': '{"default": "gateway-config"}',
-  'networking.gke.io/load-balancer-type': 'Internal',
-};
 
 export function workspaceHandler(logger: Logger) {
   return async (req: Request, res: Response) => {
     const body = req.body as WorkspaceRequestBody;
 
-    // Generates a client from an existing kubeconfig whether in memory
-    // or from a file.
-    const kc = new k8s.KubeConfig();
-    kc.loadFromDefault();
-    const k8sApi = kc.makeApiClient(k8s.AppsV1Api);
-    const k8sApiCore = kc.makeApiClient(k8s.CoreV1Api);
-    const k8sNetworkingV1Api = kc.makeApiClient(k8s.NetworkingV1Api);
-
-    const namespace = new Namespace('engine', k8sApiCore, logger);
-    /* 
-      This will create the engine-gateway namespace if not present
-      in which all the gateway pods will go into
-    */
-    await namespace.createIfNotExist();
-
     /* 
       We will start the check for workspace gateways
     */
     const workspace = new Workspace(
-      k8sApi,
-      k8sApiCore,
-      k8sNetworkingV1Api,
+      body.workspaceId,
       body.slug,
       'engine',
       logger,
@@ -63,14 +29,9 @@ export function workspaceHandler(logger: Logger) {
       annotations,
     );
 
-    deploymentSpec.containers.map((container: Container) => {
-      container.env = [
-        { name: 'WORKSPACE_ID', value: body.workspaceId },
-        { name: 'DATABASE_URL', value: process.env.DATABASE_URL },
-        { name: 'JWT_SECRET', value: process.env.JWT_ACCESS_SECRET },
-        { name: 'REDIS_URL', value: process.env.REDIS_URL },
-      ];
-    });
+    if (process.env.DEPLOYMENT_MODE === 'k8s') {
+      await workspace.checkForNamespace();
+    }
 
     logger.info(`body event ${body.event}`);
     switch (body.event) {
@@ -80,6 +41,7 @@ export function workspaceHandler(logger: Logger) {
           if not found
         */
         const createStatus = await workspace.startCreate(deploymentSpec);
+        // Move this inside start create so that we can easily implement docker
         const ingressStatus = await workspace.updateIngress(
           ingressName,
           'CREATE',
@@ -94,6 +56,7 @@ export function workspaceHandler(logger: Logger) {
           Deleting the deployment and service for the workspace
         */
         const deleteStatus = await workspace.startDelete();
+        // Move this inside start create so that we can easily implement docker
         const ingressStatus = await workspace.updateIngress(
           ingressName,
           'DELETE',
@@ -107,10 +70,8 @@ export function workspaceHandler(logger: Logger) {
         /* 
           This will create a new engine-gateway pods with the new credentials
         */
-        const restartStatus = await workspace.restartDeployment(
-          deploymentSpec,
-          ingressName,
-        );
+
+        const restartStatus = await workspace.restartDeployment(ingressName);
         res.status(restartStatus.status ? 200 : 400).json(restartStatus);
         break;
       }

@@ -20,5 +20,6 @@
     "OAuth2": {
       "token_url": "https://github.com/login/oauth/access_token"
     }
-  }
+  },
+  "graphql_endpoint": "https://api.github.com/graphql"
 }

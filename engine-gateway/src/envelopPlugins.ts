@@ -10,23 +10,40 @@ import {
   OnFetchHookDonePayload,
 } from '@graphql-mesh/types';
 import { fetch } from '@whatwg-node/fetch';
+import * as queryString from 'qs';
 
 import { resolveUserFn, validateUser } from './authPlugin';
-import { getAuthHeadersAndURL } from './utils';
+import { getAuthHeadersAndQueryParams } from './utils';
 
 const myPlugin: MeshPlugin<any> = {
   onFetch: async (
     params: OnFetchHookPayload<any>,
   ): Promise<OnFetchHookDone> => {
-    const { url: interpolatedURL, headers } = await getAuthHeadersAndURL(
-      params.url,
+    const { headers, queryParams } = await getAuthHeadersAndQueryParams(
       params.options,
     );
+
     const fetchFunction = async (
-      _url: string,
+      url: string,
       options?: RequestInit,
     ): Promise<Response> => {
-      return fetch(interpolatedURL, {
+      let finalURL = url;
+
+      if (Object.keys(queryParams).length > 0) {
+        const justURL = url.split('?')[0];
+        const searchParams = queryString.parse(url.split('?')[1]);
+
+        const finalQueryParams = queryString.stringify({
+          ...searchParams,
+          ...queryParams,
+        });
+
+        const urlSearchParams = new URLSearchParams(finalQueryParams);
+
+        finalURL = `${justURL}?${urlSearchParams}`;
+      }
+
+      return fetch(finalURL, {
         ...options,
         headers: {
           ...options.headers,

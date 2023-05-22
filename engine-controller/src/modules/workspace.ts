@@ -1,10 +1,20 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Base } from './base';
-import { DeploymentSpec, readDeployment, restartDeployment } from '../utils';
+import { deploymentSpec } from '../constants/k8s';
+import { Container, readDeployment, restartDeployment } from '../utils';
 
 export class Workspace extends Base {
-  async restartDeployment(deploymentSpec: DeploymentSpec, ingressName: string) {
+  async restartDeployment(ingressName: string) {
+    deploymentSpec.containers.map((container: Container) => {
+      container.env = [
+        { name: 'WORKSPACE_ID', value: this.id },
+        { name: 'DATABASE_URL', value: process.env.DATABASE_URL },
+        { name: 'JWT_SECRET', value: process.env.JWT_ACCESS_SECRET },
+        { name: 'REDIS_URL', value: process.env.REDIS_URL },
+      ];
+    });
+
     try {
       try {
         await readDeployment(this.k8sApi, this.namespace, this.slug);

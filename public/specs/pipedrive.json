@@ -5,7 +5,7 @@
       "input_specification": {
         "type": "object",
         "properties": {
-          "api_key": {
+          "api_token": {
             "type": "string",
             "title": "Api Token",
             "description": "Enter the API Token"

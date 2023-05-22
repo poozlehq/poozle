@@ -11,6 +11,12 @@ import {
 interface Spec {
   token_url: string;
   headers: Record<string, string>;
+  query_params?: Record<string, string>;
+}
+
+interface RedisValue {
+  headers: Record<string, string>;
+  queryParams: Record<string, string>;
 }
 
 function getRedisClient() {
@@ -79,7 +85,10 @@ async function getHeaders(
   let headers = spec.headers;
 
   if (authType === 'OAuth2') {
-    token = await getAccessToken(spec.token_url, config);
+    token = await getAccessToken(
+      interpolateString(spec.token_url, config),
+      config,
+    );
     headers = {
       Authorization: 'Bearer ${token}',
     };
@@ -91,12 +100,21 @@ async function getHeaders(
   });
 }
 
+async function getQueryParams(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  config: any,
+  spec: Spec,
+) {
+  const queryParams = spec.query_params;
+
+  return interpolateHeaders(queryParams ? queryParams : {}, config);
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function getAuthHeadersAndURL(
-  url: string,
+export async function getAuthHeadersAndQueryParams(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   options: any,
-) {
+): Promise<RedisValue> {
   let redisIsAvailable = false;
 
   try {
@@ -123,12 +141,17 @@ export async function getAuthHeadersAndURL(
          * If the redis has the key return the key without fetching it again
          */
         if (redisValue) {
-          return { ...getConfigJSON(redisValue), ...headers };
+          return getConfigJSON(redisValue) as RedisValue;
         }
       }
 
       const finalHeaders = await getHeaders(
         headers.authtype,
+        config,
+        getConfigJSON(headers.spec) as Spec,
+      );
+
+      const queryParams = await getQueryParams(
         config,
         getConfigJSON(headers.spec) as Spec,
       );
@@ -140,24 +163,26 @@ export async function getAuthHeadersAndURL(
         await saveToRedis(
           client,
           headers.name,
-          convertToString(finalHeaders),
+          convertToString({ headers: finalHeaders, queryParams }),
           headers.redisExpiry || 60,
         );
         await client.disconnect();
       }
 
       return {
-        url: interpolateString(url, config),
         headers: finalHeaders,
+        queryParams,
       };
     }
+    return {
+      headers: {},
+      queryParams: {},
+    };
   } catch (e) {
     console.log(e);
     return {
-      url,
       headers: {},
+      queryParams: {},
     };
   }
-
-  return {};
 }

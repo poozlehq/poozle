@@ -2,6 +2,7 @@
 import * as k8s from '@kubernetes/client-node';
 import { Logger } from 'winston';
 
+import { Namespace } from './namespace';
 import {
   DeploymentSpec,
   createDeployment,
@@ -21,6 +22,7 @@ export class Base {
   k8sApiCore: k8s.CoreV1Api;
   k8sNetworkingV1Api: k8s.NetworkingV1Api;
 
+  id: string;
   slug: string;
   namespace: string;
   port: number;
@@ -28,15 +30,23 @@ export class Base {
   annotations: Record<string, string>;
 
   constructor(
-    k8sApi: k8s.AppsV1Api,
-    k8sApiCore: k8s.CoreV1Api,
-    k8sNetworkingV1Api: k8s.NetworkingV1Api,
+    id: string,
     slug: string,
     namespace: string,
     logger: Logger,
     port?: number,
     annotations?: Record<string, string>,
   ) {
+    // Generates a client from an existing kubeconfig whether in memory
+    // or from a file.
+
+    const kc = new k8s.KubeConfig();
+    kc.loadFromDefault();
+    const k8sApi = kc.makeApiClient(k8s.AppsV1Api);
+    const k8sApiCore = kc.makeApiClient(k8s.CoreV1Api);
+    const k8sNetworkingV1Api = kc.makeApiClient(k8s.NetworkingV1Api);
+
+    this.id = id;
     this.k8sApi = k8sApi;
     this.k8sApiCore = k8sApiCore;
     this.k8sNetworkingV1Api = k8sNetworkingV1Api;
@@ -45,6 +55,15 @@ export class Base {
     this.logger = logger;
     this.port = port;
     this.annotations = annotations;
+  }
+
+  async checkForNamespace() {
+    const namespace = new Namespace('engine', this.k8sApiCore, this.logger);
+    /* 
+      This will create the engine-gateway namespace if not present
+      in which all the gateway pods will go into
+    */
+    await namespace.createIfNotExist();
   }
 
   async createDeployment(deploymentSpec: DeploymentSpec) {

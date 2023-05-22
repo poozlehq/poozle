@@ -12,6 +12,21 @@ import { createLogger, transports, format } from 'winston';
 import { ExtensionType, PrismaClient } from './client';
 
 /**
+ * A helper function to interpolate a string.
+ * interpolateString('Hello ${name} of ${age} years", {name: 'Tester', age: 234}) -> returns 'Hello Tester of age 234 years'
+ *
+ * @remarks
+ * Copied from https://stackoverflow.com/a/1408373/250880
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function interpolateString(str: string, replacers: Record<string, any>) {
+  return str.replace(/\${([^{}]*)}/g, (a, b) => {
+    const r = replacers[b];
+    return typeof r === 'string' || typeof r === 'number' ? (r as string) : a; // Typecast needed to make TypeScript happy
+  });
+}
+
+/**
  * Later move this into another file
  * Right now it is failing because we are building with
  */
@@ -103,18 +118,24 @@ async function main(): Promise<null> {
         const extensionDefinition = account.extensionDefinition;
         const specLink = extensionDefinition.spec;
 
+        console.log(specLink);
         const specResponse = await axios.get(specLink);
         const spec = specResponse.data;
-        const specForAuthType = spec[account.authType];
+        const specForAuthType = spec.auth_specification[account.authType];
+        console.log(specForAuthType);
+
+        const spec64 = Buffer.from(JSON.stringify(specForAuthType)).toString(
+          'base64',
+        );
 
         const operationHeaders = {
           config: configHeaders,
-          spec: JSON.stringify(specForAuthType),
+          spec: spec64,
           name: extensionAccountName,
           /**
            * TODO(harshith): Change this later to value fetched from database
            */
-          redisExpiry: 60,
+          redisExpiry: '60',
           authType: account.authType,
         };
 
@@ -125,14 +146,23 @@ async function main(): Promise<null> {
               ? {
                   graphql: {
                     // TODO (harshith): Remove static URL and move this to ExtensionRouter based
-                    endpoint: extensionDefinition.source,
+                    endpoint: interpolateString(
+                      spec.graphql_endpoint,
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      account.extensionConfiguration as any,
+                    ),
+                    source: extensionDefinition.source,
                     operationHeaders,
                   },
                 }
               : {
                   openapi: {
                     // TODO (harshith): Remove static URL and move this to ExtensionRouter based
-                    source: extensionDefinition.source,
+                    source: interpolateString(
+                      extensionDefinition.source,
+                      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                      account.extensionConfiguration as any,
+                    ),
                     operationHeaders,
                   },
                 },
