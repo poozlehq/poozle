@@ -200,6 +200,7 @@ export class ExtensionAccountService {
     const updatedExtensionAccount = await this.prisma.extensionAccount.update({
       data: {
         extensionAccountName: extensionAccountUpdateBody.extensionAccountName,
+        authType: extensionAccountUpdateBody.authType,
         extensionConfiguration:
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           extensionAccountUpdateBody.extensionConfiguration as any,
