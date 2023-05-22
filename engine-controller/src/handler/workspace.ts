@@ -40,38 +40,39 @@ export function workspaceHandler(logger: Logger) {
           This will create a gateway deployment for the workspace 
           if not found
         */
-        const createStatus = await workspace.startCreate(deploymentSpec);
-        // Move this inside start create so that we can easily implement docker
-        const ingressStatus = await workspace.updateIngress(
-          ingressName,
-          'CREATE',
-        );
-        res
-          .status(createStatus.status && ingressStatus.status ? 200 : 400)
-          .json(ingressStatus);
+        let createStatus;
+        if (process.env.DEPLOYMENT_MODE === 'k8s') {
+          createStatus = await workspace.startCreate(deploymentSpec);
+        } else {
+          createStatus = await workspace.startCreateDocker();
+        }
+
+        res.status(createStatus.status ? 200 : 400).json(createStatus);
         break;
       }
       case WorkspaceEventEnum.DELETE: {
         /* 
           Deleting the deployment and service for the workspace
         */
-        const deleteStatus = await workspace.startDelete();
-        // Move this inside start create so that we can easily implement docker
-        const ingressStatus = await workspace.updateIngress(
-          ingressName,
-          'DELETE',
-        );
-        res
-          .status(deleteStatus.status && ingressStatus.status ? 200 : 400)
-          .json(ingressStatus);
+        let deleteStatus;
+        if (process.env.DEPLOYMENT_MODE === 'k8s') {
+          deleteStatus = await workspace.startDelete();
+        } else {
+          deleteStatus = await workspace.deleteDocker();
+        }
+        res.status(deleteStatus.status ? 200 : 400).json(deleteStatus);
         break;
       }
       case WorkspaceEventEnum.RESTART: {
         /* 
           This will create a new engine-gateway pods with the new credentials
         */
-
-        const restartStatus = await workspace.restartDeployment(ingressName);
+        let restartStatus;
+        if (process.env.DEPLOYMENT_MODE === 'k8s') {
+          restartStatus = await workspace.restartDeployment(ingressName);
+        } else {
+          restartStatus = await workspace.restartDocker();
+        }
         res.status(restartStatus.status ? 200 : 400).json(restartStatus);
         break;
       }

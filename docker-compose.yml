@@ -1,0 +1,72 @@
+version: '3.8'
+
+services: 
+  server:
+    image: poozlehq/engine-server:${ENGINE_VERSION}
+    platform: linux/amd64
+    container_name: poozle-server
+    restart: unless-stopped
+    environment:
+      - ENGINE_VERSION=${ENGINE_VERSION}
+      - CONTROLLER_URL=${CONTROLLER_URL}
+      - DATABASE_URL=${DATABASE_URL}
+      - FRONTEND_HOST=${FRONTEND_HOST}
+      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - HIVE_GRAPHQL_ENDPOINT=${HIVE_GRAPHQL_ENDPOINT}
+      - HIVE_EMAIL=${HIVE_EMAIL}
+      - HIVE_PASSWORD=${HIVE_PASSWORD}
+    ports:
+      - 3000:3000
+  
+  webapp:
+    image: poozlehq/engine-webapp:${ENGINE_VERSION}
+    platform: linux/amd64
+    container_name: poozle-webapp
+    restart: unless-stopped
+    environment:
+      - NEXT_PUBLIC_GATEWAY_HOST=${NEXT_PUBLIC_GATEWAY_HOST}
+      - NEXT_PUBLIC_VERSION=${ENGINE_VERSION}
+      - NEXT_PUBLIC_BASE_SERVER_URL=${NEXT_PUBLIC_BASE_SERVER_URL}
+    ports:
+      - 8000:3000
+  
+  
+  controller:
+    image: poozlehq/engine-controller:${ENGINE_VERSION}
+    container_name: poozle-controller
+    restart: unless-stopped
+    environment:
+      - ENGINE_VERSION=${ENGINE_VERSION}
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
+      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
+      - DEPLOYEMENT_MODE=${DEPLOYEMENT_MODE}
+    ports:
+      - 3001:3000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+
+  db: 
+    image: postgres:14-alpine
+    volumes:
+      - 'postgres-data:/var/lib/postgresql/data'
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+
+  redis:
+    image: redis:7-alpine
+    restart: always
+    ports:
+      - 6379:6379
+    command:  redis-server --save 20 1 --loglevel warning --requirepass bGmlHSV1WJ4kZ1L
+    volumes: 
+      - cache:/data
+
+volumes:
+  postgres-data:
+  cache:
+    driver: local

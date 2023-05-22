@@ -4,7 +4,7 @@
   "description": "Handles the k8s deployments for gateway and extensions",
   "license": "MIT",
   "main": "src/index.ts",
-  "keywords": [ ],
+  "keywords": [],
   "scripts": {
     "build": "rollup -c",
     "start": "ts-node src/index.ts",
@@ -16,6 +16,7 @@
   "dependencies": {
     "@kubernetes/client-node": "^0.18.1",
     "body-parser": "^1.20.1",
+    "docker-cli-js": "^2.10.0",
     "express": "^4.18.2",
     "winston": "^3.8.2"
   },

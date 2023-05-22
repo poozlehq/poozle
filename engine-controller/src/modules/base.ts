@@ -1,8 +1,11 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 import * as k8s from '@kubernetes/client-node';
+import { Docker, Options } from 'docker-cli-js';
 import { Logger } from 'winston';
 
 import { Namespace } from './namespace';
+import { gateway_image } from '../constants/docker';
+import { ingressName } from '../constants/k8s';
 import {
   DeploymentSpec,
   createDeployment,
@@ -21,6 +24,7 @@ export class Base {
   k8sApi: k8s.AppsV1Api;
   k8sApiCore: k8s.CoreV1Api;
   k8sNetworkingV1Api: k8s.NetworkingV1Api;
+  docker: Docker;
 
   id: string;
   slug: string;
@@ -46,10 +50,14 @@ export class Base {
     const k8sApiCore = kc.makeApiClient(k8s.CoreV1Api);
     const k8sNetworkingV1Api = kc.makeApiClient(k8s.NetworkingV1Api);
 
+    const options = new Options(null, null, true);
+    const docker = new Docker(options);
+
     this.id = id;
     this.k8sApi = k8sApi;
     this.k8sApiCore = k8sApiCore;
     this.k8sNetworkingV1Api = k8sNetworkingV1Api;
+    this.docker = docker;
     this.slug = slug;
     this.namespace = namespace;
     this.logger = logger;
@@ -153,6 +161,39 @@ export class Base {
     }
   }
 
+  async createDockerIfNotExists() {
+    try {
+      const response = await this.docker.command(
+        `ps --filter "name=${this.slug}"`,
+      );
+      console.log(response);
+      console.log(gateway_image);
+      console.log(process.env.ENGINE_VERSION);
+      if (!response.containersList) {
+        // await this.docker.command(`pull ${gateway_image}`);
+        const res = await this.docker.command(
+          `run --name ${this.slug} -d -p 4000:4000 \
+        -e WORKSPACE_ID=${process.env.WORKSPACE_ID} \
+        -e DATABASE_URL=${process.env.DATABASE_URL} \
+        -e JWT_SECRET=${process.env.JWT_SECRET} \
+        -e REDIS_URL=${process.env.REDIS_URL} --platform linux/amd64 ${gateway_image} `,
+        );
+        this.logger.info(
+          `Created gateway container ${this.slug} with ID ${res.containerId}`,
+        );
+      }
+      return {
+        status: true,
+      };
+    } catch (e) {
+      this.logger.error(e);
+      return {
+        status: false,
+        error: e,
+      };
+    }
+  }
+
   async deleteDeployment() {
     try {
       await deleteDeployment(this.k8sApi, this.namespace, this.slug);
@@ -191,6 +232,24 @@ export class Base {
     }
   }
 
+  async deleteDocker() {
+    const response = await this.docker.command(
+      `ps --filter "name=${this.slug}"`,
+    );
+    if (response.containersList) {
+      const deleteResponse = await this.docker.command(`rm ${this.slug}`);
+
+      this.logger.info(
+        `Delete gateway container ${this.slug} with ID ${deleteResponse.containerId}`,
+      );
+    }
+
+    return {
+      status: true,
+      error: '',
+    };
+  }
+
   async startCreate(deploymentSpec: DeploymentSpec) {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -206,8 +265,10 @@ export class Base {
         };
       }
 
+      const ingressStatus = await this.updateIngress(ingressName, 'CREATE');
+
       return {
-        status: deploymentStatus.status,
+        status: deploymentStatus.status && ingressStatus.status,
         error: deploymentStatus?.error,
       };
     } catch (e) {
@@ -219,6 +280,15 @@ export class Base {
     }
   }
 
+  async startCreateDocker() {
+    this.createDockerIfNotExists();
+
+    return {
+      status: true,
+      error: '',
+    };
+  }
+
   async startDelete() {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -226,8 +296,11 @@ export class Base {
       if (deploymentStatus.status) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const serviceStatus: any = await this.deleteService();
+
+        const ingressStatus = await this.updateIngress(ingressName, 'DELETE');
+
         return {
-          status: serviceStatus.status,
+          status: serviceStatus.status && ingressStatus.status,
           error: serviceStatus?.error,
         };
       }
@@ -288,5 +361,20 @@ export class Base {
         error: e,
       };
     }
+  }
+
+  async restartDocker() {
+    const response = await this.docker.command(
+      `ps --filter "name=${this.slug}"`,
+    );
+
+    if (response.containersList) {
+      await this.docker.command(`restart ${this.slug}`);
+    }
+
+    return {
+      status: true,
+      error: '',
+    };
   }
 }
