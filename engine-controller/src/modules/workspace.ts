@@ -1,11 +1,11 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Base } from './base';
-import { deploymentSpec } from '../constants/k8s';
+import { deploymentSpec, ingressName } from '../constants/k8s';
 import { Container, readDeployment, restartDeployment } from '../utils';
 
 export class Workspace extends Base {
-  async restartDeployment(ingressName: string) {
+  async startRestart() {
     deploymentSpec.containers.map((container: Container) => {
       container.env = [
         { name: 'WORKSPACE_ID', value: this.id },

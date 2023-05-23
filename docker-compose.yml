@@ -18,16 +18,16 @@ services:
       - HIVE_PASSWORD=${HIVE_PASSWORD}
     ports:
       - 3000:3000
-  
+
+
   webapp:
     image: poozlehq/engine-webapp:${ENGINE_VERSION}
     platform: linux/amd64
     container_name: poozle-webapp
     restart: unless-stopped
     environment:
-      - NEXT_PUBLIC_GATEWAY_HOST=${NEXT_PUBLIC_GATEWAY_HOST}
+      - BACKEND_URL=${BACKEND_URL}
       - NEXT_PUBLIC_VERSION=${ENGINE_VERSION}
-      - NEXT_PUBLIC_BASE_SERVER_URL=${NEXT_PUBLIC_BASE_SERVER_URL}
     ports:
       - 8000:3000
   
@@ -41,11 +41,12 @@ services:
       - DATABASE_URL=${DATABASE_URL}
       - REDIS_URL=${REDIS_URL}
       - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
-      - DEPLOYEMENT_MODE=${DEPLOYEMENT_MODE}
+      - DEPLOYMENT_MODE=${DEPLOYMENT_MODE}
     ports:
       - 3001:3000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+
 
   db: 
     image: postgres:14-alpine
@@ -57,6 +58,7 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_PORT=${POSTGRES_PORT}
 
+
   redis:
     image: redis:7-alpine
     restart: always
@@ -65,6 +67,7 @@ services:
     command:  redis-server --save 20 1 --loglevel warning --requirepass bGmlHSV1WJ4kZ1L
     volumes: 
       - cache:/data
+
 
 volumes:
   postgres-data:

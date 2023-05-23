@@ -68,30 +68,32 @@ export class AuthService {
        * Create Hive organisation and project for this user and workspace
        * TODO (harshith): Change this later remove hive org and project dependency
        */
-      const accessToken = await this.hiveService.login();
-      await this.hiveService.createOrganisation(user.userId, accessToken);
-      await this.hiveService.createProject(
-        randomName,
-        user.userId,
-        accessToken,
-      );
-      const hiveToken = await this.hiveService.createAccessToken(
-        randomName,
-        user.userId,
-        accessToken,
-      );
-      await this.prisma.gateway.create({
-        data: {
-          hiveToken,
-          workspaceId: user.Workspace[0].workspaceId,
-        },
-      });
-      /**
-       * Replace the above
-       */
+      if (this.configService.get('HIVE_PASSWORD')) {
+        const accessToken = await this.hiveService.login();
+        await this.hiveService.createOrganisation(user.userId, accessToken);
+        await this.hiveService.createProject(
+          randomName,
+          user.userId,
+          accessToken,
+        );
+        const hiveToken = await this.hiveService.createAccessToken(
+          randomName,
+          user.userId,
+          accessToken,
+        );
+        await this.prisma.gateway.create({
+          data: {
+            hiveToken,
+            workspaceId: user.Workspace[0].workspaceId,
+          },
+        });
+        /**
+         * Replace the above
+         */
 
-      /** Track */
-      this.analyticsService.track(payload.email, EVENT_TYPES.NEW_USER);
+        /** Track */
+        this.analyticsService.track(payload.email, EVENT_TYPES.NEW_USER);
+      }
 
       return this.generateTokens({
         userId: user.userId,

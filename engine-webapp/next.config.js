@@ -15,5 +15,5 @@ module.exports = {
     buildActivityPosition: 'bottom-right',
   },
   swcMinify: true,
-  pageExtensions: ['page.tsx'],
+  pageExtensions: ['page.tsx', 'page.js'],
 };
