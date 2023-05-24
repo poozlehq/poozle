@@ -3,6 +3,7 @@ import * as k8s from '@kubernetes/client-node';
 import { Logger } from 'winston';
 
 import { Namespace } from './namespace';
+import { ingressName } from '../constants/k8s';
 import {
   DeploymentSpec,
   createDeployment,
@@ -66,6 +67,27 @@ export class Base {
     await namespace.createIfNotExist();
   }
 
+  // Deployment function
+  async getDeployment() {
+    try {
+      const response = await readDeployment(
+        this.k8sApi,
+        this.namespace,
+        this.slug,
+      );
+      this.logger.info('Deployment found for this Workspace');
+      return {
+        status: true,
+        availableReplicas: response.body.status?.availableReplicas,
+      };
+    } catch (e) {
+      return {
+        status: false,
+        error: 'Deployment not found for this Workspace',
+      };
+    }
+  }
+
   async createDeployment(deploymentSpec: DeploymentSpec) {
     try {
       const deployment = await createDeployment(
@@ -110,6 +132,26 @@ export class Base {
     }
   }
 
+  async deleteDeployment() {
+    try {
+      await deleteDeployment(this.k8sApi, this.namespace, this.slug);
+      this.logger.info('Deployment for this workspace is deleted.');
+      return {
+        status: true,
+      };
+    } catch (e) {
+      this.logger.info(
+        'Deployment for this workspace was not deleted error occured.',
+      );
+      this.logger.error(e);
+      return {
+        status: false,
+        error: e,
+      };
+    }
+  }
+
+  // Service functions
   async createService() {
     try {
       const service = await createService(
@@ -153,25 +195,6 @@ export class Base {
     }
   }
 
-  async deleteDeployment() {
-    try {
-      await deleteDeployment(this.k8sApi, this.namespace, this.slug);
-      this.logger.info('Deployment for this workspace is deleted.');
-      return {
-        status: true,
-      };
-    } catch (e) {
-      this.logger.info(
-        'Deployment for this workspace was not deleted error occured.',
-      );
-      this.logger.error(e);
-      return {
-        status: false,
-        error: e,
-      };
-    }
-  }
-
   async deleteService() {
     try {
       await deleteService(this.k8sApiCore, this.namespace, this.slug);
@@ -191,6 +214,7 @@ export class Base {
     }
   }
 
+  // Generic utils
   async startCreate(deploymentSpec: DeploymentSpec) {
     try {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -206,8 +230,10 @@ export class Base {
         };
       }
 
+      const ingressStatus = await this.updateIngress(ingressName, 'CREATE');
+
       return {
-        status: deploymentStatus.status,
+        status: deploymentStatus.status && ingressStatus.status,
         error: deploymentStatus?.error,
       };
     } catch (e) {
@@ -226,8 +252,11 @@ export class Base {
       if (deploymentStatus.status) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const serviceStatus: any = await this.deleteService();
+
+        const ingressStatus = await this.updateIngress(ingressName, 'DELETE');
+
         return {
-          status: serviceStatus.status,
+          status: serviceStatus.status && ingressStatus.status,
           error: serviceStatus?.error,
         };
       }
@@ -241,26 +270,6 @@ export class Base {
       return {
         status: false,
         error: e,
-      };
-    }
-  }
-
-  async getDeployment() {
-    try {
-      const response = await readDeployment(
-        this.k8sApi,
-        this.namespace,
-        this.slug,
-      );
-      this.logger.info('Deployment found for this Workspace');
-      return {
-        status: true,
-        availableReplicas: response.body.status?.availableReplicas,
-      };
-    } catch (e) {
-      return {
-        status: false,
-        error: 'Deployment not found for this Workspace',
       };
     }
   }

@@ -244,10 +244,6 @@ input LoginInput {
   password: String!
 }
 
-type Logout {
-  logout: Boolean!
-}
-
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   createExtensionAccount(data: ExtensionAccountCreateBody!): ExtensionAccountMasked!
@@ -257,7 +253,6 @@ type Mutation {
   createWorkspace(data: WorkspaceCreateBody!): Workspace!
   deleteWorkspace(data: WorkspaceRequestIdBody!): Workspace!
   login(data: LoginInput!): Auth!
-  logout: Logout!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
   updateExtensionAccount(data: ExtensionAccountUpdateBody!): ExtensionAccountMasked!

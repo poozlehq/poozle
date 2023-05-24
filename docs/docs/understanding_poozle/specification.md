@@ -1,14 +1,14 @@
-# Poozle Protocol
+# Poozle Specification
 
 ## Goals
 
-The Poozle Protocol describes a series of standard components and all the interactions between them in order to create and connect an extension. All message passing across components is done via GraphQL protocol for inter-process communication.
+The Poozle Specification describes a series of standard components and all the interactions between them in order to create and connect an extension.
 
 ## Key Concepts
 
-There are 2 major components in the Poozle Protocol: Gateway and Extension. A extension is an application that is described by a series of standard interfaces. This application extracts data from an underlying API. For example, shopify, facebook_ads, jira, github etc. The gateway combines all the extensions configured at one single layer.
+There are 2 major components in the Poozle Specification: Gateway and Extension. A extension is an application that is described by a series of standard files. This application extracts data from an underlying API. For example, shopify, facebook_ads, jira, github etc. The gateway combines all the extensions configured at one single layer.
 
-## Extension Interface
+## Extension
 
 This section describes important details about the interface over extensions. It reviews parts of the interface that are the same across all extensions. It also describes some invariants for all methods in extension interfaces.
 

@@ -49,6 +49,11 @@ export function Signin() {
           password: values.password,
         },
       },
+      context: {
+        headers: {
+          type: 'Authentication',
+        },
+      },
       onCompleted: () => {
         router.replace('/workspaces');
       },

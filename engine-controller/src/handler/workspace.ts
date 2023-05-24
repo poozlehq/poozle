@@ -3,12 +3,13 @@
 import { Request, Response } from 'express';
 import { Logger } from 'winston';
 
-import { annotations, deploymentSpec, ingressName } from '../constants/k8s';
+import { annotations, deploymentSpec } from '../constants/k8s';
 import {
   Workspace,
   WorkspaceEventEnum,
   WorkspaceRequestBody,
 } from '../modules';
+import { WorkspaceDocker } from '../modules/workspace_docker';
 
 const port = 4000;
 // TODO: Move this to env
@@ -16,21 +17,24 @@ const port = 4000;
 export function workspaceHandler(logger: Logger) {
   return async (req: Request, res: Response) => {
     const body = req.body as WorkspaceRequestBody;
+    let workspace: Workspace | WorkspaceDocker;
 
     /* 
       We will start the check for workspace gateways
     */
-    const workspace = new Workspace(
-      body.workspaceId,
-      body.slug,
-      'engine',
-      logger,
-      port,
-      annotations,
-    );
-
     if (process.env.DEPLOYMENT_MODE === 'k8s') {
+      workspace = new Workspace(
+        body.workspaceId,
+        body.slug,
+        'engine',
+        logger,
+        port,
+        annotations,
+      );
+
       await workspace.checkForNamespace();
+    } else {
+      workspace = new WorkspaceDocker(body.slug, body.workspaceId, logger);
     }
 
     logger.info(`body event ${body.event}`);
@@ -40,30 +44,20 @@ export function workspaceHandler(logger: Logger) {
           This will create a gateway deployment for the workspace 
           if not found
         */
+
         const createStatus = await workspace.startCreate(deploymentSpec);
-        // Move this inside start create so that we can easily implement docker
-        const ingressStatus = await workspace.updateIngress(
-          ingressName,
-          'CREATE',
-        );
-        res
-          .status(createStatus.status && ingressStatus.status ? 200 : 400)
-          .json(ingressStatus);
+
+        res.status(createStatus.status ? 200 : 400).json(createStatus);
         break;
       }
       case WorkspaceEventEnum.DELETE: {
         /* 
           Deleting the deployment and service for the workspace
         */
+
         const deleteStatus = await workspace.startDelete();
-        // Move this inside start create so that we can easily implement docker
-        const ingressStatus = await workspace.updateIngress(
-          ingressName,
-          'DELETE',
-        );
-        res
-          .status(deleteStatus.status && ingressStatus.status ? 200 : 400)
-          .json(ingressStatus);
+
+        res.status(deleteStatus.status ? 200 : 400).json(deleteStatus);
         break;
       }
       case WorkspaceEventEnum.RESTART: {
@@ -71,7 +65,8 @@ export function workspaceHandler(logger: Logger) {
           This will create a new engine-gateway pods with the new credentials
         */
 
-        const restartStatus = await workspace.restartDeployment(ingressName);
+        const restartStatus = await workspace.startRestart();
+
         res.status(restartStatus.status ? 200 : 400).json(restartStatus);
         break;
       }

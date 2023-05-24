@@ -30,8 +30,6 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 import { UserContext } from 'store/user_context';
 
-import { useLogoutMutation } from 'queries/generated/graphql';
-
 import { ThemeLogo } from 'components/theme_logo';
 
 import styles from './navbar.module.scss';
@@ -110,7 +108,6 @@ export function Navbar({ open, onToggle }: NavbarProps) {
   const workspace = Workspace.find(
     (workspace) => workspace.workspaceId === workspaceId,
   );
-  const [logout] = useLogoutMutation();
 
   const links = LINK_DATA.map((link) => (
     <NavbarLink
@@ -148,8 +145,8 @@ export function Navbar({ open, onToggle }: NavbarProps) {
           <Menu.Dropdown>
             <Menu.Item
               icon={<IconUser size={14} />}
-              onClick={() => {
-                logout();
+              onClick={async () => {
+                await fetch('/api/logout');
                 router.replace('/authentication/signin');
               }}
             >

@@ -10,10 +10,6 @@ However, for those who want a bit more guidance on the best way to contribute to
 
 Please follow our [Code of conduct](./code_of_conduct.md) in the context of any contributions made to Poozle.
 
-## Poozle specification
-
-Before you can start contributing, you need to understand [Poozle's data protocol specification](../understanding_poozle/protocol.md).
-
 ## First-time contributors, welcome!
 
 We appreciate first time contributors and we are happy to assist you in getting started. In case of questions, just reach out to us via [email](mailto:hey@poozle.dev) or [Slack](https://join.slack.com/t/poozle-community/shared_invite/zt-1u4mz911h-FeWpOA82wA8kyrz3xg58xQ)!
@@ -39,7 +35,7 @@ If you do not receive an update on the issue from our team, please ping us on [S
 2. If contributing a new extension, check out our [new extensions guide](#new-extensions).
 3. Open a branch for your work.
 4. Code.
-5. For extensions, make sure to increment the extension's version according to our [Semantic Versioning](#semantic-versioning-for-extensions) guidelines.
+5. For extensions, make sure to increment the extension's version.
 
 #### 3. Open a pull request
 
@@ -59,21 +55,9 @@ When we review, we look at:
 
 ### New extensions
 
-It's easy to add your own extension to Poozle! **Since Poozle extensions are encapsulated within Docker containers, you can use any language you like.** Here are some links on how to add extensions. We haven't built the documentation for all languages yet, so don't hesitate to reach out to us if you'd like help developing extensions in other languages.
-
-For extensions, simply head over to our [Typescript EDK](../building_extension/overview.md).
-
-- See [Building new extentions](../building_extension/overview.md) to get started.
+We are working on creating a right documentation for this. You can check public folder to understand how we maintain these extensions.
 
 **Please note that, at no point in time, we will ask you to maintain your extension.** The goal is that the Poozle team and the community helps maintain the extension.
-
-### Semantic versioning for extensions
-
-Changes to extension behavior should always be accompanied by a version bump and a changelog entry. We use [semantic versioning](https://semver.org/) to version changes to extensions. Since extensions are a bit different from APIs, we have our own take on semantic versioning, focusing on maintaining the best user experience of using a extension.
-
-- Major: a version in which a change is made which requires manual intervention (update to config or configured catalog) for an existing connection to continue to succeed, or one in which data that was previously being synced will no longer be synced
-- Minor: a version that introduces user-facing functionality in a backwards compatible manner
-- Patch: a version that introduces backwards compatible bug fixes or performance improvements
 
 ## Contributing to documentation
 

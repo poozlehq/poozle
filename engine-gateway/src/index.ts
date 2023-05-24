@@ -118,11 +118,9 @@ async function main(): Promise<null> {
         const extensionDefinition = account.extensionDefinition;
         const specLink = extensionDefinition.spec;
 
-        console.log(specLink);
         const specResponse = await axios.get(specLink);
         const spec = specResponse.data;
         const specForAuthType = spec.auth_specification[account.authType];
-        console.log(specForAuthType);
 
         const spec64 = Buffer.from(JSON.stringify(specForAuthType)).toString(
           'base64',

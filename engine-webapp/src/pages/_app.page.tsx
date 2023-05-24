@@ -27,7 +27,7 @@ export const MyApp: NextComponentType<
     setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
 
   const client = new ApolloClient({
-    uri: process.env.NEXT_PUBLIC_BASE_SERVER_URL,
+    uri: '/api/graphql',
     cache: new InMemoryCache(),
     credentials: 'include',
   });
