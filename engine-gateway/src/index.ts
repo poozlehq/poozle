@@ -143,7 +143,6 @@ async function main(): Promise<null> {
             extensionDefinition.extensionType === ExtensionType.GRAPHQL
               ? {
                   graphql: {
-                    // TODO (harshith): Remove static URL and move this to ExtensionRouter based
                     endpoint: interpolateString(
                       spec.graphql_endpoint,
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -155,7 +154,6 @@ async function main(): Promise<null> {
                 }
               : {
                   openapi: {
-                    // TODO (harshith): Remove static URL and move this to ExtensionRouter based
                     source: interpolateString(
                       extensionDefinition.source,
                       // eslint-disable-next-line @typescript-eslint/no-explicit-any

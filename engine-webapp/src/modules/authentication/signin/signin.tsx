@@ -5,14 +5,12 @@ import {
   PasswordInput,
   Paper,
   Title,
-  Text,
   Container,
   Button,
   Group,
   Anchor,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 
 import { useLoginUserMutation } from 'queries/generated/graphql';
@@ -51,7 +49,7 @@ export function Signin() {
       },
       context: {
         headers: {
-          type: 'Authentication',
+          type: 'Signin',
         },
       },
       onCompleted: () => {
@@ -70,12 +68,6 @@ export function Signin() {
       <Title align="center" className={styles.title}>
         Welcome back!
       </Title>
-      <Text color="dimmed" size="sm" align="center" className={styles.text}>
-        Do not have an account yet?{' '}
-        <Link href="/authentication/signup" className={styles.link}>
-          Create account
-        </Link>
-      </Text>
 
       <Paper withBorder radius="md" className={styles.paper}>
         <form onSubmit={form.onSubmit(onSubmit)}>

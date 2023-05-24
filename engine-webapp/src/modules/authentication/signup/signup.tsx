@@ -55,8 +55,13 @@ export function Signup(): ReactElement {
           lastname: values.name.split(' ')[1],
         },
       },
+      context: {
+        headers: {
+          type: 'Signup',
+        },
+      },
       onCompleted: () => {
-        router.replace('/home');
+        router.replace('/workspaces');
       },
       onError: (err: Error) => {
         form.setErrors({

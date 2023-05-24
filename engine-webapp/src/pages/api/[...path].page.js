@@ -1,3 +1,4 @@
+/* eslint-disable dot-location */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import Cookies from 'cookies';
@@ -28,7 +29,8 @@ export default (req, res) => {
     // we'll need to intercept the API response.
     // More on that in a bit.
 
-    const isLogin = req.headers['type'] === 'Authentication';
+    const isLogin = req.headers['type'] === 'Signin';
+    const isSignup = req.headers['type'] === 'Signup';
 
     // Get the `auth-token` cookie:
     const cookies = new Cookies(req, res);
@@ -52,7 +54,7 @@ export default (req, res) => {
     // intercept the API's response. It contains the
     // auth token that we want to strip out and set
     // as an HTTP-only cookie.
-    if (isLogin) {
+    if (isLogin || isSignup) {
       proxy.once('proxyRes', interceptLoginResponse);
     }
 
@@ -89,7 +91,13 @@ export default (req, res) => {
         try {
           // Extract the authToken from API's response:
           const response = JSON.parse(apiResponseBody);
-          const user = response.data.login.user;
+          let user;
+          if (isLogin) {
+            user = response.data.login.user;
+          } else {
+            user = response.data.signup.user;
+          }
+
           const authToken = response.data.login.accessToken;
 
           // Set the authToken as an HTTP-only cookie.
@@ -104,9 +112,18 @@ export default (req, res) => {
           // Our response to the client won't contain
           // the actual authToken. This way the auth token
           // never gets exposed to the client.
-          res.status(200).json({ data: { login: { user, accessToken: '' } } });
+          if (isLogin) {
+            res
+              .status(200)
+              .json({ data: { login: { user, accessToken: '' } } });
+          } else {
+            res
+              .status(200)
+              .json({ data: { signup: { user, accessToken: '' } } });
+          }
           resolve();
         } catch (err) {
+          console.log(err);
           reject(err);
         }
       });
