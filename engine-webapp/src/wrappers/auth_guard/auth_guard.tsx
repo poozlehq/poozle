@@ -18,9 +18,14 @@ export function AuthGuard(props: Props): React.ReactElement {
 
   useEffect(() => {
     if (!isLoading && isError) {
-      router.replace('/authentication/signin');
+      logout();
     }
   }, [isLoading, isError]);
+
+  async function logout() {
+    await fetch('/api/logout');
+    router.replace('/authentication/signin');
+  }
 
   if (!isLoading && !isError) {
     return cloneElement(children);

@@ -34,7 +34,7 @@ export function workspaceHandler(logger: Logger) {
 
       await workspace.checkForNamespace();
     } else {
-      workspace = new WorkspaceDocker(body.slug, logger);
+      workspace = new WorkspaceDocker(body.slug, body.workspaceId, logger);
     }
 
     logger.info(`body event ${body.event}`);

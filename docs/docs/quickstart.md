@@ -4,14 +4,7 @@ Follow these 4 steps to run graphQL server with Poozle in your app in 15 minutes
 
 ## Step 1: Get your Poozle instance ready
 
-The easiest and fastest way to get a production ready Poozle instance is with Poozle Cloud.
-
-Sign up for a Poozle Cloud (no credit card required):
-<a href="https://app.poozle.dev/authentication/signup" style={{cursor: 'pointer'}}>
-<img src="https://raw.githubusercontent.com/poozlehq/engine/main/docs/static/signup_cloud.png" alt="Try Nango Cloud" width="120" style={{marginTop: 10+'px'}}/>
-</a>
-
-After signing up, open the [dashboard](https://app.poozle.dev/).
+The easiest and fastest way to get a production ready Poozle instance is with Poozle Docker compose file.
 
 ## Step 2: Configure your API/Integration
 

@@ -20,6 +20,7 @@ export class Workspace extends Base {
         await readDeployment(this.k8sApi, this.namespace, this.slug);
         this.logger.info('Deployment for this workspace is found.');
 
+        // TODO remove this here
         await restartDeployment(this.k8sApi, this.namespace, this.slug);
         this.logger.info('Deployment for this workspace is restarted.');
         return {

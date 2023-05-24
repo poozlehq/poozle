@@ -7,32 +7,22 @@ import { gateway_image } from '../constants/docker';
 export class WorkspaceDocker {
   slug: string;
   docker: Docker;
+  workspaceId: string;
   logger: Logger;
 
-  constructor(slug: string, logger: Logger) {
+  constructor(slug: string, workspaceId: string, logger: Logger) {
     const options = new Options(null, null, true);
     const docker = new Docker(options);
 
     this.docker = docker;
+    this.workspaceId = workspaceId;
     this.slug = slug;
     this.logger = logger;
   }
 
-  async startDelete() {
-    const response = await this.docker.command(
-      `ps --filter "name=${this.slug}"`,
-    );
-    if (response.containersList) {
-      const deleteResponse = await this.docker.command(`rm ${this.slug}`);
-
-      this.logger.info(
-        `Delete gateway container ${this.slug} with ID ${deleteResponse.containerId}`,
-      );
-    }
-
+  async getDeployment() {
     return {
       status: true,
-      error: '',
     };
   }
 
@@ -45,10 +35,10 @@ export class WorkspaceDocker {
       if (!response.containersList) {
         // await this.docker.command(`pull ${gateway_image}`);
         const res = await this.docker.command(
-          `run --name ${this.slug} -d -p 4000:4000 \
-        -e WORKSPACE_ID=${process.env.WORKSPACE_ID} \
+          `run --name ${this.slug} --network=engine_poozle -d \
+        -e WORKSPACE_ID=${this.workspaceId} \
         -e DATABASE_URL=${process.env.DATABASE_URL} \
-        -e JWT_SECRET=${process.env.JWT_SECRET} \
+        -e JWT_SECRET=${process.env.JWT_ACCESS_SECRET} \
         -e REDIS_URL=${process.env.REDIS_URL} --platform linux/amd64 ${gateway_image} `,
         );
         this.logger.info(
@@ -76,6 +66,24 @@ export class WorkspaceDocker {
     };
   }
 
+  async startDelete() {
+    const response = await this.docker.command(
+      `ps --filter "name=${this.slug}"`,
+    );
+    if (response.containersList) {
+      const deleteResponse = await this.docker.command(`rm ${this.slug}`);
+
+      this.logger.info(
+        `Delete gateway container ${this.slug} with ID ${deleteResponse.containerId}`,
+      );
+    }
+
+    return {
+      status: true,
+      error: '',
+    };
+  }
+
   async startRestart() {
     const response = await this.docker.command(
       `ps --filter "name=${this.slug}"`,
@@ -88,12 +96,6 @@ export class WorkspaceDocker {
     return {
       status: true,
       error: '',
-    };
-  }
-
-  async getDeployment() {
-    return {
-      status: true,
     };
   }
 }

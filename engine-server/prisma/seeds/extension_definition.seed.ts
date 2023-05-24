@@ -2,10 +2,8 @@
 /* eslint-disable prettier/prettier */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import * as fs from 'fs';
-import { resolve } from 'path';
-
 import { ExtensionType, PrismaClient, ReleaseStage } from '@prisma/client';
+import axios from 'axios';
 
 const prisma = new PrismaClient();
 
@@ -17,9 +15,12 @@ async function main() {
   });
 
   if (extensionDefinitions.length === 0) {
-    const extensionDefinitions = JSON.parse(
-      fs.readFileSync(resolve('../public/extensions.json'), 'utf8'),
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const extensionDefinitionsResponse: any = await axios.get(
+      'https://raw.githubusercontent.com/poozlehq/engine/main/public/extensions.json',
     );
+
+    const extensionDefinitions = extensionDefinitionsResponse.data;
 
     const extensionDefinitionCreate = Object.keys(extensionDefinitions).map(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
