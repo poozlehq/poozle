@@ -14,7 +14,8 @@
 
       },
       "headers": {
-        "Authorization": "token ${api_key}"
+        "Authorization": "token ${api_key}",
+        "User-Agent": "Poozle"
       }
     },
     "OAuth2": {
