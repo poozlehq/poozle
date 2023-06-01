@@ -1,25 +1,36 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
-
 import type { Config } from './config.interface';
 
-const config: Config = {
+import EmailPassword from 'supertokens-node/recipe/emailpassword';
+import Passwordless from 'supertokens-node/recipe/passwordless';
+import Session from 'supertokens-node/recipe/session';
+
+export const config: Config = {
   nest: {
     port: 3000,
   },
   cors: {
     enabled: true,
   },
-  graphql: {
-    playgroundEnabled: true,
-    debug: true,
-    schemaDestination: 'src/schema.graphql',
-    sortSchema: true,
-  },
-  security: {
-    expiresIn: '30m',
-    refreshIn: '7d',
-    bcryptSaltOrRound: 10,
+  superToken: {
+    appInfo: {
+      appName: 'Poozle',
+      apiDomain: process.env.BACKEND_HOST,
+      websiteDomain: process.env.FRONTEND_HOST,
+      apiBasePath: '/auth',
+      websiteBasePath: '/auth',
+    },
+    connectionURI: process.env.SUPERTOKEN_CONNECTION_URI,
   },
 };
+
+export const recipeList = [
+  Passwordless.init({
+    flowType: 'MAGIC_LINK',
+    contactMethod: 'EMAIL',
+  }),
+  EmailPassword.init(),
+  Session.init(), // initializes session features
+];
 
 export default (): Config => config;

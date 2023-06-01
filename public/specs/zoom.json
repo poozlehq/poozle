@@ -1,9 +1,0 @@
-{
-  "auth_supported": [ "OAuth2" ],
-  "auth_specification": {
-    "OAuth2": {
-      "token_url": "https://zoom.us/oauth/token",
-      "token_request_auth_method": "basic"
-    }
-  }
-}

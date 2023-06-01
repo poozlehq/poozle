@@ -1,0 +1,30 @@
+version: '3'
+
+services:
+  db:
+    image: 'postgres:latest'
+    environment:
+      POSTGRES_USER: poozle 
+      POSTGRES_PASSWORD: poozle 
+      POSTGRES_DB: supertokens
+    ports:
+      - 5432:5432
+    networks:
+      - app_network
+    restart: unless-stopped
+
+  supertokens:
+    image: registry.supertokens.io/supertokens/supertokens-postgresql:5.0
+    depends_on:
+      - db
+    ports:
+      - 3567:3567
+    environment:
+      POSTGRESQL_CONNECTION_URI: "postgresql://poozle:poozle@db:5432/supertokens"
+    networks:
+      - app_network
+    restart: unless-stopped
+
+networks:
+  app_network:
+    driver: bridge

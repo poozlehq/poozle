@@ -1,8 +1,0 @@
-{
-  "auth_supported": [ "OAuth2" ],
-  "auth_specification": {
-    "OAuth2": {
-      "token_url": "https://oauth2.googleapis.com/token"
-    }
-  }
-}

@@ -31,29 +31,13 @@
 
 API Composition is a powerful pattern that enables you to interact with a diverse set of APIs as though they were a unified whole. By eliminating the need for glue code, it streamlines the integration process and provides a clearer understanding of an application's API dependencies. But do you truly understand the APIs your application relies on? Poozle can provide the answer, along with analytics and observability to assess the quality of service your API dependencies offer.
 
-At Poozle, we're committed to an open-source approach to API integration, as we believe it's the only way to accommodate the long tail of API sources while allowing developers to tailor existing extensions to their needs. Our ultimate goal is to enable seamless integration with any API, and we offer extensions that can be implemented in [TypeScript](https://docs.poozle.dev/building_extension/overview) and packaged as Docker images in accordance with the Poozle specification. With this framework, creating new extensions is simple and fast.
+At Poozle, we're committed to an open-source approach to API integration, as we believe it's the only way to accommodate the long tail of API sources while allowing developers to tailor existing integrations to their needs. Our ultimate goal is to enable seamless integration with any API.
 
 Overall, Poozle makes API integration more manageable, efficient, and adaptable, allowing developers to focus on building great applications without being bogged down by integration challenges.
 
-## Product Demo
-
-http://www.youtube.com/watch?v=uGIssARKYec
-
-## Quick start
-
-Poozle Cloud is the fastest and most reliable way to run Poozle. It is a cloud-based API integration platform that allows you to integrate multiple APIs into a single, unified system.
-
-With Poozle Cloud, you can easily connect to various extensions such as Github, JIRA, Shopify etc.
-
-Poozle Cloud provides a scalable and secure platform for API integration, making it easier for users to integrate with different APIs. It also offers features like monitoring and a playground to make discoveries fast.
-
-Sign up for [Poozle Cloud](https://poozle.dev/authentication/signup) and get started in minutes.
-
 ## Contributing
 
-Get started by checking Github issues and creating a Pull Request. An easy way to start contributing is to update an existing extension or create a new extension using Typescript EDK. You can find the code for the existing extension in the [extensions](https://github.com/poozlehq/poozle/tree/main/poozle-integrations/extensions) directory. The Poozle platform is written in NodeJS, and the front end is in React. You can also contribute to our docs and tutorials.
-
-Read the [Contributing guide](https://docs.poozle.dev/).
+Get started by checking Github issues and creating a Pull Request. An easy way to start contributing is to update an existing integration. The Poozle platform is written in Typescript. You can also contribute to our docs and tutorials.
 
 ## Reporting vulnerabilities
 

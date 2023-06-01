@@ -12,13 +12,6 @@ generator dbml {
   provider = "prisma-dbml-generator"
 }
 
-generator nestgraphql {
-  provider = "node node_modules/prisma-nestjs-graphql"
-  // for yarn monorepos
-  // provider = "prisma-nestjs-graphql"
-  output   = "../src/@generated"
-}
-
 model User {
   userId    String      @id @default(cuid())
   createdAt DateTime    @default(now())
@@ -31,46 +24,41 @@ model User {
 }
 
 model Workspace {
-  workspaceId             String                @id @default(uuid())
-  slug                    String                @unique
-  user                    User                  @relation(references: [userId], fields: [userId])
+  workspaceId             String                  @id @default(uuid())
+  slug                    String                  @unique
+  user                    User                    @relation(references: [userId], fields: [userId])
   userId                  String
-  initialSetupComplete    Boolean               @default(false)
-  anonymousDataCollection Boolean               @default(false)
-  ExtensionDefinition     ExtensionDefinition[]
-  ExtensionAccount        ExtensionAccount[]
-  ExtensionAuth           ExtensionAuth[]
+  initialSetupComplete    Boolean                 @default(false)
+  anonymousDataCollection Boolean                 @default(false)
+  IntegrationDefinition   IntegrationDefinition[]
+  IntegrationAccount      IntegrationAccount[]
+  IntegrationOAuthApp     IntegrationOAuthApp[]
   deleted                 DateTime?
-  Gateway                 Gateway[]
 }
 
-model ExtensionDefinition {
-  extensionDefinitionId String             @id @default(uuid())
-  name                  String
-  key                   String
-  version               String
-  spec                  String
-  icon                  String?
-  // This will be endpoint for GRAPHQL and openapi spec link for REST
-  source                String
-  releaseStage          ReleaseStage       @default(ALPHA)
-  extensionType         ExtensionType      @default(GRAPHQL)
-  workspace             Workspace?         @relation(references: [workspaceId], fields: [workspaceId])
-  workspaceId           String?
-  ExtensionAccount      ExtensionAccount[]
-  ExtensionAuth         ExtensionAuth[]
-  deleted               DateTime?
-  createdAt             DateTime           @default(now())
-  updatedAt             DateTime           @updatedAt
+model IntegrationDefinition {
+  integrationDefinitionId String                @id @default(uuid())
+  name                    String
+  key                     String
+  icon                    String?
+  releaseStage            ReleaseStage          @default(ALPHA)
+  integrationType         IntegrationType
+  workspace               Workspace?            @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId             String?
+  IntegrationAccount      IntegrationAccount[]
+  IntegrationOAuthApp     IntegrationOAuthApp[]
+  deleted                 DateTime?
+  createdAt               DateTime              @default(now())
+  updatedAt               DateTime              @updatedAt
 
-  @@unique([extensionDefinitionId, key])
+  @@unique([integrationDefinitionId, key])
 }
 
-model ExtensionAuth {
-  extensionAuthId       String              @id @default(uuid())
-  extensionAuthName     String
-  extensionDefinition   ExtensionDefinition @relation(references: [extensionDefinitionId], fields: [extensionDefinitionId])
-  extensionDefinitionId String
+model IntegrationOAuthApp {
+  integrationOAuthAppId   String                @id @default(uuid())
+  integrationOAuthAppName String
+  integrationDefinition   IntegrationDefinition @relation(references: [integrationDefinitionId], fields: [integrationDefinitionId])
+  integrationDefinitionId String
 
   clientId     String
   clientSecret String
@@ -82,37 +70,23 @@ model ExtensionAuth {
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
-  @@unique([extensionAuthName, workspaceId])
+  @@unique([integrationOAuthAppName, workspaceId])
 }
 
-model ExtensionAccount {
-  extensionAccountId     String              @id @default(uuid())
-  extensionDefinition    ExtensionDefinition @relation(references: [extensionDefinitionId], fields: [extensionDefinitionId])
-  extensionDefinitionId  String
-  extensionConfiguration Json?
-  authType               String
-  workspace              Workspace           @relation(references: [workspaceId], fields: [workspaceId])
-  workspaceId            String
-  name                   String
-  extensionAccountName   String
-  deleted                DateTime?
-  createdAt              DateTime            @default(now())
-  updatedAt              DateTime            @updatedAt
+model IntegrationAccount {
+  integrationAccountId     String                @id @default(uuid())
+  integrationDefinition    IntegrationDefinition @relation(references: [integrationDefinitionId], fields: [integrationDefinitionId])
+  integrationDefinitionId  String
+  integrationConfiguration Json?
+  authType                 String
+  workspace                Workspace             @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId              String
+  integrationAccountName   String
+  deleted                  DateTime?
+  createdAt                DateTime              @default(now())
+  updatedAt                DateTime              @updatedAt
 
-  @@unique([extensionAccountName, workspaceId])
-}
-
-model Gateway {
-  gatewayTokenId String     @id @default(uuid())
-  hiveToken      String
-  workspace      Workspace? @relation(references: [workspaceId], fields: [workspaceId])
-  workspaceId    String?
-}
-
-enum ExtensionType {
-  GRAPHQL
-  REST
-  CUSTOM
+  @@unique([integrationAccountName, workspaceId])
 }
 
 enum ReleaseStage {
@@ -120,4 +94,10 @@ enum ReleaseStage {
   BETA
   GENERALLY_AVAILABLE
   CUSTOM
+}
+
+enum IntegrationType {
+  HRIS
+  MESSAGING
+  CALENDAR
 }

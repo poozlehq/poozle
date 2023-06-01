@@ -3,27 +3,26 @@
 export interface Config {
   nest: NestConfig;
   cors: CorsConfig;
-  graphql: GraphqlConfig;
-  security: SecurityConfig;
+  superToken: SuperTokenConfig;
 }
 
 export interface NestConfig {
   port: number;
 }
 
+export interface AppInfoConfig {
+  appName: string;
+  apiDomain: string;
+  websiteDomain: string;
+  apiBasePath: string;
+  websiteBasePath: string;
+}
+
+export interface SuperTokenConfig {
+  appInfo: AppInfoConfig;
+  connectionURI: string;
+}
+
 export interface CorsConfig {
   enabled: boolean;
-}
-
-export interface GraphqlConfig {
-  playgroundEnabled: boolean;
-  debug: boolean;
-  schemaDestination: string;
-  sortSchema: boolean;
-}
-
-export interface SecurityConfig {
-  expiresIn: string;
-  refreshIn: string;
-  bcryptSaltOrRound: string | number;
 }

@@ -20,41 +20,37 @@ Table Workspace {
   userId String [not null]
   initialSetupComplete Boolean [not null, default: false]
   anonymousDataCollection Boolean [not null, default: false]
-  ExtensionDefinition ExtensionDefinition [not null]
-  ExtensionAccount ExtensionAccount [not null]
-  ExtensionAuth ExtensionAuth [not null]
+  IntegrationDefinition IntegrationDefinition [not null]
+  IntegrationAccount IntegrationAccount [not null]
+  IntegrationOAuthApp IntegrationOAuthApp [not null]
   deleted DateTime
-  Gateway Gateway [not null]
 }
 
-Table ExtensionDefinition {
-  extensionDefinitionId String [pk]
+Table IntegrationDefinition {
+  integrationDefinitionId String [pk]
   name String [not null]
   key String [not null]
-  version String [not null]
-  spec String [not null]
   icon String
-  source String [not null]
   releaseStage ReleaseStage [not null, default: 'ALPHA']
-  extensionType ExtensionType [not null, default: 'GRAPHQL']
+  integrationType IntegrationType [not null]
   workspace Workspace
   workspaceId String
-  ExtensionAccount ExtensionAccount [not null]
-  ExtensionAuth ExtensionAuth [not null]
+  IntegrationAccount IntegrationAccount [not null]
+  IntegrationOAuthApp IntegrationOAuthApp [not null]
   deleted DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
 
   indexes {
-    (extensionDefinitionId, key) [unique]
+    (integrationDefinitionId, key) [unique]
   }
 }
 
-Table ExtensionAuth {
-  extensionAuthId String [pk]
-  extensionAuthName String [not null]
-  extensionDefinition ExtensionDefinition [not null]
-  extensionDefinitionId String [not null]
+Table IntegrationOAuthApp {
+  integrationOAuthAppId String [pk]
+  integrationOAuthAppName String [not null]
+  integrationDefinition IntegrationDefinition [not null]
+  integrationDefinitionId String [not null]
   clientId String [not null]
   clientSecret String [not null]
   scopes String [not null]
@@ -65,40 +61,26 @@ Table ExtensionAuth {
   updatedAt DateTime [not null]
 
   indexes {
-    (extensionAuthName, workspaceId) [unique]
+    (integrationOAuthAppName, workspaceId) [unique]
   }
 }
 
-Table ExtensionAccount {
-  extensionAccountId String [pk]
-  extensionDefinition ExtensionDefinition [not null]
-  extensionDefinitionId String [not null]
-  extensionConfiguration Json
+Table IntegrationAccount {
+  integrationAccountId String [pk]
+  integrationDefinition IntegrationDefinition [not null]
+  integrationDefinitionId String [not null]
+  integrationConfiguration Json
   authType String [not null]
   workspace Workspace [not null]
   workspaceId String [not null]
-  name String [not null]
-  extensionAccountName String [not null]
+  integrationAccountName String [not null]
   deleted DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
 
   indexes {
-    (extensionAccountName, workspaceId) [unique]
+    (integrationAccountName, workspaceId) [unique]
   }
-}
-
-Table Gateway {
-  gatewayTokenId String [pk]
-  hiveToken String [not null]
-  workspace Workspace
-  workspaceId String
-}
-
-Enum ExtensionType {
-  GRAPHQL
-  REST
-  CUSTOM
 }
 
 Enum ReleaseStage {
@@ -108,16 +90,20 @@ Enum ReleaseStage {
   CUSTOM
 }
 
+Enum IntegrationType {
+  HRIS
+  MESSAGING
+  CALENDAR
+}
+
 Ref: Workspace.userId > User.userId
 
-Ref: ExtensionDefinition.workspaceId > Workspace.workspaceId
+Ref: IntegrationDefinition.workspaceId > Workspace.workspaceId
 
-Ref: ExtensionAuth.extensionDefinitionId > ExtensionDefinition.extensionDefinitionId
+Ref: IntegrationOAuthApp.integrationDefinitionId > IntegrationDefinition.integrationDefinitionId
 
-Ref: ExtensionAuth.workspaceId > Workspace.workspaceId
+Ref: IntegrationOAuthApp.workspaceId > Workspace.workspaceId
 
-Ref: ExtensionAccount.extensionDefinitionId > ExtensionDefinition.extensionDefinitionId
+Ref: IntegrationAccount.integrationDefinitionId > IntegrationDefinition.integrationDefinitionId
 
-Ref: ExtensionAccount.workspaceId > Workspace.workspaceId
-
-Ref: Gateway.workspaceId > Workspace.workspaceId
+Ref: IntegrationAccount.workspaceId > Workspace.workspaceId

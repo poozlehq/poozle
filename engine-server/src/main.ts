@@ -6,10 +6,11 @@ import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import * as cookieParser from 'cookie-parser';
 import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
+import supertokens from 'supertokens-node';
 
 import type { CorsConfig, NestConfig } from 'common/configs/config.interface';
 
-import { ExtensionAccountService } from 'modules/extension_account/extension_account.service';
+import { SupertokensExceptionFilter } from 'modules/auth/auth.filter';
 
 import { AppModule } from './modules/app/app.module';
 
@@ -26,7 +27,10 @@ async function bootstrap() {
 
   // Prisma Client Exception Filter for unhandled exceptions
   const { httpAdapter } = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
+  app.useGlobalFilters(
+    new PrismaClientExceptionFilter(httpAdapter),
+    new SupertokensExceptionFilter(),
+  );
 
   const configService = app.get(ConfigService);
   const nestConfig = configService.get<NestConfig>('nest');
@@ -36,13 +40,10 @@ async function bootstrap() {
   if (corsConfig.enabled) {
     app.enableCors({
       origin: configService.get('FRONTEND_HOST').split(',') || '',
+      allowedHeaders: ['content-type', ...supertokens.getAllCORSHeaders()],
       credentials: true,
     });
   }
-
-  /** Check and check gateway and extension deployments */
-  const extensionAccountService = app.get(ExtensionAccountService);
-  extensionAccountService.initServer();
 
   await app.listen(process.env.PORT || nestConfig.port || 3000);
 }
