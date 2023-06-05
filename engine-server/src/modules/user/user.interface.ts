@@ -6,12 +6,8 @@ export class UpdateUserInput {
   lastname?: string;
 }
 
-export class BaseInformationResponse {
-  status: boolean;
-}
+export class CreateUserInput {
+  firstname?: string;
 
-export class BaseInformationRequest {
-  companyName: string;
-
-  organisationSize: string;
+  lastname?: string;
 }

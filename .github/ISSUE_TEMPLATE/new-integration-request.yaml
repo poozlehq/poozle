@@ -1,12 +1,12 @@
-name: New Extension Request
-description: Use this to request a new extension
-title: "New Extension Request: "
-labels: [extension, new-extension]
+name: New Integration Request
+description: Use this to request a new integration
+title: "New Integration Request: "
+labels: [integration, new-integration]
 body:
   - type: input
-    id: extension-name
+    id: integration-name
     attributes:
-      label: Extension Name
+      label: Integration Name
       description: What is the service or database you want to integrate
     validations:
       required: true

@@ -8,7 +8,7 @@ export class AppController {
   constructor() {}
 
   @Get('health')
-  health() {
+  async health() {
     return { version: process.env.ENGINE_VERSION || '' };
   }
 }

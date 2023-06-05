@@ -13,11 +13,9 @@ generator dbml {
 }
 
 model User {
-  userId    String      @id @default(cuid())
+  userId    String      @id @unique
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
-  email     String      @unique
-  password  String
   firstname String?
   lastname  String?
   Workspace Workspace[]

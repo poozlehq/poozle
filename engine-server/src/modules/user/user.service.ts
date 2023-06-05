@@ -1,18 +1,31 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Injectable } from '@nestjs/common';
+import { User } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 
-import { UpdateUserInput } from './user.interface';
+import { CreateUserInput, UpdateUserInput } from './user.interface';
 
 @Injectable()
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  updateUser(userId: string, newUserData: UpdateUserInput) {
+  async updateUser(
+    userId: string,
+    newUserData: UpdateUserInput,
+  ): Promise<User> {
     return this.prisma.user.update({
       data: newUserData,
       where: {
+        userId,
+      },
+    });
+  }
+
+  async createUser(userId: string, userData: CreateUserInput): Promise<User> {
+    return this.prisma.user.create({
+      data: {
+        ...userData,
         userId,
       },
     });

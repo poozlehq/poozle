@@ -1,9 +1,10 @@
 /* eslint-disable dot-location */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { ValidationPipe } from '@nestjs/common';
+import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as cookieParser from 'cookie-parser';
 import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
 import supertokens from 'supertokens-node';
@@ -44,6 +45,21 @@ async function bootstrap() {
       credentials: true,
     });
   }
+
+  // Versioning
+  app.enableVersioning({
+    type: VersioningType.URI,
+  });
+
+  // Swagger
+  const config = new DocumentBuilder()
+    .setTitle('Poozle')
+    .setDescription('The poozle API description')
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.PORT || nestConfig.port || 3000);
 }
