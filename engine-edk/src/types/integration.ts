@@ -1,6 +1,9 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 export interface AuthSpecificationGeneric {
   inputSpecification?: {
     type: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     properties: Record<string, any>;
   };
   headers?: Record<string, string>;
@@ -26,12 +29,12 @@ export interface CheckResponseType {
 export type CheckResponse = Promise<CheckResponseType>;
 
 export type AuthSupported = string[];
-export type Specification = {
+export interface Specification {
   authSupported: AuthSupported;
   authSpecification: Record<string, AuthSpecificationGeneric | AuthSpecificationOAuth>;
-  supportedFilters: Array<string>;
-  supportedSortBy: Array<string>;
-};
+  supportedFilters: string[];
+  supportedSortBy: string[];
+}
 export type SpecificationResponse = Promise<Specification>;
 
 export type AuthHeaderResponse = Promise<Record<string, string | number | boolean>>;
@@ -39,11 +42,13 @@ export type AuthHeaderResponse = Promise<Record<string, string | number | boolea
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Spec = Record<string, any>;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type RunResponse = Promise<Record<string, any>>;
 
 export interface Params {
   pathParams?: Record<string, string | number | boolean>;
   queryParams?: Record<string, string | number | boolean>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   requestBody?: Record<string, any>;
   // For proxy requests
   proxy?: boolean;

@@ -1,4 +1,7 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import { AxiosHeaders } from 'axios';
+
 import { Config, Params } from 'types/integration';
 
 export class BasePath {

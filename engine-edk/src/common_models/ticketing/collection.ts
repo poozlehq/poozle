@@ -1,3 +1,5 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 export const CollectionSchema = {
   type: 'object',
   properties: {

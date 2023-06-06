@@ -1,3 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 const extractDefaults = (schema: any): any => {
   if (typeof schema !== 'object' || schema === null) {
     return undefined;
