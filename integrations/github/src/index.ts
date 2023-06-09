@@ -8,6 +8,10 @@ import spec from './spec';
 
 import { GithubTicketModel } from 'models/ticket/ticket.model';
 import { GithubCollectionModel } from 'models/collection/collection.model';
+import { GithubCommentModel } from 'models/comment/comment.model';
+import { GithubTagModel } from 'models/tag/tag.model';
+import { GithubTeamModel } from 'models/team/team.model';
+import { GithubUserModel } from 'models/user/user.model';
 
 class GithubIntegration extends BaseIntegration {
   async spec(): SpecificationResponse {
@@ -19,7 +23,15 @@ class GithubIntegration extends BaseIntegration {
   }
 
   models() {
-    return [new GenericProxyModel(), new GithubTicketModel(), new GithubCollectionModel()];
+    return [
+      new GenericProxyModel(),
+      new GithubTicketModel(),
+      new GithubCollectionModel(),
+      new GithubCommentModel(),
+      new GithubTagModel(),
+      new GithubTeamModel(),
+      new GithubUserModel(),
+    ];
   }
 }
 
@@ -34,11 +46,11 @@ export async function main(command: string, allParams: any) {
 
 // main('SPEC', {});
 main('RUN', {
-  path: '/collections',
+  path: '/tickets',
   method: 'GET',
   params: {
     queryParams: { raw: true },
-    pathParams: { collection_id: 'engine' },
+    pathParams: { collection_id: 'engine'},
   },
   config: {
     api_key: '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',
