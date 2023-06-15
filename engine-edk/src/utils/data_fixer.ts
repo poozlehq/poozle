@@ -40,3 +40,18 @@ export const convertToModelKeys = (data: any, defaultModel: any, raw_data: any, 
 
   return finalData;
 };
+
+export const convertToRequestBody = (body: any, mappings: any) => {
+  const convertedBody: any = {};
+
+  for (const originalKey in mappings) {
+    const transformedKey = mappings[originalKey];
+    const value = body[originalKey];
+
+    if (value !== undefined) {
+      convertedBody[transformedKey] = value;
+    }
+  }
+
+  return convertedBody;
+};
