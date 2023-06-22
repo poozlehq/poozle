@@ -1,6 +1,7 @@
 import {
   BaseIntegration,
   CheckResponse,
+  Config,
   GenericProxyModel,
   SpecificationResponse,
 } from '@poozle/engine-edk';
@@ -12,14 +13,32 @@ import { GithubCommentModel } from 'models/comment/comment.model';
 import { GithubTagModel } from 'models/tag/tag.model';
 import { GithubTeamModel } from 'models/team/team.model';
 import { GithubUserModel } from 'models/user/user.model';
+import axios from 'axios';
 
 class GithubIntegration extends BaseIntegration {
   async spec(): SpecificationResponse {
     return spec;
   }
 
-  async check(_config: any): CheckResponse {
-    return { status: false, error: '' };
+  async check(config: Config): CheckResponse {
+    try {
+      await axios({
+        url: `https://api.github.com/user`,
+        headers: {
+          Authorization: `Bearer ${config.api_key}`,
+        },
+      });
+
+      return {
+        status: true,
+        error: '',
+      };
+    } catch (e) {
+      return {
+        status: false,
+        error: e.message,
+      };
+    }
   }
 
   models() {

@@ -1109,8 +1109,12 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@poozle/engine-edk@file:../../engine-edk/edk":
-  version "0.0.0"
+"@poozle/engine-edk@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@poozle/engine-edk/-/engine-edk-0.2.2.tgz#c621b09dcf867a8ebf38013d768dcf15a1bdda98"
+  integrity sha512-0Ve5f353wJqFl3TvAFg2Y/wJb5jZUwPM0f435xIMn0dai4TopWoH6nNOxDw76nOW45S/w1LVJ8JPArhadwYy8g==
+  dependencies:
+    axios "^1.3.2"
 
 "@rollup/plugin-babel@6.0.2":
   version "6.0.2"
@@ -1369,7 +1373,7 @@ axe-core@^4.6.2:
   resolved "https://registry.yarnpkg.com/axe-core/-/axe-core-4.7.2.tgz#040a7342b20765cb18bb50b628394c21bccc17a0"
   integrity sha512-zIURGIS1E1Q4pcrMjp+nnEh+16G56eG/MUllJH8yEvw7asDo7Ac9uhC9KIH5jzpITueEZolfYglnCGIuSBz39g==
 
-axios@^1.4.0:
+axios@^1.3.2, axios@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.4.0.tgz#38a7bf1224cd308de271146038b551d725f0be1f"
   integrity sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==

@@ -4,12 +4,15 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { PrismaModule, PrismaService } from 'nestjs-prisma';
 
+import { IntegrationDefinitionModule } from 'modules/integration_definition /integration_definition.module';
+
 import { IntegrationAccountController } from './integration_account.controller';
+import { IntegrationAccountService } from './integration_account.service';
 
 @Module({
-  imports: [PrismaModule, HttpModule],
+  imports: [PrismaModule, HttpModule, IntegrationDefinitionModule],
   controllers: [IntegrationAccountController],
-  providers: [PrismaService],
-  exports: [],
+  providers: [PrismaService, IntegrationAccountService],
+  exports: [IntegrationAccountService],
 })
 export class IntegrationAccountModule {}

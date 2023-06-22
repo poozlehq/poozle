@@ -3,10 +3,9 @@
 import { Injectable } from '@nestjs/common';
 import { Specification } from '@poozle/engine-edk';
 import { PrismaService } from 'nestjs-prisma';
+import { getIntegrationSpec } from 'shared/integration_run_utils';
 
 import { IntegrationDefinition } from '@@generated/integrationDefinition.entity';
-
-import { loadRemoteModule } from 'common/remoteModule';
 
 import {
   IntegrationDefinitionRequestIdBody,
@@ -53,12 +52,6 @@ export class IntegrationDefinitionService {
       integrationDefinitionRequestIdBody,
     );
 
-    const integrationSource = await loadRemoteModule(
-      integrationDefinition.sourceUrl,
-    );
-
-    const spec = integrationSource.main('');
-
-    return {};
+    return await getIntegrationSpec(integrationDefinition.sourceUrl);
   }
 }
