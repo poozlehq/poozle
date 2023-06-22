@@ -40,26 +40,7 @@ export async function main(command: string, allParams: any) {
 
   const response = await integration.runCommand(command, allParams);
 
-  console.log(response);
   return response;
 }
 
-// main('SPEC', {});
-main('RUN', {
-  path: '/tickets',
-  method: 'PUT',
-  params: {
-    queryParams: { raw: true },
-    pathParams: { collection_id: 'DBT-Denorm', ticket_id: '20'},
-    requestBody: {
-      subject: 'testing the extension 20',
-      description: 'updating from integration ticket 20',
-      assignees: ['saimanoj'],
-      status: 'closed'}
-  },
-  config: {
-    api_key: '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',
-    authType: 'Api Key',
-    org: 'poozlehq',
-  },
-});
+export default main;
