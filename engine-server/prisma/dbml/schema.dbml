@@ -30,6 +30,7 @@ Table IntegrationDefinition {
   key String [not null]
   icon String
   releaseStage ReleaseStage [not null, default: 'ALPHA']
+  sourceUrl String [not null]
   integrationType IntegrationType [not null]
   workspace Workspace
   workspaceId String

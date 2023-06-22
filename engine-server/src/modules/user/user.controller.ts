@@ -2,8 +2,9 @@
 
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { User } from '@prisma/client';
 import { SessionContainer } from 'supertokens-node/recipe/session';
+
+import { User } from '@@generated/user.entity';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
 import { Session } from 'modules/auth/session.decorator';
@@ -31,6 +32,7 @@ export class UserController {
   }
 
   @Get()
+  @UseGuards(new AuthGuard())
   async getUser() {
     return { succes: true };
   }
