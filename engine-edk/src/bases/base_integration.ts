@@ -100,6 +100,9 @@ export class BaseIntegration implements BaseIntegrationInterface {
       case 'SPEC':
         return await this.spec();
 
+      case 'CHECK':
+        return await this.check(allParams.config);
+
       case 'HEADERS':
         return await this.authHeaders(allParams.config);
 

@@ -10,6 +10,11 @@ export default {
             title: 'Api Key',
             description: 'Enter the API Key',
           },
+          org: {
+            type: 'string',
+            title: 'Organisation',
+            description: 'Enter the organisation identifier',
+          },
         },
       },
       headers: {

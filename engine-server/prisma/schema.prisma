@@ -12,6 +12,20 @@ generator dbml {
   provider = "prisma-dbml-generator"
 }
 
+generator nestjsDto {
+  provider                        = "prisma-generator-nestjs-dto"
+  output                          = "../src/@@generated"
+  outputToNestJsResourceStructure = "false"
+  exportRelationModifierClasses   = "true"
+  reExport                        = "false"
+  createDtoPrefix                 = "Create"
+  updateDtoPrefix                 = "Update"
+  dtoSuffix                       = "Dto"
+  entityPrefix                    = ""
+  entitySuffix                    = ""
+  fileNamingStyle                 = "camel"
+}
+
 model User {
   userId    String      @id @unique
   createdAt DateTime    @default(now())
@@ -40,6 +54,7 @@ model IntegrationDefinition {
   key                     String
   icon                    String?
   releaseStage            ReleaseStage          @default(ALPHA)
+  sourceUrl               String
   integrationType         IntegrationType
   workspace               Workspace?            @relation(references: [workspaceId], fields: [workspaceId])
   workspaceId             String?
