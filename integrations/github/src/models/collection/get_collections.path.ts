@@ -5,9 +5,16 @@ const BASE_URL = 'https://api.github.com';
 
 export class GetCollectionsPath extends BasePath {
   async run(_method: string, headers: AxiosHeaders, params: Params, config: Config): Promise<any> {
+    const page =
+      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+
     const response = await axios({
       url: `${BASE_URL}/orgs/${config.org}/repos`,
       headers,
+      params: {
+        per_page: params.queryParams?.limit,
+        page,
+      },
     });
 
     return {
@@ -26,7 +33,14 @@ export class GetCollectionsPath extends BasePath {
           params.queryParams?.raw ? true : false,
         ),
       ),
-      meta: {},
+      meta: {
+        items_on_page: params.queryParams?.limit,
+        cursors: {
+          before: page > 1 ? page - 1 : 1,
+          current: page,
+          next: page + 1,
+        },
+      },
     };
   }
 }

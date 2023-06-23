@@ -1,13 +1,24 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { IsBoolean, IsObject, IsOptional, IsString } from 'class-validator';
+
 import { PaginationParams } from './pagination.interface';
 
-export interface QueryParams extends PaginationParams {
-  sort: {
-    by: string;
-  };
+export class SortObject {
+  @IsString()
+  by: string;
+}
 
-  raw: boolean;
+export class QueryParams extends PaginationParams {
+  @IsOptional()
+  @IsObject()
+  sort?: SortObject;
 
-  filter: Record<string, string>;
+  @IsBoolean()
+  @IsOptional()
+  raw?: boolean;
+
+  @IsObject()
+  @IsOptional()
+  filter?: Record<string, string>;
 }

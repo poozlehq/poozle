@@ -2,5 +2,5 @@
 
 export interface HeadersType {
   integrationAccountName?: string;
-  workspaceId?: string;
+  workspaceId: string;
 }

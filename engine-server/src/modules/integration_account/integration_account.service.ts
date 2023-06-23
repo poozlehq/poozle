@@ -6,11 +6,12 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CheckResponse, Config } from '@poozle/engine-edk';
+import { IntegrationType } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 import { checkIntegrationCredentials } from 'shared/integration_run_utils';
 
 import { IntegrationDefinitionService } from 'modules/integration_definition /integration_definition.service';
-import { IntegrationType } from '@prisma/client';
+
 import { IntegrationAccountRequestBody } from './integration_account.interface';
 
 @Injectable()

@@ -1,7 +1,13 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-export interface PaginationParams {
+import { IsNumber, IsOptional, IsString } from 'class-validator';
+
+export class PaginationParams {
+  @IsString()
+  @IsOptional()
   cursor?: string;
 
-  limit: number;
+  @IsNumber()
+  @IsOptional()
+  limit?: number;
 }

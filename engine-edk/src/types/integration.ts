@@ -47,7 +47,7 @@ export type RunResponse = Promise<Record<string, any>>;
 
 export interface Params {
   pathParams?: Record<string, string | number | boolean>;
-  queryParams?: Record<string, string | number | boolean>;
+  queryParams: Record<string, string | number | boolean>;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   requestBody?: Record<string, any>;
   // For proxy requests

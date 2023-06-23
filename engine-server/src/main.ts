@@ -20,7 +20,12 @@ async function bootstrap() {
   app.use(cookieParser());
 
   // Validation
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
+    }),
+  );
 
   // enable shutdown hook
   const prismaService: PrismaService = app.get(PrismaService);

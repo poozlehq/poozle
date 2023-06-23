@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Controller, Get, Query, Headers, Param } from '@nestjs/common';
+import { Controller, Get, Headers, Param, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { runIntegrationCommand } from 'shared/integration_run_utils';
 
@@ -14,28 +14,28 @@ import { IntegrationAccountService } from 'modules/integration_account/integrati
 
 import {
   PathParams,
-  PathParamsWithUserId,
-  UserParams,
-  TicketingUserResponse,
-  TicketingUsersResponse,
-} from './users.interface';
+  PathParamsWithTicketId,
+  TicketsQueryParams,
+  TicketingTicketResponse,
+  TicketingTicketsResponse,
+} from './tickets.interface';
 
 @Controller({
   version: '1',
   path: 'ticketing',
 })
 @ApiTags('Ticketing')
-export class UsersController {
+export class TicketsController {
   constructor(private integrationAccountService: IntegrationAccountService) {}
 
-  async getUsersForAccount(
+  async getTicketsForAccount(
     integrationAccount: IntegrationAccount,
-    queryParams: QueryParams,
+    queryParams: QueryParams = defaultQueryParams,
     pathParams: Record<string, string>,
   ) {
     return await runIntegrationCommand(
       integrationAccount.integrationDefinition?.sourceUrl,
-      '/users',
+      '/tickets',
       'GET',
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       integrationAccount.integrationConfiguration as any,
@@ -47,20 +47,20 @@ export class UsersController {
     );
   }
 
-  @Get(':collection_id/users/:user_id')
-  async getUserId(
-    @Query() query: UserParams = defaultQueryParams,
+  @Get(':collection_id/tickets/:ticket_id')
+  async getTicketId(
+    @Query() query: TicketsQueryParams = defaultQueryParams,
     @Param()
-    params: PathParamsWithUserId,
+    params: PathParamsWithTicketId,
     @Headers() headers: HeadersType,
-  ): Promise<TicketingUserResponse> {
+  ): Promise<TicketingTicketResponse> {
     const integrationAccount =
       (await this.integrationAccountService.getIntegrationAccount({
         workspaceId: headers.workspaceId,
         integrationAccountName: headers.integrationAccountName,
       })) as IntegrationAccount;
 
-    const userResponse = await this.getUsersForAccount(
+    const ticketResponse = await this.getTicketsForAccount(
       integrationAccount,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },
@@ -68,23 +68,23 @@ export class UsersController {
       params as any,
     );
 
-    return userResponse;
+    return ticketResponse;
   }
 
-  @Get(':collection_id/users')
-  async getUsers(
-    @Query() query: UserParams = defaultQueryParams,
+  @Get(':collection_id/tickets')
+  async getTickets(
+    @Query() query: TicketsQueryParams = defaultQueryParams,
     @Param()
     params: PathParams,
     @Headers() headers: HeadersType,
-  ): Promise<TicketingUsersResponse> {
+  ): Promise<TicketingTicketsResponse> {
     const integrationAccount =
       (await this.integrationAccountService.getIntegrationAccount({
         workspaceId: headers.workspaceId,
         integrationAccountName: headers.integrationAccountName,
       })) as IntegrationAccount;
 
-    const userResponse = await this.getUsersForAccount(
+    const ticketsResponse = await this.getTicketsForAccount(
       integrationAccount,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },
@@ -92,6 +92,6 @@ export class UsersController {
       params as any,
     );
 
-    return userResponse as TicketingUsersResponse;
+    return ticketsResponse;
   }
 }
