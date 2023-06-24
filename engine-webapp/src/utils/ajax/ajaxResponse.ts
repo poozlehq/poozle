@@ -36,17 +36,14 @@ export function onSuccess<T, E>({
 }: OnSuccessParams<T, E>) {
   const { disableEvents, onSuccess } = config;
 
-  /** Transform Payload Keys into camelCase */
-  const data = normalize(rawData, 'camel');
-
   if (onSuccess) {
-    onSuccess(data as string | T, headers);
+    onSuccess(rawData as string | T, headers);
   }
 
-  resolve(data);
+  resolve(rawData);
 
   if (!isServer() && !disableEvents) {
-    triggerSuccess(data, config);
+    triggerSuccess(rawData, config);
   }
 }
 

@@ -15,6 +15,8 @@ import { IntegrationDefinitionService } from 'modules/integration_definition /in
 import {
   IntegrationAccountRequestBody,
   IntegrationAccountRequestBodyWithIntegrationType,
+  IntegrationAccountRequestIdBody,
+  UpdateIntegrationAccountBody,
 } from './integration_account.interface';
 
 @Injectable()
@@ -72,6 +74,20 @@ export class IntegrationAccountService {
     }
 
     throw new BadRequestException('Not a valid credentials');
+  }
+
+  async getIntegrationAccountWithId(
+    integrationAccountRequestIdBody: IntegrationAccountRequestIdBody,
+  ) {
+    return await this.prismaService.integrationAccount.findUnique({
+      where: {
+        integrationAccountId:
+          integrationAccountRequestIdBody.integrationAccountId,
+      },
+      include: {
+        integrationDefinition: true,
+      },
+    });
   }
 
   async getIntegrationAccount(
@@ -143,6 +159,18 @@ export class IntegrationAccountService {
       },
       include: {
         integrationDefinition: true,
+      },
+    });
+  }
+
+  async updateIntegrationAccount(
+    integrationAccountId: string,
+    updateIntegrationAccountBody: UpdateIntegrationAccountBody,
+  ) {
+    return await this.prismaService.integrationAccount.update({
+      data: updateIntegrationAccountBody,
+      where: {
+        integrationAccountId,
       },
     });
   }

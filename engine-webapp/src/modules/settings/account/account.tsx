@@ -2,11 +2,9 @@
 
 import { Button, Group, Paper, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { notifications } from '@mantine/notifications';
 import * as React from 'react';
-import { UserContext } from 'store/user_context';
 
-import { useUpdateUserMutation } from 'queries/generated/graphql';
+import { UserContext } from 'store/user_context';
 
 import styles from './account.module.scss';
 
@@ -26,24 +24,9 @@ export function Account() {
         /^[a-zA-Z]+ [a-zA-Z]+$/.test(value) ? null : 'Invalid name',
     },
   });
-  const [updateUser, { loading }] = useUpdateUserMutation();
 
   const onSubmit = (values: Values) => {
-    updateUser({
-      variables: {
-        updateUser: {
-          firstname: values.name.split(' ')[0],
-          lastname: values.name.split(' ')[1],
-        },
-      },
-      onCompleted: () => {
-        notifications.show({
-          title: 'Success',
-          color: 'green',
-          message: 'Updated successfully',
-        });
-      },
-    });
+    console.log(values);
   };
 
   return (
@@ -62,9 +45,7 @@ export function Account() {
           />
 
           <Group position="right" mt="xl">
-            <Button type="submit" loading={loading}>
-              Update
-            </Button>
+            <Button type="submit">Update</Button>
           </Group>
         </form>
       </Group>

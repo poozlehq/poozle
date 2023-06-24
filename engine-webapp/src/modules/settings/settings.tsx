@@ -2,9 +2,9 @@
 
 import { Button, Container, Group, UnstyledButton } from '@mantine/core';
 import * as React from 'react';
+import { SessionAuth } from 'supertokens-auth-react/recipe/session';
 
 import { SideBarLayout } from 'layouts/sidebar_layout';
-import { AuthGuard } from 'wrappers/auth_guard';
 import { GetUserData } from 'wrappers/get_user_data';
 
 import { Header } from 'components';
@@ -68,10 +68,10 @@ export function Settings() {
 
 Settings.getLayout = function getLayout(page: React.ReactElement) {
   return (
-    <AuthGuard>
+    <SessionAuth>
       <GetUserData>
         <SideBarLayout>{page}</SideBarLayout>
       </GetUserData>
-    </AuthGuard>
+    </SessionAuth>
   );
 };

@@ -1,12 +1,12 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IntegrationAccount } from 'queries/generated/graphql';
+import { IntegrationAccount } from '@@generated/integrationAccount.entity';
 
 import {
   OAuthInputSpec,
   getProperties,
   getPropertyName,
-} from '../new_integrations/new_integration_form_utils';
+} from '../new_integration/new_integration_form_utils';
 
 export function getInitialValues(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -16,13 +16,13 @@ export function getInitialValues(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialValues: Record<string, any> = {};
 
-  Object.keys(spec.auth_specification).forEach((key) => {
+  Object.keys(spec.authSpecification).forEach((key) => {
     initialValues[getPropertyName(key)] = {};
 
     const specProperties = getProperties(
       key === 'OAuth2'
         ? OAuthInputSpec
-        : spec.auth_specification[key].input_specification,
+        : spec.authSpecification[key].inputSpecification,
     );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

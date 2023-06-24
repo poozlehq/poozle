@@ -2,11 +2,12 @@
 
 import { cloneElement } from 'react';
 import * as React from 'react';
-import { UserContext } from 'store/user_context';
 
 import { useGetUserQuery } from 'services/user/get_user';
 
 import { Loader } from 'components';
+
+import { UserContext } from 'store/user_context';
 
 interface Props {
   children: React.ReactElement;
@@ -15,6 +16,7 @@ interface Props {
 export function GetUserData(props: Props): React.ReactElement {
   const { children } = props;
   const { data, error: isError, isLoading } = useGetUserQuery();
+
   if (!isLoading && !isError) {
     return (
       <UserContext.Provider value={data}>

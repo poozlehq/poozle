@@ -2,12 +2,12 @@
 
 import { Container, Paper } from '@mantine/core';
 import { useRouter } from 'next/router';
-
-import { useGetIntegrationAccountQuery } from 'queries/generated/graphql';
+import { SessionAuth } from 'supertokens-auth-react/recipe/session';
 
 import { SideBarLayout } from 'layouts/sidebar_layout';
-import { AuthGuard } from 'wrappers/auth_guard';
 import { GetUserData } from 'wrappers/get_user_data';
+
+import { useGetIntegrationAccountQuery } from 'services/integration_account';
 
 import { Header, Loader } from 'components';
 
@@ -19,9 +19,11 @@ export function UpdateIntegration() {
     query: { integrationAccountId },
   } = useRouter();
 
-  const { data, loading } = useGetIntegrationAccountQuery({
-    variables: { integrationAccountId: integrationAccountId as string },
-  });
+  const { data: integrationAccount, isLoading } = useGetIntegrationAccountQuery(
+    {
+      integrationAccountId: integrationAccountId as string,
+    },
+  );
 
   return (
     <>
@@ -29,12 +31,12 @@ export function UpdateIntegration() {
 
       <Container mt="lg">
         <Paper mt="xl" className={styles.container}>
-          {loading ? (
+          {isLoading ? (
             <Loader />
           ) : (
             <UpdateIntegrationForm
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              integrationAccount={data.getIntegrationAccount as any}
+              integrationAccount={integrationAccount as any}
             />
           )}
         </Paper>
@@ -45,10 +47,10 @@ export function UpdateIntegration() {
 
 UpdateIntegration.getLayout = function getLayout(page: React.ReactElement) {
   return (
-    <AuthGuard>
+    <SessionAuth>
       <GetUserData>
         <SideBarLayout>{page}</SideBarLayout>
       </GetUserData>
-    </AuthGuard>
+    </SessionAuth>
   );
 };

@@ -7,7 +7,7 @@ import { XHRErrorResponse, ajaxGet } from 'utils';
 /**
  * Query Key for Get user.
  */
-export const GetIntegrationDefinition = 'getIntegrationDefinition';
+export const GetIntegrationDefinitions = 'getIntegrationDefinitions';
 
 interface IntegrationDefinitionsParams {
   workspaceId: string;
@@ -28,7 +28,7 @@ export function useGetIntegrationDefinitionsQuery(
   queryParams: IntegrationDefinitionsParams,
 ): UseQueryResult<IntegrationDefinition[], XHRErrorResponse> {
   return useQuery(
-    [GetIntegrationDefinition],
+    [GetIntegrationDefinitions],
     () => getIntegrationDefinitions(queryParams),
     {
       notifyOnChangeProps: 'tracked',

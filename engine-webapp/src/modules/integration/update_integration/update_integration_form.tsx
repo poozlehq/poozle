@@ -1,6 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Alert, Button, Group, Select, TextInput } from '@mantine/core';
+import { IntegrationAccount } from '@@generated/integrationAccount.entity';
+import { Alert, Button, Group, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconAlertCircle } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
@@ -8,47 +9,44 @@ import * as React from 'react';
 
 import {
   useCheckCredentialsMutation,
-  useCreateIntegrationAccountMutation,
+  useUpdateIntegrationAccountMutation,
 } from 'services/integration_account';
 import {
   AuthSpecificationGeneric,
   Specification,
   useGetIntegrationDefinitionSpecQuery,
-} from 'services/integration_definition/get_spec_for_integration_definition';
+} from 'services/integration_definition';
 
 import { Loader } from 'components';
 
-import styles from './new_integration_form.module.scss';
+import styles from './update_integration_form.module.scss';
+import { getInitialValues } from './update_integration_form_utils';
 import {
   OAuthInputSpec,
-  getInitialValues,
   getProperties,
   getPropertyName,
-} from './new_integration_form_utils';
+} from '../new_integration/new_integration_form_utils';
 
-interface NewIntegrationFormProps {
-  integrationDefinitionId: string;
-  onComplete?: () => void;
+interface UpdateIntegrationFormProps {
+  integrationAccount: IntegrationAccount;
 }
 
 interface FormProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   spec: Specification;
   workspaceId: string;
-  onComplete?: () => void;
-  integrationDefinitionId: string;
+  integrationAccount: IntegrationAccount;
 }
 
-export function Form({
-  spec,
-  workspaceId,
-  integrationDefinitionId,
-  onComplete,
-}: FormProps) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type Values = Record<string, any>;
+
+export function Form({ spec, workspaceId, integrationAccount }: FormProps) {
   const form = useForm({
-    initialValues: getInitialValues(spec),
+    initialValues: getInitialValues(spec, integrationAccount),
   });
   const [errorMessage, setErrorMessage] = React.useState(undefined);
+
   const { mutate: checkCredentials, isLoading: checkIsLoading } =
     useCheckCredentialsMutation({
       onSuccess: (data) => {
@@ -60,10 +58,10 @@ export function Form({
         }
       },
     });
-  const { mutate: createIntegrationAccount, isLoading: createIsLoading } =
-    useCreateIntegrationAccountMutation({
+
+  const { mutate: updateIntegrationAccount, isLoading: createIsLoading } =
+    useUpdateIntegrationAccountMutation({
       onSuccess: () => {
-        onComplete();
         form.reset();
       },
       onError: (err) => {
@@ -71,31 +69,27 @@ export function Form({
       },
     });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onSubmit = (values: any) => {
-    createIntegrationAccount({
-      integrationDefinitionId,
-      workspaceId,
+  const onSubmit = (values: Values) => {
+    updateIntegrationAccount({
       config: values[getPropertyName(values.authType)],
       authType: values.authType,
       integrationAccountName: values.integrationAccountName,
+      integrationAccountId: integrationAccount.integrationAccountId,
     });
   };
 
-  const properties = form.values.authType
-    ? getProperties(
-        form.values.authType === 'OAuth2'
-          ? OAuthInputSpec
-          : (
-              spec.authSpecification[
-                form.values.authType
-              ] as AuthSpecificationGeneric
-            ).inputSpecification,
-      )
-    : [];
+  const properties = getProperties(
+    integrationAccount.authType === 'OAuth2'
+      ? OAuthInputSpec
+      : (
+          spec.authSpecification[
+            form.values.authType
+          ] as AuthSpecificationGeneric
+        ).inputSpecification,
+  );
 
   return (
-    <Group p="md" pt={0} className={styles.formContainer}>
+    <Group p="md" className={styles.formContainer}>
       <form
         className={styles.form}
         onSubmit={form.onSubmit((values) => {
@@ -103,7 +97,7 @@ export function Form({
 
           checkCredentials({
             workspaceId: workspaceId as string,
-            integrationDefinitionId,
+            integrationDefinitionId: integrationAccount.integrationDefinitionId,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             config: values[getPropertyName(authType)],
             authType,
@@ -112,31 +106,21 @@ export function Form({
       >
         <TextInput
           pb="md"
+          disabled={checkIsLoading || createIsLoading}
+          description="This is used as an unique identifier"
           label="Integration account name"
           placeholder="Enter integration account name"
-          disabled={checkIsLoading || createIsLoading}
           {...form.getInputProps('integrationAccountName')}
         />
-
-        <Select
-          pb="md"
-          data={spec.authSupported}
-          label="Choose authentication type"
-          placeholder="Choose authentication type"
-          disabled={checkIsLoading || createIsLoading}
-          {...form.getInputProps('authType')}
-        />
-
         {properties.map((property) => (
           <TextInput
             key={property.key}
             pb="md"
-            label={property.title}
-            placeholder={`Enter ${property.title}`}
             disabled={checkIsLoading || createIsLoading}
-            {...form.getInputProps(
-              `${getPropertyName(form.values.authType)}.${property.key}`,
-            )}
+            label={property.title}
+            description={property.description}
+            placeholder={`Enter ${property.title}`}
+            {...form.getInputProps(property.key)}
           />
         ))}
 
@@ -150,9 +134,10 @@ export function Form({
             {<>{errorMessage}</>}
           </Alert>
         )}
+
         <Group pt="xl" position="right">
-          <Button type="submit" loading={createIsLoading || checkIsLoading}>
-            Create
+          <Button type="submit" loading={checkIsLoading || createIsLoading}>
+            Update
           </Button>
         </Group>
       </form>
@@ -160,10 +145,9 @@ export function Form({
   );
 }
 
-export function NewIntegrationForm({
-  integrationDefinitionId,
-  onComplete,
-}: NewIntegrationFormProps) {
+export function UpdateIntegrationForm({
+  integrationAccount,
+}: UpdateIntegrationFormProps) {
   const {
     query: { workspaceId },
   } = useRouter();
@@ -172,7 +156,7 @@ export function NewIntegrationForm({
     isLoading,
     error,
   } = useGetIntegrationDefinitionSpecQuery({
-    integrationDefinitionId,
+    integrationDefinitionId: integrationAccount.integrationDefinitionId,
     workspaceId: workspaceId as string,
   });
 
@@ -191,16 +175,21 @@ export function NewIntegrationForm({
     );
   }
 
-  if (isLoading) {
+  if (isLoading || !integrationDefinitionSpec) {
     return <Loader />;
   }
 
   return (
-    <Form
-      spec={integrationDefinitionSpec}
-      workspaceId={workspaceId as string}
-      onComplete={onComplete}
-      integrationDefinitionId={integrationDefinitionId}
-    />
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <Title order={6}>Update the integration configuration</Title>
+      </div>
+
+      <Form
+        spec={integrationDefinitionSpec}
+        integrationAccount={integrationAccount}
+        workspaceId={workspaceId as string}
+      />
+    </div>
   );
 }

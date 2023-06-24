@@ -14,7 +14,7 @@ export function WorkspaceHome() {
 
   React.useEffect(() => {
     if (!isLoading && !isError) {
-      router.replace(`/workspaces/${data.workspace[0].workspaceId}`);
+      router.replace(`/workspaces/${data.Workspace[0].workspaceId}`);
     }
   }, [isLoading, isError]);
 

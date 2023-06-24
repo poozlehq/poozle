@@ -9,7 +9,7 @@ import { SessionAuth } from 'supertokens-auth-react/recipe/session';
 import { SideBarLayout } from 'layouts/sidebar_layout';
 import { GetUserData } from 'wrappers/get_user_data';
 
-import { useGetIntegrationAccounts } from 'services/integration_account/get_integration_accounts';
+import { useGetIntegrationAccounts } from 'services/integration_account';
 
 import { IntegrationIcon, Header, Loader, Table } from 'components';
 

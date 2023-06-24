@@ -1,7 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 // TODO (harshith): Set current types for spec
-
 export const OAuthInputSpec = {
   type: 'object',
   properties: {
@@ -48,13 +47,13 @@ export function getInitialValues(spec: any) {
   const initialValues: Record<string, any> = {};
 
   Object.keys(spec.authSpecification).forEach((key) => {
-    initialValues[getPropertyName(key)] = {};
-
     const specProperties = getProperties(
       key === 'OAuth2'
         ? OAuthInputSpec
         : spec.authSpecification[key].inputSpecification,
     );
+
+    initialValues[getPropertyName(key)] = {};
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     specProperties.forEach((property: any) => {

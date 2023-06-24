@@ -86,9 +86,9 @@ function NavbarLink({
 }
 
 const LINK_DATA = [
-  { icon: IconHome2, label: 'Home', routeKey: '/home' },
+  // { icon: IconHome2, label: 'Home', routeKey: '/home' },
   { icon: IconApps, label: 'Integrations', routeKey: '/integrations' },
-  { icon: IconKey, label: 'OAuth', routeKey: '/o_auth' },
+  // { icon: IconKey, label: 'OAuth', routeKey: '/o_auth' },
   { icon: IconSettings, label: 'Settings', routeKey: '/settings' },
 ];
 
@@ -102,7 +102,7 @@ export function Navbar({ open, onToggle }: NavbarProps) {
   const {
     query: { workspaceId },
   } = router;
-  const { firstname, workspace: workspaces } = React.useContext(UserContext);
+  const { firstname, Workspace: workspaces } = React.useContext(UserContext);
   const workspace = workspaces.find(
     (workspace) => workspace.workspaceId === workspaceId,
   );
@@ -133,7 +133,7 @@ export function Navbar({ open, onToggle }: NavbarProps) {
                   <div className={styles.flexContainer}>
                     <Title order={6}>{firstname}</Title>
                     <Text size="xs" color="gray">
-                      {workspace.slug}
+                      {workspace?.slug}
                     </Text>
                   </div>
                 )}

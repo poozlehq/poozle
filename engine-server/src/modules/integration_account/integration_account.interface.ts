@@ -4,6 +4,11 @@ import { Config } from '@poozle/engine-edk';
 import { IntegrationType } from '@prisma/client';
 import { IsObject, IsString } from 'class-validator';
 
+export class IntegrationAccountRequestIdBody {
+  @IsString()
+  integrationAccountId: string;
+}
+
 export class IntegrationAccountRequestBody {
   @IsString()
   integrationAccountName: string;
@@ -30,6 +35,9 @@ export class IntegrationCheckBody {
 
   @IsString()
   authType: string;
+
+  @IsString()
+  workspaceId: string;
 }
 
 export class CreateIntegrationAccountBody {
@@ -44,6 +52,17 @@ export class CreateIntegrationAccountBody {
 
   @IsString()
   workspaceId: string;
+
+  @IsObject()
+  config: Config;
+}
+
+export class UpdateIntegrationAccountBody {
+  @IsString()
+  integrationAccountName: string;
+
+  @IsString()
+  authType: string;
 
   @IsObject()
   config: Config;
