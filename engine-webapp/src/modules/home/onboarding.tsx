@@ -3,12 +3,12 @@
 import { Container } from '@mantine/core';
 import * as React from 'react';
 
-import { FirstExtension } from './first_extension';
+import { FirstIntegration } from './first_integration';
 
 export function Onboarding() {
   return (
     <Container mt="xl">
-      <FirstExtension />
+      <FirstIntegration />
     </Container>
   );
 }

@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CheckResponse } from '@poozle/engine-edk';
 
@@ -8,6 +8,7 @@ import { IntegrationAccount } from '@@generated/integrationAccount.entity';
 
 import {
   CreateIntegrationAccountBody,
+  IntegrationAccountsRequestBody,
   IntegrationCheckBody,
 } from './integration_account.interface';
 import { IntegrationAccountService } from './integration_account.service';
@@ -21,14 +22,27 @@ export class IntegrationAccountController {
   constructor(private integrationAccountService: IntegrationAccountService) {}
 
   @Post('check')
-  async getSpecForIntegrationDefinition(
+  async checkCredentialsForIntegrationAccount(
     @Body()
     integrationCheckBody: IntegrationCheckBody,
+    @Query()
+    workspaceIdParams: IntegrationAccountsRequestBody,
   ): CheckResponse {
     return await this.integrationAccountService.checkForIntegrationCredentails(
       integrationCheckBody.integrationDefinitionId,
       integrationCheckBody.config,
       integrationCheckBody.authType,
+      workspaceIdParams.workspaceId,
+    );
+  }
+
+  @Get()
+  async getIntegrationAccounts(
+    @Query()
+    integrationAccountsRequestBody: IntegrationAccountsRequestBody,
+  ): Promise<IntegrationAccount[]> {
+    return await this.integrationAccountService.getIntegrationAccountsForWorkspace(
+      integrationAccountsRequestBody.workspaceId,
     );
   }
 

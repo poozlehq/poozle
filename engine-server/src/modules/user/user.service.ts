@@ -22,6 +22,17 @@ export class UserService {
     });
   }
 
+  async getUser(userId: string) {
+    return await this.prisma.user.findUnique({
+      where: {
+        userId,
+      },
+      include: {
+        Workspace: true,
+      },
+    });
+  }
+
   async createUser(userId: string, userData: CreateUserInput): Promise<User> {
     return this.prisma.user.create({
       data: {

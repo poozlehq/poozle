@@ -2,9 +2,18 @@
 
 import { Config } from '@poozle/engine-edk';
 import { IntegrationType } from '@prisma/client';
+import { IsObject, IsString } from 'class-validator';
 
-export interface IntegrationAccountRequestBody {
+export class IntegrationAccountRequestBody {
+  @IsString()
   integrationAccountName: string;
+
+  @IsString()
+  workspaceId: string;
+}
+
+export class IntegrationAccountsRequestBody {
+  @IsString()
   workspaceId: string;
 }
 
@@ -13,16 +22,29 @@ export interface IntegrationAccountRequestBodyWithIntegrationType
   integrationType: IntegrationType;
 }
 
-export interface IntegrationCheckBody {
+export class IntegrationCheckBody {
+  @IsString()
   integrationDefinitionId: string;
+
   config: Config;
+
+  @IsString()
   authType: string;
 }
 
-export interface CreateIntegrationAccountBody {
+export class CreateIntegrationAccountBody {
+  @IsString()
   integrationDefinitionId: string;
+
+  @IsString()
   integrationAccountName: string;
+
+  @IsString()
   authType: string;
+
+  @IsString()
   workspaceId: string;
+
+  @IsObject()
   config: Config;
 }

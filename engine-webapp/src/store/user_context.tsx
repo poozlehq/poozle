@@ -13,7 +13,8 @@ export interface User {
   firstname: string;
   lastname: string;
   email: string;
-  Workspace: Workspace[];
+  userId: string;
+  workspace: Workspace[];
 }
 
 export const UserContext = createContext<User>(undefined);

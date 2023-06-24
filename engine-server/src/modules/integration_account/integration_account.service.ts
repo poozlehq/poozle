@@ -28,11 +28,15 @@ export class IntegrationAccountService {
     integrationDefinitionId: string,
     config: Config,
     authType: string,
+    workspaceId: string,
   ): CheckResponse {
     const integrationDefinition =
-      await this.integrationDefinitionService.getIntegrationDefinitionWithId({
-        integrationDefinitionId,
-      });
+      await this.integrationDefinitionService.getIntegrationDefinitionWithId(
+        {
+          integrationDefinitionId,
+        },
+        workspaceId,
+      );
 
     return await checkIntegrationCredentials(
       integrationDefinition.sourceUrl,
@@ -52,6 +56,7 @@ export class IntegrationAccountService {
       integrationDefinitionId,
       config,
       authType,
+      workspaceId,
     );
 
     if (status) {
@@ -110,7 +115,7 @@ export class IntegrationAccountService {
       });
 
     if (integrationAccounts.length === 0) {
-      return new NotFoundException('No integration found');
+      throw new NotFoundException('No integration found');
     }
 
     return integrationAccounts[0];

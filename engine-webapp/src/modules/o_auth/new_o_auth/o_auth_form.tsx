@@ -18,7 +18,7 @@ interface Formvalues {
   clientId?: string;
   clientSecret?: string;
   scopes?: string;
-  extensionAuthName?: string;
+  integrationAuthName?: string;
 }
 
 export function OAuthAppForm({
@@ -31,14 +31,14 @@ export function OAuthAppForm({
     initialValues: {
       clientId: initialValues.clientId || '',
       clientSecret: initialValues.clientSecret || '',
-      extensionAuthName: initialValues.extensionAuthName || '',
+      integrationAuthName: initialValues.integrationAuthName || '',
       scopes: initialValues.scopes || '',
     },
 
     validate: {
       clientId: (value) => (value ? null : 'Invalid Client Id'),
       clientSecret: (value) => (value ? null : 'Invalid Client Secret'),
-      extensionAuthName: (value) => (value ? null : 'Invalid Name'),
+      integrationAuthName: (value) => (value ? null : 'Invalid Name'),
       scopes: (value) => (value ? null : 'Invalid scopes'),
     },
   });
@@ -48,10 +48,10 @@ export function OAuthAppForm({
       <form className={styles.form} onSubmit={form.onSubmit(onSubmit)}>
         <TextInput
           pb="md"
-          label="Extension auth name"
-          placeholder="Enter extension auth name"
+          label="Integration auth name"
+          placeholder="Enter integration auth name"
           description="This will be used in the app to fetch redirect URL"
-          {...form.getInputProps('extensionAuthName')}
+          {...form.getInputProps('integrationAuthName')}
         />
         <TextInput
           pb="md"

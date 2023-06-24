@@ -3,6 +3,8 @@
 import { AppShell } from '@mantine/core';
 import * as React from 'react';
 
+import { GetUserData } from 'wrappers/get_user_data';
+
 import { Navbar } from './navbar';
 
 interface SideBarLayoutProps {
@@ -16,10 +18,12 @@ export function SideBarLayout({ children }: SideBarLayoutProps) {
     <AppShell
       fixed
       navbar={
-        <Navbar
-          open={navbarOpen}
-          onToggle={() => setNavbarOpen((value) => !value)}
-        />
+        <GetUserData>
+          <Navbar
+            open={navbarOpen}
+            onToggle={() => setNavbarOpen((value) => !value)}
+          />
+        </GetUserData>
       }
       header={null}
       styles={(theme) => ({

@@ -8,6 +8,7 @@ Table User {
   updatedAt DateTime [not null]
   firstname String
   lastname String
+  email String [not null]
   Workspace Workspace [not null]
 }
 

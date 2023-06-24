@@ -1,12 +1,15 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Specification } from '@poozle/engine-edk';
+import { IsString } from 'class-validator';
 
-export interface IntegrationDefinitionRequestWorkspaceIdBody {
+export class IntegrationDefinitionRequestWorkspaceIdBody {
+  @IsString()
   workspaceId: string;
 }
 
-export interface IntegrationDefinitionRequestIdBody {
+export class IntegrationDefinitionRequestIdBody {
+  @IsString()
   integrationDefinitionId: string;
 }
 

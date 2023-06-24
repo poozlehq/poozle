@@ -10,4 +10,6 @@ export class CreateUserInput {
   firstname?: string;
 
   lastname?: string;
+
+  email: string;
 }

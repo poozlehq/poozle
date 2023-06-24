@@ -6,8 +6,8 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 
 import {
-  useCreateExtensionAuthMutation,
-  useExtensionDefinitionsQuery,
+  useCreateIntegrationAuthMutation,
+  useIntegrationDefinitionsQuery,
 } from 'queries/generated/graphql';
 
 import { SideBarLayout } from 'layouts/sidebar_layout';
@@ -24,22 +24,23 @@ export function NewOAuthApp() {
   const {
     query: { workspaceId },
   } = router;
-  const { data } = useExtensionDefinitionsQuery({
+  const { data } = useIntegrationDefinitionsQuery({
     variables: {
       workspaceId: workspaceId as string,
     },
   });
-  const [selectedExtensionDefinition, setExtensionDefinition] =
+  const [selectedIntegrationDefinition, setIntegrationDefinition] =
     React.useState(undefined);
-  const [createExtensionAuth, { loading }] = useCreateExtensionAuthMutation();
+  const [createIntegrationAuth, { loading }] =
+    useCreateIntegrationAuthMutation();
 
   const getSelectData = () => {
     if (data) {
-      return data.getExtensionDefinitionsByWorkspace.map(
-        (extensionDefinition) => ({
-          value: extensionDefinition.extensionDefinitionId,
-          label: extensionDefinition.name,
-          image: extensionDefinition.icon,
+      return data.getIntegrationDefinitionsByWorkspace.map(
+        (integrationDefinition) => ({
+          value: integrationDefinition.integrationDefinitionId,
+          label: integrationDefinition.name,
+          image: integrationDefinition.icon,
         }),
       );
     }
@@ -59,26 +60,26 @@ export function NewOAuthApp() {
 
           <Group p="md" className={styles.group}>
             <Select
-              label="Extension type"
+              label="Integration type"
               data={getSelectData()}
               searchable
-              onChange={(value: string) => setExtensionDefinition(value)}
+              onChange={(value: string) => setIntegrationDefinition(value)}
               className={styles.integrationSelect}
             ></Select>
           </Group>
 
           <Group>
-            {selectedExtensionDefinition && (
+            {selectedIntegrationDefinition && (
               <OAuthAppForm
                 workspaceId={workspaceId as string}
                 update={false}
                 initialValues={{}}
                 onSubmit={(values) => {
-                  createExtensionAuth({
+                  createIntegrationAuth({
                     variables: {
-                      extensionCreateBody: {
-                        extensionDefinitionId: selectedExtensionDefinition,
-                        extensionAuthName: values.extensionAuthName,
+                      integrationCreateBody: {
+                        integrationDefinitionId: selectedIntegrationDefinition,
+                        integrationAuthName: values.integrationAuthName,
                         clientId: values.clientId,
                         clientSecret: values.clientSecret,
                         scopes: values.scopes,

@@ -1,30 +1,5 @@
 @import 'src/components/typography.scss';
 
-@import 'graphiql/graphiql.css';
-
-// This is used to override the grapiql playground theme
-body .graphiql-container {
-  --color-primary: 215, 100%, 45%;
-  --color-secondary: 242, 51%, 61%;
-  --color-tertiary: 188, 100%, 36%;
-  --color-info: 208, 100%, 46%;
-  --color-success: 158, 60%, 42%;
-  --color-warning: 36, 100%, 41%;
-  --color-error: 13, 93%, 58%;
-  --color-neutral: 220, 4%, 59%;
-  --color-base: 109, 28%, 100%;
-
-  width: 100%;
-  height: 100%;
-
-  // Remove settings button
-  .graphiql-sidebar-section {
-    button:last-child {
-      display: none;
-    }
-  }
-}
-
 html,
 body {
   padding: 0;

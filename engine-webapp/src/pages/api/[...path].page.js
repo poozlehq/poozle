@@ -1,7 +1,6 @@
 /* eslint-disable dot-location */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import Cookies from 'cookies';
 import httpProxy from 'http-proxy';
 
 // Get the actual API_URL as an environment variable. For real
@@ -29,34 +28,11 @@ export default (req, res) => {
     // we'll need to intercept the API response.
     // More on that in a bit.
 
-    const isLogin = req.headers['type'] === 'Signin';
-    const isSignup = req.headers['type'] === 'Signup';
-
-    // Get the `auth-token` cookie:
-    const cookies = new Cookies(req, res);
-    const authToken = cookies.get('auth-token');
-
     // Rewrite the URL: strip out the leading '/api'.
     // For example, '/api/login' would become '/login'.
     // ️You might want to adjust this depending
     // on the base path of your API.
     req.url = req.url.replace(/^\/api/, '');
-
-    // Don't forward cookies to the API:
-    req.headers.cookie = '';
-
-    // Set auth-token header from cookie:
-    if (authToken) {
-      req.headers['Authorization'] = `Bearer ${authToken}`;
-    }
-
-    // In case the request is for login, we need to
-    // intercept the API's response. It contains the
-    // auth token that we want to strip out and set
-    // as an HTTP-only cookie.
-    if (isLogin || isSignup) {
-      proxy.once('proxyRes', interceptLoginResponse);
-    }
 
     // Don't forget to handle errors:
     proxy.once('error', reject);
@@ -68,65 +44,6 @@ export default (req, res) => {
       // Don't autoRewrite because we manually rewrite
       // the URL in the route handler.
       autoRewrite: false,
-
-      // In case we're dealing with a login request,
-      // we need to tell http-proxy that we'll handle
-      // the client-response ourselves (since we don't
-      // want to pass along the auth token).
-      selfHandleResponse: isLogin,
     });
-
-    function interceptLoginResponse(proxyRes, req, res) {
-      // Read the API's response body from
-      // the stream:
-      let apiResponseBody = '';
-      proxyRes.on('data', (chunk) => {
-        apiResponseBody += chunk;
-      });
-
-      // Once we've read the entire API
-      // response body, we're ready to
-      // handle it:
-      proxyRes.on('end', () => {
-        try {
-          // Extract the authToken from API's response:
-          const response = JSON.parse(apiResponseBody);
-          let user;
-          if (isLogin) {
-            user = response.data.login.user;
-          } else {
-            user = response.data.signup.user;
-          }
-
-          const authToken = response.data.login.accessToken;
-
-          // Set the authToken as an HTTP-only cookie.
-          // We'll also set the SameSite attribute to
-          // 'lax' for some additional CSRF protection.
-          const cookies = new Cookies(req, res);
-          cookies.set('auth-token', authToken, {
-            httpOnly: true,
-            sameSite: 'strict',
-          });
-
-          // Our response to the client won't contain
-          // the actual authToken. This way the auth token
-          // never gets exposed to the client.
-          if (isLogin) {
-            res
-              .status(200)
-              .json({ data: { login: { user, accessToken: '' } } });
-          } else {
-            res
-              .status(200)
-              .json({ data: { signup: { user, accessToken: '' } } });
-          }
-          resolve();
-        } catch (err) {
-          console.log(err);
-          reject(err);
-        }
-      });
-    }
   });
 };

@@ -36,21 +36,38 @@ export class IntegrationDefinitionService {
 
   async getIntegrationDefinitionWithId(
     integrationDefinitionRequestIdBody: IntegrationDefinitionRequestIdBody,
+    workspaceId: string,
   ) {
-    return this.prisma.integrationDefinition.findUnique({
-      where: {
-        integrationDefinitionId:
-          integrationDefinitionRequestIdBody.integrationDefinitionId,
-      },
-    });
+    const integrationDefinitions =
+      await this.prisma.integrationDefinition.findMany({
+        where: {
+          OR: [
+            {
+              integrationDefinitionId:
+                integrationDefinitionRequestIdBody.integrationDefinitionId,
+              workspaceId,
+            },
+            {
+              integrationDefinitionId:
+                integrationDefinitionRequestIdBody.integrationDefinitionId,
+              workspaceId: null,
+            },
+          ],
+        },
+      });
+
+    return integrationDefinitions[0];
   }
 
   async getSpecForIntegrationDefinition(
     integrationDefinitionRequestIdBody: IntegrationDefinitionRequestIdBody,
+    workspaceId: string,
   ): Promise<Specification> {
     const integrationDefinition = await this.getIntegrationDefinitionWithId(
       integrationDefinitionRequestIdBody,
+      workspaceId,
     );
+    console.log(integrationDefinition);
 
     return await getIntegrationSpec(integrationDefinition.sourceUrl);
   }

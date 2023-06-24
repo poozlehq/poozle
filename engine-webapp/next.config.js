@@ -16,4 +16,8 @@ module.exports = {
   },
   swcMinify: true,
   pageExtensions: ['page.tsx', 'page.js'],
+  publicRuntimeConfig: {
+    // Will be available on both server and client
+    baseHost: process.env.BASE_HOST,
+  },
 };
