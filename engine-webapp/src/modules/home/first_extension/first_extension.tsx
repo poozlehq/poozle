@@ -3,12 +3,9 @@ import { Group, Text, Title } from '@mantine/core';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
-import {
-  useIntegrationDefinitionsQuery,
-  useUpdateWorkspaceMutation,
-} from 'queries/generated/graphql';
+import { NewIntegrationForm } from 'modules/integration/new_integration/new_integration_form';
 
-import { NewIntegrationForm } from 'modules/integration/new_integrations/new_integration_form';
+import { useGetIntegrationDefinitionsQuery } from 'services/integration_definition';
 
 import { Select } from 'components';
 
@@ -18,24 +15,19 @@ export function FirstIntegration() {
   const {
     query: { workspaceId },
   } = useRouter();
-  const { data } = useIntegrationDefinitionsQuery({
-    variables: {
-      workspaceId: workspaceId as string,
-    },
+  const { data: integrationDefinitions } = useGetIntegrationDefinitionsQuery({
+    workspaceId: workspaceId as string,
   });
-  const [updateWorkspace] = useUpdateWorkspaceMutation();
 
   const [selectedIntegrationDefinition, setIntegrationDefinition] =
     React.useState(undefined);
   const getSelectData = () => {
-    if (data) {
-      return data.getIntegrationDefinitionsByWorkspace.map(
-        (integrationDefinition) => ({
-          value: integrationDefinition.integrationDefinitionId,
-          label: integrationDefinition.name,
-          image: integrationDefinition.icon,
-        }),
-      );
+    if (integrationDefinitions) {
+      return integrationDefinitions.map((integrationDefinition) => ({
+        value: integrationDefinition.integrationDefinitionId,
+        label: integrationDefinition.name,
+        image: integrationDefinition.icon,
+      }));
     }
 
     return [];
@@ -72,14 +64,8 @@ export function FirstIntegration() {
             <NewIntegrationForm
               integrationDefinitionId={selectedIntegrationDefinition}
               onComplete={() => {
-                updateWorkspace({
-                  variables: {
-                    workspaceUpdateBody: {
-                      workspaceId: workspaceId as string,
-                      initialSetupComplete: true,
-                    },
-                  },
-                });
+                // TODO (harshith): Change the status in workspace
+                console.log('completed');
               }}
             />
           )}
