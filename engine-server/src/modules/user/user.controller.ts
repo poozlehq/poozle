@@ -33,7 +33,10 @@ export class UserController {
 
   @Get()
   @UseGuards(new AuthGuard())
-  async getUser() {
-    return { succes: true };
+  async getUser(@Session() session: SessionContainer): Promise<User> {
+    const userId = session.getUserId();
+    const user = await this.userService.getUser(userId);
+
+    return user;
   }
 }

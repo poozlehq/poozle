@@ -2,22 +2,23 @@
 
 import { Controller, Get, Headers, Param, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { runIntegrationCommand } from 'shared/integration_run_utils';
+import { IntegrationType } from '@prisma/client';
+import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount.entity';
 
 import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 import { HeadersType } from 'common/interfaces/headers.interface';
-import { QueryParams } from 'common/interfaces/query.interface';
 
 import { IntegrationAccountService } from 'modules/integration_account/integration_account.service';
 
 import {
   PathParams,
   PathParamsWithTicketId,
-  TicketsQueryParams,
+  ListTicketsQueryParams,
   TicketingTicketResponse,
   TicketingTicketsResponse,
+  GetTicketQueryParams,
 } from './tickets.interface';
 
 @Controller({
@@ -28,40 +29,26 @@ import {
 export class TicketsController {
   constructor(private integrationAccountService: IntegrationAccountService) {}
 
-  async getTicketsForAccount(
-    integrationAccount: IntegrationAccount,
-    queryParams: QueryParams = defaultQueryParams,
-    pathParams: Record<string, string>,
-  ) {
-    return await runIntegrationCommand(
-      integrationAccount.integrationDefinition?.sourceUrl,
-      '/tickets',
-      'GET',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      integrationAccount.integrationConfiguration as any,
-      integrationAccount.authType,
-      {
-        queryParams,
-        pathParams,
-      },
-    );
-  }
-
   @Get(':collection_id/tickets/:ticket_id')
   async getTicketId(
-    @Query() query: TicketsQueryParams = defaultQueryParams,
+    @Query() query: GetTicketQueryParams = defaultQueryParams,
     @Param()
     params: PathParamsWithTicketId,
     @Headers() headers: HeadersType,
   ): Promise<TicketingTicketResponse> {
     const integrationAccount =
-      (await this.integrationAccountService.getIntegrationAccount({
-        workspaceId: headers.workspaceId,
-        integrationAccountName: headers.integrationAccountName,
-      })) as IntegrationAccount;
+      (await this.integrationAccountService.getIntegrationAccountWithIntegrationType(
+        {
+          workspaceId: headers.workspaceId,
+          integrationAccountName: headers.integrationAccountName,
+          integrationType: IntegrationType.TICKETING,
+        },
+      )) as IntegrationAccount;
 
-    const ticketResponse = await this.getTicketsForAccount(
+    const ticketResponse = await getDataFromAccount(
       integrationAccount,
+      '/tickets',
+      Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,19 +60,24 @@ export class TicketsController {
 
   @Get(':collection_id/tickets')
   async getTickets(
-    @Query() query: TicketsQueryParams = defaultQueryParams,
+    @Query() query: ListTicketsQueryParams = defaultQueryParams,
     @Param()
     params: PathParams,
     @Headers() headers: HeadersType,
   ): Promise<TicketingTicketsResponse> {
     const integrationAccount =
-      (await this.integrationAccountService.getIntegrationAccount({
-        workspaceId: headers.workspaceId,
-        integrationAccountName: headers.integrationAccountName,
-      })) as IntegrationAccount;
+      (await this.integrationAccountService.getIntegrationAccountWithIntegrationType(
+        {
+          workspaceId: headers.workspaceId,
+          integrationAccountName: headers.integrationAccountName,
+          integrationType: IntegrationType.TICKETING,
+        },
+      )) as IntegrationAccount;
 
-    const ticketsResponse = await this.getTicketsForAccount(
+    const ticketsResponse = await getDataFromAccount(
       integrationAccount,
+      '/tickets',
+      Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

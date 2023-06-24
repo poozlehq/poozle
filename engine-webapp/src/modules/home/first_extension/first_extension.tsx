@@ -4,36 +4,36 @@ import { useRouter } from 'next/router';
 import * as React from 'react';
 
 import {
-  useExtensionDefinitionsQuery,
+  useIntegrationDefinitionsQuery,
   useUpdateWorkspaceMutation,
 } from 'queries/generated/graphql';
 
-import { NewExtensionForm } from 'modules/extension/new_extensions/new_extension_form';
+import { NewIntegrationForm } from 'modules/integration/new_integrations/new_integration_form';
 
 import { Select } from 'components';
 
-import styles from './first_extension.module.scss';
+import styles from './first_integration.module.scss';
 
-export function FirstExtension() {
+export function FirstIntegration() {
   const {
     query: { workspaceId },
   } = useRouter();
-  const { data } = useExtensionDefinitionsQuery({
+  const { data } = useIntegrationDefinitionsQuery({
     variables: {
       workspaceId: workspaceId as string,
     },
   });
   const [updateWorkspace] = useUpdateWorkspaceMutation();
 
-  const [selectedExtensionDefinition, setExtensionDefinition] =
+  const [selectedIntegrationDefinition, setIntegrationDefinition] =
     React.useState(undefined);
   const getSelectData = () => {
     if (data) {
-      return data.getExtensionDefinitionsByWorkspace.map(
-        (extensionDefinition) => ({
-          value: extensionDefinition.extensionDefinitionId,
-          label: extensionDefinition.name,
-          image: extensionDefinition.icon,
+      return data.getIntegrationDefinitionsByWorkspace.map(
+        (integrationDefinition) => ({
+          value: integrationDefinition.integrationDefinitionId,
+          label: integrationDefinition.name,
+          image: integrationDefinition.icon,
         }),
       );
     }
@@ -46,31 +46,31 @@ export function FirstExtension() {
       <Group mt="xl" spacing={1}>
         <Title order={1}>👋 Welcome to Poozle! </Title>
         <Text>
-          Set your first extension. Extension represents the API you want to
-          talk to. You will connect a new extension. Common examples of
-          extension are Shopify, Stripe, Github, etc.
+          Set your first integration. Integration represents the API you want to
+          talk to. You will connect a new integration. Common examples of
+          integration are Shopify, Stripe, Github, etc.
         </Text>
       </Group>
 
       <div className={styles.container}>
         <div className={styles.header}>
-          <Title order={6}>Let's connect your first extension</Title>
+          <Title order={6}>Let's connect your first integration</Title>
         </div>
 
         <Group p="md" className={styles.group}>
           <Select
-            label="Extension type"
+            label="Integration type"
             data={getSelectData()}
             searchable
-            onChange={(value: string) => setExtensionDefinition(value)}
+            onChange={(value: string) => setIntegrationDefinition(value)}
             className={styles.integrationSelect}
           />
         </Group>
 
         <Group>
-          {selectedExtensionDefinition && (
-            <NewExtensionForm
-              extensionDefinitionId={selectedExtensionDefinition}
+          {selectedIntegrationDefinition && (
+            <NewIntegrationForm
+              integrationDefinitionId={selectedIntegrationDefinition}
               onComplete={() => {
                 updateWorkspace({
                   variables: {

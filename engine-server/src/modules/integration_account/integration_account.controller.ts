@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CheckResponse } from '@poozle/engine-edk';
 
@@ -8,7 +8,10 @@ import { IntegrationAccount } from '@@generated/integrationAccount.entity';
 
 import {
   CreateIntegrationAccountBody,
+  IntegrationAccountRequestIdBody,
+  IntegrationAccountsRequestBody,
   IntegrationCheckBody,
+  UpdateIntegrationAccountBody,
 } from './integration_account.interface';
 import { IntegrationAccountService } from './integration_account.service';
 
@@ -21,7 +24,7 @@ export class IntegrationAccountController {
   constructor(private integrationAccountService: IntegrationAccountService) {}
 
   @Post('check')
-  async getSpecForIntegrationDefinition(
+  async checkCredentialsForIntegrationAccount(
     @Body()
     integrationCheckBody: IntegrationCheckBody,
   ): CheckResponse {
@@ -29,6 +32,40 @@ export class IntegrationAccountController {
       integrationCheckBody.integrationDefinitionId,
       integrationCheckBody.config,
       integrationCheckBody.authType,
+      integrationCheckBody.workspaceId,
+    );
+  }
+
+  @Get()
+  async getIntegrationAccounts(
+    @Query()
+    integrationAccountsRequestBody: IntegrationAccountsRequestBody,
+  ): Promise<IntegrationAccount[]> {
+    return await this.integrationAccountService.getIntegrationAccountsForWorkspace(
+      integrationAccountsRequestBody.workspaceId,
+    );
+  }
+
+  @Get(':integrationAccountId')
+  async getIntegrationAccount(
+    @Param()
+    integrationAccountIdRequestIdBody: IntegrationAccountRequestIdBody,
+  ): Promise<IntegrationAccount> {
+    return await this.integrationAccountService.getIntegrationAccountWithId(
+      integrationAccountIdRequestIdBody,
+    );
+  }
+
+  @Post(':integrationAccountId')
+  async updateIntegrationAccount(
+    @Param()
+    integrationAccountIdRequestIdBody: IntegrationAccountRequestIdBody,
+    @Body()
+    updateIntegrationAccountBody: UpdateIntegrationAccountBody,
+  ): Promise<IntegrationAccount> {
+    return await this.integrationAccountService.updateIntegrationAccount(
+      integrationAccountIdRequestIdBody.integrationAccountId,
+      updateIntegrationAccountBody,
     );
   }
 

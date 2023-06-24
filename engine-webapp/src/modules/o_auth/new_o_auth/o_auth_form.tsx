@@ -18,7 +18,7 @@ interface Formvalues {
   clientId?: string;
   clientSecret?: string;
   scopes?: string;
-  extensionAuthName?: string;
+  integrationOAuthAppName?: string;
 }
 
 export function OAuthAppForm({
@@ -31,27 +31,33 @@ export function OAuthAppForm({
     initialValues: {
       clientId: initialValues.clientId || '',
       clientSecret: initialValues.clientSecret || '',
-      extensionAuthName: initialValues.extensionAuthName || '',
+      integrationOAuthAppName: initialValues.integrationOAuthAppName || '',
       scopes: initialValues.scopes || '',
     },
 
     validate: {
       clientId: (value) => (value ? null : 'Invalid Client Id'),
       clientSecret: (value) => (value ? null : 'Invalid Client Secret'),
-      extensionAuthName: (value) => (value ? null : 'Invalid Name'),
+      integrationOAuthAppName: (value) => (value ? null : 'Invalid Name'),
       scopes: (value) => (value ? null : 'Invalid scopes'),
     },
   });
 
   return (
     <Group p="md" pt={0} className={styles.formContainer}>
-      <form className={styles.form} onSubmit={form.onSubmit(onSubmit)}>
+      <form
+        className={styles.form}
+        onSubmit={form.onSubmit((values) => {
+          onSubmit(values);
+          form.reset();
+        })}
+      >
         <TextInput
           pb="md"
-          label="Extension auth name"
-          placeholder="Enter extension auth name"
+          label="Integration auth name"
+          placeholder="Enter integration OAuth App name"
           description="This will be used in the app to fetch redirect URL"
-          {...form.getInputProps('extensionAuthName')}
+          {...form.getInputProps('integrationOAuthAppName')}
         />
         <TextInput
           pb="md"

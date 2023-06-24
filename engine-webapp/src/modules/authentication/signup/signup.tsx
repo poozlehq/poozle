@@ -11,10 +11,7 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { ReactElement } from 'react';
-
-import { useSignupUserMutation } from 'queries/generated/graphql';
 
 import { AuthenticationLayout } from 'layouts/authentication_layout';
 import { LoggedInGuard } from 'wrappers/logged_in_guard';
@@ -28,8 +25,6 @@ interface FormValues {
 }
 
 export function Signup(): ReactElement {
-  const [SignupUserMutation, { loading }] = useSignupUserMutation();
-  const router = useRouter();
   const form = useForm({
     initialValues: {
       email: '',
@@ -45,30 +40,7 @@ export function Signup(): ReactElement {
   });
 
   const onSubmit = async (values: FormValues) => {
-    await SignupUserMutation({
-      variables: {
-        data: {
-          email: values.email,
-          password: values.password,
-          firstname: values.name.split(' ')[0],
-          // TODO (harshith): Cover usecase where the user enters more than 2 words
-          lastname: values.name.split(' ')[1],
-        },
-      },
-      context: {
-        headers: {
-          type: 'Signup',
-        },
-      },
-      onCompleted: () => {
-        router.replace('/workspaces');
-      },
-      onError: (err: Error) => {
-        form.setErrors({
-          email: err.message,
-        });
-      },
-    });
+    console.log(values);
   };
 
   return (
@@ -77,7 +49,7 @@ export function Signup(): ReactElement {
         Register
       </Title>
       <Text color="dimmed" size="sm" align="center" className={styles.text}>
-        Already have an account?{' '}
+        Already have an account?
         <Link href="/authentication/signin" className={styles.link}>
           Login here
         </Link>
@@ -106,7 +78,7 @@ export function Signup(): ReactElement {
             {...form.getInputProps('password')}
           />
 
-          <Button fullWidth mt="xl" type="submit" loading={loading}>
+          <Button fullWidth mt="xl" type="submit">
             Sign up
           </Button>
         </form>

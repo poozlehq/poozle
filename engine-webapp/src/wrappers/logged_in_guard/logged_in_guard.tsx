@@ -3,7 +3,7 @@
 import { useRouter } from 'next/router';
 import React, { cloneElement, useEffect } from 'react';
 
-import { useGetAuthenticatedUserQuery } from 'queries/generated/graphql';
+import { useGetUserQuery } from 'services/user/get_user';
 
 import { Loader } from 'components';
 
@@ -13,20 +13,16 @@ interface Props {
 
 export function LoggedInGuard(props: Props): React.ReactElement {
   const { children } = props;
-  const {
-    data,
-    loading: isLoading,
-    error: isError,
-  } = useGetAuthenticatedUserQuery();
+  const { data, error: isError, isLoading } = useGetUserQuery();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && !isError && data.me.email) {
+    if (!isLoading && !isError && data.userId) {
       router.replace('/workspaces');
     }
   }, [isLoading, isError, data]);
 
-  if (!isLoading && isError && !data?.me.email) {
+  if (!isLoading && isError && !data) {
     return cloneElement(children);
   }
 

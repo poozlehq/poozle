@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Specification } from '@poozle/engine-edk';
 
@@ -25,7 +25,7 @@ export class IntegrationDefinitionController {
   @Get()
   @UseGuards(new AuthGuard())
   async getIntegrationDefinitionsByWorkspace(
-    @Body()
+    @Query()
     integrationDefinitionRequestWorkspaceIdBody: IntegrationDefinitionRequestWorkspaceIdBody,
   ) {
     return await this.integrationDefinitionService.getIntegrationDefinitionsForWorkspace(
@@ -33,23 +33,31 @@ export class IntegrationDefinitionController {
     );
   }
 
-  @Get(':integrationDefinitionId')
-  async getIntegrationDefinitionWithId(
+  @Get(':integrationDefinitionId/spec')
+  @UseGuards(new AuthGuard())
+  async getSpecForIntegrationDefinition(
     @Param()
     integrationDefinitionRequestIdBody: IntegrationDefinitionRequestIdBody,
-  ) {
-    return await this.integrationDefinitionService.getIntegrationDefinitionWithId(
-      integrationDefinitionRequestIdBody,
-    );
-  }
-
-  @Post('spec')
-  async getSpecForIntegrationDefinition(
-    @Body()
-    integrationDefinitionRequestIdBody: IntegrationDefinitionRequestIdBody,
+    @Query()
+    integrationDefinitionRequestWorkspaceIdBody: IntegrationDefinitionRequestWorkspaceIdBody,
   ): Promise<Specification> {
     return await this.integrationDefinitionService.getSpecForIntegrationDefinition(
       integrationDefinitionRequestIdBody,
+      integrationDefinitionRequestWorkspaceIdBody.workspaceId,
+    );
+  }
+
+  @Get(':integrationDefinitionId')
+  @UseGuards(new AuthGuard())
+  async getIntegrationDefinitionWithId(
+    @Param()
+    integrationDefinitionRequestIdBody: IntegrationDefinitionRequestIdBody,
+    @Query()
+    integrationDefinitionRequestWorkspaceIdBody: IntegrationDefinitionRequestWorkspaceIdBody,
+  ) {
+    return await this.integrationDefinitionService.getIntegrationDefinitionWithId(
+      integrationDefinitionRequestIdBody,
+      integrationDefinitionRequestWorkspaceIdBody.workspaceId,
     );
   }
 }

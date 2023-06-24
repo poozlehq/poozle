@@ -17,20 +17,20 @@ import {
 import {
   IconHome2,
   IconSettings,
-  IconCode,
   IconApps,
   IconArrowBarLeft,
   IconArrowBarRight,
   IconUser,
-  IconLogicAnd,
   IconKey,
 } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-import { UserContext } from 'store/user_context';
+import { signOut } from 'supertokens-auth-react/recipe/emailpassword';
 
 import { ThemeLogo } from 'components/theme_logo';
+
+import { UserContext } from 'store/user_context';
 
 import styles from './navbar.module.scss';
 
@@ -86,11 +86,9 @@ function NavbarLink({
 }
 
 const LINK_DATA = [
-  { icon: IconHome2, label: 'Home', routeKey: '/home' },
-  { icon: IconApps, label: 'Extensions', routeKey: '/extensions' },
+  // { icon: IconHome2, label: 'Home', routeKey: '/home' },
+  { icon: IconApps, label: 'Integrations', routeKey: '/integrations' },
   { icon: IconKey, label: 'OAuth', routeKey: '/o_auth' },
-  { icon: IconCode, label: 'Playground', routeKey: '/playground' },
-  { icon: IconLogicAnd, label: 'Gateway', routeKey: '/gateway' },
   { icon: IconSettings, label: 'Settings', routeKey: '/settings' },
 ];
 
@@ -104,8 +102,8 @@ export function Navbar({ open, onToggle }: NavbarProps) {
   const {
     query: { workspaceId },
   } = router;
-  const { firstname, Workspace } = React.useContext(UserContext);
-  const workspace = Workspace.find(
+  const { firstname, Workspace: workspaces } = React.useContext(UserContext);
+  const workspace = workspaces.find(
     (workspace) => workspace.workspaceId === workspaceId,
   );
 
@@ -135,7 +133,7 @@ export function Navbar({ open, onToggle }: NavbarProps) {
                   <div className={styles.flexContainer}>
                     <Title order={6}>{firstname}</Title>
                     <Text size="xs" color="gray">
-                      {workspace.slug}
+                      {workspace?.slug}
                     </Text>
                   </div>
                 )}
@@ -146,7 +144,7 @@ export function Navbar({ open, onToggle }: NavbarProps) {
             <Menu.Item
               icon={<IconUser size={14} />}
               onClick={async () => {
-                await fetch('/api/logout');
+                await signOut();
                 router.replace('/authentication/signin');
               }}
             >

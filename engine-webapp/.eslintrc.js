@@ -56,11 +56,6 @@ module.exports = {
         pathGroupsExcludedImportTypes: ['builtin'],
         pathGroups: [
           {
-            pattern: '+(queries){/**,}',
-            group: 'internal',
-            position: 'after',
-          },
-          {
             pattern: '+(common|wrappers|layouts){/**,}',
             group: 'internal',
             position: 'after',
@@ -77,6 +72,11 @@ module.exports = {
           },
           {
             pattern: '+(components){/**,}',
+            group: 'internal',
+            position: 'after',
+          },
+          {
+            pattern: '+(store){/**,}',
             group: 'internal',
             position: 'after',
           },

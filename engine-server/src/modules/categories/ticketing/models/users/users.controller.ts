@@ -2,20 +2,21 @@
 
 import { Controller, Get, Query, Headers, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { runIntegrationCommand } from 'shared/integration_run_utils';
+import { IntegrationType } from '@prisma/client';
+import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount.entity';
 
 import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 import { HeadersType } from 'common/interfaces/headers.interface';
-import { QueryParams } from 'common/interfaces/query.interface';
 
 import { IntegrationAccountService } from 'modules/integration_account/integration_account.service';
 
 import {
   PathParams,
   PathParamsWithUserId,
-  UserParams,
+  ListUserParams,
+  GetUserParams,
   TicketingUserResponse,
   TicketingUsersResponse,
 } from './users.interface';
@@ -28,40 +29,26 @@ import {
 export class UsersController {
   constructor(private integrationAccountService: IntegrationAccountService) {}
 
-  async getUsersForAccount(
-    integrationAccount: IntegrationAccount,
-    queryParams: QueryParams,
-    pathParams: Record<string, string>,
-  ) {
-    return await runIntegrationCommand(
-      integrationAccount.integrationDefinition?.sourceUrl,
-      '/users',
-      'GET',
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      integrationAccount.integrationConfiguration as any,
-      integrationAccount.authType,
-      {
-        queryParams,
-        pathParams,
-      },
-    );
-  }
-
   @Get(':collection_id/users/:user_id')
   async getUserId(
-    @Query() query: UserParams = defaultQueryParams,
+    @Query() query: GetUserParams = defaultQueryParams,
     @Param()
     params: PathParamsWithUserId,
     @Headers() headers: HeadersType,
   ): Promise<TicketingUserResponse> {
     const integrationAccount =
-      (await this.integrationAccountService.getIntegrationAccount({
-        workspaceId: headers.workspaceId,
-        integrationAccountName: headers.integrationAccountName,
-      })) as IntegrationAccount;
+      (await this.integrationAccountService.getIntegrationAccountWithIntegrationType(
+        {
+          workspaceId: headers.workspaceId,
+          integrationAccountName: headers.integrationAccountName,
+          integrationType: IntegrationType.TICKETING,
+        },
+      )) as IntegrationAccount;
 
-    const userResponse = await this.getUsersForAccount(
+    const userResponse = await getDataFromAccount(
       integrationAccount,
+      '/users',
+      Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -73,19 +60,24 @@ export class UsersController {
 
   @Get(':collection_id/users')
   async getUsers(
-    @Query() query: UserParams = defaultQueryParams,
+    @Query() query: ListUserParams = defaultQueryParams,
     @Param()
     params: PathParams,
     @Headers() headers: HeadersType,
   ): Promise<TicketingUsersResponse> {
     const integrationAccount =
-      (await this.integrationAccountService.getIntegrationAccount({
-        workspaceId: headers.workspaceId,
-        integrationAccountName: headers.integrationAccountName,
-      })) as IntegrationAccount;
+      (await this.integrationAccountService.getIntegrationAccountWithIntegrationType(
+        {
+          workspaceId: headers.workspaceId,
+          integrationAccountName: headers.integrationAccountName,
+          integrationType: IntegrationType.TICKETING,
+        },
+      )) as IntegrationAccount;
 
-    const userResponse = await this.getUsersForAccount(
+    const userResponse = await getDataFromAccount(
       integrationAccount,
+      '/collections',
+      Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

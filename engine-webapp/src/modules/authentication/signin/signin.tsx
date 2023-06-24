@@ -13,10 +13,10 @@ import {
 import { useForm } from '@mantine/form';
 import { useRouter } from 'next/router';
 
-import { useLoginUserMutation } from 'queries/generated/graphql';
-
 import { AuthenticationLayout } from 'layouts/authentication_layout';
 import { LoggedInGuard } from 'wrappers/logged_in_guard';
+
+import { useSignInMutation } from 'services';
 
 import styles from './signin.module.scss';
 
@@ -26,8 +26,10 @@ interface FormValues {
 }
 
 export function Signin() {
-  const [loginUserMutation, { loading }] = useLoginUserMutation();
   const router = useRouter();
+  const { mutate: signinMutate } = useSignInMutation({
+    onSuccess: () => router.replace('/workspaces'),
+  });
   const form = useForm({
     initialValues: {
       email: '',
@@ -40,27 +42,7 @@ export function Signin() {
   });
 
   const onSubmit = async (values: FormValues) => {
-    await loginUserMutation({
-      variables: {
-        data: {
-          email: values.email,
-          password: values.password,
-        },
-      },
-      context: {
-        headers: {
-          type: 'Signin',
-        },
-      },
-      onCompleted: () => {
-        router.replace('/workspaces');
-      },
-      onError: (err: Error) => {
-        form.setErrors({
-          email: err.message,
-        });
-      },
-    });
+    signinMutate(values);
   };
 
   return (
@@ -93,7 +75,7 @@ export function Signin() {
               Forgot password?
             </Anchor>
           </Group>
-          <Button fullWidth mt="xl" type="submit" loading={loading}>
+          <Button fullWidth mt="xl" type="submit">
             Sign in
           </Button>
         </form>

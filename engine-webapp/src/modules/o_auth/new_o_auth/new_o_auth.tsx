@@ -1,18 +1,15 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Container, Divider, Group, Paper, Title } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-
-import {
-  useCreateExtensionAuthMutation,
-  useExtensionDefinitionsQuery,
-} from 'queries/generated/graphql';
+import { SessionAuth } from 'supertokens-auth-react/recipe/session';
 
 import { SideBarLayout } from 'layouts/sidebar_layout';
-import { AuthGuard } from 'wrappers/auth_guard';
 import { GetUserData } from 'wrappers/get_user_data';
+
+import { useGetIntegrationDefinitionsQuery } from 'services/integration_definition';
+import { useCreateIntegrationOAuthMutation } from 'services/integration_oauth/create_integration_oauth_app';
 
 import { Header, Select } from 'components';
 
@@ -24,24 +21,21 @@ export function NewOAuthApp() {
   const {
     query: { workspaceId },
   } = router;
-  const { data } = useExtensionDefinitionsQuery({
-    variables: {
-      workspaceId: workspaceId as string,
-    },
+  const { data: integrationDefinitions } = useGetIntegrationDefinitionsQuery({
+    workspaceId: workspaceId as string,
   });
-  const [selectedExtensionDefinition, setExtensionDefinition] =
+  const [selectedIntegrationDefinition, setIntegrationDefinition] =
     React.useState(undefined);
-  const [createExtensionAuth, { loading }] = useCreateExtensionAuthMutation();
+  const { mutate: createIntegrationOAuthApp, isLoading } =
+    useCreateIntegrationOAuthMutation({});
 
   const getSelectData = () => {
-    if (data) {
-      return data.getExtensionDefinitionsByWorkspace.map(
-        (extensionDefinition) => ({
-          value: extensionDefinition.extensionDefinitionId,
-          label: extensionDefinition.name,
-          image: extensionDefinition.icon,
-        }),
-      );
+    if (integrationDefinitions) {
+      return integrationDefinitions.map((integrationDefinition) => ({
+        value: integrationDefinition.integrationDefinitionId,
+        label: integrationDefinition.name,
+        image: integrationDefinition.icon,
+      }));
     }
 
     return [];
@@ -59,46 +53,31 @@ export function NewOAuthApp() {
 
           <Group p="md" className={styles.group}>
             <Select
-              label="Extension type"
+              label="Integration type"
               data={getSelectData()}
               searchable
-              onChange={(value: string) => setExtensionDefinition(value)}
+              onChange={(value: string) => setIntegrationDefinition(value)}
               className={styles.integrationSelect}
             ></Select>
           </Group>
 
           <Group>
-            {selectedExtensionDefinition && (
+            {selectedIntegrationDefinition && (
               <OAuthAppForm
                 workspaceId={workspaceId as string}
                 update={false}
                 initialValues={{}}
                 onSubmit={(values) => {
-                  createExtensionAuth({
-                    variables: {
-                      extensionCreateBody: {
-                        extensionDefinitionId: selectedExtensionDefinition,
-                        extensionAuthName: values.extensionAuthName,
-                        clientId: values.clientId,
-                        clientSecret: values.clientSecret,
-                        scopes: values.scopes,
-                        workspaceId: workspaceId as string,
-                      },
-                    },
-                    onCompleted: () => {
-                      router.push(`/workspaces/${workspaceId}/o_auth`);
-                    },
-                    onError: (error) => {
-                      notifications.show({
-                        title: 'Error',
-                        color: 'red',
-                        variant: 'filled',
-                        message: error.message,
-                      });
-                    },
+                  createIntegrationOAuthApp({
+                    integrationDefinitionId: selectedIntegrationDefinition,
+                    integrationOAuthAppName: values.integrationOAuthAppName,
+                    clientId: values.clientId,
+                    clientSecret: values.clientSecret,
+                    scopes: values.scopes,
+                    workspaceId: workspaceId as string,
                   });
                 }}
-                loading={loading}
+                loading={isLoading}
               />
             )}
           </Group>
@@ -110,10 +89,10 @@ export function NewOAuthApp() {
 
 NewOAuthApp.getLayout = function getLayout(page: React.ReactElement) {
   return (
-    <AuthGuard>
+    <SessionAuth>
       <GetUserData>
         <SideBarLayout>{page}</SideBarLayout>
       </GetUserData>
-    </AuthGuard>
+    </SessionAuth>
   );
 };

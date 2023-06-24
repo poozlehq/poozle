@@ -12,7 +12,12 @@ import { checkIntegrationCredentials } from 'shared/integration_run_utils';
 
 import { IntegrationDefinitionService } from 'modules/integration_definition /integration_definition.service';
 
-import { IntegrationAccountRequestBody } from './integration_account.interface';
+import {
+  IntegrationAccountRequestBody,
+  IntegrationAccountRequestBodyWithIntegrationType,
+  IntegrationAccountRequestIdBody,
+  UpdateIntegrationAccountBody,
+} from './integration_account.interface';
 
 @Injectable()
 export class IntegrationAccountService {
@@ -25,11 +30,15 @@ export class IntegrationAccountService {
     integrationDefinitionId: string,
     config: Config,
     authType: string,
+    workspaceId: string,
   ): CheckResponse {
     const integrationDefinition =
-      await this.integrationDefinitionService.getIntegrationDefinitionWithId({
-        integrationDefinitionId,
-      });
+      await this.integrationDefinitionService.getIntegrationDefinitionWithId(
+        {
+          integrationDefinitionId,
+        },
+        workspaceId,
+      );
 
     return await checkIntegrationCredentials(
       integrationDefinition.sourceUrl,
@@ -49,6 +58,7 @@ export class IntegrationAccountService {
       integrationDefinitionId,
       config,
       authType,
+      workspaceId,
     );
 
     if (status) {
@@ -64,6 +74,20 @@ export class IntegrationAccountService {
     }
 
     throw new BadRequestException('Not a valid credentials');
+  }
+
+  async getIntegrationAccountWithId(
+    integrationAccountRequestIdBody: IntegrationAccountRequestIdBody,
+  ) {
+    return await this.prismaService.integrationAccount.findUnique({
+      where: {
+        integrationAccountId:
+          integrationAccountRequestIdBody.integrationAccountId,
+      },
+      include: {
+        integrationDefinition: true,
+      },
+    });
   }
 
   async getIntegrationAccount(
@@ -83,6 +107,31 @@ export class IntegrationAccountService {
 
     if (integrationAccounts.length === 0) {
       return new NotFoundException('No integration found');
+    }
+
+    return integrationAccounts[0];
+  }
+
+  async getIntegrationAccountWithIntegrationType(
+    integrationAccountRequestBody: IntegrationAccountRequestBodyWithIntegrationType,
+  ) {
+    const integrationAccounts =
+      await this.prismaService.integrationAccount.findMany({
+        where: {
+          workspaceId: integrationAccountRequestBody.workspaceId,
+          integrationAccountName:
+            integrationAccountRequestBody.integrationAccountName,
+          integrationDefinition: {
+            integrationType: integrationAccountRequestBody.integrationType,
+          },
+        },
+        include: {
+          integrationDefinition: true,
+        },
+      });
+
+    if (integrationAccounts.length === 0) {
+      throw new NotFoundException('No integration found');
     }
 
     return integrationAccounts[0];
@@ -112,5 +161,35 @@ export class IntegrationAccountService {
         integrationDefinition: true,
       },
     });
+  }
+
+  async updateIntegrationAccount(
+    integrationAccountId: string,
+    updateIntegrationAccountBody: UpdateIntegrationAccountBody,
+  ) {
+    return await this.prismaService.integrationAccount.update({
+      data: updateIntegrationAccountBody,
+      where: {
+        integrationAccountId,
+      },
+    });
+  }
+
+  async checkForIntegrationAccountName(
+    workspaceId: string,
+    integrationAccountName: string,
+  ): Promise<boolean> {
+    const accounts = await this.prismaService.integrationAccount.findMany({
+      where: {
+        workspaceId,
+        integrationAccountName,
+      },
+    });
+
+    if (accounts.length === 0) {
+      return true;
+    }
+
+    return false;
   }
 }

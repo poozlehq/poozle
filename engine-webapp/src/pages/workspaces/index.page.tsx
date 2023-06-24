@@ -2,20 +2,19 @@
 
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import { SessionAuth } from 'supertokens-auth-react/recipe/session';
 
-import { useGetUserQuery } from 'queries/generated/graphql';
-
-import { AuthGuard } from 'wrappers/auth_guard';
+import { useGetUserQuery } from 'services/user/get_user';
 
 import { Loader } from 'components';
 
 export function WorkspaceHome() {
-  const { data, loading: isLoading, error: isError } = useGetUserQuery();
+  const { data, isLoading, error: isError } = useGetUserQuery();
   const router = useRouter();
 
   React.useEffect(() => {
     if (!isLoading && !isError) {
-      router.replace(`/workspaces/${data.me.Workspace[0].workspaceId}`);
+      router.replace(`/workspaces/${data.Workspace[0].workspaceId}`);
     }
   }, [isLoading, isError]);
 
@@ -24,8 +23,8 @@ export function WorkspaceHome() {
 
 export default () => {
   return (
-    <AuthGuard>
+    <SessionAuth>
       <WorkspaceHome />
-    </AuthGuard>
+    </SessionAuth>
   );
 };

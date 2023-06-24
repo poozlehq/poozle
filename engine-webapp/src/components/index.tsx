@@ -5,6 +5,5 @@ export * from './logo';
 export * from './table';
 export * from './theme_logo';
 export * from './header';
-export * from './extension_icon';
+export * from './integration_icon';
 export * from './select';
-export * from './bar_chart';
