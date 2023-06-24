@@ -174,4 +174,22 @@ export class IntegrationAccountService {
       },
     });
   }
+
+  async checkForIntegrationAccountName(
+    workspaceId: string,
+    integrationAccountName: string,
+  ): Promise<boolean> {
+    const accounts = await this.prismaService.integrationAccount.findMany({
+      where: {
+        workspaceId,
+        integrationAccountName,
+      },
+    });
+
+    if (accounts.length === 0) {
+      return true;
+    }
+
+    return false;
+  }
 }

@@ -88,7 +88,7 @@ function NavbarLink({
 const LINK_DATA = [
   // { icon: IconHome2, label: 'Home', routeKey: '/home' },
   { icon: IconApps, label: 'Integrations', routeKey: '/integrations' },
-  // { icon: IconKey, label: 'OAuth', routeKey: '/o_auth' },
+  { icon: IconKey, label: 'OAuth', routeKey: '/o_auth' },
   { icon: IconSettings, label: 'Settings', routeKey: '/settings' },
 ];
 

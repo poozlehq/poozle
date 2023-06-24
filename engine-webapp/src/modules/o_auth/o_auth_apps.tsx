@@ -1,17 +1,15 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp.entity';
 import { Button, Paper, Text } from '@mantine/core';
 import { useRouter } from 'next/router';
 import * as React from 'react';
-
-import {
-  IntegrationAuth,
-  useIntegrationAuthsQuery,
-} from 'queries/generated/graphql';
+import { SessionAuth } from 'supertokens-auth-react/recipe/session';
 
 import { SideBarLayout } from 'layouts/sidebar_layout';
-import { AuthGuard } from 'wrappers/auth_guard';
 import { GetUserData } from 'wrappers/get_user_data';
+
+import { useGetIntegrationOAuthApps } from 'services/integration_oauth/get_integration_oauth_apps';
 
 import { IntegrationIcon, Header, Loader, Table } from 'components';
 
@@ -23,26 +21,24 @@ export function OAuthApps() {
   const {
     query: { workspaceId },
   } = router;
-  const { data, loading } = useIntegrationAuthsQuery({
-    variables: {
-      workspaceId: workspaceId as string,
-    },
+  const { data: integrationOAuthApps, isLoading } = useGetIntegrationOAuthApps({
+    workspaceId: workspaceId as string,
   });
 
   const columns = [
     {
       name: 'Name',
       key: 'name',
-      render: (data: IntegrationAuth) => (
+      render: (data: IntegrationOAuthApp) => (
         <div className={styles.tableDataContainer}>
-          {data['integrationAuthName']}
+          {data['integrationOAuthAppName']}
         </div>
       ),
     },
     {
       name: 'Integration',
       key: 'integration',
-      render: (data: IntegrationAuth) => (
+      render: (data: IntegrationOAuthApp) => (
         <div className={styles.tableDataContainer}>
           <div className={styles.integrationName}>
             <IntegrationIcon
@@ -58,7 +54,7 @@ export function OAuthApps() {
     {
       name: 'Last Updated',
       key: 'last_updated',
-      render: (data: IntegrationAuth) => (
+      render: (data: IntegrationOAuthApp) => (
         <div className={styles.tableDataContainer}>
           {new Date(data.updatedAt).toLocaleString()}
         </div>
@@ -66,7 +62,7 @@ export function OAuthApps() {
     },
   ];
 
-  if (loading) {
+  if (isLoading) {
     return <Loader />;
   }
 
@@ -88,7 +84,7 @@ export function OAuthApps() {
             columns={columns}
             idKey="integrationAuthId"
             onRowClick={(id: string) => router.push(`${router.asPath}/${id}`)}
-            data={data.getIntegrationAuthsByWorkspace}
+            data={integrationOAuthApps}
           />
         </Paper>
       </div>
@@ -98,10 +94,10 @@ export function OAuthApps() {
 
 OAuthApps.getLayout = function getLayout(page: React.ReactElement) {
   return (
-    <AuthGuard>
+    <SessionAuth>
       <GetUserData>
         <SideBarLayout>{page}</SideBarLayout>
       </GetUserData>
-    </AuthGuard>
+    </SessionAuth>
   );
 };

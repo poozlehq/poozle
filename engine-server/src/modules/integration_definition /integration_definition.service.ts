@@ -67,7 +67,6 @@ export class IntegrationDefinitionService {
       integrationDefinitionRequestIdBody,
       workspaceId,
     );
-    console.log(integrationDefinition);
 
     return await getIntegrationSpec(integrationDefinition.sourceUrl);
   }

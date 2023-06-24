@@ -12,6 +12,8 @@ import { AuthModule } from 'modules/auth/auth.module';
 import { TicketingModule } from 'modules/categories/ticketing/ticketing.module';
 import { IntegrationAccountModule } from 'modules/integration_account/integration_account.module';
 import { IntegrationDefinitionModule } from 'modules/integration_definition /integration_definition.module';
+import { IntegrationOAuthModule } from 'modules/integration_oauth/integration_oauth.module';
+import { OAuthCallbackModule } from 'modules/oauth_callback/oauth_callback.module';
 import { UserModule } from 'modules/user/user.module';
 import { WorkspaceModule } from 'modules/workspace/workspace.module';
 
@@ -36,6 +38,8 @@ import { AppService } from './app.service';
     AnalyticsModule,
     IntegrationAccountModule,
     IntegrationDefinitionModule,
+    IntegrationOAuthModule,
+    OAuthCallbackModule,
     // Categories and their modules
     TicketingModule,
   ],
