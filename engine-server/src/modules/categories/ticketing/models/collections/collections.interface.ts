@@ -1,9 +1,12 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { QueryParams } from 'common/interfaces/query.interface';
+import { IsString } from 'class-validator';
+
+import { JustRawParams, QueryParams } from 'common/interfaces/query.interface';
 import { Meta } from 'common/interfaces/response.interface';
 
 export class CollectionQueryParams extends QueryParams {}
+export class GetCollectionQueryParams extends JustRawParams {}
 
 export class Collection {
   id: string;
@@ -18,4 +21,13 @@ export class Collection {
 export class TicketingCollectionsResponse {
   data: Collection[];
   meta: Meta;
+}
+
+export class TicketingCollectionResponse {
+  data: Collection;
+}
+
+export class PathParamsWithCollectionId {
+  @IsString()
+  collection_id: string;
 }

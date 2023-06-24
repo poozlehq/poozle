@@ -113,4 +113,5 @@ enum IntegrationType {
   HRIS
   MESSAGING
   CALENDAR
+  TICKETING
 }

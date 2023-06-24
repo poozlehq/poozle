@@ -22,3 +22,9 @@ export class QueryParams extends PaginationParams {
   @IsOptional()
   filter?: Record<string, string>;
 }
+
+export class JustRawParams {
+  @IsBoolean()
+  @IsOptional()
+  raw?: boolean;
+}

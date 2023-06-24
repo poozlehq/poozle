@@ -93,6 +93,7 @@ Enum IntegrationType {
   HRIS
   MESSAGING
   CALENDAR
+  TICKETING
 }
 
 Ref: Workspace.userId > User.userId

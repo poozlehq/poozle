@@ -12,7 +12,10 @@ import { checkIntegrationCredentials } from 'shared/integration_run_utils';
 
 import { IntegrationDefinitionService } from 'modules/integration_definition /integration_definition.service';
 
-import { IntegrationAccountRequestBody } from './integration_account.interface';
+import {
+  IntegrationAccountRequestBody,
+  IntegrationAccountRequestBodyWithIntegrationType,
+} from './integration_account.interface';
 
 @Injectable()
 export class IntegrationAccountService {
@@ -75,6 +78,31 @@ export class IntegrationAccountService {
           workspaceId: integrationAccountRequestBody.workspaceId,
           integrationAccountName:
             integrationAccountRequestBody.integrationAccountName,
+        },
+        include: {
+          integrationDefinition: true,
+        },
+      });
+
+    if (integrationAccounts.length === 0) {
+      return new NotFoundException('No integration found');
+    }
+
+    return integrationAccounts[0];
+  }
+
+  async getIntegrationAccountWithIntegrationType(
+    integrationAccountRequestBody: IntegrationAccountRequestBodyWithIntegrationType,
+  ) {
+    const integrationAccounts =
+      await this.prismaService.integrationAccount.findMany({
+        where: {
+          workspaceId: integrationAccountRequestBody.workspaceId,
+          integrationAccountName:
+            integrationAccountRequestBody.integrationAccountName,
+          integrationDefinition: {
+            integrationType: integrationAccountRequestBody.integrationType,
+          },
         },
         include: {
           integrationDefinition: true,

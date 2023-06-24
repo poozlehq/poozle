@@ -2,10 +2,11 @@
 
 import { IsString } from 'class-validator';
 
-import { QueryParams } from 'common/interfaces/query.interface';
+import { JustRawParams, QueryParams } from 'common/interfaces/query.interface';
 import { Meta } from 'common/interfaces/response.interface';
 
-export class UserParams extends QueryParams {}
+export class ListUserParams extends QueryParams {}
+export class GetUserParams extends JustRawParams {}
 
 export class PathParams {
   @IsString()
