@@ -27,6 +27,4 @@ lerna-debug.log*
 .yarn/build-state.yml
 .pnp.*
 
-github/
-
 node_modules/
