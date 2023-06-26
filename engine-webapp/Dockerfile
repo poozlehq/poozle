@@ -33,6 +33,8 @@ RUN yarn build
 FROM base AS runner
 WORKDIR /app
 
+RUN apk add --no-cache dumb-init bash
+
 ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 # ENV NEXT_TELEMETRY_DISABLED 1
@@ -44,9 +46,10 @@ COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder --chown=nextjs:nodejs /app/node_modules ./node_modules
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json
+COPY --from=builder --chown=nextjs:nodejs /app/entrypoint.sh ./entrypoint.sh
 
 USER nextjs
 
@@ -54,4 +57,9 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-CMD ["node_modules/.bin/next", "start"]
+# Make it executable
+RUN ["chmod", "+x", "/app/entrypoint.sh"]
+
+ENTRYPOINT ["/app/entrypoint.sh"]
+
+CMD ["node", "server.js"]

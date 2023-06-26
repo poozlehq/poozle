@@ -18,6 +18,9 @@ module.exports = {
   pageExtensions: ['page.tsx', 'page.js'],
   publicRuntimeConfig: {
     // Will be available on both server and client
-    baseHost: process.env.BASE_HOST,
+    NEXT_PUBLIC_BASE_HOST: process.env.NEXT_PUBLIC_BASE_HOST,
+  },
+  experimental: {
+    outputStandalone: true,
   },
 };

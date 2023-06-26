@@ -27,6 +27,7 @@ import { frontendConfig } from './config';
 
 if (typeof window !== 'undefined') {
   // we only want to call this init function on the frontend, so we check typeof window !== 'undefined'
+
   SuperTokensReact.init(frontendConfig());
 }
 

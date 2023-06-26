@@ -7,16 +7,16 @@ import SessionReact from 'supertokens-auth-react/recipe/session';
 
 const { publicRuntimeConfig } = getConfig();
 
-export const appInfo = {
-  // learn more about this on https://supertokens.com/docs/thirdpartyemailpassword/appinfo
-  appName: 'poozle',
-  apiDomain: publicRuntimeConfig.baseHost,
-  websiteDomain: publicRuntimeConfig.baseHost,
-  apiBasePath: '/api/auth',
-  websiteBasePath: '/authentication/signin',
-};
-
 export const frontendConfig = () => {
+  const appInfo = {
+    // learn more about this on https://supertokens.com/docs/thirdpartyemailpassword/appinfo
+    appName: 'poozle',
+    apiDomain: publicRuntimeConfig.NEXT_PUBLIC_BASE_HOST,
+    websiteDomain: publicRuntimeConfig.NEXT_PUBLIC_BASE_HOST,
+    apiBasePath: '/api/auth',
+    websiteBasePath: '/authentication/signin',
+  };
+
   return {
     appInfo,
     recipeList: [EmailPasswordReact.init(), SessionReact.init()],
