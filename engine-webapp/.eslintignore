@@ -1,0 +1,1 @@
+ignorePatterns: ['src/@@generated/**/*.tsx', 'src/@@generated/**/*.ts']
