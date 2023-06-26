@@ -15,7 +15,6 @@ import {
   createStyles,
 } from '@mantine/core';
 import {
-  IconHome2,
   IconSettings,
   IconApps,
   IconArrowBarLeft,

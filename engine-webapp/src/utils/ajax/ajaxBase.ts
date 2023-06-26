@@ -34,6 +34,7 @@ interface DebuggerStore {
  * @internal
  * Ajax Base Configuration.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export interface AjaxBaseConfig<D = unknown, T = any, E = unknown> {
   /** HTTP Method for Ajax Request (Required) */
   method: 'get' | 'post' | 'put' | 'patch' | 'delete';
