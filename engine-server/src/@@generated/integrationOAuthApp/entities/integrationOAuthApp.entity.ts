@@ -1,6 +1,6 @@
 
-import {IntegrationDefinition} from './integrationDefinition.entity'
-import {Workspace} from './workspace.entity'
+import {IntegrationDefinition} from '../../integrationDefinition/entities/integrationDefinition.entity'
+import {Workspace} from '../../workspace/entities/workspace.entity'
 
 
 export class IntegrationOAuthApp {

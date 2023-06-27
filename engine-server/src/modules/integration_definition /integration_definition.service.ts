@@ -5,7 +5,7 @@ import { Specification } from '@poozle/engine-edk';
 import { PrismaService } from 'nestjs-prisma';
 import { getIntegrationSpec } from 'shared/integration_run_utils';
 
-import { IntegrationDefinition } from '@@generated/integrationDefinition.entity';
+import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
 
 import {
   IntegrationDefinitionRequestIdBody,

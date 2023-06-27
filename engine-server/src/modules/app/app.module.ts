@@ -4,13 +4,14 @@ import { Logger, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from 'nestjs-prisma';
 
-import config, { config as defaultConfig } from 'common/configs/config';
+import config from 'common/configs/config';
 import { loggingMiddleware } from 'common/middleware/logging.middleware';
 
 import { AnalyticsModule } from 'modules/analytics/analytics.module';
 import { AuthModule } from 'modules/auth/auth.module';
 import { TicketingModule } from 'modules/categories/ticketing/ticketing.module';
 import { IntegrationAccountModule } from 'modules/integration_account/integration_account.module';
+import { IntegrationConnectLinkModule } from 'modules/integration_connect_link/integration_connect_link.module';
 import { IntegrationDefinitionModule } from 'modules/integration_definition /integration_definition.module';
 import { IntegrationOAuthModule } from 'modules/integration_oauth/integration_oauth.module';
 import { OAuthCallbackModule } from 'modules/oauth_callback/oauth_callback.module';
@@ -29,10 +30,7 @@ import { AppService } from './app.service';
         middlewares: [loggingMiddleware(new Logger('PrismaMiddleware'))], // configure your prisma middleware
       },
     }),
-    AuthModule.forRoot({
-      connectionURI: defaultConfig.superToken.connectionURI,
-      appInfo: defaultConfig.superToken.appInfo,
-    }),
+    AuthModule.forRoot(),
     UserModule,
     WorkspaceModule,
     AnalyticsModule,
@@ -40,6 +38,7 @@ import { AppService } from './app.service';
     IntegrationDefinitionModule,
     IntegrationOAuthModule,
     OAuthCallbackModule,
+    IntegrationConnectLinkModule,
     // Categories and their modules
     TicketingModule,
   ],

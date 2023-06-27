@@ -4,7 +4,7 @@ import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CheckResponse } from '@poozle/engine-edk';
 
-import { IntegrationAccount } from '@@generated/integrationAccount.entity';
+import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import {
   CreateIntegrationAccountBody,

@@ -1,7 +1,8 @@
 
 import {Prisma} from '@prisma/client'
-import {IntegrationDefinition} from './integrationDefinition.entity'
-import {Workspace} from './workspace.entity'
+import {IntegrationDefinition} from '../../integrationDefinition/entities/integrationDefinition.entity'
+import {Workspace} from '../../workspace/entities/workspace.entity'
+import {IntegrationConnectLink} from '../../integrationConnectLink/entities/integrationConnectLink.entity'
 
 
 export class IntegrationAccount {
@@ -16,4 +17,6 @@ integrationAccountName: string ;
 deleted: Date  | null;
 createdAt: Date ;
 updatedAt: Date ;
+fromLinks?: IntegrationConnectLink  | null;
+integrationConnectLinkIntegrationConnectionLinkId: string  | null;
 }

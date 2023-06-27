@@ -3,7 +3,7 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp.entity';
+import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp/entities';
 
 import {
   IntegrationOAuthCreateBody,

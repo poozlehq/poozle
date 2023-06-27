@@ -12,19 +12,17 @@ generator dbml {
   provider = "prisma-dbml-generator"
 }
 
-generator nestjsDto {
-  provider                        = "prisma-generator-nestjs-dto"
-  output                          = "../src/@@generated"
-  outputToNestJsResourceStructure = "false"
-  exportRelationModifierClasses   = "true"
-  reExport                        = "false"
-  createDtoPrefix                 = "Create"
-  updateDtoPrefix                 = "Update"
-  dtoSuffix                       = "Dto"
-  entityPrefix                    = ""
-  entitySuffix                    = ""
-  fileNamingStyle                 = "camel"
-}
+// TODO (harshith): Need to fix enum array in swagger
+// generator nestjsDto {
+//   provider                        = "prisma-generator-nestjs-dto"
+//   output                          = "../src/@@generated"
+//   outputToNestJsResourceStructure = "true"
+//   exportRelationModifierClasses   = "true"
+//   reExport                        = "true"
+//   entityPrefix                    = ""
+//   entitySuffix                    = ""
+//   fileNamingStyle                 = "camel"
+// }
 
 model User {
   userId    String      @id @unique
@@ -37,16 +35,17 @@ model User {
 }
 
 model Workspace {
-  workspaceId             String                  @id @default(uuid())
-  slug                    String                  @unique
-  user                    User                    @relation(references: [userId], fields: [userId])
+  workspaceId             String                   @id @default(uuid())
+  slug                    String                   @unique
+  user                    User                     @relation(references: [userId], fields: [userId])
   userId                  String
-  initialSetupComplete    Boolean                 @default(false)
-  anonymousDataCollection Boolean                 @default(false)
+  initialSetupComplete    Boolean                  @default(false)
+  anonymousDataCollection Boolean                  @default(false)
   IntegrationDefinition   IntegrationDefinition[]
   IntegrationAccount      IntegrationAccount[]
   IntegrationOAuthApp     IntegrationOAuthApp[]
   deleted                 DateTime?
+  IntegrationConnectLink  IntegrationConnectLink[]
 }
 
 model IntegrationDefinition {
@@ -88,19 +87,34 @@ model IntegrationOAuthApp {
 }
 
 model IntegrationAccount {
-  integrationAccountId     String                @id @default(uuid())
-  integrationDefinition    IntegrationDefinition @relation(references: [integrationDefinitionId], fields: [integrationDefinitionId])
-  integrationDefinitionId  String
-  integrationConfiguration Json?
-  authType                 String
-  workspace                Workspace             @relation(references: [workspaceId], fields: [workspaceId])
-  workspaceId              String
-  integrationAccountName   String
-  deleted                  DateTime?
-  createdAt                DateTime              @default(now())
-  updatedAt                DateTime              @updatedAt
+  integrationAccountId                              String                  @id @default(uuid())
+  integrationDefinition                             IntegrationDefinition   @relation(references: [integrationDefinitionId], fields: [integrationDefinitionId])
+  integrationDefinitionId                           String
+  integrationConfiguration                          Json?
+  authType                                          String
+  workspace                                         Workspace               @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId                                       String
+  integrationAccountName                            String
+  deleted                                           DateTime?
+  createdAt                                         DateTime                @default(now())
+  updatedAt                                         DateTime                @updatedAt
+  fromLinks                                         IntegrationConnectLink? @relation(fields: [integrationConnectLinkIntegrationConnectionLinkId], references: [integrationConnectionLinkId])
+  integrationConnectLinkIntegrationConnectionLinkId String?
 
   @@unique([integrationAccountName, workspaceId])
+}
+
+model IntegrationConnectLink {
+  integrationConnectionLinkId String            @id @default(uuid())
+  expiresIn                   Int               @default(60)
+  category                    IntegrationType[]
+  workspace                   Workspace         @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId                 String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  IntegrationAccount IntegrationAccount[]
 }
 
 enum ReleaseStage {
@@ -115,4 +129,5 @@ enum IntegrationType {
   MESSAGING
   CALENDAR
   TICKETING
+  EMAIL
 }

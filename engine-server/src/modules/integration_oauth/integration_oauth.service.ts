@@ -3,7 +3,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 
-import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp.entity';
+import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp/entities';
 
 import {
   IntegrationOAuthCreateBody,

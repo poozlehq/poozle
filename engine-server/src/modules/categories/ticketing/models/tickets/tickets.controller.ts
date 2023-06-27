@@ -5,7 +5,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
 import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 
-import { IntegrationAccount } from '@@generated/integrationAccount.entity';
+import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 import { HeadersType } from 'common/interfaces/headers.interface';

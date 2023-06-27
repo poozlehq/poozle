@@ -2,7 +2,7 @@
 
 import { BadRequestException } from '@nestjs/common';
 
-import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp.entity';
+import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp/entities';
 
 import {
   OAuthAuthorizationMethod,

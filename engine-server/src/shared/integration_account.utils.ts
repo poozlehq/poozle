@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IntegrationAccount } from '@@generated/integrationAccount.entity';
+import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 import { QueryParams } from 'common/interfaces/query.interface';

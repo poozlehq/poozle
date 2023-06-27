@@ -23,6 +23,7 @@ Table Workspace {
   IntegrationAccount IntegrationAccount [not null]
   IntegrationOAuthApp IntegrationOAuthApp [not null]
   deleted DateTime
+  IntegrationConnectLink IntegrationConnectLink [not null]
 }
 
 Table IntegrationDefinition {
@@ -77,10 +78,23 @@ Table IntegrationAccount {
   deleted DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+  fromLinks IntegrationConnectLink
+  integrationConnectLinkIntegrationConnectionLinkId String
 
   indexes {
     (integrationAccountName, workspaceId) [unique]
   }
+}
+
+Table IntegrationConnectLink {
+  integrationConnectionLinkId String [pk]
+  expiresIn Int [not null, default: 60]
+  category IntegrationType[] [not null]
+  workspace Workspace [not null]
+  workspaceId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  IntegrationAccount IntegrationAccount [not null]
 }
 
 Enum ReleaseStage {
@@ -95,6 +109,7 @@ Enum IntegrationType {
   MESSAGING
   CALENDAR
   TICKETING
+  EMAIL
 }
 
 Ref: Workspace.userId > User.userId
@@ -108,3 +123,7 @@ Ref: IntegrationOAuthApp.workspaceId > Workspace.workspaceId
 Ref: IntegrationAccount.integrationDefinitionId > IntegrationDefinition.integrationDefinitionId
 
 Ref: IntegrationAccount.workspaceId > Workspace.workspaceId
+
+Ref: IntegrationAccount.integrationConnectLinkIntegrationConnectionLinkId > IntegrationConnectLink.integrationConnectionLinkId
+
+Ref: IntegrationConnectLink.workspaceId > Workspace.workspaceId

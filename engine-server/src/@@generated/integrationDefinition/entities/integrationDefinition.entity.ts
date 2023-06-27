@@ -1,8 +1,8 @@
 
 import {ReleaseStage,IntegrationType} from '@prisma/client'
-import {Workspace} from './workspace.entity'
-import {IntegrationAccount} from './integrationAccount.entity'
-import {IntegrationOAuthApp} from './integrationOAuthApp.entity'
+import {Workspace} from '../../workspace/entities/workspace.entity'
+import {IntegrationAccount} from '../../integrationAccount/entities/integrationAccount.entity'
+import {IntegrationOAuthApp} from '../../integrationOAuthApp/entities/integrationOAuthApp.entity'
 
 
 export class IntegrationDefinition {
