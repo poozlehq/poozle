@@ -1,4 +1,7 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import { BaseModel, TicketSchema } from '@poozle/engine-edk';
+
 import { GetTicketsPath } from './get_tickets.path';
 import { PostTicketsPath } from './post_tickets.path';
 import { PutTicketsPath } from './put_tickets.path';

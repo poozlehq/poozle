@@ -1,4 +1,7 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import { BaseModel, TeamSchema } from '@poozle/engine-edk';
+
 import { GetTeamsPath } from './get_team.path';
 import { PostTeamsPath } from './post_team.path';
 import { PutTeamsPath } from './put_team.path';

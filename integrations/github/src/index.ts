@@ -1,3 +1,5 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import {
   BaseIntegration,
   CheckResponse,
@@ -5,15 +7,16 @@ import {
   GenericProxyModel,
   SpecificationResponse,
 } from '@poozle/engine-edk';
-import spec from './spec';
+import axios from 'axios';
 
-import { GithubTicketModel } from 'models/ticket/ticket.model';
 import { GithubCollectionModel } from 'models/collection/collection.model';
 import { GithubCommentModel } from 'models/comment/comment.model';
 import { GithubTagModel } from 'models/tag/tag.model';
 import { GithubTeamModel } from 'models/team/team.model';
+import { GithubTicketModel } from 'models/ticket/ticket.model';
 import { GithubUserModel } from 'models/user/user.model';
-import axios from 'axios';
+
+import spec from './spec';
 
 class GithubIntegration extends BaseIntegration {
   async spec(): SpecificationResponse {

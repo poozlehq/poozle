@@ -1,3 +1,5 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 export default {
   authSupported: ['Api Key', 'OAuth2'],
   authSpecification: {

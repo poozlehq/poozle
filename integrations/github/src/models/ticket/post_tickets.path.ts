@@ -1,23 +1,31 @@
-import { BasePath, Config, convertToModelKeys, Params, convertToRequestBody } from '@poozle/engine-edk';
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
+import {
+  BasePath,
+  Config,
+  convertToModelKeys,
+  Params,
+  convertToRequestBody,
+} from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
 
 const BASE_URL = 'https://api.github.com';
 
 const ticketMappings = {
-  subject: "title",
-  description: "body",
-  assignees: "assignees",
-  tags: "label",
-}
+  subject: 'title',
+  description: 'body',
+  assignees: 'assignees',
+  tags: 'label',
+};
 
 export class PostTicketsPath extends BasePath {
   // convertToRequestBody(body: any, mappings: any) {
   //   const convertedBody: any = {};
-  
+
   //   for (const originalKey in mappings) {
   //     const transformedKey = mappings[originalKey];
   //     const value = body[originalKey];
-  
+
   //     if (value !== undefined) {
   //       convertedBody[transformedKey] = value;
   //     }
@@ -28,10 +36,10 @@ export class PostTicketsPath extends BasePath {
 
   async run(_method: string, headers: AxiosHeaders, params: Params, config: Config): Promise<any> {
     const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues`;
-    const body = params.requestBody
-    const createBody = convertToRequestBody(body, ticketMappings)
+    const body = params.requestBody;
+    const createBody = convertToRequestBody(body, ticketMappings);
 
-    const response = await axios.post(url,createBody,{headers});
+    const response = await axios.post(url, createBody, { headers });
     return {
       data: convertToModelKeys(
         {

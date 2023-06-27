@@ -1,4 +1,7 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import { BaseModel, TagSchema } from '@poozle/engine-edk';
+
 import { GetTagsPath } from './get_tags.path';
 import { PostTagsPath } from './post_tags.path';
 import { PutTagsPath } from './put_tags.path';

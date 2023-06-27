@@ -1,6 +1,13 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Controller, Get, Headers, Param, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Headers,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
 import { Method, getDataFromAccount } from 'shared/integration_account.utils';
@@ -10,6 +17,7 @@ import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 import { HeadersType } from 'common/interfaces/headers.interface';
 
+import { AuthGuard } from 'modules/auth/auth.guard';
 import { IntegrationAccountService } from 'modules/integration_account/integration_account.service';
 
 import {
@@ -29,6 +37,7 @@ export class CollectionsController {
   constructor(private integrationAccountService: IntegrationAccountService) {}
 
   @Get()
+  @UseGuards(new AuthGuard())
   async getCollections(
     @Query() query: CollectionQueryParams = defaultQueryParams,
     @Headers() headers: HeadersType,

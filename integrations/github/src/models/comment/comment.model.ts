@@ -1,4 +1,7 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import { BaseModel, CommentSchema } from '@poozle/engine-edk';
+
 import { GetCommentsPath } from './get_comments.path';
 import { PostCommentsPath } from './post_comments.path';
 import { PutCommentsPath } from './put_comments.path';

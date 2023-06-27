@@ -1,4 +1,7 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import { BaseModel, UserSchema } from '@poozle/engine-edk';
+
 import { GetUsersPath } from './get_users.path';
 
 export class GithubUserModel extends BaseModel {
