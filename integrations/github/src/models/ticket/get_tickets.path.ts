@@ -1,3 +1,5 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import { BasePath, Config, Params, convertToModelKeys } from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
 
@@ -9,7 +11,7 @@ export class GetTicketsPath extends BasePath {
       {
         id: data.id,
         subject: data.title,
-        collection_id: collection_id,
+        collection_id,
         description: data.body,
         status: data.state,
         created_at: data.created_at,
@@ -92,9 +94,8 @@ export class GetTicketsPath extends BasePath {
     if (params.pathParams?.ticket_id) {
       const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues/${params.pathParams?.ticket_id}`;
       return this.fetchSingleTicket(url, headers, params);
-    } else {
-      const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues`;
-      return this.fetchData(url, headers, params);
     }
+    const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues`;
+    return this.fetchData(url, headers, params);
   }
 }

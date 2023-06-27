@@ -1,4 +1,12 @@
-import { BasePath, Config, convertToModelKeys, convertToRequestBody, Params } from '@poozle/engine-edk';
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
+import {
+  BasePath,
+  Config,
+  convertToModelKeys,
+  convertToRequestBody,
+  Params,
+} from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
 
 const BASE_URL = 'https://api.github.com';

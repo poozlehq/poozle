@@ -1,3 +1,5 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import { BasePath, Config, Params, convertToModelKeys } from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
 
@@ -16,7 +18,7 @@ export class GetTagsPath extends BasePath {
           {
             id: data.id,
             name: data.name,
-            description: data.description
+            description: data.description,
           },
           this.schema,
           data,

@@ -1,10 +1,20 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CheckResponse } from '@poozle/engine-edk';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
+
+import { AuthGuard } from 'modules/auth/auth.guard';
 
 import {
   CreateIntegrationAccountBody,
@@ -20,6 +30,7 @@ import { IntegrationAccountService } from './integration_account.service';
   path: 'integration_account',
 })
 @ApiTags('Integration Account')
+@UseGuards(new AuthGuard())
 export class IntegrationAccountController {
   constructor(private integrationAccountService: IntegrationAccountService) {}
 

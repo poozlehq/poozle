@@ -1,3 +1,5 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import { BasePath, Config, Params, convertToModelKeys } from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
 
@@ -17,7 +19,7 @@ export class GetCommentsPath extends BasePath {
     } else if (typeof response.data === 'object' && response.data !== null) {
       responseData = [response.data];
     }
-    
+
     return {
       data: responseData.map((data: any) =>
         convertToModelKeys(
@@ -47,9 +49,8 @@ export class GetCommentsPath extends BasePath {
     } else if (params.pathParams?.ticket_id) {
       const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues/${params.pathParams?.ticket_id}/comments`;
       return this.fetchData(url, headers, params);
-    } else {
-      const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues/comments`;
-      return this.fetchData(url, headers, params);
     }
+    const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues/comments`;
+    return this.fetchData(url, headers, params);
   }
 }

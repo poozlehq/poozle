@@ -1,17 +1,51 @@
-version: "3"
+version: "3.8"
 
 services:
   db:
     image: "postgres:latest"
     environment:
-      POSTGRES_USER: poozle
-      POSTGRES_PASSWORD: poozle
-      POSTGRES_DB: supertokens
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - 5432:5432
+      - 5433:5432
     networks:
-      - app_network
+      - poozle
     restart: unless-stopped
+
+  server:
+    image: poozlehq/engine-server:${ENGINE_VERSION}
+    platform: linux/amd64
+    container_name: poozle-server
+    restart: unless-stopped
+    networks:
+      - poozle
+    environment:
+      - ENGINE_VERSION=${ENGINE_VERSION}
+      - CONTROLLER_URL=${CONTROLLER_URL}
+      - DATABASE_URL=${DATABASE_URL}
+      - FRONTEND_HOST=${FRONTEND_HOST}
+      - BACKEND_HOST=${BACKEND_HOST}
+      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - PORT=${PORT}
+      - SUPERTOKEN_CONNECTION_URI=${SUPERTOKEN_CONNECTION_URI}
+    ports:
+      - 3000:3000
+  
+  webapp:
+    image: poozlehq/engine-webapp:${ENGINE_VERSION}
+    platform: linux/amd64
+    container_name: poozle-webapp
+    restart: unless-stopped
+    networks:
+      - poozle
+    environment:
+      - BACKEND_URL=${BACKEND_URL}
+      - NEXT_PUBLIC_BASE_HOST=${FRONTEND_HOST}
+      - NEXT_PUBLIC_VERSION=${ENGINE_VERSION}
+    ports:
+      - 8000:3000
 
   supertokens:
     image: registry.supertokens.io/supertokens/supertokens-postgresql:5.0
@@ -20,11 +54,15 @@ services:
     ports:
       - 3567:3567
     environment:
-      POSTGRESQL_CONNECTION_URI: "postgresql://poozle:poozle@db:5432/supertokens"
+      POSTGRESQL_CONNECTION_URI: ${SUPERTOKEN_DATABASE_URL}
     networks:
-      - app_network
+      - poozle
     restart: unless-stopped
 
 networks:
   app_network:
     driver: bridge
+  poozle: {}
+
+volumes:
+  postgres-data:

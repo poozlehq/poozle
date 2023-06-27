@@ -1,3 +1,5 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import { BasePath, Config, Params, convertToModelKeys } from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
 
@@ -31,9 +33,8 @@ export class GetTeamsPath extends BasePath {
     if (params.pathParams?.teamName) {
       const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/teams/${params.pathParams?.teamName}`;
       return this.fetchData(url, headers, params);
-    } else {
-      const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/teams`;
-      return this.fetchData(url, headers, params);
     }
+    const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/teams`;
+    return this.fetchData(url, headers, params);
   }
 }

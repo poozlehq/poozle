@@ -1,4 +1,7 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import { BaseModel, CollectionSchema } from '@poozle/engine-edk';
+
 import { GetCollectionsPath } from './get_collections.path';
 
 export class GithubCollectionModel extends BaseModel {

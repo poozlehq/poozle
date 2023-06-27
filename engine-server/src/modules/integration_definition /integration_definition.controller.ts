@@ -17,13 +17,13 @@ import { IntegrationDefinitionService } from './integration_definition.service';
   path: 'integration_definition',
 })
 @ApiTags('Integration Definition')
+@UseGuards(new AuthGuard())
 export class IntegrationDefinitionController {
   constructor(
     private integrationDefinitionService: IntegrationDefinitionService,
   ) {}
 
   @Get()
-  @UseGuards(new AuthGuard())
   async getIntegrationDefinitionsByWorkspace(
     @Query()
     integrationDefinitionRequestWorkspaceIdBody: IntegrationDefinitionRequestWorkspaceIdBody,
@@ -34,7 +34,6 @@ export class IntegrationDefinitionController {
   }
 
   @Get(':integrationDefinitionId/spec')
-  @UseGuards(new AuthGuard())
   async getSpecForIntegrationDefinition(
     @Param()
     integrationDefinitionRequestIdBody: IntegrationDefinitionRequestIdBody,
@@ -48,7 +47,6 @@ export class IntegrationDefinitionController {
   }
 
   @Get(':integrationDefinitionId')
-  @UseGuards(new AuthGuard())
   async getIntegrationDefinitionWithId(
     @Param()
     integrationDefinitionRequestIdBody: IntegrationDefinitionRequestIdBody,

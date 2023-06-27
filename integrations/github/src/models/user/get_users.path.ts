@@ -1,3 +1,5 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import { BasePath, Config, Params, convertToModelKeys } from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
 
@@ -56,8 +58,7 @@ export class GetUsersPath extends BasePath {
   async run(_method: string, headers: AxiosHeaders, params: Params, config: Config): Promise<any> {
     if (params.pathParams?.user_id) {
       return this.getUserById(headers, params.pathParams?.user_id as string, params);
-    } else {
-      return this.getUsers(headers, params, config);
     }
+    return this.getUsers(headers, params, config);
   }
 }

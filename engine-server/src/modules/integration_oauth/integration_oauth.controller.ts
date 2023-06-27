@@ -1,9 +1,19 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp/entities';
+
+import { AuthGuard } from 'modules/auth/auth.guard';
 
 import {
   IntegrationOAuthCreateBody,
@@ -18,6 +28,7 @@ import { IntegrationOAuthService } from './integration_oauth.service';
   path: 'integration_oauth',
 })
 @ApiTags('Integration OAuth Apps')
+@UseGuards(new AuthGuard())
 export class IntegrationOAuthController {
   constructor(private integrationOAuthService: IntegrationOAuthService) {}
 
