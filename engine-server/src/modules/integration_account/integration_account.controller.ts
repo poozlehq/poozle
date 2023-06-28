@@ -34,19 +34,6 @@ import { IntegrationAccountService } from './integration_account.service';
 export class IntegrationAccountController {
   constructor(private integrationAccountService: IntegrationAccountService) {}
 
-  @Post('check')
-  async checkCredentialsForIntegrationAccount(
-    @Body()
-    integrationCheckBody: IntegrationCheckBody,
-  ): CheckResponse {
-    return await this.integrationAccountService.checkForIntegrationCredentails(
-      integrationCheckBody.integrationDefinitionId,
-      integrationCheckBody.config,
-      integrationCheckBody.authType,
-      integrationCheckBody.workspaceId,
-    );
-  }
-
   @Get()
   async getIntegrationAccounts(
     @Query()
@@ -64,6 +51,19 @@ export class IntegrationAccountController {
   ): Promise<IntegrationAccount> {
     return await this.integrationAccountService.getIntegrationAccountWithId(
       integrationAccountIdRequestIdBody,
+    );
+  }
+
+  @Post('check')
+  async checkCredentialsForIntegrationAccount(
+    @Body()
+    integrationCheckBody: IntegrationCheckBody,
+  ): CheckResponse {
+    return await this.integrationAccountService.checkForIntegrationCredentails(
+      integrationCheckBody.integrationDefinitionId,
+      integrationCheckBody.config,
+      integrationCheckBody.authType,
+      integrationCheckBody.workspaceId,
     );
   }
 

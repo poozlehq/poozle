@@ -5,7 +5,7 @@ import axios, { AxiosHeaders } from 'axios';
 
 const BASE_URL = 'https://api.github.com';
 
-export class GetCollectionsPath extends BasePath {
+export class GetCollectionsPath extends BasePath<any> {
   async run(_method: string, headers: AxiosHeaders, params: Params, config: Config): Promise<any> {
     const page =
       typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;

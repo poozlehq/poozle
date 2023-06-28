@@ -19,7 +19,7 @@ export const TicketSchema = {
       type: 'string',
       default: '',
     },
-    subject: {
+    name: {
       type: 'string',
       default: '',
     },
@@ -101,3 +101,47 @@ export const TicketSchema = {
     },
   },
 };
+
+export interface Assignee {
+  id: string;
+  username: string;
+}
+
+export interface Tag {
+  id: string;
+  name: string;
+}
+
+export interface Ticket {
+  id: number;
+  parent_id: string;
+  collection_id: string;
+  type: string;
+  name: string;
+  description: string;
+  status: string;
+  priority: string;
+  ticket_url: string;
+  assignees: Assignee[];
+  updated_at: string;
+  created_at: string;
+  created_by: string;
+  due_date: string;
+  completed_at: string;
+  tags: Tag[];
+}
+
+export interface CreateTicketBody {
+  name: string;
+  description: string;
+  assignees: Assignee[];
+  tags: Tag[];
+}
+
+export interface UpdateTicketBody {
+  name: string;
+  description: string;
+  assignees: Assignee[];
+  tags: Tag[];
+  status: string;
+}

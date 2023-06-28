@@ -4,6 +4,7 @@ import { AxiosHeaders } from 'axios';
 import { Config, Params } from 'types/integration';
 
 import { BaseModelInterface, Schema } from 'types/model';
+import { BasePath } from './base_path';
 
 export class BaseModel implements BaseModelInterface {
   name: string;
@@ -21,7 +22,7 @@ export class BaseModel implements BaseModelInterface {
     return pathExists ? true : false;
   }
 
-  paths(): any[] {
+  paths(): BasePath<any>[] {
     return [];
   }
 
@@ -29,9 +30,16 @@ export class BaseModel implements BaseModelInterface {
     try {
       const paths = this.paths();
 
-      const pathToRun = paths.find((p) => p.isPath(path, method));
+      const pathToRun: BasePath<any> | undefined = paths.find((p) => p.isPath(path, method));
 
-      return await pathToRun.run(method, headers, params, config);
+      if (pathToRun) {
+        return await pathToRun.baseRun(method, headers, params, config);
+      }
+
+      return {
+        status: 'error',
+        error: 'Path not found',
+      };
     } catch (err) {
       return {
         status: 'error',

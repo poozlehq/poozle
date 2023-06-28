@@ -1,6 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 import type { Config } from './config.interface';
 
+import jwt from 'supertokens-node/lib/build/recipe/jwt';
 import EmailPassword from 'supertokens-node/recipe/emailpassword';
 import Passwordless from 'supertokens-node/recipe/passwordless';
 import Session from 'supertokens-node/recipe/session';
@@ -25,6 +26,7 @@ export const config: Config = {
 };
 
 export const recipeList = [
+  jwt.init(),
   Passwordless.init({
     flowType: 'MAGIC_LINK',
     contactMethod: 'EMAIL',

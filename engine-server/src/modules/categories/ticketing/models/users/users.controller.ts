@@ -1,24 +1,16 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import {
-  Controller,
-  Get,
-  Query,
-  Headers,
-  Param,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Query, Param, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
 import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
+import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
 import { defaultQueryParams } from 'common/interfaces/defaults.constants';
-import { HeadersType } from 'common/interfaces/headers.interface';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
-import { IntegrationAccountService } from 'modules/integration_account/integration_account.service';
 
 import {
   PathParams,
@@ -36,24 +28,14 @@ import {
 @ApiTags('Ticketing')
 @UseGuards(new AuthGuard())
 export class UsersController {
-  constructor(private integrationAccountService: IntegrationAccountService) {}
-
   @Get(':collection_id/users/:user_id')
   async getUserId(
     @Query() query: GetUserParams = defaultQueryParams,
     @Param()
     params: PathParamsWithUserId,
-    @Headers() headers: HeadersType,
+    @GetIntegrationAccount(IntegrationType.TICKETING)
+    integrationAccount: IntegrationAccount,
   ): Promise<TicketingUserResponse> {
-    const integrationAccount =
-      (await this.integrationAccountService.getIntegrationAccountWithIntegrationType(
-        {
-          workspaceId: headers.workspaceId,
-          integrationAccountName: headers.integrationAccountName,
-          integrationType: IntegrationType.TICKETING,
-        },
-      )) as IntegrationAccount;
-
     const userResponse = await getDataFromAccount(
       integrationAccount,
       '/users',
@@ -72,17 +54,9 @@ export class UsersController {
     @Query() query: ListUserParams = defaultQueryParams,
     @Param()
     params: PathParams,
-    @Headers() headers: HeadersType,
+    @GetIntegrationAccount(IntegrationType.TICKETING)
+    integrationAccount: IntegrationAccount,
   ): Promise<TicketingUsersResponse> {
-    const integrationAccount =
-      (await this.integrationAccountService.getIntegrationAccountWithIntegrationType(
-        {
-          workspaceId: headers.workspaceId,
-          integrationAccountName: headers.integrationAccountName,
-          integrationType: IntegrationType.TICKETING,
-        },
-      )) as IntegrationAccount;
-
     const userResponse = await getDataFromAccount(
       integrationAccount,
       '/collections',

@@ -36,7 +36,26 @@ export class Ticket {
   parent_id: string;
   collection_id: string;
   type: string;
-  subject: string;
+  name: string;
+  description: string;
+  status: string;
+  priority: string;
+  ticket_url: string;
+  assignees: Assignee[];
+  updated_at: string;
+  created_at: string;
+  created_by: string;
+  due_date: string;
+  completed_at: string;
+  tags: Tag[];
+}
+
+export class CreateTicketBody {
+  id: number;
+  parent_id: string;
+  collection_id: string;
+  type: string;
+  name: string;
   description: string;
   status: string;
   priority: string;

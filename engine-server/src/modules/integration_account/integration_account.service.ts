@@ -115,6 +115,7 @@ export class IntegrationAccountService {
   async getIntegrationAccountWithIntegrationType(
     integrationAccountRequestBody: IntegrationAccountRequestBodyWithIntegrationType,
   ) {
+    console.log(integrationAccountRequestBody);
     const integrationAccounts =
       await this.prismaService.integrationAccount.findMany({
         where: {

@@ -2,6 +2,7 @@
 
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import jwt from 'supertokens-node/recipe/jwt';
 import { SessionContainer } from 'supertokens-node/recipe/session';
 
 import { User } from '@@generated/user/entities';
@@ -38,5 +39,20 @@ export class UserController {
     const user = await this.userService.getUser(userId);
 
     return user;
+  }
+
+  @Get()
+  @UseGuards(new AuthGuard())
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async createJWT(payload: any) {
+    const jwtResponse = await jwt.createJWT({
+      ...payload,
+      source: 'microservice',
+    });
+    if (jwtResponse.status === 'OK') {
+      // Send JWT as Authorization header to M2
+      return jwtResponse.jwt;
+    }
+    throw new Error('Unable to create JWT. Should never come here.');
   }
 }

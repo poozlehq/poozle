@@ -1,6 +1,6 @@
 {
   "name": "@poozle/engine-edk",
-  "version": "0.2.2",
+  "version": "0.2.9",
   "description": "Used to develop extensions for Poozle",
   "license": "MIT",
   "author": "Poozle <support@poozle.in>",
@@ -37,6 +37,7 @@
     "eslint-plugin-notice": "^0.9.10",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-unused-imports": "^2.0.0",
+    "json-schema-to-typescript": "^13.0.2",
     "prettier": "^2.6.2",
     "rollup": "^3.2.3",
     "rollup-plugin-dts": "^5.2.0",

@@ -2,3 +2,4 @@
 
 export * from './integration';
 export * from './model';
+export * from './path';

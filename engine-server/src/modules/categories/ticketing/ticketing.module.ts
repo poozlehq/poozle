@@ -12,7 +12,7 @@ import { UsersController } from './models/users/users.controller';
 
 @Module({
   imports: [PrismaModule, HttpModule, IntegrationAccountModule],
-  controllers: [UsersController, CollectionsController, TicketsController],
+  controllers: [CollectionsController, UsersController, TicketsController],
   providers: [PrismaService],
   exports: [],
 })

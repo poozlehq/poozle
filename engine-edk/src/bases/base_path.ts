@@ -3,8 +3,10 @@
 import { AxiosHeaders } from 'axios';
 
 import { Config, Params } from 'types/integration';
+import { Meta, PathResponse, Response } from 'types/path';
+import { convertToModelKeys } from 'utils';
 
-export class BasePath {
+export class BasePath<T> {
   pathRegex: RegExp;
   method: string | string[];
   schema: Record<string, any>;
@@ -28,10 +30,55 @@ export class BasePath {
     return this.pathRegex.test(path) && this.isMatchingMethod(method);
   }
 
+  convertToModel(data: any, raw: boolean) {
+    const raw_data = data['raw_data'];
+
+    return convertToModelKeys(data, this.schema, raw_data, raw);
+  }
+
+  async baseRun(
+    method: string,
+    headers: AxiosHeaders,
+    params: Params,
+    config: Config,
+  ): Promise<Response<T[] | T>> {
+    const responseFromRun = await this.run(method, headers, params, config);
+
+    if (Array.isArray(responseFromRun)) {
+      const data = responseFromRun.map((responseItem: any) =>
+        this.convertToModel(responseItem, params.queryParams?.raw ? true : false),
+      );
+
+      const meta = await this.getMetaParams(data, params);
+
+      return {
+        data,
+        meta,
+      };
+    } else {
+      return { data: this.convertToModel(responseFromRun, params.queryParams?.raw ? true : false) };
+    }
+  }
+
+  // Written by the integration
+  async getMetaParams(_data: T[], _params: Params): Promise<Meta> {
+    return {
+      limit: 0,
+      cursors: {
+        before: '0',
+        current: '0',
+        next: '0',
+      },
+    };
+  }
+
+  // Written by the integration
   async run(
     _method: string,
     _headers: AxiosHeaders,
     _params: Params,
     _config: Config,
-  ): Promise<any> {}
+  ): Promise<PathResponse<any>> {
+    return [];
+  }
 }

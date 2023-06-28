@@ -21,7 +21,7 @@ export class PathParamsWithUserId {
   user_id: string;
 }
 
-export class User {
+export class TicketingUser {
   id: string;
   name: string;
   first_name: string;
@@ -33,9 +33,9 @@ export class User {
 }
 
 export class TicketingUserResponse {
-  data: User;
+  data: TicketingUser;
 }
 export class TicketingUsersResponse {
-  data: User[];
+  data: TicketingUser[];
   meta: Meta;
 }

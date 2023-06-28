@@ -1109,10 +1109,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@poozle/engine-edk@^0.2.2":
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/@poozle/engine-edk/-/engine-edk-0.2.2.tgz#c621b09dcf867a8ebf38013d768dcf15a1bdda98"
-  integrity sha512-0Ve5f353wJqFl3TvAFg2Y/wJb5jZUwPM0f435xIMn0dai4TopWoH6nNOxDw76nOW45S/w1LVJ8JPArhadwYy8g==
+"@poozle/engine-edk@^0.2.9":
+  version "0.2.9"
+  resolved "https://registry.yarnpkg.com/@poozle/engine-edk/-/engine-edk-0.2.9.tgz#edaeddb5616dd96c0671b14dff2ee036f3436df2"
+  integrity sha512-z9JfQPYxDhvU+eSrIBojvg27ZSKG/zkQ+0V4MwjtajL/SME7KDHb9/7sft9MYnbeaItP9B2IFkHRxZWE0P/iTQ==
   dependencies:
     axios "^1.3.2"
 

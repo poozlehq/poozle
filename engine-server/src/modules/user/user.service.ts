@@ -3,6 +3,11 @@
 import { Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
+import {
+  uniqueNamesGenerator,
+  adjectives,
+  colors,
+} from 'unique-names-generator';
 
 import { CreateUserInput, UpdateUserInput } from './user.interface';
 
@@ -34,10 +39,23 @@ export class UserService {
   }
 
   async createUser(userId: string, userData: CreateUserInput): Promise<User> {
+    const randomName: string = uniqueNamesGenerator({
+      dictionaries: [adjectives, colors],
+      separator: '-',
+    }); // big_red
+
     return this.prisma.user.create({
       data: {
         ...userData,
         userId,
+        Workspace: {
+          create: {
+            slug: randomName,
+          },
+        },
+      },
+      include: {
+        Workspace: true,
       },
     });
   }
