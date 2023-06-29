@@ -1,8 +1,11 @@
-import { BasePath, Config, Params, User, PathResponse } from '@poozle/engine-edk';
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
+import { BasePath, Config, Params } from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
+
 import { convertAttachment } from './attachment.utils';
 
-export class AttachmentsPath extends BasePath<User> {
+export class AttachmentsPath extends BasePath {
   async fetchAttachments(url: string, headers: AxiosHeaders, _params: Params) {
     try {
       const response = await axios({
@@ -32,12 +35,7 @@ export class AttachmentsPath extends BasePath<User> {
     }
   }
 
-  async run(
-    method: string,
-    headers: AxiosHeaders,
-    params: Params,
-    config: Config,
-  ): Promise<PathResponse<User>> {
+  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
     const BASE_URL = `https://${config.jira_domain}.atlassian.net`;
     let url = '';
 

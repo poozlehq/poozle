@@ -5,31 +5,30 @@ import axios, { AxiosHeaders } from 'axios';
 
 import { convertUser } from './user.utils';
 
-export class UserPath extends BasePath {
-  async fetchSingleUser(url: string, headers: AxiosHeaders, _params: Params) {
+const BASE_URL = 'https://api.github.com';
+
+export class GetUsersPath extends BasePath {
+  async getUsers(headers: AxiosHeaders, params: Params, config: Config) {
     try {
       const response = await axios({
-        url,
+        url: `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/assignees`,
         headers,
       });
 
-      return convertUser(response.data);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      return response.data.map((data: any) => convertUser(data));
     } catch (e) {
       throw new Error(e);
     }
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
-    const BASE_URL = `https://${config.jira_domain}.atlassian.net`;
-    let url = '';
-
     switch (method) {
       case 'GET':
-        url = `${BASE_URL}/rest/api/2/user?accountId=${params.pathParams?.user_id}`;
-        return this.fetchSingleUser(url, headers, params);
+        return this.getUsers(headers, params, config);
 
       default:
-        return {};
+        return [];
     }
   }
 }

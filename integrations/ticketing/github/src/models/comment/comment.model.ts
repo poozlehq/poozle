@@ -2,8 +2,8 @@
 
 import { BaseModel, CommentSchema } from '@poozle/engine-edk';
 
-import { GetCommentsPath } from './get_comments.path';
-import { GetCommentPath } from './get_comment.path';
+import { GetCommentPath } from './comment';
+import { GetCommentsPath } from './comments';
 
 export class GithubCommentModel extends BaseModel {
   constructor() {

@@ -1,17 +1,14 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, convertToRequestBody, Params, PathResponse, Ticket } from '@poozle/engine-edk';
+import { BasePath, Config, convertToRequestBody, Params } from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
+
 import { convertTicket, ticketMappings } from './ticket.utils';
 
 const BASE_URL = 'https://api.github.com';
 
-export class GetTicketPath extends BasePath<Ticket> {
-  async fetchSingleTicket(
-    url: string,
-    headers: AxiosHeaders,
-    params: Params,
-  ): Promise<PathResponse<Ticket>> {
+export class GetTicketPath extends BasePath {
+  async fetchSingleTicket(url: string, headers: AxiosHeaders, params: Params) {
     try {
       const response = await axios({
         url,
@@ -24,24 +21,15 @@ export class GetTicketPath extends BasePath<Ticket> {
     }
   }
 
-  async patchTicket(url: string,
-    headers: AxiosHeaders,
-    params: Params,): Promise<PathResponse<Ticket>> {
+  async patchTicket(url: string, headers: AxiosHeaders, params: Params) {
     const body = params.requestBody;
     const createBody = convertToRequestBody(body, ticketMappings);
     const response = await axios.post(url, createBody, { headers });
 
-    return convertTicket(response.data, params.pathParams?.collection_id as string | null)
-
+    return convertTicket(response.data, params.pathParams?.collection_id as string | null);
   }
 
-  async run(
-    method: string,
-    headers: AxiosHeaders,
-    params: Params,
-    config: Config,
-  ): Promise<PathResponse<Ticket>> {
-    
+  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
     const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues/${params.pathParams?.ticket_id}`;
 
     switch (method) {
@@ -55,6 +43,5 @@ export class GetTicketPath extends BasePath<Ticket> {
       default:
         return {};
     }
-    
   }
 }

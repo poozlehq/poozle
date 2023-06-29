@@ -1,9 +1,9 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { BaseModel, CommentSchema } from '@poozle/engine-edk';
-import { GetCommentsPath } from './comments.path';
-import {GetCommentPath} from './comment.path'
 
+import { GetCommentPath } from './comment.path';
+import { GetCommentsPath } from './comments.path';
 
 export class JiraCommentModel extends BaseModel {
   constructor() {

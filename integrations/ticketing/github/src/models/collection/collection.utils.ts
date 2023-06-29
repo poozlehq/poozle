@@ -1,6 +1,7 @@
-import { Collection } from '@poozle/engine-edk';
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-export function convertCollection(data: any): Partial<Collection> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function convertCollection(data: any) {
   return {
     id: data.name,
     name: data.full_name,
@@ -8,5 +9,6 @@ export function convertCollection(data: any): Partial<Collection> {
     description: data.description,
     created_at: data.created_at,
     updated_at: data.updated_at,
+    raw_data: data,
   };
 }

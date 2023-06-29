@@ -1,6 +1,7 @@
-import { Comment } from '@poozle/engine-edk';
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-export function convertComment(data: any): Partial<Comment> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function convertComment(data: any) {
   return {
     id: data.id,
     ticket_id: data.issue_url.match(/\/(\d+)$/)?.[1],
@@ -9,9 +10,10 @@ export function convertComment(data: any): Partial<Comment> {
     created_by: data.user.login,
     created_at: data.created_at,
     updated_at: data.updated_at,
+    raw_data: data,
   };
 }
 
 export const commentMappings = {
-    description: 'body',
-  };
+  description: 'body',
+};

@@ -2,8 +2,8 @@
 
 import { BaseModel, TicketSchema } from '@poozle/engine-edk';
 
-import { GetTicketsPath } from './get_tickets.path';
-import {GetTicketPath} from './get_ticket.path'
+import { GetTicketPath } from './ticket.path';
+import { GetTicketsPath } from './tickets.path';
 export class GithubTicketModel extends BaseModel {
   constructor() {
     super('GithubTicketModel', TicketSchema);

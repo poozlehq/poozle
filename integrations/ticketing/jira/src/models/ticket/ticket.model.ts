@@ -1,6 +1,9 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import { BaseModel, TicketSchema } from '@poozle/engine-edk';
-import { TicketsPath } from './tickets.path';
+
 import { TicketPath } from './ticket.path';
+import { TicketsPath } from './tickets.path';
 
 export class JiraTicketModel extends BaseModel {
   constructor() {

@@ -1,17 +1,19 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Comment, Config, convertToRequestBody, Params, PathResponse } from '@poozle/engine-edk';
+import { BasePath, Comment, Config, convertToRequestBody, Params } from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
+
 import { commentMappings, convertComment } from './comment.utils';
 
 const BASE_URL = 'https://api.github.com';
 
-export class GetCommentPath extends BasePath<Comment> {
+export class GetCommentPath extends BasePath {
   async fetchSingleComment(
     url: string,
     headers: AxiosHeaders,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _params: Params,
-  ): Promise<PathResponse<Comment>> {
+  ): Promise<Partial<Comment>> {
     try {
       const response = await axios({
         url,
@@ -24,15 +26,16 @@ export class GetCommentPath extends BasePath<Comment> {
     }
   }
 
-  async patchComment(url: string,
+  async patchComment(
+    url: string,
     headers: AxiosHeaders,
-    params: Params,): Promise<PathResponse<Comment>> {
+    params: Params,
+  ): Promise<Partial<Comment>> {
     const body = params.requestBody;
     const createBody = convertToRequestBody(body, commentMappings);
     const response = await axios.post(url, createBody, { headers });
 
-    return convertComment(response.data)
-
+    return convertComment(response.data);
   }
 
   async run(
@@ -40,9 +43,8 @@ export class GetCommentPath extends BasePath<Comment> {
     headers: AxiosHeaders,
     params: Params,
     config: Config,
-  ): Promise<PathResponse<Comment>> {
-    
-    const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues/comments/${params.pathParams?.comment_id}`
+  ): Promise<Partial<Comment>> {
+    const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues/comments/${params.pathParams?.comment_id}`;
 
     switch (method) {
       case 'GET':
@@ -55,6 +57,5 @@ export class GetCommentPath extends BasePath<Comment> {
       default:
         return {};
     }
-    
   }
 }

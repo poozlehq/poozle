@@ -2,7 +2,7 @@
 
 import { BaseModel, CollectionSchema } from '@poozle/engine-edk';
 
-import { GetCollectionsPath } from './get_collections.path';
+import { GetCollectionsPath } from './collections';
 
 export class GithubCollectionModel extends BaseModel {
   constructor() {

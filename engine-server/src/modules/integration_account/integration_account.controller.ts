@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import {
@@ -21,6 +22,7 @@ import {
   IntegrationAccountRequestIdBody,
   IntegrationAccountsRequestBody,
   IntegrationCheckBody,
+  ProxyBody,
   UpdateIntegrationAccountBody,
 } from './integration_account.interface';
 import { IntegrationAccountService } from './integration_account.service';
@@ -91,6 +93,19 @@ export class IntegrationAccountController {
       createIntegrationAccountBody.integrationAccountName,
       createIntegrationAccountBody.authType,
       createIntegrationAccountBody.workspaceId,
+    );
+  }
+
+  @Post(':integrationAccountId/proxy')
+  async proxyPost(
+    @Body()
+    proxyBody: ProxyBody,
+    @Param()
+    integrationAccountIdRequestIdBody: IntegrationAccountRequestIdBody,
+  ): Promise<any> {
+    return this.integrationAccountService.runProxyCommand(
+      integrationAccountIdRequestIdBody.integrationAccountId,
+      proxyBody,
     );
   }
 }

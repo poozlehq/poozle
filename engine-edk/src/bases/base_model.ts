@@ -22,7 +22,7 @@ export class BaseModel implements BaseModelInterface {
     return pathExists ? true : false;
   }
 
-  paths(): BasePath<any>[] {
+  paths(): BasePath[] {
     return [];
   }
 
@@ -30,7 +30,7 @@ export class BaseModel implements BaseModelInterface {
     try {
       const paths = this.paths();
 
-      const pathToRun: BasePath<any> | undefined = paths.find((p) => p.isPath(path, method));
+      const pathToRun: BasePath | undefined = paths.find((p) => p.isPath(path, method));
 
       if (pathToRun) {
         return await pathToRun.baseRun(method, headers, params, config);

@@ -7,16 +7,8 @@ export interface Meta {
   };
 }
 
-export interface Response<T> {
-  data: Partial<T>;
+export interface Response {
+  data: any;
   meta?: Meta;
   error?: string;
 }
-
-export interface ResponseArray<T> {
-  data: Partial<T>[];
-  meta?: Meta;
-  error?: string;
-}
-
-export type PathResponse<T> = Partial<T> | { raw_data: Record<any, any> };

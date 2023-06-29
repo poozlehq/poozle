@@ -4,22 +4,19 @@ import {
   BasePath,
   Config,
   convertToRequestBody,
+  CreateTicketBody,
   Meta,
   Params,
-  PathResponse,
   Ticket,
 } from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
+
 import { convertTicket, ticketMappings } from './ticket.utils';
 
 const BASE_URL = 'https://api.github.com';
 
-export class GetTicketsPath extends BasePath<Ticket> {
-  async fetchData(
-    url: string,
-    headers: AxiosHeaders,
-    params: Params,
-  ): Promise<PathResponse<Ticket>[]> {
+export class GetTicketsPath extends BasePath {
+  async fetchData(url: string, headers: AxiosHeaders, params: Params) {
     const page =
       typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
 
@@ -34,17 +31,14 @@ export class GetTicketsPath extends BasePath<Ticket> {
 
     const responseData = response.data;
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return responseData.map((data: any) =>
       convertTicket(data, params.pathParams?.collection_id as string | null),
     );
   }
 
-  async createTicket(
-    url: string,
-    headers: AxiosHeaders,
-    params: Params,
-  ): Promise<PathResponse<Ticket>[]> {
-    const body = params.requestBody;
+  async createTicket(url: string, headers: AxiosHeaders, params: Params) {
+    const body: CreateTicketBody = params.requestBody as CreateTicketBody;
     const createBody = convertToRequestBody(body, ticketMappings);
 
     const response = await axios.post(url, createBody, { headers });
@@ -66,13 +60,9 @@ export class GetTicketsPath extends BasePath<Ticket> {
     };
   }
 
-  async run(
-    method: string,
-    headers: AxiosHeaders,
-    params: Params,
-    config: Config,
-  ): Promise<PathResponse<Ticket>[]> {
+  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
     const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues`;
+
     switch (method) {
       case 'GET':
         return this.fetchData(url, headers, params);

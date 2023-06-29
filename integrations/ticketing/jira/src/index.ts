@@ -1,3 +1,5 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 import {
   BaseIntegration,
   CheckResponse,
@@ -5,14 +7,15 @@ import {
   GenericProxyModel,
   SpecificationResponse,
 } from '@poozle/engine-edk';
-import spec from './spec';
+import axios from 'axios';
 
-import { JiraTicketModel } from 'models/ticket/ticket.model';
+import { JiraAttachmentModel } from 'models/attachment/attachment.model';
 import { JiraCollectionModel } from 'models/collection/collection.model';
 import { JiraCommentModel } from 'models/comment/comments.model';
+import { JiraTicketModel } from 'models/ticket/ticket.model';
 import { JiraUserModel } from 'models/user/user.model';
-import { JiraAttachmentModel } from 'models/attachment/attachment.model';
-import axios from 'axios';
+
+import spec from './spec';
 
 class JiraIntegration extends BaseIntegration {
   async spec(): SpecificationResponse {
@@ -57,7 +60,7 @@ class JiraIntegration extends BaseIntegration {
       new JiraCollectionModel(),
       new JiraCommentModel(),
       new JiraUserModel(),
-      new JiraAttachmentModel()
+      new JiraAttachmentModel(),
     ];
   }
 }

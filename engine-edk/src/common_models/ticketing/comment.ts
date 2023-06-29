@@ -27,7 +27,7 @@ export const CommentSchema = {
     },
     is_private: {
       type: 'string',
-      default: false
+      default: false,
     },
     created_at: {
       type: 'string',
@@ -54,4 +54,12 @@ export interface Comment {
   is_private: string;
   created_at: string;
   updated_at: string;
+}
+
+export interface UpdateCommentBody {
+  body: string;
+}
+
+export interface CreateCommentBody {
+  body: string;
 }

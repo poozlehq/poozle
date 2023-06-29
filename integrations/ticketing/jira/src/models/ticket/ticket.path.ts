@@ -1,13 +1,12 @@
-import { BasePath, Config, Params, Ticket, PathResponse } from '@poozle/engine-edk';
-import axios, { AxiosHeaders } from 'axios';
-import { convertTicket, CreateTicketBody } from './ticket.utils';
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-export class TicketPath extends BasePath<Ticket> {
-  async fetchSingleTicket(
-    url: string,
-    headers: AxiosHeaders,
-    params: Params,
-  ): Promise<PathResponse<Ticket>> {
+import { BasePath, Config, Params, UpdateTicketBody } from '@poozle/engine-edk';
+import axios, { AxiosHeaders } from 'axios';
+
+import { convertTicket, JIRATicketBody } from './ticket.utils';
+
+export class TicketPath extends BasePath {
+  async fetchSingleTicket(url: string, headers: AxiosHeaders, params: Params) {
     try {
       const response = await axios({
         url,
@@ -20,21 +19,22 @@ export class TicketPath extends BasePath<Ticket> {
     }
   }
 
-  async patchTicket(url: string, headers: AxiosHeaders, params: Params): Promise<PathResponse<Ticket>> {
-    const body = params.requestBody;
-    const createBody: CreateTicketBody = {
+  async patchTicket(url: string, headers: AxiosHeaders, params: Params) {
+    const body: UpdateTicketBody = params.requestBody as UpdateTicketBody;
+
+    const createBody: JIRATicketBody = {
       fields: {
         summary: body?.name,
         issuetype: {
           name: body?.type,
         },
         assignee: {
-          accountId: body?.assignee.id,
+          accountId: body?.assignees[0].id,
         },
         reporter: {
           name: body?.created_by,
         },
-        labels: body?.tags,
+        labels: body?.tags.map((tag) => tag.name),
       },
     };
 
@@ -50,12 +50,7 @@ export class TicketPath extends BasePath<Ticket> {
 
     return response.data;
   }
-  async run(
-    method: string,
-    headers: AxiosHeaders,
-    params: Params,
-    config: Config,
-  ): Promise<PathResponse<Ticket>> {
+  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
     const BASE_URL = `https://${config.jira_domain}.atlassian.net`;
     const url = `${BASE_URL}/rest/api/2/issue/${params.pathParams?.ticket_id}`;
 

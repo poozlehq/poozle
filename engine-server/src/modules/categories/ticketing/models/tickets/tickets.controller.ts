@@ -59,7 +59,7 @@ export class TicketsController {
   ): Promise<TicketingTicketResponse> {
     const ticketResponse = await getDataFromAccount(
       integrationAccount,
-      '/tickets',
+      `/tickets/${params.ticket_id}`,
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },

@@ -8,7 +8,10 @@ import {
 import { CheckResponse, Config } from '@poozle/engine-edk';
 import { IntegrationType } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
-import { checkIntegrationCredentials } from 'shared/integration_run_utils';
+import {
+  checkIntegrationCredentials,
+  runProxyIntegrationCommand,
+} from 'shared/integration_run_utils';
 
 import { IntegrationDefinitionService } from 'modules/integration_definition /integration_definition.service';
 
@@ -16,6 +19,7 @@ import {
   IntegrationAccountRequestBody,
   IntegrationAccountRequestBodyWithIntegrationType,
   IntegrationAccountRequestIdBody,
+  ProxyBody,
   UpdateIntegrationAccountBody,
 } from './integration_account.interface';
 
@@ -191,5 +195,28 @@ export class IntegrationAccountService {
     }
 
     return false;
+  }
+
+  async runProxyCommand(integrationAccountId: string, body: ProxyBody) {
+    const integrationAccount =
+      await this.prismaService.integrationAccount.findUnique({
+        where: {
+          integrationAccountId,
+        },
+        include: {
+          integrationDefinition: true,
+        },
+      });
+
+    return await runProxyIntegrationCommand(
+      integrationAccount.integrationDefinition.sourceUrl,
+      body.path,
+      body.method,
+      integrationAccount.integrationConfiguration as Config,
+      integrationAccount.authType,
+      {
+        requestBody: body.postBody,
+      },
+    );
   }
 }

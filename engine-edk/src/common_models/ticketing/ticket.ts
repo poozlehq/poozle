@@ -132,10 +132,13 @@ export interface Ticket {
 }
 
 export interface CreateTicketBody {
+  collection_id: string;
   name: string;
   description: string;
   assignees: Exclude<Assignee, 'username'>[];
   tags: Tag[];
+  created_by: string;
+  type: string;
 }
 
 export interface UpdateTicketBody {
@@ -144,4 +147,6 @@ export interface UpdateTicketBody {
   assignees: Exclude<Assignee, 'username'>[];
   tags: Tag[];
   status: string;
+  created_by: string;
+  type: string;
 }

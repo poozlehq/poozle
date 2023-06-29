@@ -29,7 +29,7 @@ export class GetTeamsPath extends BasePath {
     };
   }
 
-  async run(_method: string, headers: AxiosHeaders, params: Params, config: Config): Promise<any> {
+  async run(_method: string, headers: AxiosHeaders, params: Params, config: Config) {
     if (params.pathParams?.teamName) {
       const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/teams/${params.pathParams?.teamName}`;
       return this.fetchData(url, headers, params);

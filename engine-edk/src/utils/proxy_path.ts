@@ -18,7 +18,7 @@ export class GenericProxyModel extends BaseModel {
   }
 }
 
-export class ProxyPath extends BasePath<any> {
+export class ProxyPath extends BasePath {
   async run(method: string, headers: AxiosHeaders, params: Params): Promise<any> {
     const axiosObject: any = {
       url: params.url,

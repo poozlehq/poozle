@@ -1,16 +1,16 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Tag } from '@poozle/engine-edk';
-
-export function convertTag(data: any): Partial<Tag> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function convertTag(data: any) {
   return {
     id: data.id,
     name: data.name,
+    raw_data: data,
   };
 }
 
-
 export const tagMapping = {
-    name: 'name',
-    description: 'description',
-    color: 'color',
-  };
+  name: 'name',
+  description: 'description',
+  color: 'color',
+};

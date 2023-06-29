@@ -3,10 +3,10 @@
 import { AxiosHeaders } from 'axios';
 
 import { Config, Params } from 'types/integration';
-import { Meta, PathResponse, Response } from 'types/path';
+import { Meta } from 'types/path';
 import { convertToModelKeys } from 'utils';
 
-export class BasePath<T> {
+export class BasePath {
   pathRegex: RegExp;
   method: string | string[];
   schema: Record<string, any>;
@@ -32,17 +32,18 @@ export class BasePath<T> {
 
   convertToModel(data: any, raw: boolean) {
     const raw_data = data['raw_data'];
+    delete data['raw_data'];
 
     return convertToModelKeys(data, this.schema, raw_data, raw);
   }
 
-  async baseRun(
-    method: string,
-    headers: AxiosHeaders,
-    params: Params,
-    config: Config,
-  ): Promise<Response<T[] | T>> {
+  async baseRun(method: string, headers: AxiosHeaders, params: Params, config: Config) {
     const responseFromRun = await this.run(method, headers, params, config);
+
+    // if this is a request directly to the integration
+    if (params.proxy) {
+      return responseFromRun;
+    }
 
     if (Array.isArray(responseFromRun)) {
       const data = responseFromRun.map((responseItem: any) =>
@@ -56,12 +57,17 @@ export class BasePath<T> {
         meta,
       };
     } else {
-      return { data: this.convertToModel(responseFromRun, params.queryParams?.raw ? true : false) };
+      return {
+        data: this.convertToModel(
+          responseFromRun,
+          params.queryParams?.raw === true || params.queryParams?.raw === 'true' ? true : false,
+        ),
+      };
     }
   }
 
   // Written by the integration
-  async getMetaParams(_data: T[], _params: Params): Promise<Meta> {
+  async getMetaParams(_data: any, _params: Params): Promise<Meta> {
     return {
       limit: 0,
       cursors: {
@@ -73,12 +79,7 @@ export class BasePath<T> {
   }
 
   // Written by the integration
-  async run(
-    _method: string,
-    _headers: AxiosHeaders,
-    _params: Params,
-    _config: Config,
-  ): Promise<PathResponse<any>> {
-    return [];
+  async run(_method: string, _headers: AxiosHeaders, _params: Params, _config: Config) {
+    return {};
   }
 }

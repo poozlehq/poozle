@@ -1,16 +1,19 @@
-import { BaseModel, UserSchema } from '@poozle/engine-edk';
-import { UsersPath } from './users.path';
-import { UserPath } from './user.path';
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-export class JiraUserModel extends BaseModel {
+import { BaseModel, UserSchema } from '@poozle/engine-edk';
+
+import { AttachmentPath } from './attachment.path';
+import { AttachmentsPath } from './attachments.path';
+
+export class JiraAttachmentModel extends BaseModel {
   constructor() {
-    super('JiraUserModel', UserSchema);
+    super('JiraAttachmentModel', UserSchema);
   }
 
   paths() {
     return [
-      new UsersPath(/^\/?users$/g, ['GET', 'POST'], this.schema),
-      new UserPath(/^\/?users+/g, ['GET', 'PATCH'], this.schema),
+      new AttachmentsPath(/^\/?attachments$/g, 'GET', this.schema),
+      new AttachmentPath(/^\/?attachments+/g, 'GET', this.schema),
     ];
   }
 }

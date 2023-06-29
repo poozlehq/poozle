@@ -1,6 +1,7 @@
-import { Ticket } from '@poozle/engine-edk';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-export function convertTicket(data: any, collection_id: string | null): Partial<Ticket> {
+export function convertTicket(data: any, collection_id: string | null) {
   return {
     id: data.number,
     name: data.title,
@@ -20,6 +21,7 @@ export function convertTicket(data: any, collection_id: string | null): Partial<
       id: lab.id,
       name: lab.name,
     })),
+    raw_data: data,
   };
 }
 

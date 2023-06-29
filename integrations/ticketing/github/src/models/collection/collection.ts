@@ -1,20 +1,21 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Collection, Config, Params, PathResponse } from '@poozle/engine-edk';
+import { BasePath, Collection, Config, Params } from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
+
 import { convertCollection } from './collection.utils';
 
 const BASE_URL = 'https://api.github.com';
 
-export class GetCollectionsPath extends BasePath<Collection> {
+export class GetCollectionsPath extends BasePath {
   async fetchSingleCollection(
     url: string,
     headers: AxiosHeaders,
     params: Params,
-  ): Promise<PathResponse<Collection>> {
+  ): Promise<Partial<Collection>> {
     try {
       const page =
-      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+        typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
 
       const response = await axios({
         url,
@@ -31,9 +32,14 @@ export class GetCollectionsPath extends BasePath<Collection> {
     }
   }
 
-  async run(_method: string, headers: AxiosHeaders, params: Params, config: Config): Promise<PathResponse<Collection>> {
-    const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}`
+  async run(
+    _method: string,
+    headers: AxiosHeaders,
+    params: Params,
+    config: Config,
+  ): Promise<Partial<Collection>> {
+    const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}`;
 
-    return this.fetchSingleCollection(url, headers, params)
+    return this.fetchSingleCollection(url, headers, params);
   }
 }

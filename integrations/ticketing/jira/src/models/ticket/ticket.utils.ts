@@ -1,15 +1,15 @@
-import { Ticket } from '@poozle/engine-edk';
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 export const ticketMappings = {
-  name: "summary",
-  description: "description",
-  assignees: "assignees",
-  tags: "label",
-  status: "status",
-  type: "issuetype"
-}
+  name: 'summary',
+  description: 'description',
+  assignees: 'assignees',
+  tags: 'label',
+  status: 'status',
+  type: 'issuetype',
+};
 
-export function convertTicket(data: any, collection_id: string | null): Partial<Ticket> {
+export function convertTicket(data: any, collection_id: string | null) {
   return {
     id: data.id,
     name: data.fields.summary,
@@ -20,7 +20,9 @@ export function convertTicket(data: any, collection_id: string | null): Partial<
     updated_at: data.fields.updated,
     created_by: data.fields.creator.displayName,
     type: data.fields.issuetype.name,
-    assignees: [{id: data.fields.assignees?.accountId ,username: data.fields.assignees?.displayName}],
+    assignees: [
+      { id: data.fields.assignee?.accountId, username: data.fields.assignee?.displayName },
+    ],
     ticket_url: data.self,
     parent_id: data.fields.parent?.id,
     priority: data.fields.priority.name,
@@ -29,11 +31,11 @@ export function convertTicket(data: any, collection_id: string | null): Partial<
       id: lab.id,
       name: lab.displayName,
     })),
+    raw_data: data,
   };
 }
 
-
-export interface CreateTicketBody {
+export interface JIRATicketBody {
   fields: {
     project?: {
       id?: string;

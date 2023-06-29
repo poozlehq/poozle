@@ -2,7 +2,7 @@
 
 import { BaseModel, UserSchema } from '@poozle/engine-edk';
 
-import { GetUsersPath } from './get_users.path';
+import { GetUsersPath } from './users.path';
 
 export class GithubUserModel extends BaseModel {
   constructor() {

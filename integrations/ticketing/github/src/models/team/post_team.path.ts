@@ -18,7 +18,7 @@ const tagMapping = {
 };
 
 export class PostTeamsPath extends BasePath {
-  async run(_method: string, headers: AxiosHeaders, params: Params, config: Config): Promise<any> {
+  async run(_method: string, headers: AxiosHeaders, params: Params, config: Config) {
     const url = `${BASE_URL}/orgs/${config.org}/teams`;
     const body = params.requestBody;
     const createBody = convertToRequestBody(body, tagMapping);

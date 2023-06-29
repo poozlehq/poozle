@@ -36,19 +36,18 @@ export const AttachmentSchema = {
   },
 };
 
-
 export interface UploadedBy {
-    id: string,
-    username: string,
+  id: string;
+  username: string;
 }
 
 export interface Attachment {
-    id: string,
-    ticket_id: string,
-    file_name: string,
-    file_url: string,
-    content_type: string,
-    uploaded_by: UploadedBy,
-    created_at: string,
-    updated_at: string
+  id: string;
+  ticket_id: string;
+  file_name: string;
+  file_url: string;
+  content_type: string;
+  uploaded_by: UploadedBy;
+  created_at: string;
+  updated_at: string;
 }
