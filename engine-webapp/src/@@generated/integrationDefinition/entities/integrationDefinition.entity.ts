@@ -1,12 +1,13 @@
-import { Workspace } from './workspace.entity';
-import { IntegrationAccount } from './integrationAccount.entity';
-import { IntegrationOAuthApp } from './integrationOAuthApp.entity';
+import { Workspace } from '../../workspace/entities/workspace.entity';
+import { IntegrationAccount } from '../../integrationAccount/entities/integrationAccount.entity';
+import { IntegrationOAuthApp } from '../../integrationOAuthApp/entities/integrationOAuthApp.entity';
 
 const enum IntegrationType {
-  MESSAGING = 'MESSAGING',
   HRIS = 'HRIS',
+  MESSAGING = 'MESSAGING',
   CALENDAR = 'CALENDAR',
   TICKETING = 'TICKETING',
+  EMAIL = 'EMAIL',
 }
 
 const enum ReleaseStage {
@@ -21,6 +22,7 @@ export class IntegrationDefinition {
   name: string;
   key: string;
   icon: string | null;
+  version: string;
   releaseStage: ReleaseStage;
   sourceUrl: string;
   integrationType: IntegrationType;

@@ -53,6 +53,7 @@ model IntegrationDefinition {
   name                    String
   key                     String
   icon                    String?
+  version                 String                @default("0.0.1")
   releaseStage            ReleaseStage          @default(ALPHA)
   sourceUrl               String
   integrationType         IntegrationType

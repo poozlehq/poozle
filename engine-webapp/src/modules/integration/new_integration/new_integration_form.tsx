@@ -63,7 +63,7 @@ export function Form({
   const { mutate: createIntegrationAccount, isLoading: createIsLoading } =
     useCreateIntegrationAccountMutation({
       onSuccess: () => {
-        onComplete();
+        onComplete && onComplete();
         form.reset();
       },
       onError: (err) => {

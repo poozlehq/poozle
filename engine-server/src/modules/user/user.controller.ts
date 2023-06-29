@@ -10,7 +10,7 @@ import { User } from '@@generated/user/entities';
 import { AuthGuard } from 'modules/auth/auth.guard';
 import { Session } from 'modules/auth/session.decorator';
 
-import { CreateUserInput } from './user.interface';
+import { CreateTokenBody, CreateUserInput } from './user.interface';
 import { UserService } from './user.service';
 
 @Controller({
@@ -41,14 +41,20 @@ export class UserController {
     return user;
   }
 
-  @Get()
+  @Post('token')
   @UseGuards(new AuthGuard())
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async createJWT(payload: any) {
-    const jwtResponse = await jwt.createJWT({
-      ...payload,
-      source: 'microservice',
-    });
+  async createJWT(
+    @Body()
+    createTokenBody: CreateTokenBody,
+  ) {
+    const jwtResponse = await jwt.createJWT(
+      {
+        name: createTokenBody.name,
+        source: 'microservice',
+      },
+      createTokenBody.seconds,
+    );
     if (jwtResponse.status === 'OK') {
       // Send JWT as Authorization header to M2
       return jwtResponse.jwt;

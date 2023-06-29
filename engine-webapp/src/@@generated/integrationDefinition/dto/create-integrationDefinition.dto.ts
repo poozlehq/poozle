@@ -1,8 +1,9 @@
 const enum IntegrationType {
-  MESSAGING = 'MESSAGING',
   HRIS = 'HRIS',
+  MESSAGING = 'MESSAGING',
   CALENDAR = 'CALENDAR',
   TICKETING = 'TICKETING',
+  EMAIL = 'EMAIL',
 }
 
 export class CreateIntegrationDefinitionDto {

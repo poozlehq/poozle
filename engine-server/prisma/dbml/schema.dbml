@@ -31,6 +31,7 @@ Table IntegrationDefinition {
   name String [not null]
   key String [not null]
   icon String
+  version String [not null, default: '0.0.1']
   releaseStage ReleaseStage [not null, default: 'ALPHA']
   sourceUrl String [not null]
   integrationType IntegrationType [not null]

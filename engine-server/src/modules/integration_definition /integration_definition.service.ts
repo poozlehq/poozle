@@ -1,6 +1,7 @@
+/* eslint-disable dot-location */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { Specification } from '@poozle/engine-edk';
 import { PrismaService } from 'nestjs-prisma';
 import { getIntegrationSpec } from 'shared/integration_run_utils';
@@ -8,9 +9,11 @@ import { getIntegrationSpec } from 'shared/integration_run_utils';
 import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
 
 import {
+  IntegrationDefinitionCreateBody,
   IntegrationDefinitionRequestIdBody,
   IntegrationDefinitionRequestWorkspaceIdBody,
 } from './integration_definition.interface';
+import { ReleaseStage } from '@prisma/client';
 
 @Injectable()
 export class IntegrationDefinitionService {
@@ -69,5 +72,26 @@ export class IntegrationDefinitionService {
     );
 
     return await getIntegrationSpec(integrationDefinition.sourceUrl);
+  }
+
+  async createIntegrationDefinition(
+    integrationDefinitionCreateBody: IntegrationDefinitionCreateBody,
+  ) {
+    try {
+      await getIntegrationSpec(integrationDefinitionCreateBody.sourceUrl);
+
+      return this.prisma.integrationDefinition.create({
+        data: {
+          ...integrationDefinitionCreateBody,
+          key: integrationDefinitionCreateBody.name
+            .toLowerCase()
+            .replace(/ /g, '_'),
+          releaseStage: ReleaseStage.CUSTOM,
+          icon: 'custom.svg',
+        },
+      });
+    } catch (err) {
+      throw new BadRequestException('Unable to fetch spec');
+    }
   }
 }

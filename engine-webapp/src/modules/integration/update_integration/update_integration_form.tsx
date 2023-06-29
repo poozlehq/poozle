@@ -1,6 +1,5 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IntegrationAccount } from '@@generated/integrationAccount.entity';
 import { Alert, Button, Group, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconAlertCircle } from '@tabler/icons-react';
@@ -26,6 +25,7 @@ import {
   getProperties,
   getPropertyName,
 } from '../new_integration/new_integration_form_utils';
+import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 interface UpdateIntegrationFormProps {
   integrationAccount: IntegrationAccount;

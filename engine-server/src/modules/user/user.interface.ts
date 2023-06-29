@@ -1,15 +1,32 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { IsEmail, IsNumber, IsOptional, IsString } from 'class-validator';
+
 export class UpdateUserInput {
+  @IsString()
+  @IsOptional()
   firstname?: string;
 
+  @IsString()
+  @IsOptional()
   lastname?: string;
 }
 
 export class CreateUserInput {
-  firstname?: string;
+  @IsString()
+  firstname: string;
 
-  lastname?: string;
+  @IsString()
+  lastname: string;
 
+  @IsEmail()
   email: string;
+}
+
+export class CreateTokenBody {
+  @IsString()
+  name: string;
+
+  @IsNumber()
+  seconds: number;
 }

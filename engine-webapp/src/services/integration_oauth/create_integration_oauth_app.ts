@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp.entity';
+import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp/entities';
 import { useMutation } from 'react-query';
 import { ajaxPost } from 'utils';
 

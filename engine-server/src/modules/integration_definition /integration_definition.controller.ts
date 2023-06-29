@@ -1,12 +1,23 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Specification } from '@poozle/engine-edk';
+
+import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
 
 import {
+  IntegrationDefinitionCreateBody,
   IntegrationDefinitionRequestIdBody,
   IntegrationDefinitionRequestWorkspaceIdBody,
 } from './integration_definition.interface';
@@ -43,6 +54,16 @@ export class IntegrationDefinitionController {
     return await this.integrationDefinitionService.getSpecForIntegrationDefinition(
       integrationDefinitionRequestIdBody,
       integrationDefinitionRequestWorkspaceIdBody.workspaceId,
+    );
+  }
+
+  @Post()
+  async createIntegrationDefinition(
+    @Body()
+    integrationDefinitionCreateBody: IntegrationDefinitionCreateBody,
+  ): Promise<IntegrationDefinition> {
+    return await this.integrationDefinitionService.createIntegrationDefinition(
+      integrationDefinitionCreateBody,
     );
   }
 
