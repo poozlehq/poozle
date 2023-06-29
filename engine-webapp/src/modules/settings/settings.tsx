@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Button, Container, Group, UnstyledButton } from '@mantine/core';
+import { Container, Group, Tabs } from '@mantine/core';
 import * as React from 'react';
 import { SessionAuth } from 'supertokens-auth-react/recipe/session';
 
@@ -10,10 +10,14 @@ import { GetUserData } from 'wrappers/get_user_data';
 import { Header } from 'components';
 
 import { Account } from './account/account';
-import styles from './settings.module.scss';
+import { Integrations } from './integrations/integrations';
+import { StyledTabs } from './styled_tab';
+import { APIKeys } from './api_keys/api_keys';
 
 const enum TAB_KEYS {
-  'ACCOUNT' = 'account',
+  'ACCOUNT' = 'ACCOUNT',
+  'INTEGRATIONS' = 'INTEGRATIONS',
+  'API_KEYS' = 'API_KEYS',
 }
 
 export function Settings() {
@@ -21,45 +25,30 @@ export function Settings() {
     TAB_KEYS.ACCOUNT,
   );
 
-  const getComponent = (buttonText: string, key: TAB_KEYS, active: boolean) => {
-    if (active) {
-      return (
-        <Button
-          variant="light"
-          className={styles.button}
-          onClick={() => setCurrentTab(key)}
-        >
-          {buttonText}
-        </Button>
-      );
-    }
-
-    return (
-      <UnstyledButton
-        variant="light"
-        className={styles.button}
-        onClick={() => setCurrentTab(key)}
-      >
-        {buttonText}
-      </UnstyledButton>
-    );
-  };
-
   return (
     <div>
       <Header title="Settings" />
-
       <Container mt="xl">
-        <Group spacing="md" position="center">
-          {getComponent(
-            'Account',
-            TAB_KEYS.ACCOUNT,
-            currentTab === TAB_KEYS.ACCOUNT,
-          )}
-        </Group>
+        <Group position="center">
+          <StyledTabs
+            value={currentTab}
+            onTabChange={(value: string) => setCurrentTab(value as TAB_KEYS)}
+          >
+            <Tabs.List>
+              <Tabs.Tab value={TAB_KEYS.ACCOUNT}>Accounts</Tabs.Tab>
 
+              <Tabs.Tab value={TAB_KEYS.INTEGRATIONS}>Integrations</Tabs.Tab>
+
+              <Tabs.Tab value={TAB_KEYS.API_KEYS}>API Keys</Tabs.Tab>
+            </Tabs.List>
+          </StyledTabs>
+        </Group>
+      </Container>
+      <Container mt="xl">
         <Group mt="xl" grow>
           {currentTab === TAB_KEYS.ACCOUNT && <Account />}
+          {currentTab === TAB_KEYS.INTEGRATIONS && <Integrations />}
+          {currentTab === TAB_KEYS.API_KEYS && <APIKeys />}
         </Group>
       </Container>
     </div>

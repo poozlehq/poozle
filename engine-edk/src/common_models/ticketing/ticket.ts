@@ -134,14 +134,14 @@ export interface Ticket {
 export interface CreateTicketBody {
   name: string;
   description: string;
-  assignees: Assignee[];
+  assignees: Exclude<Assignee, 'username'>[];
   tags: Tag[];
 }
 
 export interface UpdateTicketBody {
   name: string;
   description: string;
-  assignees: Assignee[];
+  assignees: Exclude<Assignee, 'username'>[];
   tags: Tag[];
   status: string;
 }

@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IntegrationAccount } from '@@generated/integrationAccount.entity';
+import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 import { Button, Paper, Text } from '@mantine/core';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -11,7 +11,13 @@ import { GetUserData } from 'wrappers/get_user_data';
 
 import { useGetIntegrationAccounts } from 'services/integration_account';
 
-import { IntegrationIcon, Header, Loader, Table } from 'components';
+import {
+  IntegrationIcon,
+  Header,
+  Loader,
+  Table,
+  IntegrationType,
+} from 'components';
 
 import styles from './integration.module.scss';
 
@@ -46,8 +52,20 @@ export function Integration() {
               width={25}
               height={25}
             />
-            <Text>{data.integrationAccountName}</Text>
+            <Text>{data.integrationDefinition.name}</Text>
           </div>
+        </div>
+      ),
+    },
+    {
+      name: 'Category',
+      key: 'category',
+      render: (data: IntegrationAccount) => (
+        <div className={styles.tableDataContainer}>
+          <IntegrationType
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            type={data.integrationDefinition.integrationType as any}
+          />
         </div>
       ),
     },

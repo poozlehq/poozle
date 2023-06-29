@@ -2,15 +2,15 @@
 
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import jwt from 'supertokens-node/recipe/jwt';
 import { SessionContainer } from 'supertokens-node/recipe/session';
+import Session from 'supertokens-node/recipe/session';
 
 import { User } from '@@generated/user/entities';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
-import { Session } from 'modules/auth/session.decorator';
+import { Session as SessionDecorator } from 'modules/auth/session.decorator';
 
-import { CreateUserInput } from './user.interface';
+import { CreateTokenBody, CreateUserInput } from './user.interface';
 import { UserService } from './user.service';
 
 @Controller({
@@ -24,7 +24,7 @@ export class UserController {
   @Post()
   @UseGuards(new AuthGuard())
   async createUser(
-    @Session() session: SessionContainer,
+    @SessionDecorator() session: SessionContainer,
     @Body() userData: CreateUserInput,
   ): Promise<User> {
     const userId = session.getUserId();
@@ -34,21 +34,27 @@ export class UserController {
 
   @Get()
   @UseGuards(new AuthGuard())
-  async getUser(@Session() session: SessionContainer): Promise<User> {
+  async getUser(@SessionDecorator() session: SessionContainer): Promise<User> {
     const userId = session.getUserId();
     const user = await this.userService.getUser(userId);
 
     return user;
   }
 
-  @Get()
+  @Post('token')
   @UseGuards(new AuthGuard())
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  async createJWT(payload: any) {
-    const jwtResponse = await jwt.createJWT({
-      ...payload,
-      source: 'microservice',
-    });
+  async createJWT(
+    @Body()
+    createTokenBody: CreateTokenBody,
+  ) {
+    const jwtResponse = await Session.createJWT(
+      {
+        name: createTokenBody.name,
+        source: 'microservice',
+      },
+      createTokenBody.seconds,
+    ); // 10 years lifetime
     if (jwtResponse.status === 'OK') {
       // Send JWT as Authorization header to M2
       return jwtResponse.jwt;

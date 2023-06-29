@@ -10,6 +10,7 @@ export class IntegrationDefinition {
 name: string ;
 key: string ;
 icon: string  | null;
+version: string ;
 releaseStage: ReleaseStage ;
 sourceUrl: string ;
 integrationType: IntegrationType ;

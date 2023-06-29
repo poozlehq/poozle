@@ -1,6 +1,6 @@
 .headTitle {
   text-transform: uppercase;
-  color: var(--mantine-color-white);
+  color: var(--mantine-color-black);
 }
 
 .headContainer {
@@ -18,7 +18,7 @@
 }
 
 .heading {
-  background-color: var(--mantine-color-primary-9);
+  background-color: rgba(222, 241, 255, 1) !important;
 }
 
 .dataRow {

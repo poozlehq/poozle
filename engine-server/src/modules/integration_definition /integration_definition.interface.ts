@@ -1,6 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Specification } from '@poozle/engine-edk';
+import { IntegrationType } from '@prisma/client';
 import { IsString } from 'class-validator';
 
 export class IntegrationDefinitionRequestWorkspaceIdBody {
@@ -15,4 +16,17 @@ export class IntegrationDefinitionRequestIdBody {
 
 export class IntegrationDefinitionSpec {
   spec: Specification;
+}
+
+export class IntegrationDefinitionCreateBody {
+  @IsString()
+  name: string;
+
+  @IsString()
+  sourceUrl: string;
+
+  integrationType: IntegrationType;
+
+  @IsString()
+  workspaceId: string;
 }

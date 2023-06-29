@@ -1,5 +1,5 @@
 
-import {Workspace} from './workspace.entity'
+import {Workspace} from '../../workspace/entities/workspace.entity'
 
 
 export class User {
