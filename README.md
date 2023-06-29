@@ -25,11 +25,11 @@
 </div>
 
 <p align="center">
-    <em>Poozle is an open-source, fast and reliable platform to integrate data from external APIs via a single integration layer.
+    <em>Poozle. The open-source Unified API for product integrations
 </em>
 </p>
 
-We believe that only an open-source solution for product integrations can address the extensive range of integrations and empower engineers to customize existing integrations. Our ultimate vision is to assist you in connecting any integration to your product within minutes.
+Poozle provides a single API for each vertical, allowing you to connect all SAAS tools of that vertical at once. We do the hard work of integrating and smoothing over thousands of SAAS tools, exposing a clean and unified interface to developers. We aim to make it easy for companies to build new integrations. Our bet is that companies will choose to use our integration platform instead of building their own integrations or using multiple API integration platforms.
 
 <img width="1232" alt="Screenshot 2023-06-30 at 1 27 58 AM" src="https://github.com/poozlehq/engine/assets/17528887/3d8f3fa3-79fe-4154-8308-ab627c6d5d30">
 
