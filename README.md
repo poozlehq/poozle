@@ -29,11 +29,11 @@
 </em>
 </p>
 
-API Composition is a powerful pattern that enables you to interact with a diverse set of APIs as though they were a unified whole. By eliminating the need for glue code, it streamlines the integration process and provides a clearer understanding of an application's API dependencies. But do you truly understand the APIs your application relies on? Poozle can provide the answer, along with analytics and observability to assess the quality of service your API dependencies offer.
+We believe that only an open-source solution for product integrations can address the extensive range of integrations and empower engineers to customize existing integrations. Our ultimate vision is to assist you in connecting any integration to your product within minutes.
 
-At Poozle, we're committed to an open-source approach to API integration, as we believe it's the only way to accommodate the long tail of API sources while allowing developers to tailor existing integrations to their needs. Our ultimate goal is to enable seamless integration with any API.
-
-Overall, Poozle makes API integration more manageable, efficient, and adaptable, allowing developers to focus on building great applications without being bogged down by integration challenges.
+## Getting Started
+* [Deploy Poozle Open Source](https://docs.poozle.dev/oss/deploy-poozle)
+* Create integrations in minutes with our EDK (Extension development kit).
 
 ## Contributing
 
