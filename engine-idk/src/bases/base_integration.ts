@@ -17,7 +17,7 @@ export class BaseIntegration implements BaseIntegrationInterface {
   constructor() {}
 
   /*
-    This will return the spec for the extension
+    This will return the spec for the integration
   */
   async spec(): SpecificationResponse {
     return {
@@ -29,7 +29,7 @@ export class BaseIntegration implements BaseIntegrationInterface {
   }
 
   /*
-    This function will be used when the extension is getting configured. We will use this to test with the
+    This function will be used when the integration is getting configured. We will use this to test with the
     credentials are valid.
   */
   async check(_config: Config): CheckResponse {

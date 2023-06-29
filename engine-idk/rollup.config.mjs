@@ -25,7 +25,7 @@ export default [
     external: [],
     output: [
       {
-        file: 'edk/index.esm.js',
+        file: 'idk/index.esm.js',
         sourcemap: true,
         format: 'es',
       },
@@ -37,7 +37,7 @@ export default [
     external: [],
     output: [
       {
-        file: 'edk/index.js',
+        file: 'idk/index.js',
         sourcemap: true,
         format: 'cjs',
       },
@@ -49,7 +49,7 @@ export default [
     external: [],
     output: [
       {
-        file: 'edk/index.d.ts',
+        file: 'idk/index.d.ts',
         format: 'es',
       },
     ],
