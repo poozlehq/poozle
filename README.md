@@ -31,7 +31,7 @@
 
 We believe that only an open-source solution for product integrations can address the extensive range of integrations and empower engineers to customize existing integrations. Our ultimate vision is to assist you in connecting any integration to your product within minutes.
 
-<img width="1231" alt="Screenshot 2023-06-30 at 12 28 39 AM" src="https://github.com/poozlehq/engine/assets/17528887/266eb59f-f874-4391-b871-a64e506d2dc6">
+<img width="1231" alt="Screenshot 2023-06-30 at 12 29 53 AM" src="https://github.com/poozlehq/engine/assets/17528887/32d6aeab-e2f7-48ff-a1ec-45b3c7fa17a9">
 
 
 ## Getting Started
