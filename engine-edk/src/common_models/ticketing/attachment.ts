@@ -1,7 +1,11 @@
-export const CommentSchema = {
+export const AttachmentSchema = {
   type: 'object',
   properties: {
     id: {
+      type: 'string',
+      default: '',
+    },
+    file_name: {
       type: 'string',
       default: '',
     },
@@ -9,25 +13,17 @@ export const CommentSchema = {
       type: 'string',
       default: '',
     },
-    body: {
+    file_url: {
       type: 'string',
       default: '',
     },
-    html_body: {
+    content_type: {
       type: 'string',
       default: '',
     },
-    created_by_id: {
+    uploaded_by: {
       type: 'string',
       default: '',
-    },
-    created_by: {
-      type: 'string',
-      default: '',
-    },
-    is_private: {
-      type: 'string',
-      default: false
     },
     created_at: {
       type: 'string',
@@ -40,18 +36,19 @@ export const CommentSchema = {
   },
 };
 
-export interface Creator {
-  id: string;
-  username: string;
+
+export interface UploadedBy {
+    id: string,
+    username: string,
 }
-export interface Comment {
-  id: string;
-  ticket_id: string;
-  body: string;
-  html_body: string;
-  created_by_id: string;
-  created_by: Creator;
-  is_private: string;
-  created_at: string;
-  updated_at: string;
+
+export interface Attachment {
+    id: string,
+    ticket_id: string,
+    file_name: string,
+    file_url: string,
+    content_type: string,
+    uploaded_by: UploadedBy,
+    created_at: string,
+    updated_at: string
 }

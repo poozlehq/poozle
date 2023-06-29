@@ -113,7 +113,7 @@ export interface Tag {
 }
 
 export interface Ticket {
-  id: number;
+  id: string;
   parent_id: string;
   collection_id: string;
   type: string;
