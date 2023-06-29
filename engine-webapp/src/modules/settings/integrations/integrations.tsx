@@ -35,8 +35,6 @@ export function Integrations() {
     workspaceId: workspaceId as string,
   });
 
-  console.log(integrationDefinitions);
-
   const columns = [
     {
       name: 'Name',

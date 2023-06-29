@@ -3,6 +3,7 @@
 
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Specification } from '@poozle/engine-edk';
+import { ReleaseStage } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 import { getIntegrationSpec } from 'shared/integration_run_utils';
 
@@ -13,7 +14,6 @@ import {
   IntegrationDefinitionRequestIdBody,
   IntegrationDefinitionRequestWorkspaceIdBody,
 } from './integration_definition.interface';
-import { ReleaseStage } from '@prisma/client';
 
 @Injectable()
 export class IntegrationDefinitionService {

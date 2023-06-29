@@ -1,22 +1,21 @@
-import {
-  IntegrationType,
-  PrismaClient,
-  ReleaseStage,
-} from '@prisma/client';
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
+import { IntegrationType, PrismaClient, ReleaseStage } from '@prisma/client';
 // import axios from 'axios';
 
 const prisma = new PrismaClient();
 
-type IntegrationDefinitions = {
-    [key: string]: {
-      name: string;
-      key: string;
-      icon: string;
-      sourceUrl: string;
-      releaseStage: string;
-      integrationType: string;
-    };
-  };
+type IntegrationDefinitions = Record<
+  string,
+  {
+    name: string;
+    key: string;
+    icon: string;
+    sourceUrl: string;
+    releaseStage: string;
+    integrationType: string;
+  }
+>;
 
 async function main() {
   const integrationDefinitions = await prisma.integrationDefinition.findMany({
