@@ -2,8 +2,8 @@
 
 import { BaseModel, TagSchema } from '@poozle/engine-edk';
 
-import { GetTagPath } from './tag';
-import { GetTagsPath } from './tags';
+import { TagPath } from './tag.path';
+import { TagsPath } from './tags.path';
 
 export class GithubTagModel extends BaseModel {
   constructor() {
@@ -12,8 +12,8 @@ export class GithubTagModel extends BaseModel {
 
   paths() {
     return [
-      new GetTagsPath(/^\/?tags$/g, ['GET', 'POST'], this.schema),
-      new GetTagPath(/^\/?tags$/g, ['GET', 'PATCH'], this.schema),
+      new TagsPath(/^\/?tags$/g, ['GET', 'POST'], this.schema),
+      new TagPath(/^\/?tags$/g, ['GET', 'PATCH'], this.schema),
     ];
   }
 }

@@ -1,11 +1,30 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IsString } from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 
-import { JustRawParams, QueryParams } from 'common/interfaces/query.interface';
+import {
+  DIRECTION_ENUM,
+  JustRawParams,
+  QueryParams,
+} from 'common/interfaces/query.interface';
 import { Meta } from 'common/interfaces/response.interface';
 
-export class CollectionQueryParams extends QueryParams {}
+enum SORT_ENUM {
+  'name' = 'name',
+  'created_at' = 'created_at',
+  'updated_at' = 'updated_at',
+}
+
+export class CollectionQueryParams extends QueryParams {
+  @IsOptional()
+  @IsEnum(SORT_ENUM)
+  sort?: string;
+
+  @IsOptional()
+  @IsEnum(DIRECTION_ENUM)
+  direction?: string;
+}
+
 export class GetCollectionQueryParams extends JustRawParams {}
 
 export class Collection {

@@ -2,12 +2,12 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 
-export interface Meta {
-  items_per_page: number;
+export class Meta {
+  limit: number;
   cursors: {
     before: string;
     current: string;
-    after: string;
+    next: string;
   };
 }
 

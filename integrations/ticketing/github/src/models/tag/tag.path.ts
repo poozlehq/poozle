@@ -7,7 +7,7 @@ import { convertTag, tagMapping } from './tag.utils';
 
 const BASE_URL = 'https://api.github.com';
 
-export class GetTagPath extends BasePath {
+export class TagPath extends BasePath {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getTag(url: string, headers: AxiosHeaders, _params: Params) {
     const response = await axios({

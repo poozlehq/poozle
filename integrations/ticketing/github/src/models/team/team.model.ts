@@ -2,9 +2,8 @@
 
 import { BaseModel, TeamSchema } from '@poozle/engine-edk';
 
-import { GetTeamsPath } from './teams';
-import { GetTeamPath } from './team';
-
+import { TeamPath } from './team.path';
+import { TeamsPath } from './teams.path';
 
 export class GithubTeamModel extends BaseModel {
   constructor() {
@@ -13,8 +12,8 @@ export class GithubTeamModel extends BaseModel {
 
   paths() {
     return [
-      new GetTeamsPath(/^\/?teams$/g, ['GET', 'POST'], this.schema),
-      new GetTeamPath(/^\/?teams+/g, ['GET', 'PATCH'], this.schema),
+      new TeamsPath(/^\/?teams$/g, ['GET', 'POST'], this.schema),
+      new TeamPath(/^\/?teams+/g, ['GET', 'PATCH'], this.schema),
     ];
   }
 }

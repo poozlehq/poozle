@@ -1,13 +1,13 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, convertToRequestBody, Meta } from '@poozle/engine-edk';
+import { BasePath, Config, Params, convertToRequestBody, Meta, Tag } from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { convertTag, tagMapping } from './tag.utils';
 
 const BASE_URL = 'https://api.github.com';
 
-export class GetTagsPath extends BasePath {
+export class TagsPath extends BasePath {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getTags(url: string, headers: AxiosHeaders, params: Params) {
     const page =
@@ -56,7 +56,7 @@ export class GetTagsPath extends BasePath {
       case 'GET':
         return this.getTags(url, headers, params);
 
-      case 'PATCH':
+      case 'POST':
         return this.createTags(url, headers, params);
 
       default:

@@ -18,14 +18,14 @@ import {
   PathParamsWithCollectionId,
   TicketingCollectionResponse,
   TicketingCollectionsResponse,
-} from './collections.interface';
+} from './collection.interface';
 
 @Controller({
   version: '1',
   path: 'ticketing/collections',
 })
 @ApiTags('Ticketing')
-export class CollectionsController {
+export class CollectionController {
   @Get()
   @UseGuards(new AuthGuard())
   async getCollections(

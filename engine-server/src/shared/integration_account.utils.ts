@@ -21,6 +21,8 @@ export async function getDataFromAccount(
   queryParams: QueryParams = defaultQueryParams,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   pathParams: any,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  requestBody?: any,
 ) {
   return await runIntegrationCommand(
     integrationAccount.integrationDefinition?.sourceUrl,
@@ -32,6 +34,7 @@ export async function getDataFromAccount(
     {
       queryParams,
       pathParams,
+      requestBody,
     },
   );
 }

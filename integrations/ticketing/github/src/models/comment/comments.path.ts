@@ -7,7 +7,7 @@ import { commentMappings, convertComment } from './comment.utils';
 
 const BASE_URL = 'https://api.github.com';
 
-export class GetCommentsPath extends BasePath {
+export class CommentsPath extends BasePath {
   async fetchData(
     url: string,
     headers: AxiosHeaders,
