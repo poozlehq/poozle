@@ -74,3 +74,23 @@ export async function main(command: string, allParams: any) {
 }
 
 export default main;
+
+main('RUN', {
+  path: '/tickets',
+  method: 'GET',
+  params: {
+    queryParams: { raw: true, cursor: 1, limit: 5, sort:'created_at', direction:"asc"},
+    pathParams: { collection_id: '10028'},
+    requestBody: {
+      name: "new bug",
+      description: 'this is updated from unified',
+      color: '0f0ff0'
+    }
+  },
+  config: {
+    email_id: 'aditya@velocity.in',
+    api_key: 'ATATT3xFfGF0mJlimJBUfThciqHUKpvKq-3-tVaIdIy_glb8IB1BpIXLo8upSSJTxOCEV7PPeWbDsIc13EnK-ChvD8GVnAhB8FXYcPhaeXWvW2NQ3at-VYQ3l6rOOXtwRssSVL0B6OE6ydYe3EtQgH7JTFgNPXBzENBz0OSnhL_rNO7TpEbtW6g=C27E8EF4',
+    authType: 'Api Key',
+    jira_domain: 'gelocity',
+  },
+})

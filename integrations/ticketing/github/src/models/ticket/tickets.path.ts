@@ -19,14 +19,25 @@ export class GetTicketsPath extends BasePath {
   async fetchData(url: string, headers: AxiosHeaders, params: Params) {
     const page =
       typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+    const final_params = {
+      per_page: params.queryParams?.limit,
+      sort:
+        params.queryParams?.sort === 'created_at'
+          ? 'created'
+          : params.queryParams?.sort === 'updated_at'
+          ? 'updated'
+          : '',
+      direction: params.queryParams?.direction,
+      since: params.queryParams?.since,
+      page,
+      ...(params.queryParams?.state && { state: params.queryParams.state }),
+      ...(params.queryParams?.assignee_id && { assignee: params.queryParams.assignee_id }),
+    };    
 
     const response = await axios({
       url,
       headers,
-      params: {
-        per_page: params.queryParams?.limit,
-        page,
-      },
+      params: final_params
     });
 
     const responseData = response.data;
@@ -43,7 +54,7 @@ export class GetTicketsPath extends BasePath {
 
     const response = await axios.post(url, createBody, { headers });
 
-    return [convertTicket(response.data, params.pathParams?.collection_id as string | null)];
+    return convertTicket(response.data, params.pathParams?.collection_id as string | null);
   }
 
   async getMetaParams(_data: Ticket[], params: Params): Promise<Meta> {

@@ -28,6 +28,6 @@ export default {
       tokenUrl: 'https://github.com/login/oauth/access_token',
     },
   },
-  supportedFilters: ['status', 'since', 'assignee_id'],
+  supportedFilters: ['status', 'since', 'assignee_id', 'direction'],
   supportedSortBy: ['created_at', 'updated_at'],
 };

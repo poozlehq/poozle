@@ -15,7 +15,7 @@ export class TicketsPath extends BasePath {
         url,
         headers,
         params: {
-          maxResult: params.queryParams?.limit,
+          maxResults: params.queryParams?.limit,
           startAt: page,
         },
       });
@@ -26,20 +26,6 @@ export class TicketsPath extends BasePath {
     } catch (e) {
       throw new Error(e);
     }
-  }
-
-  async getMetaParams(_data: Ticket[], params: Params): Promise<Meta> {
-    const page =
-      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
-
-    return {
-      limit: params.queryParams?.limit as number,
-      cursors: {
-        before: (page > 1 ? page - 1 : 1).toString(),
-        current: page.toString(),
-        next: (page + 1).toString(),
-      },
-    };
   }
 
   async createTickets(url: string, headers: AxiosHeaders, params: Params) {
@@ -80,6 +66,20 @@ export class TicketsPath extends BasePath {
     } catch (e) {
       throw new Error(e);
     }
+  }
+
+  async getMetaParams(_data: Ticket[], params: Params): Promise<Meta> {
+    const page =
+      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+
+    return {
+      limit: params.queryParams?.limit as number,
+      cursors: {
+        before: (page > 1 ? page - 1 : 1).toString(),
+        current: page.toString(),
+        next: (page + 1).toString(),
+      },
+    };
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {

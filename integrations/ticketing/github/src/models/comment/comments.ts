@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, Comment, convertToRequestBody } from '@poozle/engine-edk';
+import { BasePath, Config, Params, Comment, convertToRequestBody, Meta } from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { commentMappings, convertComment } from './comment.utils';
@@ -12,11 +12,20 @@ export class GetCommentsPath extends BasePath {
     url: string,
     headers: AxiosHeaders,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _params: Params,
+    params: Params,
   ): Promise<Array<Partial<Comment>>> {
+    const page =
+      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+    const final_params = {
+      per_page: params.queryParams?.limit,
+      since: params.queryParams?.since,
+      page,
+    };
+
     const response = await axios({
       url,
       headers,
+      params: final_params,
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -38,6 +47,20 @@ export class GetCommentsPath extends BasePath {
     const response = await axios.post(url, createBody, { headers });
 
     return [convertComment(response.data)];
+  }
+
+  async getMetaParams(_data: Comment[], params: Params): Promise<Meta> {
+    const page =
+      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+
+    return {
+      limit: params.queryParams?.limit as number,
+      cursors: {
+        before: (page > 1 ? page - 1 : 1).toString(),
+        current: page.toString(),
+        next: (page + 1).toString(),
+      },
+    };
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {

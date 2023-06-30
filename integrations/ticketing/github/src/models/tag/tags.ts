@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, convertToRequestBody } from '@poozle/engine-edk';
+import { BasePath, Config, Params, convertToRequestBody, Meta } from '@poozle/engine-edk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { convertTag, tagMapping } from './tag.utils';
@@ -9,10 +9,18 @@ const BASE_URL = 'https://api.github.com';
 
 export class GetTagsPath extends BasePath {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async getTags(url: string, headers: AxiosHeaders, _params: Params) {
+  async getTags(url: string, headers: AxiosHeaders, params: Params) {
+    const page =
+      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+    const final_params = {
+      per_page: params.queryParams?.limit,
+      page,
+    };
+
     const response = await axios({
       url,
       headers,
+      params: final_params,
     });
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -26,6 +34,20 @@ export class GetTagsPath extends BasePath {
     const response = await axios.post(url, createBody, { headers });
 
     return [convertTag(response.data)];
+  }
+
+  async getMetaParams(_data: Tag[], params: Params): Promise<Meta> {
+    const page =
+      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+
+    return {
+      limit: params.queryParams?.limit as number,
+      cursors: {
+        before: (page > 1 ? page - 1 : 1).toString(),
+        current: page.toString(),
+        next: (page + 1).toString(),
+      },
+    };
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {

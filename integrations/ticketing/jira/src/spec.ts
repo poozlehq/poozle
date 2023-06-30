@@ -29,6 +29,6 @@ export default {
       },
     },
   },
-  supportedFilters: ['status', 'since', 'assignee_id'],
+  supportedFilters: ['direction'],
   supportedSortBy: ['created_at', 'updated_at'],
 };

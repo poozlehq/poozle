@@ -107,7 +107,7 @@ export interface Assignee {
   username: string;
 }
 
-export interface Tag {
+export interface TicketTag {
   id: string;
   name: string;
 }
@@ -128,7 +128,7 @@ export interface Ticket {
   created_by: string;
   due_date: string;
   completed_at: string;
-  tags: Tag[];
+  tags: TicketTag[];
 }
 
 export interface CreateTicketBody {
@@ -136,7 +136,7 @@ export interface CreateTicketBody {
   name: string;
   description: string;
   assignees: Exclude<Assignee, 'username'>[];
-  tags: Tag[];
+  tags: TicketTag[];
   created_by: string;
   type: string;
 }
@@ -145,7 +145,7 @@ export interface UpdateTicketBody {
   name: string;
   description: string;
   assignees: Exclude<Assignee, 'username'>[];
-  tags: Tag[];
+  tags: TicketTag[];
   status: string;
   created_by: string;
   type: string;
