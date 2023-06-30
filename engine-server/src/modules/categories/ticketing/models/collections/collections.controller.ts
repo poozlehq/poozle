@@ -55,7 +55,7 @@ export class CollectionsController {
   ): Promise<TicketingCollectionResponse> {
     const collectionResponse = await getDataFromAccount(
       integrationAccount,
-      '/collections',
+      `/collections/${params.collection_id}`,
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },
