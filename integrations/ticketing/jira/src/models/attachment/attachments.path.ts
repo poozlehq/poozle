@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params } from '@poozle/engine-edk';
+import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { convertAttachment } from './attachment.utils';

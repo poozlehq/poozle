@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, convertToRequestBody } from '@poozle/engine-edk';
+import { BasePath, Config, Params, convertToRequestBody } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { convertTag, tagMapping } from './tag.utils';
@@ -15,21 +15,20 @@ export class TagPath extends BasePath {
       headers,
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return response.data.map((data: any) => convertTag(data));
+    return convertTag(response.data);
   }
 
   async updateTag(url: string, headers: AxiosHeaders, params: Params) {
     const body = params.requestBody;
     const createBody = convertToRequestBody(body, tagMapping);
 
-    const response = await axios.post(url, createBody, { headers });
+    const response = await axios.patch(url, createBody, { headers });
 
     return convertTag(response.data);
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
-    const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/labels/${params.pathParams?.label_name}`;
+    const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/labels/${params.pathParams?.tag_name}`;
     switch (method) {
       case 'GET':
         return this.getTag(url, headers, params);

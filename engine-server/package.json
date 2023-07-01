@@ -58,6 +58,7 @@
     "@nestjs/swagger": "^6.3.0",
     "@paciolan/remote-module-loader": "^3.0.2",
     "@poozle/engine-edk": "^0.2.0",
+    "@poozle/engine-idk": "^0.1.1",
     "@prisma/client": "^4.9.0",
     "@segment/analytics-node": "^1.0.0-beta.24",
     "@vegardit/prisma-generator-nestjs-dto": "^1.5.1",

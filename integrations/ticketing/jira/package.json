@@ -48,6 +48,7 @@
   },
   "dependencies": {
     "@poozle/engine-edk": "^0.2.13",
+    "@poozle/engine-idk": "^0.1.1",
     "axios": "^1.4.0"
   },
   "browserslist": {

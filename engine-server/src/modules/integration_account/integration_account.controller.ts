@@ -11,7 +11,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { CheckResponse } from '@poozle/engine-edk';
+import { CheckResponse } from '@poozle/engine-idk';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 

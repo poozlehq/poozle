@@ -13,7 +13,3 @@ export function convertComment(data: any) {
     raw_data: data,
   };
 }
-
-export const commentMappings = {
-  description: 'body',
-};

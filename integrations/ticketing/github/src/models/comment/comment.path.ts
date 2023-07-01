@@ -1,9 +1,9 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Comment, Config, convertToRequestBody, Params } from '@poozle/engine-edk';
+import { BasePath, Comment, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
-import { commentMappings, convertComment } from './comment.utils';
+import {convertComment } from './comment.utils';
 
 const BASE_URL = 'https://api.github.com';
 
@@ -31,9 +31,7 @@ export class CommentPath extends BasePath {
     headers: AxiosHeaders,
     params: Params,
   ): Promise<Partial<Comment>> {
-    const body = params.requestBody;
-    const createBody = convertToRequestBody(body, commentMappings);
-    const response = await axios.post(url, createBody, { headers });
+    const response = await axios.patch(url, params.requestBody, { headers });
 
     return convertComment(response.data);
   }

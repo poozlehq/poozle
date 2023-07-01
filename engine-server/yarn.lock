@@ -941,6 +941,13 @@
   dependencies:
     axios "^1.3.2"
 
+"@poozle/engine-idk@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@poozle/engine-idk/-/engine-idk-0.1.1.tgz#6bb06b37c4bf27a3a59ed72afb25e7171e5776b4"
+  integrity sha512-d2cGSLSS/dhrwTDu/vTEhpJgUf/2/6jLb7MUA/nJysDtzaNhfw5OaUOrlyIINFld2wBEHqUOFb2eE+UuQ9tO6g==
+  dependencies:
+    axios "^1.3.2"
+
 "@prisma/client@^4.9.0":
   version "4.15.0"
   resolved "https://registry.yarnpkg.com/@prisma/client/-/client-4.15.0.tgz#f52ec6ca6fbde37395a54b0a9e5da603a9de15f3"

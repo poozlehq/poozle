@@ -5,7 +5,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { CheckResponse, Config } from '@poozle/engine-edk';
+import { CheckResponse, Config } from '@poozle/engine-idk';
 import { IntegrationType } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 import {

@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, Team, Meta, convertToRequestBody } from '@poozle/engine-edk';
+import { BasePath, Config, Params, convertToRequestBody, Team, Meta } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { convertTag } from 'models/tag/tag.utils';
@@ -24,11 +24,7 @@ export class TeamsPath extends BasePath {
       headers,
       params: final_params,
     });
-
-    return {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      data: response.data.map((data: any) => convertTeam(data)),
-    };
+    return response.data.map((data: any) => convertTeam(data))
   }
 
   async getMetaParams(_data: Team[], params: Params): Promise<Meta> {

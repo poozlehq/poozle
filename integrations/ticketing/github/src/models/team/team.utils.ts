@@ -6,6 +6,7 @@ export function convertTeam(data: any) {
         id: data.id,
         name: data.name,
         description: data.description,
+        raw_data: data,
     };
   }
   

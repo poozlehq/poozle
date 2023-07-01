@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BaseModel, TeamSchema } from '@poozle/engine-edk';
+import { BaseModel, TeamSchema } from '@poozle/engine-idk';
 
 import { TeamPath } from './team.path';
 import { TeamsPath } from './teams.path';

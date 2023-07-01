@@ -1,8 +1,9 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BaseModel, UserSchema } from '@poozle/engine-edk';
+import { BaseModel, UserSchema } from '@poozle/engine-idk';
+import { UserPath } from './user.path';
 
-import { GetUsersPath } from './users.path';
+import { UsersPath } from './users.path';
 
 export class GithubUserModel extends BaseModel {
   constructor() {
@@ -10,6 +11,9 @@ export class GithubUserModel extends BaseModel {
   }
 
   paths() {
-    return [new GetUsersPath(/^\/?users$/g, 'GET', this.schema)];
+    return [
+      new UsersPath(/^\/?users$/g, 'GET', this.schema),
+      new UserPath(/^\/?users+/g, 'GET', this.schema),
+    ];
   }
 }

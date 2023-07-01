@@ -6,7 +6,7 @@ import {
   Config,
   GenericProxyModel,
   SpecificationResponse,
-} from '@poozle/engine-edk';
+} from '@poozle/engine-idk';
 import axios from 'axios';
 
 import { GithubCollectionModel } from 'models/collection/collection.model';

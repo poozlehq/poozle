@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 import { JustRawParams, QueryParams } from 'common/interfaces/query.interface';
 import { Meta } from 'common/interfaces/response.interface';
@@ -32,19 +32,22 @@ export class PathParams {
 
 export class PathParamsWithTagId {
   @IsString()
-  tag_id: string;
+  tag_name: string;
 
   @IsString()
   collection_id: string;
 }
 
 export class UpdateTagBody {
+  @IsOptional()
   @IsString()
   name: string;
 
+  @IsOptional()
   @IsString()
   description: string;
 
+  @IsOptional()
   @IsString()
   color: string;
 }
@@ -53,9 +56,11 @@ export class CreateTagBody {
   @IsString()
   name: string;
 
+  @IsOptional()
   @IsString()
   description: string;
 
+  @IsOptional()
   @IsString()
   color: string;
 }

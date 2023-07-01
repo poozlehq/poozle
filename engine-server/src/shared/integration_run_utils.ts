@@ -2,7 +2,7 @@
 /* eslint-disable prefer-const */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { CheckResponse, Config, Specification } from '@poozle/engine-edk';
+import { CheckResponse, Config, Specification } from '@poozle/engine-idk';
 
 import { loadRemoteModule } from 'common/remoteModule';
 

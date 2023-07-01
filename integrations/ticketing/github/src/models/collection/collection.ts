@@ -1,13 +1,13 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Collection, Config, Params } from '@poozle/engine-edk';
+import { BasePath, Collection, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { convertCollection } from './collection.utils';
 
 const BASE_URL = 'https://api.github.com';
 
-export class GetCollectionsPath extends BasePath {
+export class GetCollectionPath extends BasePath {
   async fetchSingleCollection(
     url: string,
     headers: AxiosHeaders,

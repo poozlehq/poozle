@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BaseModel, TicketSchema } from '@poozle/engine-edk';
+import { BaseModel, TicketSchema } from '@poozle/engine-idk';
 
 import { TicketPath } from './ticket.path';
 import { TicketsPath } from './tickets.path';

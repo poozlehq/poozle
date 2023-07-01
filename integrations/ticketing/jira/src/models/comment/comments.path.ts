@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, CreateCommentBody, Meta, Comment } from '@poozle/engine-edk';
+import { BasePath, Config, Params, CreateCommentBody, Meta, Comment } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { convertComments } from './comments.utils';

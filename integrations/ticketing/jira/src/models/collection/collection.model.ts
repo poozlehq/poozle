@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BaseModel, CollectionSchema } from '@poozle/engine-edk';
+import { BaseModel, CollectionSchema } from '@poozle/engine-idk';
 
 import { GetCollectionPath } from './collection.path';
 import { GetCollectionsPath } from './collections.path';

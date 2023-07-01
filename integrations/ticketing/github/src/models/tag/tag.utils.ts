@@ -5,6 +5,8 @@ export function convertTag(data: any) {
   return {
     id: data.id,
     name: data.name,
+    description: data.description,
+    color: data.color,
     raw_data: data,
   };
 }

@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, convertToRequestBody } from '@poozle/engine-edk';
+import { BasePath, Config, Params, convertToRequestBody } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { convertTag } from 'models/tag/tag.utils';
@@ -23,8 +23,7 @@ export class TeamPath extends BasePath {
   async updateTeam(url: string, headers: AxiosHeaders, params: Params) {
     const body = params.requestBody;
     const createBody = convertToRequestBody(body, teamMapping);
-
-    const response = await axios.post(url, createBody, { headers });
+    const response = await axios.patch(url, createBody, { headers });
     return convertTag(response.data);
   }
 

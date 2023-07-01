@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, CreateTicketBody, Ticket, Meta } from '@poozle/engine-edk';
+import { BasePath, Config, Params, CreateTicketBody, Ticket, Meta } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { convertTicket, JIRATicketBody } from './ticket.utils';
@@ -8,16 +8,21 @@ import { convertTicket, JIRATicketBody } from './ticket.utils';
 export class TicketsPath extends BasePath {
   async fetchTickets(url: string, headers: AxiosHeaders, params: Params) {
     const page =
-      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+      typeof params.queryParams?.cursor ? parseInt(params.queryParams?.cursor.toString()) : 1;
+    const startAt =
+      page *
+      (params.queryParams?.limit ? parseInt(params.queryParams?.limit.toString()) : 10);
+
+    const final_params = {
+      maxResults: params.queryParams?.limit,
+      startAt: startAt,
+    };
 
     try {
       const response = await axios({
         url,
         headers,
-        params: {
-          maxResults: params.queryParams?.limit,
-          startAt: page,
-        },
+        params: final_params,
       });
 
       return response.data.issues.map((data: any) =>
@@ -89,6 +94,10 @@ export class TicketsPath extends BasePath {
     switch (method) {
       case 'GET':
         url = `${BASE_URL}/rest/api/2/search?jql=project=${params.pathParams?.collection_id}`;
+        if(params.queryParams?.sort && params.queryParams?.direction){
+          const sort = params.queryParams?.sort === 'created_at'? 'created' : params.queryParams?.sort === 'updated_at'? 'updated' : 'created'
+          url += ` ORDER BY ${sort} ${params.queryParams?.direction}`
+        }
         return this.fetchTickets(url, headers, params);
 
       case 'POST':

@@ -70,7 +70,7 @@ export class TagController {
   ): Promise<TicketingTagResponse> {
     const tagResponse = await getDataFromAccount(
       integrationAccount,
-      `/tags/${params.tag_id}`,
+      `/tags/${params.tag_name}`,
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },
@@ -91,7 +91,7 @@ export class TagController {
   ): Promise<TicketingTagResponse> {
     const tagResponse = await getDataFromAccount(
       integrationAccount,
-      `/tags/${params.tag_id}`,
+      `/tags/${params.tag_name}`,
       Method.PATCH,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },

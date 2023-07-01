@@ -26,7 +26,7 @@ export function convertTicket(data: any, collection_id: string | null) {
 }
 
 export const ticketMappings = {
-  subject: 'title',
+  name: 'title',
   description: 'body',
   assignees: 'assignees',
   tags: 'label',

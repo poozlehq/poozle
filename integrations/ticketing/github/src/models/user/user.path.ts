@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params } from '@poozle/engine-edk';
+import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { convertUser } from './user.utils';
@@ -10,7 +10,7 @@ export class UserPath extends BasePath {
   async fetchSingleUser(headers: AxiosHeaders, params: Params) {
     try {
       const response = await axios({
-        url: `${BASE_URL}/${params.pathParams?.user_id}`,
+        url: `${BASE_URL}/users/${params.pathParams?.user_id}`,
         headers,
       });
 

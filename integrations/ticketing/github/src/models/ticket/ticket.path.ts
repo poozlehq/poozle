@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, convertToRequestBody, Params } from '@poozle/engine-edk';
+import { BasePath, Config, convertToRequestBody, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { convertTicket, ticketMappings } from './ticket.utils';
@@ -24,7 +24,7 @@ export class GetTicketPath extends BasePath {
   async patchTicket(url: string, headers: AxiosHeaders, params: Params) {
     const body = params.requestBody;
     const createBody = convertToRequestBody(body, ticketMappings);
-    const response = await axios.post(url, createBody, { headers });
+    const response = await axios.patch(url, createBody, { headers });
 
     return convertTicket(response.data, params.pathParams?.collection_id as string | null);
   }

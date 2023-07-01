@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IntegrationDefinition } from '@@generated/integrationDefinition.entity';
+import { IntegrationDefinition } from '@@generated/integrationDefinition/entities/integrationDefinition.entity';
 import { UseQueryResult, useQuery } from 'react-query';
 import { XHRErrorResponse, ajaxGet } from 'utils';
 

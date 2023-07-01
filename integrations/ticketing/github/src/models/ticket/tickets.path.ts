@@ -8,7 +8,7 @@ import {
   Meta,
   Params,
   Ticket,
-} from '@poozle/engine-edk';
+} from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { convertTicket, ticketMappings } from './ticket.utils';
@@ -50,8 +50,9 @@ export class GetTicketsPath extends BasePath {
 
   async createTicket(url: string, headers: AxiosHeaders, params: Params) {
     const body: CreateTicketBody = params.requestBody as CreateTicketBody;
-    const createBody = convertToRequestBody(body, ticketMappings);
-
+    let  createBody = convertToRequestBody(body, ticketMappings);
+    createBody.assignees = createBody.assignees.map((assignee: any) => assignee.id);
+    
     const response = await axios.post(url, createBody, { headers });
 
     return convertTicket(response.data, params.pathParams?.collection_id as string | null);

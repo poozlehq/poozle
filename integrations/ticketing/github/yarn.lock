@@ -1116,6 +1116,13 @@
   dependencies:
     axios "^1.3.2"
 
+"@poozle/engine-idk@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@poozle/engine-idk/-/engine-idk-0.1.1.tgz#6bb06b37c4bf27a3a59ed72afb25e7171e5776b4"
+  integrity sha512-d2cGSLSS/dhrwTDu/vTEhpJgUf/2/6jLb7MUA/nJysDtzaNhfw5OaUOrlyIINFld2wBEHqUOFb2eE+UuQ9tO6g==
+  dependencies:
+    axios "^1.3.2"
+
 "@rollup/plugin-babel@6.0.2":
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-babel/-/plugin-babel-6.0.2.tgz#92ad7a00cc0e4a6b59e1498cda9f907a9c0d2db3"

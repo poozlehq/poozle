@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BaseModel, TagSchema } from '@poozle/engine-edk';
+import { BaseModel, TagSchema } from '@poozle/engine-idk';
 
 import { TagPath } from './tag.path';
 import { TagsPath } from './tags.path';
@@ -13,7 +13,7 @@ export class GithubTagModel extends BaseModel {
   paths() {
     return [
       new TagsPath(/^\/?tags$/g, ['GET', 'POST'], this.schema),
-      new TagPath(/^\/?tags$/g, ['GET', 'PATCH'], this.schema),
+      new TagPath(/^\/?tags+/g, ['GET', 'PATCH'], this.schema),
     ];
   }
 }

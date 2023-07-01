@@ -52,14 +52,17 @@ export class PathParamsWithTeamName {
 }
 
 export class UpdateTeamBody {
+  @IsOptional()
   @IsString()
-  name: string;
-
+  name?: string;
+  
+  @IsOptional()
   @IsString()
-  description: string;
+  description?: string;
 
+  @IsOptional()
   @IsArray()
-  memberts: Array<Omit<Member, 'username'>>;
+  members?: Array<Omit<Member, 'username'>>;
 }
 
 export class CreateTeamBody {
@@ -69,6 +72,7 @@ export class CreateTeamBody {
   @IsString()
   description: string;
 
+  @IsOptional()
   @IsArray()
-  memberts: Array<Omit<Member, 'username'>>;
+  members?: Array<Omit<Member, 'username'>>;
 }

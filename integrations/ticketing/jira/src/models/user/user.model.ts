@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BaseModel, UserSchema } from '@poozle/engine-edk';
+import { BaseModel, UserSchema } from '@poozle/engine-idk';
 
 import { UserPath } from './user.path';
 import { UsersPath } from './users.path';

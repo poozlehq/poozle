@@ -97,46 +97,54 @@ export class TicketingTicketsResponse {
 
 export class CreateTicketBody {
   @IsString()
-  collection_id: string;
-
-  @IsString()
   name: string;
 
   @IsString()
   description: string;
 
+  @IsOptional()
   @IsArray()
   assignees: Array<Exclude<TicketAssignee, 'username'>>;
 
+  @IsOptional()
   @IsArray()
   tags: TicketTag[];
 
+  @IsOptional()
   @IsString()
   created_by: string;
 
+  @IsOptional()
   @IsString()
   type: string;
 }
 
 export class UpdateTicketBody {
+  @IsOptional()
   @IsString()
   name: string;
 
+  @IsOptional()
   @IsString()
   description: string;
 
+  @IsOptional()
   @IsArray()
   assignees: Array<Exclude<TicketAssignee, 'username'>>;
 
+  @IsOptional()
   @IsArray()
   tags: TicketTag[];
 
+  @IsOptional()
   @IsString()
   status: string;
 
+  @IsOptional()
   @IsString()
   created_by: string;
 
+  @IsOptional()
   @IsString()
   type: string;
 }
