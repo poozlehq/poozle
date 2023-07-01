@@ -22,7 +22,6 @@ services:
       - poozle
     environment:
       - ENGINE_VERSION=${ENGINE_VERSION}
-      - CONTROLLER_URL=${CONTROLLER_URL}
       - DATABASE_URL=${DATABASE_URL}
       - FRONTEND_HOST=${FRONTEND_HOST}
       - BACKEND_HOST=${BACKEND_HOST}
@@ -34,8 +33,6 @@ services:
       - USER_PASSWORD=${USER_PASSWORD}
       - USER_EMAIL=${USER_EMAIL}
       - CREATE_DEFAULT_USER=${CREATE_DEFAULT_USER}
-    ports:
-      - 3000:3000
 
   webapp:
     image: poozlehq/engine-webapp:${ENGINE_VERSION}

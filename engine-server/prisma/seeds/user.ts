@@ -45,8 +45,8 @@ async function main() {
       await axios.post(
         `${process.env.BACKEND_HOST}/v1/user`,
         {
-          firstname: 'Elon',
-          lastname: 'Musk',
+          firstname: process.env.USER_FIRSTNAME,
+          lastname: process.env.USER_LASTNAME,
           email,
         },
         {
