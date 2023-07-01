@@ -32,12 +32,12 @@ export class GetTicketsPath extends BasePath {
       page,
       ...(params.queryParams?.state && { state: params.queryParams.state }),
       ...(params.queryParams?.assignee_id && { assignee: params.queryParams.assignee_id }),
-    };    
+    };
 
     const response = await axios({
       url,
       headers,
-      params: final_params
+      params: final_params,
     });
 
     const responseData = response.data;
@@ -50,9 +50,9 @@ export class GetTicketsPath extends BasePath {
 
   async createTicket(url: string, headers: AxiosHeaders, params: Params) {
     const body: CreateTicketBody = params.requestBody as CreateTicketBody;
-    let  createBody = convertToRequestBody(body, ticketMappings);
+    const createBody = convertToRequestBody(body, ticketMappings);
     createBody.assignees = createBody.assignees.map((assignee: any) => assignee.id);
-    
+
     const response = await axios.post(url, createBody, { headers });
 
     return convertTicket(response.data, params.pathParams?.collection_id as string | null);

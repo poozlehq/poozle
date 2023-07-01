@@ -7,15 +7,15 @@ import { convertTicket, JIRATicketBody } from './ticket.utils';
 
 export class TicketsPath extends BasePath {
   async fetchTickets(url: string, headers: AxiosHeaders, params: Params) {
-    const page =
-      typeof params.queryParams?.cursor ? parseInt(params.queryParams?.cursor.toString()) : 1;
+    const page = typeof params.queryParams?.cursor
+      ? parseInt(params.queryParams?.cursor.toString())
+      : 1;
     const startAt =
-      page *
-      (params.queryParams?.limit ? parseInt(params.queryParams?.limit.toString()) : 10);
+      page * (params.queryParams?.limit ? parseInt(params.queryParams?.limit.toString()) : 10);
 
     const final_params = {
       maxResults: params.queryParams?.limit,
-      startAt: startAt,
+      startAt,
     };
 
     try {
@@ -94,9 +94,14 @@ export class TicketsPath extends BasePath {
     switch (method) {
       case 'GET':
         url = `${BASE_URL}/rest/api/2/search?jql=project=${params.pathParams?.collection_id}`;
-        if(params.queryParams?.sort && params.queryParams?.direction){
-          const sort = params.queryParams?.sort === 'created_at'? 'created' : params.queryParams?.sort === 'updated_at'? 'updated' : 'created'
-          url += ` ORDER BY ${sort} ${params.queryParams?.direction}`
+        if (params.queryParams?.sort && params.queryParams?.direction) {
+          const sort =
+            params.queryParams?.sort === 'created_at'
+              ? 'created'
+              : params.queryParams?.sort === 'updated_at'
+              ? 'updated'
+              : 'created';
+          url += ` ORDER BY ${sort} ${params.queryParams?.direction}`;
         }
         return this.fetchTickets(url, headers, params);
 

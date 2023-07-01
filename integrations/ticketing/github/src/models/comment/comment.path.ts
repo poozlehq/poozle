@@ -3,7 +3,7 @@
 import { BasePath, Comment, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
-import {convertComment } from './comment.utils';
+import { convertComment } from './comment.utils';
 
 const BASE_URL = 'https://api.github.com';
 

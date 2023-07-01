@@ -24,7 +24,7 @@ export class TeamsPath extends BasePath {
       headers,
       params: final_params,
     });
-    return response.data.map((data: any) => convertTeam(data))
+    return response.data.map((data: any) => convertTeam(data));
   }
 
   async getMetaParams(_data: Team[], params: Params): Promise<Meta> {

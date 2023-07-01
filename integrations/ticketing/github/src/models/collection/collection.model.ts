@@ -2,8 +2,8 @@
 
 import { BaseModel, CollectionSchema } from '@poozle/engine-idk';
 
-import { GetCollectionsPath } from './collections';
 import { GetCollectionPath } from './collection';
+import { GetCollectionsPath } from './collections';
 
 export class GithubCollectionModel extends BaseModel {
   constructor() {

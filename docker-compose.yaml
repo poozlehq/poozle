@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - 5433:5432
+      - 5432:5432
     networks:
       - poozle
     restart: unless-stopped
@@ -32,7 +32,7 @@ services:
       - SUPERTOKEN_CONNECTION_URI=${SUPERTOKEN_CONNECTION_URI}
     ports:
       - 3000:3000
-  
+
   webapp:
     image: poozlehq/engine-webapp:${ENGINE_VERSION}
     platform: linux/amd64

@@ -5,19 +5,6 @@ import { IntegrationType, PrismaClient, ReleaseStage } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
-type IntegrationDefinitions = Record<
-  string,
-  {
-    name: string;
-    key: string;
-    icon: string;
-    version: string;
-    sourceUrl: string;
-    releaseStage: string;
-    integrationType: string;
-  }
->;
-
 async function main() {
   const integrationDefinitions = await prisma.integrationDefinition.findMany({
     where: {
@@ -27,37 +14,9 @@ async function main() {
 
   if (integrationDefinitions.length === 0) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // const extensionDefinitionsResponse: any = await axios.get(
-    //   'https://raw.githubusercontent.com/poozlehq/engine/main/public/extensions.json',
-    // );
-
-    // const extensionDefinitions = extensionDefinitionsResponse.data;
-
-    /**
-     * TODO(Manoj): move this to integrations.json
-     */
-    const integrationDefinitions: IntegrationDefinitions = {
-      github: {
-        name: 'Github',
-        key: 'github',
-        icon: 'github.svg',
-        version: '0.0.1',
-        sourceUrl:
-          'https://raw.githubusercontent.com/poozlehq/engine/ticketing/github/integrations/github/github/github.js',
-        releaseStage: 'ALPHA',
-        integrationType: 'TICKETING',
-      },
-      jira: {
-        name: 'Jira',
-        key: 'jira',
-        icon: 'jira.svg',
-        version: '0.0.1',
-        sourceUrl:
-          'https://raw.githubusercontent.com/poozlehq/engine/ticketing/github/integrations/github/github/jira.js',
-        releaseStage: 'ALPHA',
-        integrationType: 'TICKETING',
-      },
-    };
+    const integrationDefinitions: any = await fetch(
+      'https://raw.githubusercontent.com/poozlehq/engine/main/public/integration_definitions.json',
+    );
 
     const integrationDefinitionCreate = Object.keys(integrationDefinitions).map(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

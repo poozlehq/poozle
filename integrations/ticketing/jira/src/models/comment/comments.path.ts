@@ -8,7 +8,7 @@ import { convertComments } from './comments.utils';
 export class GetCommentsPath extends BasePath {
   async fetchComments(url: string, headers: AxiosHeaders, params: Params) {
     const page =
-    typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
 
     const response = await axios({
       url,
@@ -45,7 +45,6 @@ export class GetCommentsPath extends BasePath {
       },
     };
   }
-
 
   async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
     const BASE_URL = `https://${config.jira_domain}.atlassian.net`;

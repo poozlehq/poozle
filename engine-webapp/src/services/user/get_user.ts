@@ -18,8 +18,8 @@ export function getUser() {
 
 export function useGetUserQuery(): UseQueryResult<User, XHRErrorResponse> {
   return useQuery([GetUserQuery], () => getUser(), {
-    notifyOnChangeProps: 'tracked',
     retry: 1,
+    staleTime: 1,
     refetchOnWindowFocus: false, // Frequency of Change would be Low
   });
 }

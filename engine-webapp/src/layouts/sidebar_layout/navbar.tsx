@@ -25,7 +25,10 @@ import {
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
 import * as React from 'react';
+import { useQueryClient } from 'react-query';
 import { signOut } from 'supertokens-auth-react/recipe/emailpassword';
+
+import { GetUserQuery } from 'services/user';
 
 import { ThemeLogo } from 'components/theme_logo';
 
@@ -105,6 +108,7 @@ export function Navbar({ open, onToggle }: NavbarProps) {
   const workspace = workspaces.find(
     (workspace) => workspace.workspaceId === workspaceId,
   );
+  const queryClient = useQueryClient();
 
   const links = LINK_DATA.map((link) => (
     <NavbarLink
@@ -144,6 +148,8 @@ export function Navbar({ open, onToggle }: NavbarProps) {
               icon={<IconUser size={14} />}
               onClick={async () => {
                 await signOut();
+                await queryClient.invalidateQueries([GetUserQuery]);
+
                 router.replace('/authentication/signin');
               }}
             >

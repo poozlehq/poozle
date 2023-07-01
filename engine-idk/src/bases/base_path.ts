@@ -47,7 +47,10 @@ export class BasePath {
 
     if (Array.isArray(responseFromRun)) {
       const data = responseFromRun.map((responseItem: any) =>
-        this.convertToModel(responseItem, params.queryParams?.raw ? true : false),
+        this.convertToModel(
+          responseItem,
+          params.queryParams?.raw === true || params.queryParams?.raw === 'true' ? true : false,
+        ),
       );
 
       const meta = await this.getMetaParams(data, params);

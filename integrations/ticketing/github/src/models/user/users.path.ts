@@ -11,7 +11,7 @@ export class UsersPath extends BasePath {
   async getUsers(headers: AxiosHeaders, params: Params, config: Config) {
     try {
       const page =
-      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+        typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
       const final_params = {
         per_page: params.queryParams?.limit,
         page,
@@ -20,7 +20,7 @@ export class UsersPath extends BasePath {
       const response = await axios({
         url: `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/assignees`,
         headers,
-        params: final_params
+        params: final_params,
       });
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

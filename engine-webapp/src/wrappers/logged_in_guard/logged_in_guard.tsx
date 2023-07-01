@@ -1,9 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { useRouter } from 'next/router';
-import React, { cloneElement, useEffect } from 'react';
-
-import { useGetUserQuery } from 'services/user/get_user';
+import React, { cloneElement } from 'react';
 
 import { Loader } from 'components';
 
@@ -13,16 +10,24 @@ interface Props {
 
 export function LoggedInGuard(props: Props): React.ReactElement {
   const { children } = props;
-  const { data, error: isError, isLoading } = useGetUserQuery();
-  const router = useRouter();
+  const [isLoading, setLoading] = React.useState(true);
+  const [data, setData] = React.useState(undefined);
 
-  useEffect(() => {
-    if (!isLoading && !isError && data.userId) {
-      router.replace('/workspaces');
+  React.useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = async () => {
+    const response = await fetch('/api/v1/user');
+
+    if (response.status === 200) {
+      setData(response);
     }
-  }, [isLoading, isError, data]);
 
-  if (!isLoading && isError && !data) {
+    setLoading(false);
+  };
+
+  if (!isLoading && !data) {
     return cloneElement(children);
   }
 
