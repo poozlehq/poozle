@@ -1,6 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { IntegrationType, PrismaClient, ReleaseStage } from '@prisma/client';
+import axios from 'axios';
 // import axios from 'axios';
 
 const prisma = new PrismaClient();
@@ -14,9 +15,13 @@ async function main() {
 
   if (integrationDefinitions.length === 0) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const integrationDefinitions: any = await fetch(
-      'https://raw.githubusercontent.com/poozlehq/engine/main/public/integration_definitions.json',
+    const integrationDefinitionsResponse: any = await axios.get(
+      'https://raw.githubusercontent.com/poozlehq/engine/main/integration_definitions.json',
     );
+
+    const integrationDefinitions = integrationDefinitionsResponse.data;
+
+    console.log(integrationDefinitions);
 
     const integrationDefinitionCreate = Object.keys(integrationDefinitions).map(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
