@@ -25,7 +25,7 @@
 </div>
 
 <p align="center">
-    <em>Poozle. The open-source Unified API for product integrations
+    <em>The open-source Unified API for product integrations
 </em>
 </p>
 
