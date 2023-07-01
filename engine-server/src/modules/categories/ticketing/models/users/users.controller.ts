@@ -38,7 +38,7 @@ export class UsersController {
   ): Promise<TicketingUserResponse> {
     const userResponse = await getDataFromAccount(
       integrationAccount,
-      '/users',
+      `/users/${params.user_id}`,
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },
@@ -59,7 +59,7 @@ export class UsersController {
   ): Promise<TicketingUsersResponse> {
     const userResponse = await getDataFromAccount(
       integrationAccount,
-      '/collections',
+      '/users',
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },

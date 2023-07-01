@@ -2,7 +2,6 @@
 
 import {
   Button,
-  Text,
   Group,
   NumberInput,
   Paper,

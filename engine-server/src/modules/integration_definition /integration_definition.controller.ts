@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Specification } from '@poozle/engine-edk';
+import { Specification } from '@poozle/engine-idk';
 
 import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
 

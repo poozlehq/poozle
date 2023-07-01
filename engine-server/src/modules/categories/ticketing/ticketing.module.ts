@@ -6,13 +6,23 @@ import { PrismaModule, PrismaService } from 'nestjs-prisma';
 
 import { IntegrationAccountModule } from 'modules/integration_account/integration_account.module';
 
-import { CollectionsController } from './models/collections/collections.controller';
-import { TicketsController } from './models/tickets/tickets.controller';
+import { CollectionController } from './models/collection/collection.controller';
+import { CommentController } from './models/comment/comment.controller';
+import { TagController } from './models/tag/tag.controller';
+import { TeamController } from './models/team/team.controller';
+import { TicketsController } from './models/ticket/tickets.controller';
 import { UsersController } from './models/users/users.controller';
 
 @Module({
   imports: [PrismaModule, HttpModule, IntegrationAccountModule],
-  controllers: [CollectionsController, UsersController, TicketsController],
+  controllers: [
+    CollectionController,
+    UsersController,
+    TeamController,
+    TicketsController,
+    CommentController,
+    TagController,
+  ],
   providers: [PrismaService],
   exports: [],
 })

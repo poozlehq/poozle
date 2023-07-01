@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Config } from '@poozle/engine-edk';
+import { Config } from '@poozle/engine-idk';
 import { IntegrationType } from '@prisma/client';
 import { IsObject, IsString } from 'class-validator';
 
@@ -66,4 +66,15 @@ export class UpdateIntegrationAccountBody {
 
   @IsObject()
   config: Config;
+}
+
+export class ProxyBody {
+  @IsString()
+  method: string;
+
+  @IsString()
+  path: string;
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  postBody?: any;
 }

@@ -11,6 +11,7 @@ type IntegrationDefinitions = Record<
     name: string;
     key: string;
     icon: string;
+    version: string;
     sourceUrl: string;
     releaseStage: string;
     integrationType: string;
@@ -40,8 +41,19 @@ async function main() {
         name: 'Github',
         key: 'github',
         icon: 'github.svg',
+        version: '0.0.1',
         sourceUrl:
-          'https://raw.githubusercontent.com/poozlehq/engine/ticketing/github/integrations/github/github/index.js',
+          'https://raw.githubusercontent.com/poozlehq/engine/ticketing/github/integrations/github/github/github.js',
+        releaseStage: 'ALPHA',
+        integrationType: 'TICKETING',
+      },
+      jira: {
+        name: 'Jira',
+        key: 'jira',
+        icon: 'jira.svg',
+        version: '0.0.1',
+        sourceUrl:
+          'https://raw.githubusercontent.com/poozlehq/engine/ticketing/github/integrations/github/github/jira.js',
         releaseStage: 'ALPHA',
         integrationType: 'TICKETING',
       },

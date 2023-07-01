@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IntegrationAccount } from '@@generated/integrationAccount.entity';
+import { IntegrationAccount } from '@@generated/integrationAccount/entities/integrationAccount.entity';
 
 import {
   OAuthInputSpec,

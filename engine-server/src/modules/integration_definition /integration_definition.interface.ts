@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Specification } from '@poozle/engine-edk';
+import { Specification } from '@poozle/engine-idk';
 import { IntegrationType } from '@prisma/client';
 import { IsString } from 'class-validator';
 

@@ -2,7 +2,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { Specification } from '@poozle/engine-edk';
+import { Specification } from '@poozle/engine-idk';
 import { ReleaseStage } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 import { getIntegrationSpec } from 'shared/integration_run_utils';

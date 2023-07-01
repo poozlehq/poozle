@@ -36,7 +36,7 @@ Poozle provides a single API for each vertical, allowing you to connect all SAAS
 
 ## Getting Started
 * [Deploy Poozle Open Source](https://docs.poozle.dev/oss/deploy-poozle)
-* Create integrations in minutes with our EDK (Extension development kit).
+* Create integrations in minutes with our IDK (Integration development kit).
 
 ## Contributing
 

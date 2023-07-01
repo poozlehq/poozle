@@ -1,7 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Tabs, TabsProps, rem } from '@mantine/core';
-import { primaryColor } from '../../app/theme';
 
 export function StyledTabs(props: TabsProps) {
   return (

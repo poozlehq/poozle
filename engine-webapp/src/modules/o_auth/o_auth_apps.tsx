@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp.entity';
+import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp/entities/integrationOAuthApp.entity';
 import { Button, Paper, Text } from '@mantine/core';
 import { useRouter } from 'next/router';
 import * as React from 'react';
