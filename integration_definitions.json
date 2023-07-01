@@ -2,17 +2,17 @@
     "name": "Github",
     "key": "github",
     "icon": "github.svg",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "releaseStage": "ALPHA",
-    "sourceUrl": "",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/github/0.1.1/index.js",
     "integrationType": "TICKETING"
   },
   {
     "name": "Jira",
     "key": "jira",
     "icon": "jira.svg",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "releaseStage": "ALPHA",
-    "sourceUrl": "",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/jira/0.1.1/index.js",
     "integrationType": "TICKETING"
   } ]
