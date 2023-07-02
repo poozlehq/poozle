@@ -7,7 +7,7 @@ import { convertTicket, JIRATicketBody } from './ticket.utils';
 
 export class TicketsPath extends BasePath {
   async fetchTickets(url: string, headers: AxiosHeaders, params: Params) {
-    const page = typeof params.queryParams?.cursor
+    const page = params.queryParams?.cursor
       ? parseInt(params.queryParams?.cursor.toString())
       : 1;
     const startAt =

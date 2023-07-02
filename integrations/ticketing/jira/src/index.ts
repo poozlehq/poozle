@@ -32,14 +32,21 @@ class JiraIntegration extends BaseIntegration {
 
   async check(config: Config): CheckResponse {
     try {
-      await axios({
-        url: `https://${config.jira_domain}.atlassian.net/rest/api/2/issue/createmeta`,
+      const response = await axios({
+        url: `https://${config.jira_domain}.atlassian.net/rest/api/2/project`,
         headers: {
           Authorization: `Basic ${Buffer.from(`${config.email_id}:${config.api_key}`).toString(
             'base64',
           )}`,
         },
       });
+
+      if('x-seraph-loginreason' in response.headers){
+        return {
+          status: false,
+          error: 'AUTHENTICATED_FAILED'
+        }
+      }
 
       return {
         status: true,
