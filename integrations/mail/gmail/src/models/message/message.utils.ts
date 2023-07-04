@@ -19,15 +19,15 @@ interface extractedBody {
 }
 
 function getReceipts(data: string) {
-  const regex = /([\w\s]+)<([\w.-]+@[\w.-]+)>|([\w.-]+@[\w.-]+)/g;
+  const regex = /([^<>\r\n]+)|<([^\s@]+@[^\s@]+)>|([\w.-]+@[\w.-]+)/g;
 
   const result = [] as Recipient[];
   data.split(', ').forEach((value: any) => {
     const match = value.replace(/\\"/g, '').match(regex);
     if (match) {
-      const name = match.length > 1 ? match[0] : '';
-      const email = match.length > 1 ? match[1] : match[0];
-
+      const name = match.length > 1 ? match[0].trim() : '';
+      let email = match.length > 1 ? match[1] : match[0];
+      email = email.replace(/[<>]/g, '');
       result.push({ name, email });
     }
   });
@@ -104,14 +104,14 @@ export function convertMessage(data: any) {
     reply_to: getReceipts(responseHeaders['Reply-To'] ?? ''),
     labels: data.labelIds,
     files: body.files,
-    raw_data: data
+    raw_data: data,
   };
 }
 
 function convertToEmail(data: any) {
   const result = [] as string[];
   data.map((recipient: Recipient) => {
-    console.log(recipient)
+    console.log(recipient);
     result.push(`${recipient.name} <${recipient.email}>`);
   });
 
@@ -154,7 +154,7 @@ function createAlternative(text: string, html: string, boundary: string) {
 
 function createBody(text: string, html: string, boundary: string) {
   if (text && html) {
-    return createAlternative(text, html, boundary);
+    return `${createAlternative(text, html, boundary)}`;
   }
 
   if (text) {

@@ -7,6 +7,16 @@ export default {
       tokenUrl: 'https://oauth2.googleapis.com/token',
     },
   },
-  supportedFilters: [],
-  supportedSortBy: ['created_at', 'updated_at'],
+  supportedFilters: [
+    'subject',
+    'from',
+    'to',
+    'cc',
+    'bcc',
+    'labels',
+    'starred',
+    'unread',
+    'direction',
+  ],
+  supportedSortBy: ['created_at'],
 };

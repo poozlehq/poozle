@@ -1,44 +1,61 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Meta, Params, Ticket } from '@poozle/engine-idk';
+import { BasePath, Config, Message, Meta, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { constructRawEmail, convertMessage, messageResponse } from './message.utils';
 
 const BASE_URL = 'https://www.googleapis.com/gmail/v1/users/me/messages';
+let next_cursor = '';
 
 export class GetMessagesPath extends BasePath {
   async fetchData(url: string, headers: AxiosHeaders, params: Params) {
     const page = typeof params.queryParams?.cursor === 'string' ? params.queryParams?.cursor : '';
+    const q = [
+      ...(params.queryParams?.subject ? [`subject:${params.queryParams?.subject}`] : []),
+      ...(params.queryParams?.from ? [`from:${params.queryParams?.from}`] : []),
+      ...(params.queryParams?.to ? [`to:${params.queryParams?.to}`] : []),
+      ...(params.queryParams?.cc ? [`cc:${params.queryParams?.cc}`] : []),
+      ...(params.queryParams?.bcc ? [`bcc:${params.queryParams?.bcc}`] : []),
+      ...(params.queryParams?.starred ? [`is:starred`] : []),
+      ...(params.queryParams?.unread ? [`is:unread`] : []),
+    ];
     const final_params = {
       maxResults: params.queryParams?.limit,
-      ...(page && { nextPageToken: page }),
+      ...(page && { pageToken: page }),
+      ...(params.queryParams?.labels && { labels: params.queryParams?.labels }),
+      ...(params.queryParams?.direction && {
+        orderBy: params.queryParams?.direction === 'asc' ? 'oldest' : 'newest',
+      }),
+      ...(q && { q: q.join(' ') }),
     };
     const messagesResponse = await axios({
       url,
       headers,
       params: final_params,
     });
+    params.queryParams.next_cursor = messagesResponse.data.nextPageToken;
+    next_cursor = messagesResponse.data.nextPageToken;
 
     return Promise.all(
       messagesResponse.data.messages.map(async (data: messageResponse) => {
         const messageUrl: string = `${BASE_URL}/${data.id}` as string;
         const response = await axios(messageUrl, { headers });
+        console.log(response.data);
         return convertMessage(response.data);
       }),
     );
   }
 
-  async getMetaParams(_data: Ticket[], params: Params): Promise<Meta> {
-    const page =
-      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+  async getMetaParams(_data: Message[], params: Params): Promise<Meta> {
+    const page = typeof params.queryParams?.cursor === 'string' ? params.queryParams?.cursor : '';
 
     return {
       limit: params.queryParams?.limit as number,
       cursors: {
-        before: (page > 1 ? page - 1 : 1).toString(),
-        current: page.toString(),
-        next: (page + 1).toString(),
+        before: '',
+        current: page,
+        next: next_cursor,
       },
     };
   }
