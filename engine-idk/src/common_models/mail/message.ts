@@ -129,10 +129,10 @@ export const MessageSchema = {
       items: [
         {
           type: 'string',
-          default: '',
+          default: ''
         },
       ],
-    },
+    }
   },
 };
 
@@ -164,7 +164,6 @@ export interface Message {
 export interface createMessage {
   body: string;
   html_body: string;
-  snippet: string;
   subject: string;
   thread_id: string;
   cc: Recipient[];

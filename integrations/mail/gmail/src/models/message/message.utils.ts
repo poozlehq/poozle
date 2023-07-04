@@ -12,10 +12,10 @@ interface file {
   content_type: string;
   filename: string;
 }
-interface extractedBody{
-  textBody: string; 
-  htmlBody: string; 
-  files: file[]
+interface extractedBody {
+  textBody: string;
+  htmlBody: string;
+  files: file[];
 }
 
 function getReceipts(data: string) {
@@ -57,7 +57,7 @@ function flattenParts(parts: any[]) {
 }
 
 function extractBody(parts: any): extractedBody {
-  const response: extractedBody = { textBody: '', htmlBody: '', files: []};
+  const response: extractedBody = { textBody: '', htmlBody: '', files: [] };
   const flattenedParts = flattenParts(parts);
 
   flattenedParts.forEach((part: any) => {
@@ -104,12 +104,14 @@ export function convertMessage(data: any) {
     reply_to: getReceipts(responseHeaders['Reply-To'] ?? ''),
     labels: data.labelIds,
     files: body.files,
+    raw_data: data
   };
 }
 
 function convertToEmail(data: any) {
-  let result = [] as string[];
+  const result = [] as string[];
   data.map((recipient: Recipient) => {
+    console.log(recipient)
     result.push(`${recipient.name} <${recipient.email}>`);
   });
 
@@ -151,11 +153,17 @@ function createAlternative(text: string, html: string, boundary: string) {
 }
 
 function createBody(text: string, html: string, boundary: string) {
-  if (text && html) return createAlternative(text, html, boundary);
+  if (text && html) {
+    return createAlternative(text, html, boundary);
+  }
 
-  if (text) return createPlain(text);
+  if (text) {
+    return createPlain(text);
+  }
 
-  if (html) return createHtml(html);
+  if (html) {
+    return createHtml(html);
+  }
 
   return '';
 }
@@ -168,7 +176,9 @@ function createAttachments(attachments: any, boundary: string) {
     result.push(`--${boundary}\r\n`);
     result.push(`Content-Type: ${attachment.type}\r\n`);
     result.push('MIME-Version: 1.0\r\n');
-    if (attachment.contentId) result.push(`Content-ID: <${attachment.contentId}>\r\n`);
+    if (attachment.contentId) {
+      result.push(`Content-ID: <${attachment.contentId}>\r\n`);
+    }
     result.push('Content-Transfer-Encoding: base64\r\n');
     result.push(`Content-Disposition: attachment${attName}\r\n\r\n`);
     result.push(`${attachment.content}\r\n\r\n`);
@@ -195,7 +205,7 @@ export function constructRawEmail(data: any) {
   const headers = [
     `From: ${convertToEmail(data.from)}`,
     `To: ${convertToEmail(data.to)}`,
-    `Subject: RE:${data.subject}`,
+    `Subject: ${data.subject}`,
     ...(data.in_reply_to ? [`References: ${data.in_reply_to}`] : []),
     ...(data.in_reply_to ? [`In-Reply-To: ${data.in_reply_to}`] : []),
     ...(data.snippet ? [`Snippet: ${data.snippet}`] : []),

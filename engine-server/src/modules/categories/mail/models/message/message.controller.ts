@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
 import { Method, getDataFromAccount } from 'shared/integration_account.utils';
@@ -17,6 +17,8 @@ import {
   ListMessagesQueryParams,
   MailMessageResponse,
   MailMessagesResponse,
+  CommonMessageQueryParams,
+  CreateMessageBody,
 } from './message.interface';
 
 @Controller({
@@ -67,24 +69,24 @@ export class MessagesController {
     return messageResponse;
   }
 
-  // @Post('messages')
-  // async sendMessage(
-  //   @Query() query: CommonMessageQueryParams,
+  @Post('messages')
+  async sendMessage(
+    @Query() query: CommonMessageQueryParams,
 
-  //   @Body() createMessageBody: CreateMessageBody,
-  //   @GetIntegrationAccount(IntegrationType.MAIL)
-  //   integrationAccount: IntegrationAccount,
-  // ): Promise<MailMessageResponse> {
-  //   const messageResponse = await getDataFromAccount(
-  //     integrationAccount,
-  //     `/messages`,
-  //     Method.POST,
-  //     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  //     { ...defaultQueryParams, ...(query as any) },
-  //     {},
-  //     createMessageBody,
-  //   );
+    @Body() createMessageBody: CreateMessageBody,
+    @GetIntegrationAccount(IntegrationType.MAIL)
+    integrationAccount: IntegrationAccount,
+  ): Promise<MailMessageResponse> {
+    const messageResponse = await getDataFromAccount(
+      integrationAccount,
+      `/messages`,
+      Method.POST,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      { ...defaultQueryParams, ...(query as any) },
+      {},
+      createMessageBody,
+    );
 
-  //   return messageResponse;
-  // }
+    return messageResponse;
+  }
 }

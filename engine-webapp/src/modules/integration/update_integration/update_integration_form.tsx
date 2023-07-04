@@ -22,7 +22,6 @@ import { Loader } from 'components';
 import styles from './update_integration_form.module.scss';
 import { getInitialValues } from './update_integration_form_utils';
 import {
-  OAuthInputSpec,
   getProperties,
   getPropertyName,
   returnOAuthInputSpecification,

@@ -26,5 +26,5 @@ export async function fetchAccessToken(
     },
   );
 
-  return response.data;
+  return response.data.access_token;
 }

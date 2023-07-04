@@ -19,6 +19,16 @@ class GmailIntegration extends BaseIntegration {
     return spec;
   }
 
+  async authHeaders(config: Config) {
+    return {
+      Authorization: `Bearer ${await fetchAccessToken(
+        config.client_id,
+        config.client_secret,
+        config.refresh_token,
+      )}`,
+    };
+  }
+
   async check(config: Config): CheckResponse {
     try {
       await fetchAccessToken(config.client_id, config.client_secret, config.refresh_token);
@@ -45,3 +55,5 @@ export async function main(command: string, allParams: any) {
 
   return response;
 }
+
+export default main;

@@ -53,9 +53,7 @@ export class GetMessagesPath extends BasePath {
     const createResponse = await axios.post(url, body, { headers });
 
     if (createResponse.status === 200) {
-      console.log(createResponse.data);
       const response = await axios.get(`${BASE_URL}/${createResponse.data.id}`, { headers });
-      console.log(response.data)
       return convertMessage(response.data);
     }
 

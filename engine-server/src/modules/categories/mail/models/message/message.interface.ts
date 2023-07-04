@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IsOptional, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 
 import { QueryParams, JustRawParams } from 'common/interfaces/query.interface';
 import { Meta } from 'common/interfaces/response.interface';
@@ -42,12 +42,12 @@ export class Message {
   thread_id: string;
   starred: boolean;
   unread: boolean;
-  ticket_url: string;
   cc: Recipient[];
   bcc: Recipient[];
   from: Recipient[];
   reply_to: Recipient[];
   labels: string[];
+  in_reply_to: string;
 }
 
 export class MailMessageResponse {
@@ -58,26 +58,43 @@ export class MailMessagesResponse {
   meta: Meta;
 }
 
-// export class CreateMessageBody {
-//   @IsString()
-//   name: string;
+export class CreateMessageBody {
+  @IsString()
+  subject: string;
 
-//   @IsString()
-//   description: string;
+  @IsOptional()
+  @IsString()
+  body: string;
 
-//   @IsOptional()
-//   @IsArray()
-//   assignees: Array<Exclude<MessageAssignee, 'username'>>;
+  @IsOptional()
+  @IsString()
+  html_body: string;
 
-//   @IsOptional()
-//   @IsArray()
-//   tags: MessageTag[];
+  @IsOptional()
+  @IsString()
+  thread: string;
 
-//   @IsOptional()
-//   @IsString()
-//   created_by: string;
+  @IsOptional()
+  @IsArray()
+  cc: Recipient[];
 
-//   @IsOptional()
-//   @IsString()
-//   type: string;
-// }
+  @IsOptional()
+  @IsArray()
+  bcc: Recipient[];
+
+  @IsOptional()
+  @IsArray()
+  from: Recipient[];
+
+  @IsOptional()
+  @IsArray()
+  to: Recipient[];
+
+  @IsOptional()
+  @IsArray()
+  reply_to: Recipient[];
+
+  @IsOptional()
+  @IsString()
+  in_reply_to: string;
+}
