@@ -152,10 +152,25 @@ export interface Message {
   thread_id: string;
   starred: boolean;
   unread: boolean;
-  ticket_url: string;
   cc: Recipient[];
   bcc: Recipient[];
   from: Recipient[];
   reply_to: Recipient[];
   labels: string[];
+  in_reply_to: string;
+}
+
+
+export interface createMessage {
+  body: string;
+  html_body: string;
+  snippet: string;
+  subject: string;
+  thread_id: string;
+  cc: Recipient[];
+  bcc: Recipient[];
+  from: Recipient[];
+  to: Recipient[];
+  reply_to: Recipient[];
+  in_reply_to: string;
 }

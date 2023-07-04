@@ -12,8 +12,8 @@ export class GmailThreadModel extends BaseModel {
 
   paths() {
     return [
-      new ThreadsPath(/^\/?threads$/g, ['GET', 'POST'], this.schema),
-      new ThreadPath(/^\/?threads+/g, ['GET', 'PATCH'], this.schema),
+      new ThreadsPath(/^\/?threads$/g, ['GET'], this.schema),
+      new ThreadPath(/^\/?threads+/g, ['GET'], this.schema),
     ];
   }
 }

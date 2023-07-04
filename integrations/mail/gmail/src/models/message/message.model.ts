@@ -12,7 +12,8 @@ export class GmailMessageModel extends BaseModel {
   paths() {
     return [
       new GetMessagesPath(/^\/?messages$/g, ['GET', 'POST'], this.schema),
-      new GetMessagePath(/^\/?messages+/g, ['GET', 'PATCH'], this.schema),
+      new GetMessagesPath(/^\/?send$/g, ['POST'], this.schema),
+      new GetMessagePath(/^\/?messages+/g, ['GET'], this.schema),
     ];
   }
 }

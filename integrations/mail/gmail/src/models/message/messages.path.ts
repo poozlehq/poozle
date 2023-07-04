@@ -3,7 +3,7 @@
 import { BasePath, Config, Meta, Params, Ticket } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
-import { convertMessage, messageResponse } from './message.utils';
+import { constructRawEmail, convertMessage, messageResponse } from './message.utils';
 
 const BASE_URL = 'https://www.googleapis.com/gmail/v1/users/me/messages';
 
@@ -43,10 +43,33 @@ export class GetMessagesPath extends BasePath {
     };
   }
 
+  async sendEmail(url: string, headers: AxiosHeaders, params: Params) {
+    console.log(url, headers, params);
+    const body = {
+      raw: constructRawEmail(params.requestBody),
+      ...(params.requestBody?.thread_id ? { threadId: params.requestBody?.thread_id } : {}),
+    };
+    console.log(body);
+    const createResponse = await axios.post(url, body, { headers });
+
+    if (createResponse.status === 200) {
+      console.log(createResponse.data);
+      const response = await axios.get(`${BASE_URL}/${createResponse.data.id}`, { headers });
+      console.log(response.data)
+      return convertMessage(response.data);
+    }
+
+    return { status: 'Failed to send request' };
+  }
+
   async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
     switch (method) {
       case 'GET':
         return this.fetchData(BASE_URL, headers, params);
+
+      case 'POST':
+        const url = `${BASE_URL}/send`;
+        return this.sendEmail(url, headers, params);
 
       default:
         return [];
