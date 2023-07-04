@@ -18,6 +18,7 @@ export class ThreadPath extends BasePath {
     return convertThread(response.data);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
     const url = `${BASE_URL}/${params.pathParams?.thread_id}`;
     switch (method) {

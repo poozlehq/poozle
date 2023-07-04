@@ -12,6 +12,7 @@ import {
 } from 'services/integration_account';
 import {
   AuthSpecificationGeneric,
+  AuthSpecificationOAuth,
   Specification,
   useGetIntegrationDefinitionSpecQuery,
 } from 'services/integration_definition/get_spec_for_integration_definition';
@@ -20,10 +21,10 @@ import { Loader } from 'components';
 
 import styles from './new_integration_form.module.scss';
 import {
-  OAuthInputSpec,
   getInitialValues,
   getProperties,
   getPropertyName,
+  returnOAuthInputSpecification,
 } from './new_integration_form_utils';
 
 interface NewIntegrationFormProps {
@@ -85,7 +86,13 @@ export function Form({
   const properties = form.values.authType
     ? getProperties(
         form.values.authType === 'OAuth2'
-          ? OAuthInputSpec
+          ? returnOAuthInputSpecification(
+              (
+                spec.authSpecification[
+                  form.values.authType
+                ] as AuthSpecificationOAuth
+              ).inputSpecification,
+            )
           : (
               spec.authSpecification[
                 form.values.authType

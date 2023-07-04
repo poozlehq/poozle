@@ -16,6 +16,11 @@ export interface AuthSpecificationOAuth {
   authorizationParams?: Record<string, string>;
   tokenParams?: Record<string, string>;
   headers?: Record<string, string>;
+  inputSpecification?: {
+    type: string;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    properties: Record<string, any>;
+  };
 }
 
 // Generic holder of config for integration

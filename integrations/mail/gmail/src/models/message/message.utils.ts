@@ -1,47 +1,45 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
-import {Recipient} from '@poozle/engine-idk'
+import { Recipient } from '@poozle/engine-idk';
 
 export interface messageResponse {
   id: string;
   thread_id: string;
 }
 
-interface files{
-  content_id: string,
-  content_type: string,
-  filename: string
+interface files {
+  content_id: string;
+  content_type: string;
+  filename: string;
 }
 
-
-
 function getReceipts(data: string) {
-  const regex = /([\w\s]+)<([\w.-]+@[\w.-]+)>|([\w.-]+@[\w.-]+)/g 
+  const regex = /([\w\s]+)<([\w.-]+@[\w.-]+)>|([\w.-]+@[\w.-]+)/g;
 
-  let result = [] as Recipient[];
+  const result = [] as Recipient[];
   data.split(', ').forEach((value: any) => {
     const match = value.replace(/\\"/g, '').match(regex);
     if (match) {
-      const name = match.length>1 ? match[0]: "";
-      const email = match.length>1 ? match[1] : match[0] ;
-      console.log(name, email)
-      result.push({ "name": name, "email": email });
+      const name = match.length > 1 ? match[0] : '';
+      const email = match.length > 1 ? match[1] : match[0];
+
+      result.push({ name, email });
     }
   });
   return result;
 }
 
-
-
-
 function flattenParts(parts: any[]) {
-  let flattenedParts: any[] = [];
+  const flattenedParts: any[] = [];
 
   for (const part of parts) {
     const flattenedPart = {
       mimeType: part.mimeType,
       filename: part.filename,
-      headers: part.headers.reduce((acc: any, header: any) => ({ ...acc, [header.name]: header.value }), {}),
+      headers: part.headers.reduce(
+        (acc: any, header: any) => ({ ...acc, [header.name]: header.value }),
+        {},
+      ),
       body: part.body.data ?? '',
       size: part.body.size,
     };
@@ -53,7 +51,7 @@ function flattenParts(parts: any[]) {
   return flattenedParts;
 }
 
-function extractBody(parts: any): { textBody: string, htmlBody: string, files: any[] } {
+function extractBody(parts: any): { textBody: string; htmlBody: string; files: any[] } {
   const response = { textBody: '', htmlBody: '', files: [] as files[] };
   const flattenedParts = flattenParts(parts);
 
@@ -74,11 +72,10 @@ function extractBody(parts: any): { textBody: string, htmlBody: string, files: a
   return response;
 }
 
-
 export function convertMessage(data: any) {
   const responseHeaders = data.payload.headers.reduce(
     (acc: any, header: any) => ({ ...acc, [header.name]: header.value }),
-    {}
+    {},
   );
 
   const labels = new Set(data.labelIds);

@@ -10,8 +10,7 @@ const BASE_URL = 'https://www.googleapis.com/gmail/v1/users/me/threads';
 export class ThreadsPath extends BasePath {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getThreads(url: string, headers: AxiosHeaders, params: Params) {
-    const page =
-      typeof params.queryParams?.cursor === 'string' ? params.queryParams?.cursor : '';
+    const page = typeof params.queryParams?.cursor === 'string' ? params.queryParams?.cursor : '';
     const final_params = {
       maxResults: params.queryParams?.limit,
       ...(page && { nextPageToken: page }),
@@ -23,13 +22,14 @@ export class ThreadsPath extends BasePath {
       params: final_params,
     });
 
-    return Promise.all(threadResponse.data.threads.map(async (data: threadResponse) => {
-      const messageUrl: string = `${BASE_URL}/${data.id}` as string
-      const response = await axios(messageUrl, {headers})
-      console.log(response.data)
-      return convertThread(response.data)
-    }))
-    
+    return Promise.all(
+      threadResponse.data.threads.map(async (data: threadResponse) => {
+        const messageUrl: string = `${BASE_URL}/${data.id}` as string;
+        const response = await axios(messageUrl, { headers });
+        console.log(response.data);
+        return convertThread(response.data);
+      }),
+    );
   }
 
   async getMetaParams(_data: Tag[], params: Params): Promise<Meta> {
