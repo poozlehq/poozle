@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { BasePath, Config, Params, Meta, Tag } from '@poozle/engine-idk';
@@ -24,9 +25,9 @@ export class ThreadsPath extends BasePath {
 
     return Promise.all(
       threadResponse.data.threads.map(async (data: threadResponse) => {
-        const messageUrl: string = `${BASE_URL}/${data.id}` as string;
-        const response = await axios(messageUrl, { headers });
-        console.log(response.data);
+        const threadUrl: string = `${BASE_URL}/${data.id}` as string;
+        const response = await axios(threadUrl, { headers });
+
         return convertThread(response.data);
       }),
     );

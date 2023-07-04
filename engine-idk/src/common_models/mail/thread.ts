@@ -1,4 +1,6 @@
-import { Message } from "./message";
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
+import { Message } from './message';
 
 export const ThreadSchema = {
   type: 'object',
@@ -156,9 +158,8 @@ export const ThreadSchema = {
   },
 };
 
-
 export interface Thread {
-    id: string,
-    history_id: string,
-    messages: Message[]
+  id: string;
+  history_id: string;
+  messages: Message[];
 }

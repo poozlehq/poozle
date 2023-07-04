@@ -130,5 +130,5 @@ enum IntegrationType {
   MESSAGING
   CALENDAR
   TICKETING
-  EMAIL
+  MAIL
 }

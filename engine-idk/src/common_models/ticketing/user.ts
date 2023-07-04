@@ -1,3 +1,5 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 export const UserSchema = {
   type: 'object',
   properties: {
@@ -20,10 +22,9 @@ export const UserSchema = {
   },
 };
 
-
 export interface User {
-  id: string,
-  name: string,
-  email_address: string,
-  avatar: string
+  id: string;
+  name: string;
+  email_address: string;
+  avatar: string;
 }

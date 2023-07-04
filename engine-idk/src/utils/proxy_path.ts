@@ -4,6 +4,7 @@
 import axios, { AxiosHeaders } from 'axios';
 import { BaseModel } from 'bases/base_model';
 import { BasePath } from 'bases/base_path';
+
 import { ProxySchema } from 'common_models/proxy';
 
 import { Params } from 'types/integration';

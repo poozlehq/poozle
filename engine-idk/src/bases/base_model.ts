@@ -1,9 +1,10 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { AxiosHeaders } from 'axios';
-import { Config, Params } from 'types/integration';
 
+import { Config, Params } from 'types/integration';
 import { BaseModelInterface, Schema } from 'types/model';
+
 import { BasePath } from './base_path';
 
 export class BaseModel implements BaseModelInterface {

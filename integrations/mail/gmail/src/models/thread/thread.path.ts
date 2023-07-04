@@ -9,7 +9,7 @@ const BASE_URL = 'https://www.googleapis.com/gmail/v1/users/me/threads';
 
 export class ThreadPath extends BasePath {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async getTag(url: string, headers: AxiosHeaders, _params: Params) {
+  async getThread(url: string, headers: AxiosHeaders, _params: Params) {
     const response = await axios({
       url,
       headers,
@@ -23,7 +23,7 @@ export class ThreadPath extends BasePath {
     const url = `${BASE_URL}/${params.pathParams?.thread_id}`;
     switch (method) {
       case 'GET':
-        return this.getTag(url, headers, params);
+        return this.getThread(url, headers, params);
 
       default:
         return {};

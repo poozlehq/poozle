@@ -69,6 +69,7 @@ export interface BaseIntegrationInterface {
   authHeaders(config: Config): AuthHeaderResponse;
   // Return all models part of this integration
   // TODO (harshith): Return model type
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   models(): any[];
   // return reponse from a path
   run(path: string, method: string, config: Config, params: Params): RunResponse;

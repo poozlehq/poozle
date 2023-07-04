@@ -135,7 +135,7 @@ export interface CreateTicketBody {
   collection_id: string;
   name: string;
   description: string;
-  assignees: Exclude<Assignee, 'username'>[];
+  assignees: Array<Exclude<Assignee, 'username'>>;
   tags: TicketTag[];
   created_by: string;
   type: string;
@@ -144,7 +144,7 @@ export interface CreateTicketBody {
 export interface UpdateTicketBody {
   name: string;
   description: string;
-  assignees: Exclude<Assignee, 'username'>[];
+  assignees: Array<Exclude<Assignee, 'username'>>;
   tags: TicketTag[];
   status: string;
   created_by: string;

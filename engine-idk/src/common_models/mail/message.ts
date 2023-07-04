@@ -129,13 +129,12 @@ export const MessageSchema = {
       items: [
         {
           type: 'string',
-          default: ''
+          default: '',
         },
       ],
-    }
+    },
   },
 };
-
 
 export interface Recipient {
   email: string;
