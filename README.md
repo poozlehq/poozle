@@ -40,7 +40,11 @@ Poozle provides a single API for each vertical, allowing you to connect all SAAS
 
 ## Contributing
 
-Get started by checking Github issues and creating a Pull Request. An easy way to start contributing is to update an existing integration. The Poozle platform is written in Typescript. You can also contribute to our docs and tutorials.
+Whether it's big or small, we love contributions. Check out our guide to see how to get started.
+
+Not sure where to get started? You can:
+
+* Join our [Slack](https://join.slack.com/t/poozle-community/shared_invite/zt-1u4mz911h-FeWpOA82wA8kyrz3xg58xQ), and ask us any questions there.
 
 ## Reporting vulnerabilities
 
@@ -48,7 +52,7 @@ Get started by checking Github issues and creating a Pull Request. An easy way t
 
 Poozle takes security issues very seriously. If you have any concerns about Poozle or believe you have uncovered a vulnerability, please get in touch via the e-mail address support@poozle.dev. In the message, try to describe the issue and ideally a way of reproducing it. The security team will get back to you as soon as possible.
 
-Note that this security address should be used only for undisclosed vulnerabilities. Dealing with fixed issues or general questions on how to use the security features should be handled regularly via the user and the dev lists. Please report any security problems to us before disclosing them publicly.
+Note that this security address should be used only for undisclosed vulnerabilities. Please report any security problems to us before disclosing it publicly.
 
 ## License
 
