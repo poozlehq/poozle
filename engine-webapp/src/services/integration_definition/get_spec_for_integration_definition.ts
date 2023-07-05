@@ -65,7 +65,7 @@ export function useGetIntegrationDefinitionSpecQuery(
   queryParams: IntegrationDefinitionParams,
 ): UseQueryResult<Specification, XHRErrorResponse> {
   return useQuery(
-    [GetIntegrationDefinitionSpec],
+    [GetIntegrationDefinitionSpec, queryParams.integrationDefinitionId],
     () => getIntegrationDefinitionSpec(queryParams),
     {
       notifyOnChangeProps: 'tracked',

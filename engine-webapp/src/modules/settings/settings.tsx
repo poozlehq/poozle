@@ -10,9 +10,9 @@ import { GetUserData } from 'wrappers/get_user_data';
 import { Header } from 'components';
 
 import { Account } from './account/account';
+import { APIKeys } from './api_keys/api_keys';
 import { Integrations } from './integrations/integrations';
 import { StyledTabs } from './styled_tab';
-import { APIKeys } from './api_keys/api_keys';
 
 const enum TAB_KEYS {
   'ACCOUNT' = 'ACCOUNT',

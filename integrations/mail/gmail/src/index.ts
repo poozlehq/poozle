@@ -7,12 +7,12 @@ import {
   GenericProxyModel,
   SpecificationResponse,
 } from '@poozle/engine-idk';
-import { fetchAccessToken } from 'utils';
 
 import { GmailMessageModel } from 'models/message/message.model';
 import { GmailThreadModel } from 'models/thread/thread.model';
 
 import spec from './spec';
+import { fetchAccessToken } from './utils';
 
 class GmailIntegration extends BaseIntegration {
   async spec(): SpecificationResponse {

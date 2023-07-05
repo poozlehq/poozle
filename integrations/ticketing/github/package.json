@@ -47,7 +47,6 @@
     "access": "public"
   },
   "dependencies": {
-    "@poozle/engine-edk": "^0.2.13",
     "@poozle/engine-idk": "^0.1.3",
     "axios": "^1.4.0"
   },

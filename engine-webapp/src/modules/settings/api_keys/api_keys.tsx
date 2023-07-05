@@ -29,7 +29,7 @@ export function APIKeys() {
     },
   });
   const [token, setToken] = React.useState('');
-  const { mutate: createToken } = useCreateTokenMutation({
+  const { mutate: createToken, isLoading } = useCreateTokenMutation({
     onSuccess: (data) => {
       setToken(data);
       form.reset();
@@ -64,7 +64,9 @@ export function APIKeys() {
           />
 
           <Group position="right" mt="xl">
-            <Button type="submit">Create token</Button>
+            <Button type="submit" loading={isLoading}>
+              Create token
+            </Button>
           </Group>
         </form>
       </Group>

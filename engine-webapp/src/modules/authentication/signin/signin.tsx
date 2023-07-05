@@ -27,7 +27,7 @@ interface FormValues {
 
 export function Signin() {
   const router = useRouter();
-  const { mutate: signinMutate } = useSignInMutation({
+  const { mutate: signinMutate, isLoading } = useSignInMutation({
     onSuccess: () => router.replace('/workspaces'),
   });
   const form = useForm({
@@ -75,7 +75,7 @@ export function Signin() {
               Forgot password?
             </Anchor>
           </Group>
-          <Button fullWidth mt="xl" type="submit">
+          <Button fullWidth mt="xl" type="submit" loading={isLoading}>
             Sign in
           </Button>
         </form>

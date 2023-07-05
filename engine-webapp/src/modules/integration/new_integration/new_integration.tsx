@@ -1,5 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
 import { Container, Divider, Group, Paper, Title } from '@mantine/core';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -14,7 +15,6 @@ import { Header, Select } from 'components';
 
 import styles from './new_integration.module.scss';
 import { NewIntegrationForm } from './new_integration_form';
-import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
 
 export function NewIntegration() {
   const {

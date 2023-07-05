@@ -15,6 +15,7 @@ export class QueryParams extends PaginationParams {
 export class JustRawParams {
   @IsBoolean()
   @IsOptional()
+  @Transform(({ value }) => value === 'true' || value === 'True')
   raw?: boolean;
 }
 

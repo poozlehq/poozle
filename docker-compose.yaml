@@ -7,8 +7,6 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - 5432:5432
     networks:
       - poozle
     restart: unless-stopped
@@ -17,6 +15,8 @@ services:
     image: poozlehq/engine-server:${ENGINE_VERSION}
     platform: linux/amd64
     container_name: poozle-server
+    depends_on:
+      - db
     restart: unless-stopped
     networks:
       - poozle
@@ -32,6 +32,8 @@ services:
       # Default User
       - USER_PASSWORD=${USER_PASSWORD}
       - USER_EMAIL=${USER_EMAIL}
+      - USER_FIRSTNAME=${USER_FIRSTNAME}
+      - USER_LASTNAME=${USER_LASTNAME}
       - CREATE_DEFAULT_USER=${CREATE_DEFAULT_USER}
 
   webapp:

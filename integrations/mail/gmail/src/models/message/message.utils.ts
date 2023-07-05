@@ -97,7 +97,7 @@ export function convertMessage(data: any) {
     thread_id: data.threadId,
     starred: labels.has('STARRED'),
     unread: labels.has('UNREAD'),
-    in_reply_to: responseHeaders['Message-ID'] ?? '',
+    in_reply_to: responseHeaders['Message-Id'] ?? '',
     cc: getReceipts(responseHeaders.Cc ?? ''),
     bcc: getReceipts(responseHeaders.Bcc ?? ''),
     from: getReceipts(responseHeaders.From ?? ''),

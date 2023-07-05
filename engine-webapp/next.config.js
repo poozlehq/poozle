@@ -23,4 +23,7 @@ module.exports = {
   experimental: {
     outputStandalone: true,
   },
+  api: {
+    responseLimit: false,
+  },
 };

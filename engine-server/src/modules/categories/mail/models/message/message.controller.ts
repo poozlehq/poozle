@@ -58,7 +58,7 @@ export class MessagesController {
 
   @Get('messages/:message_id')
   async getMessageId(
-    @Query() query: ListMessagesQueryParams,
+    @Query() query: CommonMessageQueryParams,
     @Param()
     params: PathParamsWithMessageId,
     @GetIntegrationAccount(IntegrationType.MAIL)
