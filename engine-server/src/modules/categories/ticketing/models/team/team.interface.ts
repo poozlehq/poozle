@@ -55,7 +55,7 @@ export class UpdateTeamBody {
   @IsOptional()
   @IsString()
   name?: string;
-  
+
   @IsOptional()
   @IsString()
   description?: string;

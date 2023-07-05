@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { BasePath, Config, Message, Meta, Params } from '@poozle/engine-idk';
@@ -66,12 +67,11 @@ export class GetMessagesPath extends BasePath {
   }
 
   async sendEmail(url: string, headers: AxiosHeaders, params: Params) {
-    console.log(url, headers, params);
     const body = {
       raw: constructRawEmail(params.requestBody),
       ...(params.requestBody?.thread_id ? { threadId: params.requestBody?.thread_id } : {}),
     };
-    console.log(body);
+
     const createResponse = await axios.post(url, body, { headers });
 
     if (createResponse.status === 200) {

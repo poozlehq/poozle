@@ -15,4 +15,13 @@
     "releaseStage": "ALPHA",
     "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/jira/0.1.1/index.js",
     "integrationType": "TICKETING"
+  },
+  {
+    "name": "Gmail",
+    "key": "gmail",
+    "icon": "gmail.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/mail/gmail/0.1.1/index.js",
+    "integrationType": "MAIL"
   } ]

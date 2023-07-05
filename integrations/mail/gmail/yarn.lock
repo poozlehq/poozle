@@ -1109,8 +1109,12 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@poozle/engine-idk@file:../../../engine-idk/idk":
-  version "0.0.0"
+"@poozle/engine-idk@^0.1.4":
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/@poozle/engine-idk/-/engine-idk-0.1.4.tgz#7ea195185bb834519d140536352b92262d55da38"
+  integrity sha512-J+lTXDeyJXdvf8uvP7nQRiBQy5qzPsIQyS4Fc5M/VT+G4dfhyUjMLVyPID4IvTr+Wrqqq1uldmqmPSs7UYmBKQ==
+  dependencies:
+    axios "^1.3.2"
 
 "@rollup/plugin-babel@6.0.2":
   version "6.0.2"
@@ -1387,7 +1391,7 @@ available-typed-arrays@^1.0.5:
   resolved "https://registry.yarnpkg.com/available-typed-arrays/-/available-typed-arrays-1.0.5.tgz#92f95616501069d07d10edb2fc37d3e1c65123b7"
   integrity sha512-DMD0KiN46eipeziST1LPP/STfDU0sufISXmjSgvVsoU2tqxctQeASejWcfNtxYKqETM1UxQ8sp2OrSBWpHY6sw==
 
-axios@^1.4.0:
+axios@^1.3.2, axios@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.4.0.tgz#38a7bf1224cd308de271146038b551d725f0be1f"
   integrity sha512-S4XCWMEmzvo64T9GfvQDOXgYRDJ/wsSZc7Jvdgx5u1sd0JwsuPLqb3SYmusag+edF6ziyMensPVqLTSc1PiSEA==

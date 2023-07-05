@@ -111,7 +111,6 @@ export function convertMessage(data: any) {
 function convertToEmail(data: any) {
   const result = [] as string[];
   data.map((recipient: Recipient) => {
-    console.log(recipient);
     result.push(`${recipient.name} <${recipient.email}>`);
   });
 

@@ -45,7 +45,7 @@ export class ListMessagesQueryParams extends QueryParams {
   @IsOptional()
   @IsString()
   unread?: string;
-  
+
   @IsOptional()
   @IsString()
   direction?: string;
@@ -96,37 +96,36 @@ export class CreateMessageBody {
 
   @IsOptional()
   @IsString()
-  body: string;
+  body?: string;
 
   @IsOptional()
   @IsString()
-  html_body: string;
+  html_body?: string;
 
   @IsOptional()
   @IsString()
-  thread: string;
+  thread?: string;
+
+  @IsOptional()
+  cc?: Recipient[];
 
   @IsOptional()
   @IsArray()
-  cc: Recipient[];
+  bcc?: Recipient[];
 
   @IsOptional()
   @IsArray()
-  bcc: Recipient[];
+  from?: Recipient[];
 
   @IsOptional()
   @IsArray()
-  from: Recipient[];
+  to?: Recipient[];
 
   @IsOptional()
   @IsArray()
-  to: Recipient[];
-
-  @IsOptional()
-  @IsArray()
-  reply_to: Recipient[];
+  reply_to?: Recipient[];
 
   @IsOptional()
   @IsString()
-  in_reply_to: string;
+  in_reply_to?: string;
 }
