@@ -1,6 +1,8 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Container, Divider, Group, Paper, Title } from '@mantine/core';
+import { Alert, Container, Divider, Group, Paper, Title } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { SessionAuth } from 'supertokens-auth-react/recipe/session';
@@ -24,10 +26,25 @@ export function NewOAuthApp() {
   const { data: integrationDefinitions } = useGetIntegrationDefinitionsQuery({
     workspaceId: workspaceId as string,
   });
+  const [error, setError] = React.useState(undefined);
   const [selectedIntegrationDefinition, setIntegrationDefinition] =
     React.useState(undefined);
   const { mutate: createIntegrationOAuthApp, isLoading } =
-    useCreateIntegrationOAuthMutation({});
+    useCreateIntegrationOAuthMutation({
+      onSuccess: (data) => {
+        notifications.show({
+          icon: <IconCheck />,
+          title: 'Status',
+          color: 'green',
+          message: `Integration oAuth app ${data.integrationOAuthAppName} is created`,
+        });
+
+        setError(undefined);
+      },
+      onError: (err) => {
+        setError(err);
+      },
+    });
 
   const getSelectData = () => {
     if (integrationDefinitions) {
@@ -51,6 +68,18 @@ export function NewOAuthApp() {
           </Group>
           <Divider className={styles.divider} />
 
+          <Group p="md">
+            {error && (
+              <Alert
+                color="red"
+                mt="md"
+                icon={<IconAlertCircle size="1rem" />}
+                title="Error!"
+              >
+                {<>{error}</>}
+              </Alert>
+            )}
+          </Group>
           <Group p="md" className={styles.group}>
             <Select
               label="Integration type"

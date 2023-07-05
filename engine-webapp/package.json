@@ -31,7 +31,7 @@
     "@mantine/next": "^6.0.0",
     "@mantine/notifications": "^6.0.0",
     "@mantine/prism": "^6.0.5",
-    "@tabler/icons-react": "^2.7.0",
+    "@tabler/icons-react": "^2.23.0",
     "chartjs-adapter-date-fns": "^3.0.0",
     "classnames": "^2.3.2",
     "cookies": "^0.8.0",

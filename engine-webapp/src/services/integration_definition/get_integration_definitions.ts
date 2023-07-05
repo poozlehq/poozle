@@ -11,12 +11,16 @@ export const GetIntegrationDefinitions = 'getIntegrationDefinitions';
 
 interface IntegrationDefinitionsParams {
   workspaceId: string;
+  category?: string[];
 }
 
 export function getIntegrationDefinitions(
   params: IntegrationDefinitionsParams,
 ) {
-  const querySet: Record<string, Primitive> = { ...params };
+  const querySet: Record<string, Primitive> = {
+    workspaceId: params.workspaceId,
+    category: params.category ? params.category.join(',') : '',
+  };
 
   return ajaxGet({
     url: `/api/v1/integration_definition`,
@@ -28,7 +32,7 @@ export function useGetIntegrationDefinitionsQuery(
   queryParams: IntegrationDefinitionsParams,
 ): UseQueryResult<IntegrationDefinition[], XHRErrorResponse> {
   return useQuery(
-    [GetIntegrationDefinitions],
+    [GetIntegrationDefinitions, queryParams],
     () => getIntegrationDefinitions(queryParams),
     {
       notifyOnChangeProps: 'tracked',

@@ -9,7 +9,7 @@ export default function Home() {
   const router = useRouter();
 
   React.useEffect(() => {
-    router.replace(`${router.asPath}/integrations`);
+    router.replace(`${router.asPath}/integration`);
   }, []);
 
   return <Loader />;

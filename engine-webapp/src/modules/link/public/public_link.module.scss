@@ -1,0 +1,41 @@
+.mainContainer {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.childrenContainer {
+  margin-top: var(--mantine-spacing-xl);
+}
+
+.paper {
+  min-width: 400px;
+}
+
+.linkContainer {
+  padding: var(--mantine-spacing-lg);
+}
+
+.integrationContainer {
+  width: 33.3%;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(222, 241, 255, 1);
+  }
+}
+
+.footer {
+  padding: 0 var(--mantine-spacing-lg);
+  background-color: var(--mantine-color-gray-2);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.divider {
+  border-top-color: var(--mantine-color-gray-2);
+}

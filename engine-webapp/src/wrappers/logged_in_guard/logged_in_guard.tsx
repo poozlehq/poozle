@@ -1,5 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { useRouter } from 'next/router';
 import React, { cloneElement } from 'react';
 
 import { Loader } from 'components';
@@ -10,6 +11,7 @@ interface Props {
 
 export function LoggedInGuard(props: Props): React.ReactElement {
   const { children } = props;
+  const router = useRouter();
   const [isLoading, setLoading] = React.useState(true);
   const [data, setData] = React.useState(undefined);
 
@@ -22,6 +24,7 @@ export function LoggedInGuard(props: Props): React.ReactElement {
 
     if (response.status === 200) {
       setData(response);
+      router.replace('/workspaces');
     }
 
     setLoading(false);

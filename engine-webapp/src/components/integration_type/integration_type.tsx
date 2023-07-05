@@ -1,27 +1,20 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Badge } from '@mantine/core';
+import { IntegrationType as IntegrationTypeEnum } from 'lib/integration_type';
 
-export enum IntegrationTypeEnum {
-  HRIS = 'HRIS',
-  MESSAGING = 'MESSAGING',
-  CALENDAR = 'CALENDAR',
-  TICKETING = 'TICKETING',
-  EMAIL = 'EMAIL',
-}
-
-interface IntegrationIconProps {
+interface IntegrationTypeProps {
   type: IntegrationTypeEnum;
 }
 
-const colorMap = {
+const colorMap: Record<IntegrationTypeEnum, string> = {
   HRIS: 'cyan',
   MESSAGING: 'teal',
   CALENDAR: 'blue',
   TICKETING: 'indigo',
-  EMAIL: 'cyan',
+  MAIL: 'cyan',
 };
 
-export function IntegrationType({ type }: IntegrationIconProps) {
+export function IntegrationType({ type }: IntegrationTypeProps) {
   return <Badge color={colorMap[type] ?? 'teal'}>{type}</Badge>;
 }

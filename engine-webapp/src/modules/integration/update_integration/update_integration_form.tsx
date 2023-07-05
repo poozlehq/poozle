@@ -1,8 +1,10 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 import { Alert, Button, Group, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconAlertCircle } from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
+import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
@@ -26,7 +28,6 @@ import {
   getPropertyName,
   returnOAuthInputSpecification,
 } from '../new_integration/new_integration_form_utils';
-import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 interface UpdateIntegrationFormProps {
   integrationAccount: IntegrationAccount;
@@ -62,8 +63,14 @@ export function Form({ spec, workspaceId, integrationAccount }: FormProps) {
 
   const { mutate: updateIntegrationAccount, isLoading: createIsLoading } =
     useUpdateIntegrationAccountMutation({
-      onSuccess: () => {
+      onSuccess: (data) => {
         form.reset();
+        notifications.show({
+          icon: <IconCheck />,
+          title: 'Status',
+          color: 'green',
+          message: `Integration account ${data.integrationAccountName} is updated`,
+        });
       },
       onError: (err) => {
         setErrorMessage(err);
@@ -113,7 +120,7 @@ export function Form({ spec, workspaceId, integrationAccount }: FormProps) {
       >
         <TextInput
           pb="md"
-          disabled={checkIsLoading || createIsLoading}
+          disabled
           description="This is used as an unique identifier"
           label="Integration account name"
           placeholder="Enter integration account name"

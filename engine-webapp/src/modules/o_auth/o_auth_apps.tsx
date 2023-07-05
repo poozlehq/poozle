@@ -82,7 +82,7 @@ export function OAuthApps() {
           <Table
             horizontalSpacing="lg"
             columns={columns}
-            idKey="integrationAuthId"
+            idKey="integrationOAuthAppId"
             onRowClick={(id: string) => router.push(`${router.asPath}/${id}`)}
             data={integrationOAuthApps}
           />

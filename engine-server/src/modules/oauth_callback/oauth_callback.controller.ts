@@ -1,37 +1,33 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Controller, Get, Param, Query, Res } from '@nestjs/common';
-
 import {
-  CallbackParams,
-  RedirectQueryParams,
-  RedirectURLParams,
-} from './oauth_callback.interface';
+  Body,
+  Controller,
+  Get,
+  Post,
+  Query,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+
+import { AuthGuard } from 'modules/auth/auth.guard';
+
+import { BodyInterface, CallbackParams } from './oauth_callback.interface';
 import { OAuthCallbackService } from './oauth_callback.service';
 
 @Controller('oauth')
 export class OAuthCallbackController {
   constructor(private oAuthCallbackService: OAuthCallbackService) {}
 
-  @Get(':workspaceSlug/:integrationOAuthAppName')
-  async getRedirectURL(
-    @Param() params: RedirectURLParams,
-    @Query() query: RedirectQueryParams,
-  ) {
-    let config = {};
-
-    try {
-      if (query.config) {
-        config = JSON.parse(query.config);
-      }
-    } catch (e) {}
-
+  @Post()
+  @UseGuards(new AuthGuard())
+  async getRedirectURL(@Body() body: BodyInterface) {
     return await this.oAuthCallbackService.getRedirectURL(
-      query.integrationAccountName,
-      params.workspaceSlug,
-      params.integrationOAuthAppName,
-      config,
-      query.redirectURL,
+      body.integrationAccountName,
+      body.workspaceId,
+      body.integrationOAuthAppId,
+      body.config ?? {},
+      body.redirectURL,
     );
   }
 

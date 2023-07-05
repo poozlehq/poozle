@@ -2,8 +2,8 @@
 
 import { Alert, Button, Group, Select, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconAlertCircle } from '@tabler/icons-react';
-import { useRouter } from 'next/router';
+import { notifications } from '@mantine/notifications';
+import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import * as React from 'react';
 
 import {
@@ -29,6 +29,8 @@ import {
 
 interface NewIntegrationFormProps {
   integrationDefinitionId: string;
+  workspaceId: string;
+  integrationAccountNameDefault?: string;
   onComplete?: () => void;
 }
 
@@ -37,17 +39,19 @@ interface FormProps {
   spec: Specification;
   workspaceId: string;
   onComplete?: () => void;
+  integrationAccountNameDefault?: string;
   integrationDefinitionId: string;
 }
 
 export function Form({
   spec,
   workspaceId,
+  integrationAccountNameDefault,
   integrationDefinitionId,
   onComplete,
 }: FormProps) {
   const form = useForm({
-    initialValues: getInitialValues(spec),
+    initialValues: getInitialValues(spec, integrationAccountNameDefault),
   });
   const [errorMessage, setErrorMessage] = React.useState(undefined);
   const { mutate: checkCredentials, isLoading: checkIsLoading } =
@@ -61,10 +65,17 @@ export function Form({
         }
       },
     });
+
   const { mutate: createIntegrationAccount, isLoading: createIsLoading } =
     useCreateIntegrationAccountMutation({
-      onSuccess: () => {
+      onSuccess: (data) => {
         onComplete && onComplete();
+        notifications.show({
+          icon: <IconCheck />,
+          title: 'Status',
+          color: 'green',
+          message: `Integration account ${data.integrationAccountName} is created`,
+        });
         form.reset();
       },
       onError: (err) => {
@@ -169,11 +180,10 @@ export function Form({
 
 export function NewIntegrationForm({
   integrationDefinitionId,
+  workspaceId,
+  integrationAccountNameDefault,
   onComplete,
 }: NewIntegrationFormProps) {
-  const {
-    query: { workspaceId },
-  } = useRouter();
   const {
     data: integrationDefinitionSpec,
     isLoading,
@@ -208,6 +218,7 @@ export function NewIntegrationForm({
       workspaceId={workspaceId as string}
       onComplete={onComplete}
       integrationDefinitionId={integrationDefinitionId}
+      integrationAccountNameDefault={integrationAccountNameDefault}
     />
   );
 }

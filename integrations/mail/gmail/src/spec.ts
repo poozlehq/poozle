@@ -4,7 +4,13 @@ export default {
   authSupported: ['OAuth2'],
   authSpecification: {
     OAuth2: {
-      tokenUrl: 'https://oauth2.googleapis.com/token',
+      authorization_url: 'https://accounts.google.com/o/oauth2/v2/auth',
+      token_url: 'https://oauth2.googleapis.com/token',
+      authorization_params: {
+        response_type: 'code',
+        access_type: 'offline',
+        prompt: 'consent',
+      },
     },
   },
   supportedFilters: [

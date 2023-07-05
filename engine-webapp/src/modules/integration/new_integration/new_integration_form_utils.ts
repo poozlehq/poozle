@@ -63,8 +63,11 @@ export function getProperties(spec: any) {
   }));
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function getInitialValues(spec: any) {
+export function getInitialValues(
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  spec: any,
+  integrationAccountNameDefault?: string,
+) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const initialValues: Record<string, any> = {};
 
@@ -86,7 +89,7 @@ export function getInitialValues(spec: any) {
   });
 
   // Adding integrationAccountName to the initial Values
-  initialValues['integrationAccountName'] = '';
+  initialValues['integrationAccountName'] = integrationAccountNameDefault ?? '';
 
   // eslint-disable-next-line prefer-destructuring
   initialValues['authType'] = spec.authSupported[0];

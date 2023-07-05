@@ -16,6 +16,7 @@ import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp/entities';
 import { AuthGuard } from 'modules/auth/auth.guard';
 
 import {
+  IntegrationOAuthAppsFlat,
   IntegrationOAuthCreateBody,
   IntegrationOAuthRequestIdBody,
   IntegrationOAuthRequestUpdateBody,
@@ -28,21 +29,27 @@ import { IntegrationOAuthService } from './integration_oauth.service';
   path: 'integration_oauth',
 })
 @ApiTags('Integration OAuth Apps')
-@UseGuards(new AuthGuard())
 export class IntegrationOAuthController {
   constructor(private integrationOAuthService: IntegrationOAuthService) {}
 
-  @Get()
-  async getIntegrationOAuthByWorkspace(
+  @Get('just_ids')
+  async getIntegrationOAuthByWorkspaceJustIds(
     @Query()
     integrationOAuthRequestWorkspaceIdBody: IntegrationOAuthRequestWorkspaceIdBody,
-  ): Promise<IntegrationOAuthApp[]> {
-    return await this.integrationOAuthService.getIntegrationOAuthsForWorkspace(
-      integrationOAuthRequestWorkspaceIdBody,
-    );
+  ): Promise<IntegrationOAuthAppsFlat[]> {
+    const integrationOAuthApps =
+      await this.integrationOAuthService.getIntegrationOAuthsForWorkspace(
+        integrationOAuthRequestWorkspaceIdBody,
+      );
+
+    return integrationOAuthApps.map((oAuthApp) => ({
+      integrationDefinitionId: oAuthApp.integrationDefinitionId,
+      integrationOAuthAppId: oAuthApp.integrationOAuthAppId,
+    }));
   }
 
   @Post()
+  @UseGuards(new AuthGuard())
   async createIntegrationOAuthApp(
     @Body()
     integrationOAuthCreateBody: IntegrationOAuthCreateBody,
@@ -53,6 +60,7 @@ export class IntegrationOAuthController {
   }
 
   @Post(':integrationOAuthAppId')
+  @UseGuards(new AuthGuard())
   async updateIntegrationOAuthApp(
     @Param()
     integrationOAuthRequestIdBody: IntegrationOAuthRequestIdBody,
@@ -66,6 +74,7 @@ export class IntegrationOAuthController {
   }
 
   @Get(':integrationOAuthAppId')
+  @UseGuards(new AuthGuard())
   async getIntegrationOAuthApp(
     @Param()
     integrationOAuthRequestIdBody: IntegrationOAuthRequestIdBody,

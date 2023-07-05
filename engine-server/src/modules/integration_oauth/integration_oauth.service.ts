@@ -10,7 +10,6 @@ import {
   IntegrationOAuthRequestIdBody,
   IntegrationOAuthRequestUpdateBody,
   IntegrationOAuthRequestWorkspaceIdBody,
-  IntegrationOAuthRequestWorkspaceSlugBody,
 } from './integration_oauth.interface';
 
 @Injectable()
@@ -23,25 +22,6 @@ export class IntegrationOAuthService {
     return await this.prisma.integrationOAuthApp.findMany({
       where: {
         workspaceId: integrationOAuthRequestWorkspaceIdBody.workspaceId,
-      },
-      include: {
-        integrationDefinition: true,
-      },
-    });
-  }
-
-  async getIntegrationOAuthsForWorkspaceSlug(
-    integrationOAuthRequestWorkspaceSlugBody: IntegrationOAuthRequestWorkspaceSlugBody,
-  ): Promise<IntegrationOAuthApp[]> {
-    const workspace = await this.prisma.workspace.findUnique({
-      where: {
-        slug: integrationOAuthRequestWorkspaceSlugBody.slug,
-      },
-    });
-
-    return await this.prisma.integrationOAuthApp.findMany({
-      where: {
-        workspaceId: workspace.workspaceId,
       },
       include: {
         integrationDefinition: true,
@@ -66,7 +46,10 @@ export class IntegrationOAuthService {
       },
     );
 
-    return integrationOAuthApps[0];
+    return {
+      ...integrationOAuthApps[0],
+      clientSecret: '',
+    };
   }
 
   async getIntegrationOAuthAppWithId(

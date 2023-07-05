@@ -10,12 +10,14 @@ export interface AuthSpecificationGeneric {
 }
 
 export interface AuthSpecificationOAuth {
-  tokenUrl?: string;
-  authMode?: string;
-  authorizationUrl?: string;
-  authorizationParams?: Record<string, string>;
-  tokenParams?: Record<string, string>;
+  // Params that are directly supported by simple-oauth2
+  token_url?: string;
+  auth_mode?: string;
+  authorization_url?: string;
+  authorization_params?: Record<string, string>;
+  token_params?: Record<string, string>;
   headers?: Record<string, string>;
+  // Needed to store
   inputSpecification?: {
     type: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

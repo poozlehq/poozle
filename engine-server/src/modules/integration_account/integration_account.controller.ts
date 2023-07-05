@@ -2,6 +2,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -16,10 +17,13 @@ import { CheckResponse } from '@poozle/engine-idk';
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
+import { LinkService } from 'modules/link/link.service';
 
 import {
   CreateIntegrationAccountBody,
+  CreateIntegrationAccountWithLinkBody,
   IntegrationAccountRequestIdBody,
+  IntegrationAccountWithLinkRequestIdBody,
   IntegrationAccountsRequestBody,
   IntegrationCheckBody,
   ProxyBody,
@@ -32,11 +36,14 @@ import { IntegrationAccountService } from './integration_account.service';
   path: 'integration_account',
 })
 @ApiTags('Integration Account')
-@UseGuards(new AuthGuard())
 export class IntegrationAccountController {
-  constructor(private integrationAccountService: IntegrationAccountService) {}
+  constructor(
+    private integrationAccountService: IntegrationAccountService,
+    private linkService: LinkService,
+  ) {}
 
   @Get()
+  @UseGuards(new AuthGuard())
   async getIntegrationAccounts(
     @Query()
     integrationAccountsRequestBody: IntegrationAccountsRequestBody,
@@ -47,6 +54,7 @@ export class IntegrationAccountController {
   }
 
   @Get(':integrationAccountId')
+  @UseGuards(new AuthGuard())
   async getIntegrationAccount(
     @Param()
     integrationAccountIdRequestIdBody: IntegrationAccountRequestIdBody,
@@ -57,6 +65,7 @@ export class IntegrationAccountController {
   }
 
   @Post('check')
+  @UseGuards(new AuthGuard())
   async checkCredentialsForIntegrationAccount(
     @Body()
     integrationCheckBody: IntegrationCheckBody,
@@ -70,6 +79,7 @@ export class IntegrationAccountController {
   }
 
   @Post(':integrationAccountId')
+  @UseGuards(new AuthGuard())
   async updateIntegrationAccount(
     @Param()
     integrationAccountIdRequestIdBody: IntegrationAccountRequestIdBody,
@@ -83,6 +93,7 @@ export class IntegrationAccountController {
   }
 
   @Post()
+  @UseGuards(new AuthGuard())
   async createIntegrationAccount(
     @Body()
     createIntegrationAccountBody: CreateIntegrationAccountBody,
@@ -96,7 +107,33 @@ export class IntegrationAccountController {
     );
   }
 
+  @Post('link/:linkId')
+  async createIntegrationAccountWithLink(
+    @Param()
+    integrationAccountWithLinkRequestIdBody: IntegrationAccountWithLinkRequestIdBody,
+    @Body()
+    createIntegrationAccountBody: CreateIntegrationAccountWithLinkBody,
+  ): Promise<IntegrationAccount> {
+    const link = await this.linkService.getLink(
+      integrationAccountWithLinkRequestIdBody,
+    );
+
+    if (link.expired) {
+      throw new BadRequestException('Link has expired');
+    }
+
+    return await this.integrationAccountService.createIntegrationAccountWithLink(
+      createIntegrationAccountBody.integrationDefinitionId,
+      createIntegrationAccountBody.config,
+      createIntegrationAccountBody.integrationAccountName,
+      createIntegrationAccountBody.authType,
+      link.workspaceId,
+      link.linkId,
+    );
+  }
+
   @Post(':integrationAccountId/proxy')
+  @UseGuards(new AuthGuard())
   async proxyPost(
     @Body()
     proxyBody: ProxyBody,

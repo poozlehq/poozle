@@ -28,7 +28,6 @@ import { IntegrationDefinitionService } from './integration_definition.service';
   path: 'integration_definition',
 })
 @ApiTags('Integration Definition')
-@UseGuards(new AuthGuard())
 export class IntegrationDefinitionController {
   constructor(
     private integrationDefinitionService: IntegrationDefinitionService,
@@ -58,6 +57,7 @@ export class IntegrationDefinitionController {
   }
 
   @Post()
+  @UseGuards(new AuthGuard())
   async createIntegrationDefinition(
     @Body()
     integrationDefinitionCreateBody: IntegrationDefinitionCreateBody,

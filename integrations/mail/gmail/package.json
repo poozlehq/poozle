@@ -47,7 +47,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@poozle/engine-idk": "^0.1.4",
+    "@poozle/engine-idk": "^0.1.6",
     "axios": "^1.4.0"
   },
   "browserslist": {

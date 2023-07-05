@@ -1,5 +1,7 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
+import { IsString } from 'class-validator';
+
 export interface RedirectURLParams {
   workspaceSlug: string;
   integrationOAuthAppName: string;
@@ -13,10 +15,21 @@ export interface SessionRecord {
   redirectURL: string;
 }
 
-export interface RedirectQueryParams {
-  config: string;
+export class BodyInterface {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  config?: any;
+
+  @IsString()
   integrationAccountName: string;
+
+  @IsString()
   redirectURL: string;
+
+  @IsString()
+  workspaceId: string;
+
+  @IsString()
+  integrationOAuthAppId: string;
 }
 
 export type CallbackParams = Record<string, string>;

@@ -30,18 +30,16 @@ export class OAuthCallbackService {
   ) {}
 
   async getIntegrationOAuth(
-    workspaceSlug: string,
-    integrationOAuthAppName: string,
+    workspaceId: string,
+    integrationOAuthAppId: string,
   ) {
     let integrationOAuths = [];
 
     try {
       integrationOAuths =
-        await this.integrationOAuthService.getIntegrationOAuthsForWorkspaceSlug(
-          {
-            slug: workspaceSlug,
-          },
-        );
+        await this.integrationOAuthService.getIntegrationOAuthsForWorkspace({
+          workspaceId,
+        });
     } catch (e) {
       throw new BadRequestException({
         error: 'No workspace found',
@@ -55,7 +53,7 @@ export class OAuthCallbackService {
     }
 
     const integrationOAuth = integrationOAuths.find(
-      (eA) => eA.integrationOAuthAppName === integrationOAuthAppName,
+      (eA) => eA.integrationOAuthAppId === integrationOAuthAppId,
     );
 
     if (!integrationOAuth) {
@@ -67,8 +65,8 @@ export class OAuthCallbackService {
 
   async getRedirectURL(
     integrationAccountName: string,
-    workspaceSlug: string,
-    integrationOAuthAppName: string,
+    workspaceId: string,
+    integrationOAuthAppId: string,
     externalConfig: Record<string, string>,
     redirectURL: string,
   ) {
@@ -79,12 +77,12 @@ export class OAuthCallbackService {
     }
 
     this.logger.log(
-      `We got OAuth request for ${workspaceSlug}: ${integrationOAuthAppName}`,
+      `We got OAuth request for ${workspaceId}: ${integrationOAuthAppId}`,
     );
 
     const integrationOAuth = await this.getIntegrationOAuth(
-      workspaceSlug,
-      integrationOAuthAppName,
+      workspaceId,
+      integrationOAuthAppId,
     );
 
     const isValidIntegrationName =
@@ -99,7 +97,7 @@ export class OAuthCallbackService {
       });
     }
 
-    const template = getTemplate(integrationOAuth);
+    const template = await getTemplate(integrationOAuth);
 
     let additionalAuthParams: Record<string, string> = {};
     if (template.authorization_params) {
@@ -186,7 +184,9 @@ export class OAuthCallbackService {
         integrationOAuthAppId: sessionRecord.integrationOAuthAppId,
       });
 
-    const template = getTemplate(integrationOAuth) as ProviderTemplateOAuth2;
+    const template = (await getTemplate(
+      integrationOAuth,
+    )) as ProviderTemplateOAuth2;
 
     if (integrationOAuth === null) {
       throw new BadRequestException({

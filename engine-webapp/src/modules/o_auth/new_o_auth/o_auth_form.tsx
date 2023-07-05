@@ -55,6 +55,7 @@ export function OAuthAppForm({
         <TextInput
           pb="md"
           label="Integration auth name"
+          disabled={update}
           placeholder="Enter integration OAuth App name"
           description="This will be used in the app to fetch redirect URL"
           {...form.getInputProps('integrationOAuthAppName')}

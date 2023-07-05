@@ -3,23 +3,25 @@
 import { IntegrationType } from '@prisma/client';
 import { IsArray, IsNumber, IsString } from 'class-validator';
 
-export class CreateIntegrationConnectLinkBody {
+import { Link } from '@@generated/link/entities';
+
+export class CreateLinkBody {
   @IsArray()
   category: IntegrationType[];
 
   @IsNumber()
-  expires: number;
+  expiresIn: number;
 
   @IsString()
   workspaceId: string;
+
+  @IsString()
+  linkName: string;
 }
 
-export class GetIntegrationConnectLinkRequest {
+export class GetLinkRequest {
   @IsString()
-  workspaceId: string;
-
-  @IsString()
-  integrationConnectLinkId: string;
+  linkId: string;
 }
 
 export class WorkspaceIdQueryRequest {
@@ -27,7 +29,11 @@ export class WorkspaceIdQueryRequest {
   workspaceId: string;
 }
 
-export class IntegrationConnectLinkIdRequest {
+export class LinkIdRequest {
   @IsString()
-  integrationConnectLinkId: string;
+  linkId: string;
+}
+
+export class LinkResponse extends Link {
+  expired: boolean;
 }

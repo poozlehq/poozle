@@ -9,6 +9,11 @@ export class IntegrationAccountRequestIdBody {
   integrationAccountId: string;
 }
 
+export class IntegrationAccountWithLinkRequestIdBody {
+  @IsString()
+  linkId: string;
+}
+
 export class IntegrationAccountRequestBody {
   @IsString()
   integrationAccountName: string;
@@ -52,6 +57,20 @@ export class CreateIntegrationAccountBody {
 
   @IsString()
   workspaceId: string;
+
+  @IsObject()
+  config: Config;
+}
+
+export class CreateIntegrationAccountWithLinkBody {
+  @IsString()
+  integrationDefinitionId: string;
+
+  @IsString()
+  integrationAccountName: string;
+
+  @IsString()
+  authType: string;
 
   @IsObject()
   config: Config;

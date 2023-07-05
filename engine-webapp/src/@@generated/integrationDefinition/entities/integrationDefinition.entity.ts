@@ -1,14 +1,7 @@
 import { Workspace } from '../../workspace/entities/workspace.entity';
 import { IntegrationAccount } from '../../integrationAccount/entities/integrationAccount.entity';
 import { IntegrationOAuthApp } from '../../integrationOAuthApp/entities/integrationOAuthApp.entity';
-
-const enum IntegrationType {
-  HRIS = 'HRIS',
-  MESSAGING = 'MESSAGING',
-  CALENDAR = 'CALENDAR',
-  TICKETING = 'TICKETING',
-  EMAIL = 'EMAIL',
-}
+import { IntegrationType } from 'lib/integration_type';
 
 const enum ReleaseStage {
   ALPHA = 'ALPHA',
