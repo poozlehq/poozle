@@ -147,8 +147,6 @@ function createAlternative(text: string, html: string, boundary: string) {
     `--${boundary}\r\n`,
     createHtml(html),
     '\r\n\r\n',
-
-    `--${boundary}`,
   ].join('');
 }
 
@@ -222,13 +220,18 @@ export function constructRawEmail(data: any) {
 
       `--${boundary}\r\n`,
       `${body}\r\n\r\n`,
+      `--${boundary}\r\n`,
 
       attachments,
 
       `--${boundary}--\r\n\r\n`,
     ].join('');
   } else {
-    emailBody = [`${headers.join('\r\n')}\r\n`, `${body}--\r\n\r\n`].join('');
+    emailBody = [
+      `${headers.join('\r\n')}\r\n`,
+      `${body}`,
+      ...(data.html_body && data.body ? [`--${boundary}--\r\n`] : []),
+    ].join('');
   }
 
   return Buffer.from(emailBody).toString('base64');

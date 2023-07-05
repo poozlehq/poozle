@@ -19,6 +19,12 @@ export class GetMessagesPath extends BasePath {
       ...(params.queryParams?.bcc ? [`bcc:${params.queryParams?.bcc}`] : []),
       ...(params.queryParams?.starred ? [`is:starred`] : []),
       ...(params.queryParams?.unread ? [`is:unread`] : []),
+      ...(params.queryParams?.received_after
+        ? [`after:${params.queryParams?.received_after}`]
+        : []),
+      ...(params.queryParams?.received_before
+        ? [`before:${params.queryParams?.received_before}`]
+        : []),
     ];
     const final_params = {
       maxResults: params.queryParams?.limit,
@@ -34,14 +40,13 @@ export class GetMessagesPath extends BasePath {
       headers,
       params: final_params,
     });
-    params.queryParams.next_cursor = messagesResponse.data.nextPageToken;
+
     next_cursor = messagesResponse.data.nextPageToken;
 
     return Promise.all(
       messagesResponse.data.messages.map(async (data: messageResponse) => {
         const messageUrl: string = `${BASE_URL}/${data.id}` as string;
         const response = await axios(messageUrl, { headers });
-        console.log(response.data);
         return convertMessage(response.data);
       }),
     );

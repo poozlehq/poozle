@@ -21,6 +21,12 @@ export class ThreadsPath extends BasePath {
       ...(params.queryParams?.bcc ? [`bcc:${params.queryParams?.bcc}`] : []),
       ...(params.queryParams?.starred ? [`is:starred`] : []),
       ...(params.queryParams?.unread ? [`is:unread`] : []),
+      ...(params.queryParams?.received_after
+        ? [`after:${params.queryParams?.received_after}`]
+        : []),
+      ...(params.queryParams?.received_before
+        ? [`after:${params.queryParams?.received_before}`]
+        : []),
     ];
     const final_params = {
       maxResults: params.queryParams?.limit,

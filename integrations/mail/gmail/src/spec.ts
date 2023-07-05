@@ -17,6 +17,8 @@ export default {
     'starred',
     'unread',
     'direction',
+    'received_after',
+    'received_before',
   ],
-  supportedSortBy: ['created_at'],
+  supportedSortBy: ['received_at'],
 };

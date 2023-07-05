@@ -16,7 +16,39 @@ export class ListMessagesQueryParams extends QueryParams {
 
   @IsOptional()
   @IsString()
-  assignee_id?: string;
+  subject?: string;
+
+  @IsOptional()
+  @IsString()
+  from?: string;
+
+  @IsOptional()
+  @IsString()
+  to?: string;
+
+  @IsOptional()
+  @IsString()
+  cc?: string;
+
+  @IsOptional()
+  @IsString()
+  bcc?: string;
+
+  @IsOptional()
+  @IsString()
+  labes?: string[];
+
+  @IsOptional()
+  @IsString()
+  starred?: string;
+
+  @IsOptional()
+  @IsString()
+  unread?: string;
+  
+  @IsOptional()
+  @IsString()
+  direction?: string;
 }
 
 export class CommonMessageQueryParams extends JustRawParams {}
