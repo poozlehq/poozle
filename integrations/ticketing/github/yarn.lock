@@ -1116,10 +1116,10 @@
   dependencies:
     axios "^1.3.2"
 
-"@poozle/engine-idk@^0.1.2":
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/@poozle/engine-idk/-/engine-idk-0.1.2.tgz#d0feb7cd9e1fdcf9bd1b3ee2d912e96ff771d9f4"
-  integrity sha512-3TMcneCsMuUqDTNweWzuONzPcJojbyMA3ctrw72YKXTAWjVInRrn4Jd9vEorfR9RvfhajNLyoKCO10NZA16cAg==
+"@poozle/engine-idk@^0.1.3":
+  version "0.1.3"
+  resolved "https://registry.yarnpkg.com/@poozle/engine-idk/-/engine-idk-0.1.3.tgz#ac9e145e4d672dbfb4644b5f35be21569480abcd"
+  integrity sha512-3VarlJZ6YBTO5VZStBaO2IL3wwqwYDl47BEDQTpSqdiLB+wP32cQcBLGYIkL4gX0mS/F1PaoFllExYQr43fn3w==
   dependencies:
     axios "^1.3.2"
 

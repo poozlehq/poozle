@@ -1,6 +1,6 @@
 {
-  "extends": ["prettier", "plugin:prettier/recommended", "plugin:jsx-a11y/recommended"],
-  "plugins": ["unused-imports", "jsx-a11y", "notice"],
+  "extends": ["plugin:@typescript-eslint/recommended", "prettier", "plugin:prettier/recommended"],
+  "plugins": ["@typescript-eslint", "prettier", "unused-imports", "notice", "import"],
   "parserOptions": {
     "ecmaVersion": 2020,
     "sourceType": "module",
@@ -9,10 +9,7 @@
     }
   },
   "rules": {
-    "jsx-a11y/label-has-associated-control": "error",
     "curly": "warn",
-    "css-modules/no-undef-class": ["error", { "camelCase": true }],
-    "css-modules/no-unused-class": ["error", { "camelCase": true }],
     "dot-location": "warn",
     "eqeqeq": "error",
     "prettier/prettier": "warn",
@@ -38,7 +35,17 @@
         "newlines-between": "always",
         "groups": ["type", "builtin", "external", "internal", ["parent", "sibling"], "index"],
         "pathGroupsExcludedImportTypes": ["builtin"],
-        "pathGroups": [],
+        "pathGroups": [
+          {
+            "pattern": "common_models{/**,}",
+            "group": "internal"
+          },
+          {
+            "pattern": "+(types){/**,}",
+            "group": "internal",
+            "position": "after"
+          }
+        ],
         "alphabetize": {
           "order": "asc" /* sort in ascending order. Options: ['ignore', 'asc', 'desc'] */,
           "caseInsensitive": true /* ignore case. Options: [true, false] */

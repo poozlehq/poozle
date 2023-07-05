@@ -2,10 +2,12 @@
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities/integrationAccount.entity';
 
+import { AuthSpecificationOAuth } from 'services/integration_definition';
+
 import {
-  OAuthInputSpec,
   getProperties,
   getPropertyName,
+  returnOAuthInputSpecification,
 } from '../new_integration/new_integration_form_utils';
 
 export function getInitialValues(
@@ -21,7 +23,13 @@ export function getInitialValues(
 
     const specProperties = getProperties(
       key === 'OAuth2'
-        ? OAuthInputSpec
+        ? returnOAuthInputSpecification(
+            (
+              spec.authSpecification[
+                integrationAccount.authType
+              ] as AuthSpecificationOAuth
+            ).inputSpecification,
+          )
         : spec.authSpecification[key].inputSpecification,
     );
 

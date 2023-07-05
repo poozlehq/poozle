@@ -27,6 +27,28 @@ export const OAuthInputSpec = {
   },
 };
 
+interface SpecificationInputSpecification {
+  type: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  properties: Record<string, any>;
+}
+
+export function returnOAuthInputSpecification(
+  specInputSpecification: SpecificationInputSpecification,
+) {
+  if (!specInputSpecification) {
+    return OAuthInputSpec;
+  }
+
+  return {
+    ...OAuthInputSpec,
+    properties: {
+      ...OAuthInputSpec.properties,
+      ...specInputSpecification.properties,
+    },
+  };
+}
+
 export function getPropertyName(propertyName: string): string {
   return propertyName.toLowerCase().replace(/ /g, '');
 }
@@ -49,7 +71,9 @@ export function getInitialValues(spec: any) {
   Object.keys(spec.authSpecification).forEach((key) => {
     const specProperties = getProperties(
       key === 'OAuth2'
-        ? OAuthInputSpec
+        ? returnOAuthInputSpecification(
+            spec.authSpecification['OAuth2'].inputSpecification,
+          )
         : spec.authSpecification[key].inputSpecification,
     );
 

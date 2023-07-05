@@ -110,7 +110,7 @@ Enum IntegrationType {
   MESSAGING
   CALENDAR
   TICKETING
-  EMAIL
+  MAIL
 }
 
 Ref: Workspace.userId > User.userId

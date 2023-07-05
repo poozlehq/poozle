@@ -26,6 +26,16 @@ export default {
     },
     OAuth2: {
       tokenUrl: 'https://github.com/login/oauth/access_token',
+      inputSpecification: {
+        type: 'object',
+        properties: {
+          org: {
+            type: 'string',
+            title: 'Organisation',
+            description: 'Enter the organisation identifier',
+          },
+        },
+      },
     },
   },
   supportedFilters: ['status', 'since', 'assignee_id', 'direction'],

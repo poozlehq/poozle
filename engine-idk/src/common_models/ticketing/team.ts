@@ -1,3 +1,5 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 export const TeamSchema = {
   type: 'object',
   properties: {
@@ -51,11 +53,11 @@ export interface Team {
 export interface createTeam {
   name: string;
   description: string;
-  memberts: Exclude<Member, 'username'>[];
+  memberts: Array<Exclude<Member, 'username'>>;
 }
 
 export interface updateTeam {
   name: string;
   description: string;
-  memberts: Exclude<Member, 'username'>[];
+  memberts: Array<Exclude<Member, 'username'>>;
 }

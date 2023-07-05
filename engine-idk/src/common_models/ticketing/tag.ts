@@ -1,3 +1,5 @@
+/** Copyright (c) 2023, Poozle, all rights reserved. **/
+
 export const TagSchema = {
   type: 'object',
   properties: {
@@ -16,27 +18,25 @@ export const TagSchema = {
     color: {
       type: 'string',
       default: '',
-    }
+    },
   },
 };
 
-
 export interface Tag {
-  id: string,
-  name: string,
-  description: string,
-  color: string,
+  id: string;
+  name: string;
+  description: string;
+  color: string;
 }
 
 export interface CreateTag {
-  name: string,
-  description: string,
-  color: string,
+  name: string;
+  description: string;
+  color: string;
 }
 
-
 export interface UpdateTag {
-  name: string,
-  description: string,
-  color: string
+  name: string;
+  description: string;
+  color: string;
 }

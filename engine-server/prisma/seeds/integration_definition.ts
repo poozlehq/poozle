@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable dot-location */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { IntegrationType, PrismaClient, ReleaseStage } from '@prisma/client';
@@ -13,31 +15,32 @@ async function main() {
     },
   });
 
-  if (integrationDefinitions.length === 0) {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const integrationDefinitionsResponse: any = await axios.get(
-      'https://raw.githubusercontent.com/poozlehq/engine/main/integration_definitions.json',
+  const integrationDefinitionsResponse: any = await axios.get(
+    'https://raw.githubusercontent.com/poozlehq/engine/main/integration_definitions.json',
+  );
+
+  const totalIntegrationDefinitions = integrationDefinitionsResponse.data;
+
+  const integrationDefinitionCreate: any[] = [];
+  totalIntegrationDefinitions.forEach((integrationDefinition: any) => {
+    const integrationExists = integrationDefinitions.find(
+      (id) => id.key === integrationDefinition.key,
     );
 
-    const integrationDefinitions = integrationDefinitionsResponse.data;
+    if (!integrationExists) {
+      integrationDefinitionCreate.push({
+        ...integrationDefinition,
+        releaseStage:
+          ReleaseStage[integrationDefinition.releaseStage as ReleaseStage],
+        integrationType:
+          IntegrationType[
+            integrationDefinition.integrationType as IntegrationType
+          ],
+      });
+    }
+  });
 
-    console.log(integrationDefinitions);
-
-    const integrationDefinitionCreate = Object.keys(integrationDefinitions).map(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (key) => {
-        const ed = {
-          ...integrationDefinitions[key],
-        };
-        return {
-          ...ed,
-          releaseStage: ReleaseStage[ed.releaseStage as ReleaseStage],
-          integrationType:
-            IntegrationType[ed.integrationType as IntegrationType],
-        };
-      },
-    );
-
+  if (integrationDefinitionCreate.length > 0) {
     const createdIntegrationDefinitions =
       await prisma.integrationDefinition.createMany({
         data: integrationDefinitionCreate,
@@ -45,10 +48,6 @@ async function main() {
 
     console.log(createdIntegrationDefinitions);
   }
-
-  /**
-   * TODO (harshith): Add more logic to add new integration from integrations.json
-   */
 }
 
 main()

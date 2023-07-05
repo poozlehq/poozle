@@ -1,4 +1,8 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+import { getAccessToken, interpolateHeaders, interpolateString } from 'utils/oAuthUtils';
 
 import {
   BaseIntegrationInterface,
@@ -11,11 +15,8 @@ import {
   AuthSpecificationGeneric,
   Params,
 } from 'types/integration';
-import { getAccessToken, interpolateHeaders, interpolateString } from 'utils/oAuthUtils';
 
 export class BaseIntegration implements BaseIntegrationInterface {
-  constructor() {}
-
   /*
     This will return the spec for the integration
   */

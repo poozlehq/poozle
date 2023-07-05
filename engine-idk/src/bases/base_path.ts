@@ -1,10 +1,12 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { AxiosHeaders } from 'axios';
+import { convertToModelKeys } from 'utils';
 
 import { Config, Params } from 'types/integration';
 import { Meta } from 'types/path';
-import { convertToModelKeys } from 'utils';
 
 export class BasePath {
   pathRegex: RegExp;
@@ -59,14 +61,13 @@ export class BasePath {
         data,
         meta,
       };
-    } else {
-      return {
-        data: this.convertToModel(
-          responseFromRun,
-          params.queryParams?.raw === true || params.queryParams?.raw === 'true' ? true : false,
-        ),
-      };
     }
+    return {
+      data: this.convertToModel(
+        responseFromRun,
+        params.queryParams?.raw === true || params.queryParams?.raw === 'true' ? true : false,
+      ),
+    };
   }
 
   // Written by the integration
