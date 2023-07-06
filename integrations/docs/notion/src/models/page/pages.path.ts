@@ -4,15 +4,17 @@
 import { BasePath, Config, Page, Meta, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
-import {  convertBlock, convertPage } from './pages.utils';
+import { convertBlock, convertPage } from './pages.utils';
 
 const BASE_URL = 'https://api.notion.com/v1';
 let next_cursor = '';
 
 export class GetPagesPath extends BasePath {
   async fetchBlocks(url: string, headers: AxiosHeaders, params: Params): Promise<any> {
-    const final_params = {...(params.queryParams?.cursor ? {start_cursor: params.queryParams?.cursor}: {})}
-    const response = await axios({ url, headers, params:final_params });
+    const final_params = {
+      ...(params.queryParams?.cursor ? { start_cursor: params.queryParams?.cursor } : {}),
+    };
+    const response = await axios({ url, headers, params: final_params });
     const results = response.data.results;
 
     if (response.data.has_more) {
@@ -54,13 +56,11 @@ export class GetPagesPath extends BasePath {
 
     next_cursor = pagesResponse.data.next_cursor;
     return Promise.all(
-      pagesResponse.data.results.map(async (data: any) => {
+      pagesResponse.data.results?.map(async (data: any) => {
         const page = convertPage(data);
         const blockUrl = `${BASE_URL}/blocks/${data.id.replace(/-/g, '')}/children`;
-        console.log(blockUrl)
         const blockResponse = await this.fetchBlocks(blockUrl, headers, params);
-        console.log(blockResponse)
-        page.body = await convertBlock(blockResponse) as any;
+        page.body = blockResponse ? ((await convertBlock(blockResponse)) as []) : [];
         return page;
       }),
     );

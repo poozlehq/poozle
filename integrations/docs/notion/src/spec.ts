@@ -16,9 +16,9 @@ export default {
       },
       headers: {
         Authorization: 'Bearer ${api_key}',
-        'Notion-Version': '2022-06-28'
-      }
-    }
+        'Notion-Version': '2022-06-28',
+      },
+    },
   },
   supportedFilters: [
     'subject',
