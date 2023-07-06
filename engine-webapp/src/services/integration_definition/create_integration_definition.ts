@@ -1,15 +1,14 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
+import { IntegrationType } from 'lib/integration_type';
 import { useMutation } from 'react-query';
 import { ajaxPost } from 'utils';
-
-import { IntegrationTypeEnum } from 'components';
 
 export class IntegrationDefinitionCreateBody {
   name: string;
   sourceUrl: string;
-  integrationType: IntegrationTypeEnum;
+  integrationType: IntegrationType;
   workspaceId: string;
 }
 export function createIntegrationDefinition(

@@ -3,12 +3,14 @@
 import { Alert, Button, Group, Modal, Select, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconAlertCircle } from '@tabler/icons-react';
+import {
+  IntegrationType,
+  IntegrationTypeSelectData,
+} from 'lib/integration_type';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 import { useCreateIntegrationDefinitionMutation } from 'services/integration_definition';
-
-import { IntegrationTypeEnum } from 'components';
 
 interface AddNewIntegrationModalProps {
   opened: boolean;
@@ -17,7 +19,7 @@ interface AddNewIntegrationModalProps {
 interface Values {
   name: string;
   sourceUrl: string;
-  integrationType: IntegrationTypeEnum;
+  integrationType: IntegrationType;
 }
 
 export function AddNewIntegrationModal({
@@ -69,7 +71,10 @@ export function AddNewIntegrationModal({
         />
         <Select
           pb="md"
-          data={Object.values(IntegrationTypeEnum)}
+          data={Object.keys(IntegrationType).map((value) => ({
+            label: IntegrationTypeSelectData[value as IntegrationType],
+            value,
+          }))}
           label="Choose integration type"
           placeholder="Choose integration type"
           {...form.getInputProps('integrationType')}
