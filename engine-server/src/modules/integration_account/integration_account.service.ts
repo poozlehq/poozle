@@ -80,6 +80,37 @@ export class IntegrationAccountService {
     throw new BadRequestException('Not a valid credentials');
   }
 
+  async createIntegrationAccountWithLink(
+    integrationDefinitionId: string,
+    config: Config,
+    integrationAccountName: string,
+    authType: string,
+    workspaceId: string,
+    linkId: string,
+  ) {
+    const { status } = await this.checkForIntegrationCredentails(
+      integrationDefinitionId,
+      config,
+      authType,
+      workspaceId,
+    );
+
+    if (status) {
+      return await this.prismaService.integrationAccount.create({
+        data: {
+          integrationAccountName,
+          integrationDefinitionId,
+          workspaceId,
+          integrationConfiguration: config,
+          authType,
+          linkId,
+        },
+      });
+    }
+
+    throw new BadRequestException('Not a valid credentials');
+  }
+
   async getIntegrationAccountWithId(
     integrationAccountRequestIdBody: IntegrationAccountRequestIdBody,
   ) {

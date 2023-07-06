@@ -63,6 +63,7 @@ export function FirstIntegration() {
           {selectedIntegrationDefinition && (
             <NewIntegrationForm
               integrationDefinitionId={selectedIntegrationDefinition}
+              workspaceId={workspaceId as string}
               onComplete={() => {
                 // TODO (harshith): Change the status in workspace
                 console.log('completed');

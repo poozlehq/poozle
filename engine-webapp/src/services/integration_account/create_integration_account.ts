@@ -13,11 +13,30 @@ export interface CreateIntegrationAccountParams {
   integrationAccountName: string;
 }
 
+export interface CreateIntegrationAccountWithoutWorkspaceParams {
+  integrationDefinitionId: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  config: any;
+  authType: string;
+  integrationAccountName: string;
+  linkId: string;
+}
+
 export function createIntegrationAccount(
   params: CreateIntegrationAccountParams,
 ) {
   return ajaxPost({
     url: '/api/v1/integration_account',
+    data: params,
+  });
+}
+
+export function createIntegrationAccountWithLink({
+  linkId,
+  ...params
+}: CreateIntegrationAccountWithoutWorkspaceParams) {
+  return ajaxPost({
+    url: `/api/v1/integration_account/link/${linkId}`,
     data: params,
   });
 }
@@ -49,6 +68,33 @@ export function useCreateIntegrationAccountMutation({
   };
 
   return useMutation(createIntegrationAccount, {
+    onError: onMutationError,
+    onMutate: onMutationTriggered,
+    onSuccess: onMutationSuccess,
+  });
+}
+
+export function useCreateIntegrationAccountWithLinkMutation({
+  onMutate,
+  onSuccess,
+  onError,
+}: MutationParams) {
+  const onMutationTriggered = () => {
+    onMutate && onMutate();
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onMutationError = (errorResponse: any) => {
+    const errorText = errorResponse?.errors?.message || 'Error occured';
+
+    onError && onError(errorText);
+  };
+
+  const onMutationSuccess = (data: IntegrationAccount) => {
+    onSuccess && onSuccess(data);
+  };
+
+  return useMutation(createIntegrationAccountWithLink, {
     onError: onMutationError,
     onMutate: onMutationTriggered,
     onSuccess: onMutationSuccess,

@@ -27,8 +27,22 @@ interface FormValues {
 
 export function Signin() {
   const router = useRouter();
+  const {
+    query: { redirectToPath },
+  } = router;
+
   const { mutate: signinMutate, isLoading } = useSignInMutation({
-    onSuccess: () => router.replace('/workspaces'),
+    onSuccess: (data) => {
+      if (data.status !== 'OK') {
+        form.setErrors({
+          email: 'Not valid credentials',
+        });
+      } else {
+        router.replace(
+          redirectToPath ? (redirectToPath as string) : '/workspaces',
+        );
+      }
+    },
   });
   const form = useForm({
     initialValues: {

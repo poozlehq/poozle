@@ -22,17 +22,34 @@ export class IntegrationDefinitionService {
   async getIntegrationDefinitionsForWorkspace(
     integrationDefinitionRequestWorkspaceIdBody: IntegrationDefinitionRequestWorkspaceIdBody,
   ): Promise<IntegrationDefinition[]> {
+    let ORRequests = [
+      {
+        workspaceId: integrationDefinitionRequestWorkspaceIdBody.workspaceId,
+      },
+      {
+        workspaceId: null,
+      },
+    ];
+
+    if (
+      integrationDefinitionRequestWorkspaceIdBody.category &&
+      integrationDefinitionRequestWorkspaceIdBody.category.length > 0
+    ) {
+      ORRequests = [
+        ...integrationDefinitionRequestWorkspaceIdBody.category.map((cat) => ({
+          workspaceId: integrationDefinitionRequestWorkspaceIdBody.workspaceId,
+          integrationType: cat,
+        })),
+        ...integrationDefinitionRequestWorkspaceIdBody.category.map((cat) => ({
+          workspaceId: null,
+          integrationType: cat,
+        })),
+      ];
+    }
+
     return this.prisma.integrationDefinition.findMany({
       where: {
-        OR: [
-          {
-            workspaceId:
-              integrationDefinitionRequestWorkspaceIdBody.workspaceId,
-          },
-          {
-            workspaceId: null,
-          },
-        ],
+        OR: [...ORRequests],
       },
     });
   }

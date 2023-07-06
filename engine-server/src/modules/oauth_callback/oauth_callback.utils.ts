@@ -1,6 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { BadRequestException } from '@nestjs/common';
+import { getIntegrationSpec } from 'shared/integration_run_utils';
 
 import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp/entities';
 
@@ -11,7 +12,6 @@ import {
   ProviderTemplate,
   ProviderTemplateOAuth2,
 } from './oauth_callback.interface';
-import oAuthProviderConfig from '../../../config/o_auth_provider';
 
 /**
  * A helper function to interpolate a string.
@@ -64,13 +64,17 @@ export function getSimpleOAuth2ClientConfig(
   };
 }
 
-export function getTemplate(
+export async function getTemplate(
   integrationOAuthApp: IntegrationOAuthApp,
-): ProviderTemplate {
+): Promise<ProviderTemplate> {
+  const spec = await getIntegrationSpec(
+    integrationOAuthApp.integrationDefinition.sourceUrl,
+  );
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const template: ProviderTemplate = (oAuthProviderConfig as any)[
-    integrationOAuthApp.integrationDefinition.name
-  ];
+  const template: ProviderTemplate = spec.authSpecification[
+    'OAuth2'
+  ] as ProviderTemplate;
 
   if (!template) {
     throw new BadRequestException({

@@ -42,6 +42,12 @@ async function main() {
 
       const accessToken = response.headers['st-access-token'];
 
+      if (!accessToken) {
+        console.log(response.data);
+        console.log('User not created');
+        return;
+      }
+
       await axios.post(
         `${process.env.BACKEND_HOST}/v1/user`,
         {

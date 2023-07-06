@@ -64,6 +64,7 @@ export function NewIntegration() {
             {selectedIntegrationDefinition && (
               <NewIntegrationForm
                 integrationDefinitionId={selectedIntegrationDefinition}
+                workspaceId={workspaceId as string}
               />
             )}
           </Group>

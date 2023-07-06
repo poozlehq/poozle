@@ -24,8 +24,23 @@ export default {
           },
         },
       },
-      headers: {
-        Authorization: "Basic `${Buffer.from(`${email_id}:${api_key}`).toString('base64')` ",
+    },
+    OAuth2: {
+      authorization_url: 'https://auth.atlassian.com/authorize',
+      token_url: 'https://auth.atlassian.com/oauth/token',
+      authorization_params: {
+        audience: 'api.atlassian.com',
+        prompt: 'consent',
+      },
+      inputSpecification: {
+        type: 'object',
+        properties: {
+          org: {
+            type: 'string',
+            title: 'Organisation',
+            description: 'Enter the organisation identifier',
+          },
+        },
       },
     },
   },

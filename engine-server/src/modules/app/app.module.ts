@@ -12,9 +12,9 @@ import { AuthModule } from 'modules/auth/auth.module';
 import { MailModule } from 'modules/categories/mail/mail.module';
 import { TicketingModule } from 'modules/categories/ticketing/ticketing.module';
 import { IntegrationAccountModule } from 'modules/integration_account/integration_account.module';
-import { IntegrationConnectLinkModule } from 'modules/integration_connect_link/integration_connect_link.module';
 import { IntegrationDefinitionModule } from 'modules/integration_definition /integration_definition.module';
 import { IntegrationOAuthModule } from 'modules/integration_oauth/integration_oauth.module';
+import { LinkModule } from 'modules/link/link.module';
 import { OAuthCallbackModule } from 'modules/oauth_callback/oauth_callback.module';
 import { UserModule } from 'modules/user/user.module';
 import { WorkspaceModule } from 'modules/workspace/workspace.module';
@@ -39,7 +39,7 @@ import { AppService } from './app.service';
     IntegrationDefinitionModule,
     IntegrationOAuthModule,
     OAuthCallbackModule,
-    IntegrationConnectLinkModule,
+    LinkModule,
     // Categories and their modules
     TicketingModule,
     MailModule,

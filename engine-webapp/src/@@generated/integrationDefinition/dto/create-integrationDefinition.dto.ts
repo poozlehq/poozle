@@ -1,10 +1,4 @@
-const enum IntegrationType {
-  HRIS = 'HRIS',
-  MESSAGING = 'MESSAGING',
-  CALENDAR = 'CALENDAR',
-  TICKETING = 'TICKETING',
-  EMAIL = 'EMAIL',
-}
+import { IntegrationType } from 'lib/integration_type';
 
 export class CreateIntegrationDefinitionDto {
   name: string;

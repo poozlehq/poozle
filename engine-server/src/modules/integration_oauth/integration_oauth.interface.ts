@@ -11,10 +11,6 @@ export class IntegrationOAuthRequestWorkspaceIdBody {
   @IsString()
   workspaceId: string;
 }
-export class IntegrationOAuthRequestWorkspaceSlugBody {
-  @IsString()
-  slug: string;
-}
 
 export class IntegrationOAuthCreateBody {
   @IsString()
@@ -48,4 +44,12 @@ export class IntegrationOAuthRequestUpdateBody {
 
   @IsString()
   integrationOAuthAppName: string;
+}
+
+export class IntegrationOAuthAppsFlat {
+  @IsString()
+  integrationDefinitionId: string;
+
+  @IsString()
+  integrationOAuthAppId: string;
 }

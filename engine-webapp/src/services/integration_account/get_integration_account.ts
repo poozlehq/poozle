@@ -21,7 +21,7 @@ export function getIntegrationAccount(params: IntegrationAccountsParams) {
 
 export function useGetIntegrationAccountQuery(
   queryParams: IntegrationAccountsParams,
-): UseQueryResult<IntegrationAccount[], XHRErrorResponse> {
+): UseQueryResult<IntegrationAccount, XHRErrorResponse> {
   return useQuery(
     [GetIntegrationAccount],
     () => getIntegrationAccount(queryParams),

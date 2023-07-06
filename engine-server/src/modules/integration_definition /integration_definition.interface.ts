@@ -2,11 +2,19 @@
 
 import { Specification } from '@poozle/engine-idk';
 import { IntegrationType } from '@prisma/client';
-import { IsString } from 'class-validator';
+import { Transform, Type } from 'class-transformer';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 
 export class IntegrationDefinitionRequestWorkspaceIdBody {
   @IsString()
   workspaceId: string;
+
+  @IsArray()
+  @IsOptional()
+  @IsString({ each: true })
+  @Type(() => String)
+  @Transform(({ value }) => (value ? value.split(',') : []))
+  category?: string[];
 }
 
 export class IntegrationDefinitionRequestIdBody {

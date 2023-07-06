@@ -33,15 +33,14 @@ export class BaseIntegration implements BaseIntegrationInterface {
     This function will be used when the integration is getting configured. We will use this to test with the
     credentials are valid.
   */
-  async check(_config: Config): CheckResponse {
-    try {
-      return { status: false, error: '' };
-    } catch (err) {
-      return {
-        status: false,
-        error: err.message as string,
-      };
+  async check(config: Config): CheckResponse {
+    const headers = await this.authHeaders(config);
+
+    if (Object.keys(headers).length === 0) {
+      return { status: false, error: 'Check failed' };
     }
+
+    return { status: true, error: '' };
   }
 
   async authHeaders(config: Config): AuthHeaderResponse {
@@ -54,11 +53,11 @@ export class BaseIntegration implements BaseIntegrationInterface {
         const specification = spec.authSpecification['OAuth2'] as AuthSpecificationOAuth;
         headers = specification.headers ?? {};
         token = await getAccessToken(
-          interpolateString(specification.tokenUrl as string, config),
+          interpolateString(specification.token_url as string, config),
           config,
         );
         headers = {
-          Authorization: 'Bearer ${token}',
+          Authorization: `Bearer ${token}`,
         };
       } else {
         const type = config.authType;

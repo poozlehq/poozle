@@ -25,11 +25,11 @@ class GithubIntegration extends BaseIntegration {
 
   async check(config: Config): CheckResponse {
     try {
+      const headers = await this.authHeaders(config);
+
       await axios({
         url: `https://api.github.com/user`,
-        headers: {
-          Authorization: `Bearer ${config.api_key}`,
-        },
+        headers,
       });
 
       return {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
@@ -15,6 +16,7 @@ import * as React from 'react';
 import { useGetIntegrationDefinitionsQuery } from 'services/integration_definition';
 
 import { IntegrationIcon, IntegrationType, Table } from 'components';
+import { ReleaseStage } from 'components/release_stage';
 
 import { AddNewIntegrationModal } from './add_new_integration_modal';
 import styles from './integrations.module.scss';
@@ -57,6 +59,17 @@ export function Integrations() {
         return (
           <div className={styles.tableDataContainer}>
             <IntegrationType type={data.integrationType as any} />
+          </div>
+        );
+      },
+    },
+    {
+      name: 'Stage',
+      key: 'stage',
+      render: (data: IntegrationDefinition) => {
+        return (
+          <div className={styles.tableDataContainer}>
+            <ReleaseStage type={data.releaseStage as any} />
           </div>
         );
       },

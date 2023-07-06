@@ -35,17 +35,17 @@ model User {
 }
 
 model Workspace {
-  workspaceId             String                   @id @default(uuid())
-  slug                    String                   @unique
-  user                    User                     @relation(references: [userId], fields: [userId])
+  workspaceId             String                  @id @default(uuid())
+  slug                    String                  @unique
+  user                    User                    @relation(references: [userId], fields: [userId])
   userId                  String
-  initialSetupComplete    Boolean                  @default(false)
-  anonymousDataCollection Boolean                  @default(false)
+  initialSetupComplete    Boolean                 @default(false)
+  anonymousDataCollection Boolean                 @default(false)
   IntegrationDefinition   IntegrationDefinition[]
   IntegrationAccount      IntegrationAccount[]
   IntegrationOAuthApp     IntegrationOAuthApp[]
   deleted                 DateTime?
-  IntegrationConnectLink  IntegrationConnectLink[]
+  Link                    Link[]
 }
 
 model IntegrationDefinition {
@@ -78,39 +78,41 @@ model IntegrationOAuthApp {
   clientSecret String
   scopes       String
 
-  workspace   Workspace? @relation(references: [workspaceId], fields: [workspaceId])
-  workspaceId String?
+  workspace   Workspace @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId String
   deleted     DateTime?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@unique([integrationOAuthAppName, workspaceId])
+  @@unique([integrationDefinitionId, workspaceId])
 }
 
 model IntegrationAccount {
-  integrationAccountId                              String                  @id @default(uuid())
-  integrationDefinition                             IntegrationDefinition   @relation(references: [integrationDefinitionId], fields: [integrationDefinitionId])
-  integrationDefinitionId                           String
-  integrationConfiguration                          Json?
-  authType                                          String
-  workspace                                         Workspace               @relation(references: [workspaceId], fields: [workspaceId])
-  workspaceId                                       String
-  integrationAccountName                            String
-  deleted                                           DateTime?
-  createdAt                                         DateTime                @default(now())
-  updatedAt                                         DateTime                @updatedAt
-  fromLinks                                         IntegrationConnectLink? @relation(fields: [integrationConnectLinkIntegrationConnectionLinkId], references: [integrationConnectionLinkId])
-  integrationConnectLinkIntegrationConnectionLinkId String?
+  integrationAccountId     String                @id @default(uuid())
+  integrationDefinition    IntegrationDefinition @relation(references: [integrationDefinitionId], fields: [integrationDefinitionId])
+  integrationDefinitionId  String
+  integrationConfiguration Json?
+  authType                 String
+  workspace                Workspace             @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId              String
+  integrationAccountName   String
+  deleted                  DateTime?
+  createdAt                DateTime              @default(now())
+  updatedAt                DateTime              @updatedAt
+  fromLinks                Link?                 @relation(fields: [linkId], references: [linkId])
+  linkId                   String?
 
   @@unique([integrationAccountName, workspaceId])
 }
 
-model IntegrationConnectLink {
-  integrationConnectionLinkId String            @id @default(uuid())
-  expiresIn                   Int               @default(60)
-  category                    IntegrationType[]
-  workspace                   Workspace         @relation(references: [workspaceId], fields: [workspaceId])
-  workspaceId                 String
+model Link {
+  linkId      String            @id @default(uuid())
+  linkName    String
+  expiresIn   Int               @default(3600)
+  category    IntegrationType[]
+  workspace   Workspace         @relation(references: [workspaceId], fields: [workspaceId])
+  workspaceId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -31,6 +31,14 @@ export const theme = {
         },
       }),
     },
+    MultiSelect: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      styles: (theme: any) => ({
+        input: {
+          borderColor: theme.colors.gray[2],
+        },
+      }),
+    },
     Alert: {
       styles: {
         title: {
@@ -39,6 +47,14 @@ export const theme = {
       },
     },
     TextInput: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      styles: (theme: any) => ({
+        input: {
+          borderColor: theme.colors.gray[2],
+        },
+      }),
+    },
+    NumberInput: {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       styles: (theme: any) => ({
         input: {
