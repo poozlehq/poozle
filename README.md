@@ -7,15 +7,12 @@
 [![Star us on GitHub](https://img.shields.io/github/stars/poozlehq/engine?color=FFD700&label=Stars&logo=Github)](https://github.com/poozlehq/engine)
 [![PRs welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://docs.poozle.dev/contributing)
 
-[Quickstart](https://docs.poozle.dev/quickstart)
+[Quickstart](https://docs.poozle.dev/oss/deploy-poozle)
 <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
 [Website](https://poozle.dev/)
 <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
 [Docs](https://docs.poozle.dev)
 <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-[Examples](https://docs.poozle.dev/examples)
-<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
-[Blog](https://blog.poozle.dev/)
 
 [![Join our Slack Server](https://img.shields.io/badge/Slack-chat%20with%20us-%235865F2?style=flat&logo=slack&logoColor=%23fff)](https://join.slack.com/t/poozle-community/shared_invite/zt-1u4mz911h-FeWpOA82wA8kyrz3xg58xQ)
 [![Tweet at us on Twitter](https://img.shields.io/badge/Twitter-tweet%20at%20us-1da1f2?style=flat&logo=twitter&logoColor=%23fff)](https://twitter.com/poozlehq)
