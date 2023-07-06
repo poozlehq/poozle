@@ -7,48 +7,50 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    networks:
-      - poozle
-    restart: unless-stopped
-
-  server:
-    image: poozlehq/engine-server:${ENGINE_VERSION}
-    platform: linux/amd64
-    container_name: poozle-server
-    depends_on:
-      - db
-    restart: unless-stopped
-    networks:
-      - poozle
-    environment:
-      - ENGINE_VERSION=${ENGINE_VERSION}
-      - DATABASE_URL=${DATABASE_URL}
-      - FRONTEND_HOST=${FRONTEND_HOST}
-      - BACKEND_HOST=${BACKEND_HOST}
-      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
-      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
-      - PORT=${PORT}
-      - SUPERTOKEN_CONNECTION_URI=${SUPERTOKEN_CONNECTION_URI}
-      # Default User
-      - USER_PASSWORD=${USER_PASSWORD}
-      - USER_EMAIL=${USER_EMAIL}
-      - USER_FIRSTNAME=${USER_FIRSTNAME}
-      - USER_LASTNAME=${USER_LASTNAME}
-      - CREATE_DEFAULT_USER=${CREATE_DEFAULT_USER}
-
-  webapp:
-    image: poozlehq/engine-webapp:${ENGINE_VERSION}
-    platform: linux/amd64
-    container_name: poozle-webapp
-    restart: unless-stopped
-    networks:
-      - poozle
-    environment:
-      - BACKEND_URL=${BACKEND_URL}
-      - NEXT_PUBLIC_BASE_HOST=${FRONTEND_HOST}
-      - NEXT_PUBLIC_VERSION=${ENGINE_VERSION}
     ports:
-      - 8000:3000
+      - 5432:5432
+    networks:
+      - poozle
+    restart: unless-stopped
+
+  # server:
+  #   image: poozlehq/engine-server:${ENGINE_VERSION}
+  #   platform: linux/amd64
+  #   container_name: poozle-server
+  #   depends_on:
+  #     - db
+  #   restart: unless-stopped
+  #   networks:
+  #     - poozle
+  #   environment:
+  #     - ENGINE_VERSION=${ENGINE_VERSION}
+  #     - DATABASE_URL=${DATABASE_URL}
+  #     - FRONTEND_HOST=${FRONTEND_HOST}
+  #     - BACKEND_HOST=${BACKEND_HOST}
+  #     - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
+  #     - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+  #     - PORT=${PORT}
+  #     - SUPERTOKEN_CONNECTION_URI=${SUPERTOKEN_CONNECTION_URI}
+  #     # Default User
+  #     - USER_PASSWORD=${USER_PASSWORD}
+  #     - USER_EMAIL=${USER_EMAIL}
+  #     - USER_FIRSTNAME=${USER_FIRSTNAME}
+  #     - USER_LASTNAME=${USER_LASTNAME}
+  #     - CREATE_DEFAULT_USER=${CREATE_DEFAULT_USER}
+
+  # webapp:
+  #   image: poozlehq/engine-webapp:${ENGINE_VERSION}
+  #   platform: linux/amd64
+  #   container_name: poozle-webapp
+  #   restart: unless-stopped
+  #   networks:
+  #     - poozle
+  #   environment:
+  #     - BACKEND_URL=${BACKEND_URL}
+  #     - NEXT_PUBLIC_BASE_HOST=${FRONTEND_HOST}
+  #     - NEXT_PUBLIC_VERSION=${ENGINE_VERSION}
+  #   ports:
+  #     - 8000:3000
 
   supertokens:
     image: registry.supertokens.io/supertokens/supertokens-postgresql:5.0

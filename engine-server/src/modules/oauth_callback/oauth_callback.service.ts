@@ -17,7 +17,7 @@ import {
   getTemplate,
 } from './oauth_callback.utils';
 
-const CALLBACK_URL = 'https://server.poozle.dev/oauth/callback';
+const CALLBACK_URL = `${process.env.FRONTEND_HOST}/api/v1/oauth/callback`;
 
 @Injectable()
 export class OAuthCallbackService {
@@ -165,18 +165,21 @@ export class OAuthCallbackService {
     delete this.session[params.state];
 
     if (!sessionRecord) {
-      throw new BadRequestException({
-        error: 'No session found',
-      });
+      const errorMessage = 'No session found';
+      res.redirect(
+        `${sessionRecord.redirectURL}?success=false&error=${errorMessage}`,
+      );
     }
 
     if (
       !sessionRecord.integrationOAuthAppId ||
       !sessionRecord.integrationAccountName
     ) {
-      throw new BadRequestException({
-        error: 'No integrationName or integrationOAuthID found',
-      });
+      const errorMessage = 'No integrationName or integrationOAuthID found';
+
+      res.redirect(
+        `${sessionRecord.redirectURL}?success=false&error=${errorMessage}`,
+      );
     }
 
     const integrationOAuth =
@@ -189,9 +192,11 @@ export class OAuthCallbackService {
     )) as ProviderTemplateOAuth2;
 
     if (integrationOAuth === null) {
-      throw new BadRequestException({
-        error: 'No matching OAuth integration found',
-      });
+      const errorMessage = 'No matching OAuth integration found';
+
+      res.redirect(
+        `${sessionRecord.redirectURL}?success=false&error=${errorMessage}`,
+      );
     }
 
     let additionalTokenParams: Record<string, string> = {};
@@ -251,11 +256,13 @@ export class OAuthCallbackService {
         integrationOAuth.workspaceId,
       );
 
-      res.redirect(sessionRecord.redirectURL);
+      res.redirect(
+        `${sessionRecord.redirectURL}?success=true&integrationName=${integrationOAuth.integrationDefinition.name}`,
+      );
     } catch (e) {
-      throw new BadRequestException({
-        error: e.message,
-      });
+      res.redirect(
+        `${sessionRecord.redirectURL}?success=false&error=${e.message}`,
+      );
     }
   }
 }

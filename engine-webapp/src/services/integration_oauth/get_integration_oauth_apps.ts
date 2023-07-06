@@ -29,7 +29,7 @@ export function getIntegrationOAuthAppsJustIds(
   const querySet: Record<string, Primitive> = { ...params };
 
   return ajaxGet({
-    url: '/api/v1/integration_oauth_just_ids',
+    url: '/api/v1/integration_oauth/just_ids',
     query: querySet,
   });
 }
@@ -38,7 +38,7 @@ export function useGetIntegrationOAuthApps(
   queryParams: IntegrationOAuthAppsParams,
 ): UseQueryResult<IntegrationOAuthApp[], XHRErrorResponse> {
   return useQuery(
-    [GetIntegrationOAuthApps],
+    [GetIntegrationOAuthApps, queryParams],
     () => getIntegrationOAuthApps(queryParams),
     {
       notifyOnChangeProps: 'tracked',
@@ -52,7 +52,7 @@ export function useGetIntegrationOAuthAppsJustIds(
   queryParams: IntegrationOAuthAppsParams,
 ): UseQueryResult<IntegrationOAuthApp[], XHRErrorResponse> {
   return useQuery(
-    [GetIntegrationOAuthAppsJustIds],
+    [GetIntegrationOAuthAppsJustIds, queryParams],
     () => getIntegrationOAuthAppsJustIds(queryParams),
     {
       notifyOnChangeProps: 'tracked',

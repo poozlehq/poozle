@@ -62,10 +62,10 @@ export function Form({
 
   if (!oAuthApp) {
     spec = {
+      ...initialSpec,
       authSupported: initialSpec.authSupported.filter(
         (key) => key !== 'OAuth2',
       ),
-      ...initialSpec,
     };
   }
 
@@ -73,12 +73,13 @@ export function Form({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const validate: any = getValidateObject(initialValues);
 
+  const [errorMessage, setErrorMessage] = React.useState(undefined);
+
   const form = useForm({
     initialValues: getInitialValues(spec, integrationAccountNameDefault),
 
     validate,
   });
-  const [errorMessage, setErrorMessage] = React.useState(undefined);
 
   const { mutate: createIntegrationAccount, isLoading: createIsLoading } =
     useCreateIntegrationAccountWithLinkMutation({
@@ -100,7 +101,9 @@ export function Form({
   const { mutate: createRedirectURL, isLoading: redirectURLLoading } =
     useCreateRedirectURLMutation({
       onSuccess: (data) => {
-        console.log(data);
+        const redirectURL = data.redirectURL;
+
+        window.location.href = redirectURL;
       },
     });
 
@@ -125,13 +128,16 @@ export function Form({
     }
   };
 
+  // TODO (harshith): Fix remove the default properties here
   const properties = form.values.authType
     ? getProperties(
         (
           spec.authSpecification[
             form.values.authType
           ] as AuthSpecificationGeneric
-        ).inputSpecification,
+        ).inputSpecification ?? {
+          properties: {},
+        },
       )
     : [];
 
@@ -224,7 +230,6 @@ export function NewIntegrationForm({
     return <Loader />;
   }
 
-  console.log(oAuthApps);
   const oAuthApp = oAuthApps.find(
     (oAuthA) => oAuthA.integrationDefinitionId === integrationDefinitionId,
   );

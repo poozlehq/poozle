@@ -32,6 +32,17 @@ import { IntegrationOAuthService } from './integration_oauth.service';
 export class IntegrationOAuthController {
   constructor(private integrationOAuthService: IntegrationOAuthService) {}
 
+  @Get()
+  @UseGuards(new AuthGuard())
+  async getIntegrationOAuthByWorkspace(
+    @Query()
+    integrationOAuthRequestWorkspaceIdBody: IntegrationOAuthRequestWorkspaceIdBody,
+  ): Promise<IntegrationOAuthApp[]> {
+    return await this.integrationOAuthService.getIntegrationOAuthsForWorkspace(
+      integrationOAuthRequestWorkspaceIdBody,
+    );
+  }
+
   @Get('just_ids')
   async getIntegrationOAuthByWorkspaceJustIds(
     @Query()

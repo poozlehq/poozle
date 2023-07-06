@@ -13,13 +13,29 @@ export function makeId(length: number) {
   return result;
 }
 
+export function getValidationForInside(initialValues: any, authType: string) {
+  const validate: any = {};
+
+  Object.keys(initialValues).forEach((key: any) => {
+    validate[key] = (value: string, values: any) => {
+      if (values.authType === authType) {
+        return value ? null : 'Invalid';
+      }
+
+      return null;
+    };
+  });
+
+  return validate;
+}
+
 export function getValidateObject(initialValues: any) {
   const validate: any = {};
   Object.keys(initialValues).forEach((key: any) => {
     validate[key] = (value: string) => (value ? null : `Invalid`);
 
     if (typeof initialValues[key] === 'object') {
-      validate[key] = getValidateObject(initialValues[key]);
+      validate[key] = getValidationForInside(initialValues[key], key);
     }
   });
 

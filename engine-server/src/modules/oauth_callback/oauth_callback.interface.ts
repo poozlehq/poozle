@@ -1,6 +1,6 @@
 /** Copyright (c) 2022, Poozle, all rights reserved. **/
 
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export interface RedirectURLParams {
   workspaceSlug: string;
@@ -26,7 +26,12 @@ export class BodyInterface {
   redirectURL: string;
 
   @IsString()
-  workspaceId: string;
+  @IsOptional()
+  workspaceId?: string;
+
+  @IsString()
+  @IsOptional()
+  linkId?: string;
 
   @IsString()
   integrationOAuthAppId: string;

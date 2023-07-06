@@ -1,7 +1,11 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Alert, Box, Paper, useMantineTheme, Text } from '@mantine/core';
-import { IconAlertCircle } from '@tabler/icons-react';
+import {
+  IconAlertCircle,
+  IconAlertSmall,
+  IconCheck,
+} from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 
@@ -12,6 +16,8 @@ import { Loader } from 'components';
 
 import { PublicLink, PublicLinkProps } from './public_link';
 import styles from './public_link.module.scss';
+import React from 'react';
+import { notifications } from '@mantine/notifications';
 
 export function PublicLinkIntegrationDefinitions({ link }: PublicLinkProps) {
   const { data: integrationDefinitions, isLoading } =
@@ -31,9 +37,29 @@ export function PublicLinkIntegrationDefinitions({ link }: PublicLinkProps) {
 
 export function PublicLinkWrapper() {
   const { query } = useRouter();
-  const { linkId } = query;
+  const { linkId, success, error: errorFromServer, integrationName } = query;
 
   const theme = useMantineTheme();
+
+  React.useEffect(() => {
+    if (typeof success !== 'undefined') {
+      if (success === 'true') {
+        notifications.show({
+          icon: <IconCheck />,
+          title: 'Status',
+          color: 'green',
+          message: `${integrationName} is successfully connected`,
+        });
+      } else {
+        notifications.show({
+          icon: <IconAlertSmall />,
+          title: 'Status',
+          color: 'red',
+          message: errorFromServer,
+        });
+      }
+    }
+  }, [success]);
 
   const {
     data: linkDetails,
