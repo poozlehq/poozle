@@ -2,3 +2,4 @@
 
 export * from './ticketing';
 export * from './mail';
+export * from './docs'
