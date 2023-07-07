@@ -1,5 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { Specification } from '@poozle/engine-idk';
 import { UseQueryResult, useQuery } from 'react-query';
 import { XHRErrorResponse, ajaxGet } from 'utils';
 
@@ -7,41 +8,6 @@ import { XHRErrorResponse, ajaxGet } from 'utils';
  * Query Key for Get user.
  */
 export const GetIntegrationDefinitionSpec = 'getIntegrationDefinitionSpec';
-
-export interface AuthSpecificationGeneric {
-  inputSpecification?: {
-    type: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    properties: Record<string, any>;
-  };
-  headers?: Record<string, string>;
-}
-
-export interface AuthSpecificationOAuth {
-  tokenUrl?: string;
-  authMode?: string;
-  authorizationUrl?: string;
-  authorizationParams?: Record<string, string>;
-  tokenParams?: Record<string, string>;
-  headers?: Record<string, string>;
-  inputSpecification?: {
-    type: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    properties: Record<string, any>;
-  };
-}
-
-export type AuthSupported = string[];
-
-export interface Specification {
-  authSupported: AuthSupported;
-  authSpecification: Record<
-    string,
-    AuthSpecificationGeneric | AuthSpecificationOAuth
-  >;
-  supportedFilters: string[];
-  supportedSortBy: string[];
-}
 
 interface IntegrationDefinitionParams {
   integrationDefinitionId: string;

@@ -1,8 +1,11 @@
+/* eslint-disable dot-location */
+/* eslint-disable prettier/prettier */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Alert, Button, Group, Select, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import { Specification } from '@poozle/engine-idk';
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import * as React from 'react';
 
@@ -10,21 +13,15 @@ import {
   useCheckCredentialsMutation,
   useCreateIntegrationAccountMutation,
 } from 'services/integration_account';
-import {
-  AuthSpecificationGeneric,
-  AuthSpecificationOAuth,
-  Specification,
-  useGetIntegrationDefinitionSpecQuery,
-} from 'services/integration_definition/get_spec_for_integration_definition';
+import { useGetIntegrationDefinitionSpecQuery } from 'services/integration_definition/get_spec_for_integration_definition';
 
 import { Loader } from 'components';
 
 import styles from './new_integration_form.module.scss';
 import {
+  getAllInputProperties,
   getInitialValues,
-  getProperties,
   getPropertyName,
-  returnOAuthInputSpecification,
 } from './new_integration_form_utils';
 
 interface NewIntegrationFormProps {
@@ -35,7 +32,6 @@ interface NewIntegrationFormProps {
 }
 
 interface FormProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   spec: Specification;
   workspaceId: string;
   onComplete?: () => void;
@@ -95,21 +91,7 @@ export function Form({
   };
 
   const properties = form.values.authType
-    ? getProperties(
-        form.values.authType === 'OAuth2'
-          ? returnOAuthInputSpecification(
-              (
-                spec.authSpecification[
-                  form.values.authType
-                ] as AuthSpecificationOAuth
-              ).inputSpecification,
-            )
-          : (
-              spec.authSpecification[
-                form.values.authType
-              ] as AuthSpecificationGeneric
-            ).inputSpecification,
-      )
+    ? getAllInputProperties(spec, form.values.authType)
     : [];
 
   return (
@@ -138,7 +120,7 @@ export function Form({
 
         <Select
           pb="md"
-          data={spec.authSupported}
+          data={Object.keys(spec.auth_specification)}
           label="Choose authentication type"
           placeholder="Choose authentication type"
           disabled={checkIsLoading || createIsLoading}
@@ -214,7 +196,8 @@ export function NewIntegrationForm({
 
   return (
     <Form
-      spec={integrationDefinitionSpec}
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      spec={integrationDefinitionSpec as any}
       workspaceId={workspaceId as string}
       onComplete={onComplete}
       integrationDefinitionId={integrationDefinitionId}

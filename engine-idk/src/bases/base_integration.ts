@@ -11,8 +11,6 @@ import {
   SpecificationResponse,
   AuthHeaderResponse,
   RunResponse,
-  AuthSpecificationOAuth,
-  AuthSpecificationGeneric,
   Params,
 } from 'types/integration';
 
@@ -22,10 +20,7 @@ export class BaseIntegration implements BaseIntegrationInterface {
   */
   async spec(): SpecificationResponse {
     return {
-      authSupported: [],
-      authSpecification: {},
-      supportedFilters: [],
-      supportedSortBy: [],
+      auth_specification: {},
     };
   }
 
@@ -50,7 +45,7 @@ export class BaseIntegration implements BaseIntegrationInterface {
 
       if (config.authType === 'OAuth2') {
         const spec = await this.spec();
-        const specification = spec.authSpecification['OAuth2'] as AuthSpecificationOAuth;
+        const specification = spec.auth_specification['OAuth2'];
         headers = specification.headers ?? {};
         token = await getAccessToken(
           interpolateString(specification.token_url as string, config),
@@ -62,7 +57,7 @@ export class BaseIntegration implements BaseIntegrationInterface {
       } else {
         const type = config.authType;
         const spec = await this.spec();
-        const specification = spec.authSpecification[type] as AuthSpecificationGeneric;
+        const specification = spec.auth_specification[type];
         headers = specification.headers ?? {};
       }
 

@@ -1,6 +1,6 @@
 {
   "name": "@poozle/gmail",
-  "version": "0.1.2",
+  "version": "0.1.4",
   "description": "gmail extension for Poozle",
   "exports": {
     ".": {
@@ -47,7 +47,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@poozle/engine-idk": "^0.1.6",
+    "@poozle/engine-idk": "^0.1.8",
     "axios": "^1.4.0"
   },
   "browserslist": {

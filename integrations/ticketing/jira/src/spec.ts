@@ -1,10 +1,9 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 export default {
-  authSupported: ['Api Key', 'OAuth2'],
-  authSpecification: {
+  auth_specification: {
     'Api Key': {
-      inputSpecification: {
+      input_specification: {
         type: 'object',
         properties: {
           email_id: {
@@ -32,18 +31,31 @@ export default {
         audience: 'api.atlassian.com',
         prompt: 'consent',
       },
-      inputSpecification: {
+      input_specification: {
         type: 'object',
         properties: {
-          org: {
+          client_id: {
             type: 'string',
-            title: 'Organisation',
-            description: 'Enter the organisation identifier',
+            title: 'Client Id',
+            description: 'Enter the Client Id',
+          },
+          client_secret: {
+            type: 'string',
+            title: 'Client secret',
+            description: 'Enter the Client secret',
+          },
+          refresh_token: {
+            type: 'string',
+            title: 'Refresh token',
+            description: 'Enter the Refresh token',
+          },
+          scope: {
+            type: 'string',
+            title: 'Scope',
+            description: 'Enter the Scope',
           },
         },
       },
     },
   },
-  supportedFilters: ['direction'],
-  supportedSortBy: ['created_at', 'updated_at'],
 };

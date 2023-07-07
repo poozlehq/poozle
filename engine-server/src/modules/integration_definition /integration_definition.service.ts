@@ -4,6 +4,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Specification } from '@poozle/engine-idk';
 import { ReleaseStage } from '@prisma/client';
+import axios from 'axios';
 import { PrismaService } from 'nestjs-prisma';
 import { getIntegrationSpec } from 'shared/integration_run_utils';
 
@@ -13,6 +14,8 @@ import {
   IntegrationDefinitionCreateBody,
   IntegrationDefinitionRequestIdBody,
   IntegrationDefinitionRequestWorkspaceIdBody,
+  IntegrationDefinitionResponse,
+  IntegrationDefinitionUpdateBody,
 } from './integration_definition.interface';
 
 @Injectable()
@@ -21,7 +24,7 @@ export class IntegrationDefinitionService {
 
   async getIntegrationDefinitionsForWorkspace(
     integrationDefinitionRequestWorkspaceIdBody: IntegrationDefinitionRequestWorkspaceIdBody,
-  ): Promise<IntegrationDefinition[]> {
+  ): Promise<IntegrationDefinitionResponse[]> {
     let ORRequests = [
       {
         workspaceId: integrationDefinitionRequestWorkspaceIdBody.workspaceId,
@@ -47,11 +50,16 @@ export class IntegrationDefinitionService {
       ];
     }
 
-    return this.prisma.integrationDefinition.findMany({
-      where: {
-        OR: [...ORRequests],
-      },
-    });
+    const integrationDefinitions =
+      await this.prisma.integrationDefinition.findMany({
+        where: {
+          OR: [...ORRequests],
+        },
+      });
+
+    return (await this.checkIfItsLatest(
+      integrationDefinitions,
+    )) as IntegrationDefinitionResponse[];
   }
 
   async getIntegrationDefinitionWithId(
@@ -76,7 +84,9 @@ export class IntegrationDefinitionService {
         },
       });
 
-    return integrationDefinitions[0];
+    return (await this.checkIfItsLatest(
+      integrationDefinitions[0],
+    )) as IntegrationDefinitionResponse;
   }
 
   async getSpecForIntegrationDefinition(
@@ -97,7 +107,7 @@ export class IntegrationDefinitionService {
     try {
       await getIntegrationSpec(integrationDefinitionCreateBody.sourceUrl);
 
-      return this.prisma.integrationDefinition.create({
+      return await this.prisma.integrationDefinition.create({
         data: {
           ...integrationDefinitionCreateBody,
           key: integrationDefinitionCreateBody.name
@@ -110,5 +120,77 @@ export class IntegrationDefinitionService {
     } catch (err) {
       throw new BadRequestException('Unable to fetch spec');
     }
+  }
+
+  async updateIntegrationDefinition(
+    integrationDefinitionUpdateBody: IntegrationDefinitionUpdateBody,
+    integrationDefinitionId: string,
+  ) {
+    try {
+      await getIntegrationSpec(integrationDefinitionUpdateBody.sourceUrl);
+
+      return await this.prisma.integrationDefinition.update({
+        data: {
+          sourceUrl: integrationDefinitionUpdateBody.sourceUrl,
+          version: integrationDefinitionUpdateBody.version,
+        },
+        where: {
+          integrationDefinitionId,
+        },
+      });
+    } catch (err) {
+      throw new BadRequestException('Unable to fetch spec');
+    }
+  }
+
+  async checkIfItsLatest(
+    integrationDefinition: IntegrationDefinition | IntegrationDefinition[],
+  ): Promise<IntegrationDefinitionResponse | IntegrationDefinitionResponse[]> {
+    const {
+      data: integrationDefinitionsResponse,
+    }: { data: IntegrationDefinition[] } = await axios.get(
+      'https://raw.githubusercontent.com/poozlehq/engine/main/integration_definitions.json',
+    );
+
+    const integrationDefinitions: Record<string, IntegrationDefinition> = {};
+
+    integrationDefinitionsResponse.forEach((id: IntegrationDefinition) => {
+      integrationDefinitions[id.key] = id;
+    });
+
+    if (Array.isArray(integrationDefinition)) {
+      return integrationDefinition.map((id) => {
+        const latestDetails = {
+          isLatest: integrationDefinitions[id.key]
+            ? id.version === integrationDefinitions[id.key].version
+            : true,
+          latestVersion: integrationDefinitions[id.key]
+            ? integrationDefinitions[id.key].version
+            : id.version,
+          latestVersionSource: integrationDefinitions[id.key]
+            ? integrationDefinitions[id.key].sourceUrl
+            : id.sourceUrl,
+        };
+
+        return {
+          ...id,
+          ...latestDetails,
+        };
+      });
+    }
+
+    const latestDetails = {
+      isLatest:
+        integrationDefinition.version ===
+        integrationDefinitions[integrationDefinition.key].version,
+      latestVersion: integrationDefinitions[integrationDefinition.key].version,
+      latestVersionSource:
+        integrationDefinitions[integrationDefinition.key].sourceUrl,
+    };
+
+    return {
+      ...integrationDefinition,
+      ...latestDetails,
+    };
   }
 }

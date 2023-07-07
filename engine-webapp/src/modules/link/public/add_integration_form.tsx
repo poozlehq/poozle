@@ -4,6 +4,7 @@ import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp/entities';
 import { Alert, Button, Group, Select, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import { Specification } from '@poozle/engine-idk';
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import getConfig from 'next/config';
 import * as React from 'react';
@@ -11,22 +12,17 @@ import * as React from 'react';
 import styles from 'modules/integration/new_integration/new_integration_form.module.scss';
 import {
   getInitialValues,
-  getProperties,
   getPropertyName,
 } from 'modules/integration/new_integration/new_integration_form_utils';
 
 import { useCreateRedirectURLMutation } from 'services/callback/create_redirect_url';
 import { useCreateIntegrationAccountWithLinkMutation } from 'services/integration_account';
-import {
-  AuthSpecificationGeneric,
-  Specification,
-  useGetIntegrationDefinitionSpecQuery,
-} from 'services/integration_definition/get_spec_for_integration_definition';
+import { useGetIntegrationDefinitionSpecQuery } from 'services/integration_definition/get_spec_for_integration_definition';
 import { useGetIntegrationOAuthAppsJustIds } from 'services/integration_oauth';
 
 import { Loader } from 'components';
 
-import { getValidateObject } from './public_link_utils';
+import { getAllProperties, getValidateObject } from './public_link_utils';
 
 interface NewIntegrationFormProps {
   integrationDefinitionId: string;
@@ -61,11 +57,12 @@ export function Form({
   let spec = initialSpec;
 
   if (!oAuthApp) {
+    const currentSpecification = initialSpec.auth_specification;
+    delete currentSpecification['OAuth2'];
+
     spec = {
       ...initialSpec,
-      authSupported: initialSpec.authSupported.filter(
-        (key) => key !== 'OAuth2',
-      ),
+      auth_specification: currentSpecification,
     };
   }
 
@@ -129,17 +126,8 @@ export function Form({
   };
 
   // TODO (harshith): Fix remove the default properties here
-  const properties = form.values.authType
-    ? getProperties(
-        (
-          spec.authSpecification[
-            form.values.authType
-          ] as AuthSpecificationGeneric
-        ).inputSpecification ?? {
-          properties: {},
-        },
-      )
-    : [];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const properties = getAllProperties(spec, form.values.authType);
 
   return (
     <Group p="md" pt={0} className={styles.formContainer}>
@@ -159,7 +147,7 @@ export function Form({
 
         <Select
           pb="md"
-          data={spec.authSupported}
+          data={Object.keys(spec.auth_specification)}
           label="Choose authentication type"
           placeholder="Choose authentication type"
           disabled={createIsLoading}

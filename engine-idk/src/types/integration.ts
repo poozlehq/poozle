@@ -1,15 +1,14 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-export interface AuthSpecificationGeneric {
-  inputSpecification?: {
+export interface GenericInputSpecification {
+  input_specification: {
     type: string;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     properties: Record<string, any>;
   };
-  headers?: Record<string, string>;
 }
 
-export interface AuthSpecificationOAuth {
+export interface AuthSpecification extends GenericInputSpecification {
   // Params that are directly supported by simple-oauth2
   token_url?: string;
   auth_mode?: string;
@@ -17,12 +16,6 @@ export interface AuthSpecificationOAuth {
   authorization_params?: Record<string, string>;
   token_params?: Record<string, string>;
   headers?: Record<string, string>;
-  // Needed to store
-  inputSpecification?: {
-    type: string;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    properties: Record<string, any>;
-  };
 }
 
 // Generic holder of config for integration
@@ -35,12 +28,9 @@ export interface CheckResponseType {
 }
 export type CheckResponse = Promise<CheckResponseType>;
 
-export type AuthSupported = string[];
 export interface Specification {
-  authSupported: AuthSupported;
-  authSpecification: Record<string, AuthSpecificationGeneric | AuthSpecificationOAuth>;
-  supportedFilters: string[];
-  supportedSortBy: string[];
+  auth_specification: Record<string, AuthSpecification>;
+  other_inputs?: GenericInputSpecification;
 }
 export type SpecificationResponse = Promise<Specification>;
 

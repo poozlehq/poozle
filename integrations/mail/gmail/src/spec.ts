@@ -1,8 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 export default {
-  authSupported: ['OAuth2'],
-  authSpecification: {
+  auth_specification: {
     OAuth2: {
       authorization_url: 'https://accounts.google.com/o/oauth2/v2/auth',
       token_url: 'https://oauth2.googleapis.com/token',
@@ -11,20 +10,31 @@ export default {
         access_type: 'offline',
         prompt: 'consent',
       },
+      input_specification: {
+        type: 'object',
+        properties: {
+          client_id: {
+            type: 'string',
+            title: 'Client Id',
+            description: 'Enter the Client Id',
+          },
+          client_secret: {
+            type: 'string',
+            title: 'Client secret',
+            description: 'Enter the Client secret',
+          },
+          refresh_token: {
+            type: 'string',
+            title: 'Refresh token',
+            description: 'Enter the Refresh token',
+          },
+          scope: {
+            type: 'string',
+            title: 'Scope',
+            description: 'Enter the Scope',
+          },
+        },
+      },
     },
   },
-  supportedFilters: [
-    'subject',
-    'from',
-    'to',
-    'cc',
-    'bcc',
-    'labels',
-    'starred',
-    'unread',
-    'direction',
-    'received_after',
-    'received_before',
-  ],
-  supportedSortBy: ['received_at'],
 };

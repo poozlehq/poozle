@@ -20,6 +20,7 @@ import {
   IntegrationDefinitionCreateBody,
   IntegrationDefinitionRequestIdBody,
   IntegrationDefinitionRequestWorkspaceIdBody,
+  IntegrationDefinitionUpdateBody,
 } from './integration_definition.interface';
 import { IntegrationDefinitionService } from './integration_definition.service';
 
@@ -43,11 +44,24 @@ export class IntegrationDefinitionController {
     );
   }
 
+  @Post(':integrationDefinitionId')
+  async updateIntegrationDefinition(
+    @Param()
+    integrationDefinitionRequestIdBody: IntegrationDefinitionRequestIdBody,
+    @Body()
+    integrationDefinitionUpdateBody: IntegrationDefinitionUpdateBody,
+  ) {
+    return await this.integrationDefinitionService.updateIntegrationDefinition(
+      integrationDefinitionUpdateBody,
+      integrationDefinitionRequestIdBody.integrationDefinitionId,
+    );
+  }
+
   @Get(':integrationDefinitionId/spec')
   async getSpecForIntegrationDefinition(
     @Param()
     integrationDefinitionRequestIdBody: IntegrationDefinitionRequestIdBody,
-    @Query()
+    @Body()
     integrationDefinitionRequestWorkspaceIdBody: IntegrationDefinitionRequestWorkspaceIdBody,
   ): Promise<Specification> {
     return await this.integrationDefinitionService.getSpecForIntegrationDefinition(

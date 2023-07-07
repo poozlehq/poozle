@@ -4,3 +4,4 @@ export * from './get_integration_definition';
 export * from './get_integration_definitions';
 export * from './get_spec_for_integration_definition';
 export * from './create_integration_definition';
+export * from './update_integration_definition';
