@@ -1,6 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Alert, Box, Paper, useMantineTheme, Text } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
 import {
   IconAlertCircle,
   IconAlertSmall,
@@ -8,6 +9,7 @@ import {
 } from '@tabler/icons-react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import React from 'react';
 
 import { useGetIntegrationDefinitionsQuery } from 'services/integration_definition';
 import { useGetLinkQuery } from 'services/link';
@@ -16,8 +18,6 @@ import { Loader } from 'components';
 
 import { PublicLink, PublicLinkProps } from './public_link';
 import styles from './public_link.module.scss';
-import React from 'react';
-import { notifications } from '@mantine/notifications';
 
 export function PublicLinkIntegrationDefinitions({ link }: PublicLinkProps) {
   const { data: integrationDefinitions, isLoading } =
