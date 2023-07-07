@@ -3,14 +3,48 @@
 
 import { PrismaClient } from '@prisma/client';
 import axios from 'axios';
-// import axios from 'axios';
+import * as promptSync from 'prompt-sync';
 
 const prisma = new PrismaClient();
 
+const prompt = promptSync();
+
+// eslint-disable-next-line prefer-const
+let retryTimes = 0;
+
+async function waitForServerResponse(): Promise<boolean> {
+  const healthUrl = `${process.env.BACKEND_HOST}/health`;
+
+  while (retryTimes < 10) {
+    try {
+      const response = await axios.get(healthUrl);
+      if (response.status === 200) {
+        console.log('Server is healthy!');
+        return true;
+      }
+    } catch (error) {
+      console.log('Server is still starting up. Retrying in 2 second...');
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    }
+  }
+
+  return false;
+}
+
 async function main() {
-  const email = process.env.USER_EMAIL;
-  const password = process.env.USER_PASSWORD;
-  const createDefaultUser = process.env.CREATE_DEFAULT_USER;
+  // Wait for server to be up and running
+  const status = await waitForServerResponse();
+
+  if (!status) {
+    console.log('Server was never up');
+    console.log('Failed creating user');
+    return;
+  }
+
+  const email = prompt('Enter email: ');
+  const password = prompt('Enter password: ');
+  const firstName = prompt('Enter firstname: ');
+  const lastName = prompt('Enter lastname: ');
 
   const users = await prisma.user.findMany({
     where: {
@@ -22,7 +56,7 @@ async function main() {
     console.log('User already exist');
   }
 
-  if (createDefaultUser === 'true' && email && password && users.length === 0) {
+  if (email && password && users.length === 0) {
     try {
       const response = await axios.post(
         `${process.env.BACKEND_HOST}/auth/signup`,
@@ -51,8 +85,8 @@ async function main() {
       await axios.post(
         `${process.env.BACKEND_HOST}/v1/user`,
         {
-          firstname: process.env.USER_FIRSTNAME,
-          lastname: process.env.USER_LASTNAME,
+          firstname: firstName,
+          lastname: lastName,
           email,
         },
         {

@@ -1,6 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { Specification } from '@poozle/engine-idk';
+
+import {
+  getAllInputProperties,
+  getProperties,
+} from 'modules/integration/new_integration/new_integration_form_utils';
+
 export function makeId(length: number) {
   let result = '';
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
@@ -40,4 +47,17 @@ export function getValidateObject(initialValues: any) {
   });
 
   return validate;
+}
+
+export function getAllProperties(spec: Specification, authType: string) {
+  if (authType) {
+    if (authType === 'OAuth2') {
+      return spec.other_inputs
+        ? getProperties(spec.other_inputs.input_specification)
+        : [];
+    }
+    return getAllInputProperties(spec, authType);
+  }
+
+  return [];
 }

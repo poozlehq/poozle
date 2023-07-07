@@ -1,9 +1,11 @@
+/* eslint-disable dot-location */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 import { Alert, Button, Group, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
+import { Specification } from '@poozle/engine-idk';
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import * as React from 'react';
@@ -12,21 +14,15 @@ import {
   useCheckCredentialsMutation,
   useUpdateIntegrationAccountMutation,
 } from 'services/integration_account';
-import {
-  AuthSpecificationGeneric,
-  AuthSpecificationOAuth,
-  Specification,
-  useGetIntegrationDefinitionSpecQuery,
-} from 'services/integration_definition';
+import { useGetIntegrationDefinitionSpecQuery } from 'services/integration_definition';
 
 import { Loader } from 'components';
 
 import styles from './update_integration_form.module.scss';
 import { getInitialValues } from './update_integration_form_utils';
 import {
-  getProperties,
+  getAllInputProperties,
   getPropertyName,
-  returnOAuthInputSpecification,
 } from '../new_integration/new_integration_form_utils';
 
 interface UpdateIntegrationFormProps {
@@ -86,21 +82,7 @@ export function Form({ spec, workspaceId, integrationAccount }: FormProps) {
     });
   };
 
-  const properties = getProperties(
-    integrationAccount.authType === 'OAuth2'
-      ? returnOAuthInputSpecification(
-          (
-            spec.authSpecification[
-              form.values.authType
-            ] as AuthSpecificationOAuth
-          ).inputSpecification,
-        )
-      : (
-          spec.authSpecification[
-            form.values.authType
-          ] as AuthSpecificationGeneric
-        ).inputSpecification,
-  );
+  const properties = getAllInputProperties(spec, integrationAccount.authType);
 
   return (
     <Group p="md" className={styles.formContainer}>

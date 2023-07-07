@@ -11,6 +11,8 @@ services:
       - 5432:5432
     networks:
       - poozle
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
     restart: unless-stopped
 
   server:
@@ -31,12 +33,6 @@ services:
       - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
       - PORT=${PORT}
       - SUPERTOKEN_CONNECTION_URI=${SUPERTOKEN_CONNECTION_URI}
-      # Default User
-      - USER_PASSWORD=${USER_PASSWORD}
-      - USER_EMAIL=${USER_EMAIL}
-      - USER_FIRSTNAME=${USER_FIRSTNAME}
-      - USER_LASTNAME=${USER_LASTNAME}
-      - CREATE_DEFAULT_USER=${CREATE_DEFAULT_USER}
 
   webapp:
     image: poozlehq/engine-webapp:${ENGINE_VERSION}
@@ -56,8 +52,6 @@ services:
     image: registry.supertokens.io/supertokens/supertokens-postgresql:5.0
     depends_on:
       - db
-    ports:
-      - 3567:3567
     environment:
       POSTGRESQL_CONNECTION_URI: ${SUPERTOKEN_DATABASE_URL}
     networks:

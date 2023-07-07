@@ -26,4 +26,8 @@ export class IntegrationDefinition {
   deleted: Date | null;
   createdAt: Date;
   updatedAt: Date;
+
+  isLatest: boolean;
+  latestVersion: string;
+  latestVersionSource: string;
 }

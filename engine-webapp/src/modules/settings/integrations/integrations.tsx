@@ -7,19 +7,92 @@ import {
   Group,
   Loader,
   Paper,
+  Popover,
+  Stack,
   Text,
   UnstyledButton,
 } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { IconAlertSmall, IconCheck } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
-import { useGetIntegrationDefinitionsQuery } from 'services/integration_definition';
+import {
+  useGetIntegrationDefinitionsQuery,
+  useUpdateIntegrationDefinitionMutation,
+} from 'services/integration_definition';
 
 import { IntegrationIcon, IntegrationType, Table } from 'components';
 import { ReleaseStage } from 'components/release_stage';
 
 import { AddNewIntegrationModal } from './add_new_integration_modal';
 import styles from './integrations.module.scss';
+
+interface UpdateComponentInterface {
+  id: IntegrationDefinition;
+}
+
+function UpdateComponent({ id }: UpdateComponentInterface) {
+  const {
+    mutate: updateIntegrationDefinitionServer,
+    isLoading: loadingUpdateIntegration,
+  } = useUpdateIntegrationDefinitionMutation({
+    onSuccess: () => {
+      notifications.show({
+        icon: <IconCheck />,
+        title: 'Status',
+        color: 'green',
+        message: `Integration is updated successfully`,
+      });
+    },
+    onError: (err) => {
+      notifications.show({
+        icon: <IconAlertSmall />,
+        title: 'Status',
+        color: 'red',
+        message: err,
+      });
+    },
+  });
+
+  const updateIntegrationDefinition = (id: IntegrationDefinition) => {
+    updateIntegrationDefinitionServer({
+      integrationDefinitionId: id.integrationDefinitionId,
+      sourceUrl: id.latestVersionSource,
+      version: id.latestVersion,
+    });
+  };
+
+  return (
+    <div>
+      <Popover width={200} position="bottom" withArrow shadow="md">
+        <Popover.Target>
+          <Button variant="subtle" size="xs" compact>
+            Update
+          </Button>
+        </Popover.Target>
+        <Popover.Dropdown>
+          <Stack>
+            <Text size="sm">Do this only when you are really sure</Text>
+            <div>
+              <Group position="right">
+                <Button
+                  variant="subtle"
+                  size="xs"
+                  compact
+                  loading={loadingUpdateIntegration}
+                  onClick={() => updateIntegrationDefinition(id)}
+                >
+                  Update
+                </Button>
+              </Group>
+            </div>
+          </Stack>
+        </Popover.Dropdown>
+      </Popover>
+    </div>
+  );
+}
 
 export function Integrations() {
   const router = useRouter();
@@ -101,6 +174,20 @@ export function Integrations() {
       key: 'version',
       render: (data: IntegrationDefinition) => {
         return <div className={styles.tableDataContainer}>v{data.version}</div>;
+      },
+    },
+    {
+      name: 'Latest version',
+      key: 'latest_version',
+      render: (data: IntegrationDefinition) => {
+        return (
+          <div className={styles.tableDataContainer}>
+            <Stack align="center" spacing="xs">
+              <div>v{data.latestVersion}</div>
+              {!data.isLatest && <UpdateComponent id={data} />}
+            </Stack>
+          </div>
+        );
       },
     },
   ];

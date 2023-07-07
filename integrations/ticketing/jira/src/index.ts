@@ -1,7 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import {
-  AuthSpecificationOAuth,
   BaseIntegration,
   CheckResponse,
   Config,
@@ -29,7 +28,7 @@ class JiraIntegration extends BaseIntegration {
     try {
       if (config.authType === 'OAuth2') {
         const spec = await this.spec();
-        const specification = spec.authSpecification['OAuth2'] as AuthSpecificationOAuth;
+        const specification = spec.auth_specification['OAuth2'];
         const token = await getAccessToken(
           interpolateString(specification.token_url as string, config),
           config,
