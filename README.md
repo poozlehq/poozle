@@ -12,7 +12,6 @@
 [Website](https://poozle.dev/)
 <span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
 [Docs](https://docs.poozle.dev)
-<span>&nbsp;&nbsp;•&nbsp;&nbsp;</span>
 
 [![Join our Slack Server](https://img.shields.io/badge/Slack-chat%20with%20us-%235865F2?style=flat&logo=slack&logoColor=%23fff)](https://join.slack.com/t/poozle-community/shared_invite/zt-1u4mz911h-FeWpOA82wA8kyrz3xg58xQ)
 [![Tweet at us on Twitter](https://img.shields.io/badge/Twitter-tweet%20at%20us-1da1f2?style=flat&logo=twitter&logoColor=%23fff)](https://twitter.com/poozlehq)
@@ -22,14 +21,22 @@
 </div>
 
 <p align="center">
-    <em>The open-source Unified API for product integrations
+    <em>Building an integration infrastructure for AI Apps
 </em>
 </p>
 
-Poozle provides a single API for each vertical, allowing you to connect all SAAS tools of that vertical at once. We do the hard work of integrating and smoothing over thousands of SAAS tools, exposing a clean and unified interface to developers. We aim to make it easy for companies to build new integrations. Our bet is that companies will choose to use our integration platform instead of building their own integrations or using multiple API integration platforms.
+Poozle is building an integration infrastructure for AI apps. AI apps need to extract data from popular SAAS tools like Gmail, Notion, Confluence, Gtihub, Jira, WhatsApp, Salesforce etc. hence in the journey end up building their own integration infrastructure. Poozle provides a Unified API for verticals like Email, Documentation, Ticketing, CRM that  allows you to connect all SAAS tools of that vertical at once. We do the hard work of integrating and smoothing over thousands of SAAS tools, exposing a clean and unified interface to developers. We aim to make it easy for companies to build new integrations.
 
 <img width="1232" alt="Screenshot 2023-06-30 at 1 27 58 AM" src="https://github.com/poozlehq/engine/assets/17528887/3d8f3fa3-79fe-4154-8308-ab627c6d5d30">
 
+## Features
+* Managed Authentication
+* Bi-directional data syncing
+* Automatic rate-limits & retries
+* Pagination
+* Unified data model
+* Webhooks (coming soon)
+* Built-in monitoring (coming soon)
 
 ## Getting Started
 * [Deploy Poozle Open Source](https://docs.poozle.dev/oss/deploy-poozle)
