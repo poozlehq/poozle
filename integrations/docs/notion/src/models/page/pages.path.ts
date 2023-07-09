@@ -4,66 +4,58 @@
 import { BasePath, Config, Page, Meta, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
-import { convertBlock, convertPage } from './pages.utils';
+// import { BASE_URL, convertBlock, convertPage, fetchPageBlocks } from './pages.utils';
+import { BASE_URL, convertPage } from './pages.utils';
 
-const BASE_URL = 'https://api.notion.com/v1';
 let next_cursor = '';
 
 export class GetPagesPath extends BasePath {
-  async fetchBlocks(url: string, headers: AxiosHeaders, params: Params): Promise<any> {
-    const final_params = {
-      ...(params.queryParams?.cursor ? { start_cursor: params.queryParams?.cursor } : {}),
-    };
-    const response = await axios({ url, headers, params: final_params });
-    const results = response.data.results;
-
-    if (response.data.has_more) {
-      const nextUrl = `${BASE_URL}/blocks`;
-      params.queryParams.cursor = response.data.next_cursor;
-      const nextResults = await this.fetchBlocks(nextUrl, headers, params);
-      return [...results, ...nextResults];
-    }
-
-    return results;
-  }
-
   async fetchData(url: string, headers: AxiosHeaders, params: Params) {
-    // const page = typeof params.queryParams?.cursor === 'string' ? params.queryParams?.cursor : '';
-    // const final_params = {
-    //   maxResults: params.queryParams?.limit,
-    //   ...(page && { pageToken: page }),
-    //   ...(params.queryParams?.labels && { labels: params.queryParams?.labels }),
-    //   ...(params.queryParams?.direction && {
-    //     orderBy: params.queryParams?.direction === 'asc' ? 'oldest' : 'newest',
-    //   }),
-    // };
     const pagesResponse = await axios.post(
       url,
       {
-        query: '',
+        query: params.queryParams?.title ?? '',
         filter: {
           value: 'page',
           property: 'object',
         },
         page_size: 10,
-        // sort: {
-        //   direction: 'ascending',
-        //   timestamp: 'last_edited_time',
-        // },
+        ...(params.queryParams?.cursor ? { start_cursor: params.queryParams?.cursor } : {}),
+        ...(params.queryParams?.direction === 'asc'
+          ? {
+              sort: {
+                direction: 'ascending',
+                timestamp:
+                  params.queryParams?.sort === 'created_at' ? 'created_time' : 'last_edited_time',
+              },
+            }
+          : {
+              sort: {
+                direction: 'descending',
+                timestamp:
+                  params.queryParams?.sort === 'created_at' ? 'created_time' : 'last_edited_time',
+              },
+            }),
       },
       { headers },
     );
 
     next_cursor = pagesResponse.data.next_cursor;
     return Promise.all(
-      pagesResponse.data.results?.map(async (data: any) => {
-        const page = convertPage(data);
-        const blockUrl = `${BASE_URL}/blocks/${data.id.replace(/-/g, '')}/children`;
-        const blockResponse = await this.fetchBlocks(blockUrl, headers, params);
-        page.body = blockResponse ? ((await convertBlock(blockResponse)) as []) : [];
-        return page;
+      pagesResponse.data.results?.map((data: any) => {
+        return convertPage(data);
       }),
     );
+  }
+
+  async createPage(url: string, headers: AxiosHeaders, params: Params) {
+    const body = {
+      parent: { pageId: params.requestBody?.parent_id },
+      title: params.requestBody?.title,
+    };
+
+    const response = await axios.post(url, body, { headers });
+    return convertPage(response.data);
   }
 
   async getMetaParams(_data: Page[], params: Params): Promise<Meta> {
@@ -80,14 +72,15 @@ export class GetPagesPath extends BasePath {
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
+    let url = '';
     switch (method) {
       case 'GET':
-        const url = `${BASE_URL}/search`;
+        url = `${BASE_URL}/search`;
         return this.fetchData(url, headers, params);
 
-      // case 'POST':
-      //   const url = `${BASE_URL}/send`;
-      //   return this.sendEmail(url, headers, params);
+      case 'POST':
+        url = `${BASE_URL}/pages`;
+        return this.createPage(url, headers, params);
 
       default:
         return [];

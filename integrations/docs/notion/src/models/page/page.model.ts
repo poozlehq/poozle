@@ -6,7 +6,7 @@ import { GetPagePath } from './page.path';
 import { GetPagesPath } from './pages.path';
 export class NotionPageModel extends BaseModel {
   constructor() {
-    super('GithubTicketModel', PageSchema);
+    super('NotionPageModel', PageSchema);
   }
 
   paths() {

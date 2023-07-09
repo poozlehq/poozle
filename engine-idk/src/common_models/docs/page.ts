@@ -7,6 +7,10 @@ export const PageSchema = {
       type: 'string',
       default: '',
     },
+    parent_id: {
+      type: 'string',
+      dafault: '',
+    },
     body: {
       type: 'array',
       default: [],
@@ -31,29 +35,29 @@ export const PageSchema = {
               propertirs: {
                 bold: {
                   type: 'string',
-                  default: ''
+                  default: '',
                 },
                 italic: {
                   type: 'string',
-                  default: ''
+                  default: '',
                 },
                 strikethrough: {
                   type: 'string',
-                  default: ''
+                  default: '',
                 },
                 underline: {
                   type: 'string',
-                  default: ''
+                  default: '',
                 },
                 code: {
                   type: 'string',
-                  default: ''
+                  default: '',
                 },
                 color: {
                   type: 'string',
-                  default: ''
+                  default: '',
                 },
-              }
+              },
             },
           },
           required: ['block_type'],
@@ -66,37 +70,22 @@ export const PageSchema = {
     },
     title: {
       type: 'string',
-      default: ''
+      default: '',
     },
     created_at: {
       type: 'string',
-      default: ''
+      default: '',
     },
     updated_at: {
       type: 'string',
-      default: ''
-    }
+      default: '',
+    },
   },
 };
 
-export interface Block {
-    block_type: string,
-    annotations: {
-      bold: string,
-      italic: string,
-      strikethrough: string,
-      underline: string,
-      code: string,
-      color: string
-    },
-    plain_text: string,
-    href: null
-  
-}
-
 export interface Page {
   id: string;
-  body: Block[];
+  parent_id: string;
   title: string;
   created_by: string;
   created_at: string;
@@ -104,10 +93,7 @@ export interface Page {
   updated_by: string;
 }
 
-export interface CreatePage {
-  body: string;
-  html_body: string;
-  subject: string;
-  thread_id: string;
-  in_reply_to: string;
+export interface createPage {
+  parent_id: string;
+  title: string;
 }

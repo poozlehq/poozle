@@ -1,13 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+export const BASE_URL = 'https://api.notion.com/v1';
+
 export function convertPage(pageData: any) {
   const parentKey = Object.keys(pageData.properties).find(
     (key) => pageData.properties[key].id === 'title',
   );
   return {
     id: pageData.id,
-    body: [],
+    parent_id: pageData.parent?.id,
     title: parentKey ? pageData.properties[parentKey].title[0].plain_text : '',
     created_by: pageData.created_by.id,
     created_at: pageData.created_time,
@@ -29,46 +31,4 @@ export interface BlockResponse {
   archived: boolean;
   type: string;
   paragraph?: Record<string, string | string[]>;
-}
-
-export interface Block {
-  block_type: string;
-  annotations: {
-    bold: string;
-    italic: string;
-    strikethrough: string;
-    underline: string;
-    code: string;
-    color: string;
-  };
-  plain_text: string;
-  href: null;
-}
-
-async function extractData(data: any) {
-  const type = data.type;
-
-  return data[type].rich_text?.map((richtext: any) => {
-    return {
-      block_type: type,
-      annotations: {
-        bold: richtext.annotations.bold,
-        italic: richtext.annotations.italic,
-        strikethrough: richtext.annotations.strikethrough,
-        underline: richtext.annotations.underline,
-        code: richtext.annotations.code,
-        color: richtext.annotations.color,
-      },
-      plain_text: richtext.plain_text,
-      href: richtext.href,
-    };
-  });
-}
-
-export function convertBlock(blockData: any) {
-  return Promise.all(
-    blockData.map(async (block: any) => {
-      return await extractData(block);
-    }),
-  );
 }

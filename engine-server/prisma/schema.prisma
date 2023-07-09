@@ -133,4 +133,5 @@ enum IntegrationType {
   CALENDAR
   TICKETING
   MAIL
+  DOCS
 }

@@ -2,6 +2,7 @@
 
 import { BaseIntegration, GenericProxyModel, SpecificationResponse } from '@poozle/engine-idk';
 
+import { NotionBlockModel } from 'models/block/block.model';
 import { NotionPageModel } from 'models/page/page.model';
 
 import spec from './spec';
@@ -12,7 +13,7 @@ class GmailIntegration extends BaseIntegration {
   }
 
   models() {
-    return [new GenericProxyModel(), new NotionPageModel()];
+    return [new GenericProxyModel(), new NotionPageModel(), new NotionBlockModel()];
   }
 }
 
