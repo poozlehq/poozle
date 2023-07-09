@@ -22,6 +22,7 @@ import {
   IconUser,
   IconKey,
   IconLink,
+  IconUsers,
 } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
@@ -90,7 +91,7 @@ function NavbarLink({
 
 const LINK_DATA = [
   // { icon: IconHome2, label: 'Home', routeKey: '/home' },
-  { icon: IconApps, label: 'Integrations', routeKey: '/integration' },
+  { icon: IconUsers, label: 'Accounts', routeKey: '/integration_account' },
   { icon: IconKey, label: 'OAuth', routeKey: '/o_auth' },
   { icon: IconLink, label: 'Link', routeKey: '/link' },
   { icon: IconSettings, label: 'Settings', routeKey: '/settings' },

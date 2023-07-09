@@ -1,6 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import axios from 'axios';
+import qs from 'qs';
 
 /**
  * A helper function to interpolate a string.
@@ -18,10 +19,15 @@ export function interpolateString(str: string, replacers: Record<string, any>) {
 }
 
 export async function getAccessToken(url: string, data: Record<string, string>) {
+  const parsedData = qs.stringify({ ...data, grant_type: 'refresh_token' });
+
   const response = await axios({
     method: 'POST',
     url,
-    data: { ...data, grant_type: 'refresh_token' },
+    data: parsedData,
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
   });
 
   return response.data.access_token;

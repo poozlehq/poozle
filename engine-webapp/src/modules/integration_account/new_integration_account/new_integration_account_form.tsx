@@ -17,12 +17,12 @@ import { useGetIntegrationDefinitionSpecQuery } from 'services/integration_defin
 
 import { Loader } from 'components';
 
-import styles from './new_integration_form.module.scss';
+import styles from './new_integration_account_form.module.scss';
 import {
   getAllInputProperties,
   getInitialValues,
   getPropertyName,
-} from './new_integration_form_utils';
+} from './new_integration_account_form_utils';
 
 interface NewIntegrationFormProps {
   integrationDefinitionId: string;

@@ -9,6 +9,7 @@ export const ticketMappings = {
   type: 'issuetype',
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function convertTicket(data: any, collection_id: string | null) {
   return {
     id: data.id,
@@ -27,6 +28,7 @@ export function convertTicket(data: any, collection_id: string | null) {
     parent_id: data.fields.parent?.id,
     priority: data.fields.priority.name,
     due_date: data.fields.duedate,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     tags: data.labels?.map((lab: any) => ({
       id: lab.id,
       name: lab.displayName,

@@ -19,7 +19,7 @@ import {
   IntegrationType,
 } from 'components';
 
-import styles from './integration.module.scss';
+import styles from './integration_account.module.scss';
 
 export function Integration() {
   const router = useRouter();
@@ -87,10 +87,10 @@ export function Integration() {
   return (
     <div>
       <Header
-        title="Integrations"
+        title="Integration Accounts"
         actions={
           <Button onClick={() => router.push(`${router.asPath}/new`)}>
-            + New Integration
+            + New Integration Account
           </Button>
         }
       />

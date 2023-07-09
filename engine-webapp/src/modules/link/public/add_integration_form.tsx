@@ -9,11 +9,11 @@ import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import getConfig from 'next/config';
 import * as React from 'react';
 
-import styles from 'modules/integration/new_integration/new_integration_form.module.scss';
+import styles from 'modules/integration_account/new_integration_account/new_integration_account_form.module.scss';
 import {
   getInitialValues,
   getPropertyName,
-} from 'modules/integration/new_integration/new_integration_form_utils';
+} from 'modules/integration_account/new_integration_account/new_integration_account_form_utils';
 
 import { useCreateRedirectURLMutation } from 'services/callback/create_redirect_url';
 import { useCreateIntegrationAccountWithLinkMutation } from 'services/integration_account';

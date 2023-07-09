@@ -28,6 +28,7 @@ services:
       - ENGINE_VERSION=${ENGINE_VERSION}
       - DATABASE_URL=${DATABASE_URL}
       - FRONTEND_HOST=${FRONTEND_HOST}
+      - PUBLIC_FRONTEND_HOST=${PUBLIC_FRONTEND_HOST}
       - BACKEND_HOST=${BACKEND_HOST}
       - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
       - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
@@ -54,6 +55,8 @@ services:
       - db
     environment:
       POSTGRESQL_CONNECTION_URI: ${SUPERTOKEN_DATABASE_URL}
+    ports:
+      - 3567:3567
     networks:
       - poozle
     restart: unless-stopped

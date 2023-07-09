@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Container, Paper } from '@mantine/core';
+import { Paper } from '@mantine/core';
 import { useRouter } from 'next/router';
 import { SessionAuth } from 'supertokens-auth-react/recipe/session';
 
@@ -11,36 +11,41 @@ import { useGetIntegrationAccountQuery } from 'services/integration_account';
 
 import { Header, Loader } from 'components';
 
-import styles from './update_integration.module.scss';
-import { UpdateIntegrationForm } from './update_integration_form';
+import styles from './update_integration_account.module.scss';
+import { UpdateIntegrationForm } from './update_integration_account_form';
 
 export function UpdateIntegration() {
   const {
     query: { integrationAccountId },
   } = useRouter();
 
-  const { data: integrationAccount, isLoading } = useGetIntegrationAccountQuery(
-    {
-      integrationAccountId: integrationAccountId as string,
-    },
-  );
+  const {
+    data: integrationAccount,
+    isLoading,
+    refetch,
+  } = useGetIntegrationAccountQuery({
+    integrationAccountId: integrationAccountId as string,
+  });
+
+  console.log(integrationAccount);
 
   return (
     <>
       <Header title="Integration" />
 
-      <Container mt="lg">
-        <Paper mt="xl" className={styles.container}>
-          {isLoading ? (
-            <Loader />
-          ) : (
-            <UpdateIntegrationForm
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              integrationAccount={integrationAccount as any}
-            />
-          )}
-        </Paper>
-      </Container>
+      <Paper m="xl" className={styles.container}>
+        {isLoading && !integrationAccount ? (
+          <Loader />
+        ) : (
+          <UpdateIntegrationForm
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            integrationAccount={integrationAccount as any}
+            onComplete={() => {
+              refetch();
+            }}
+          />
+        )}
+      </Paper>
     </>
   );
 }

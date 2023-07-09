@@ -8,9 +8,15 @@ import { Loader } from 'components';
 export default function Home() {
   const router = useRouter();
 
+  const {
+    query: { workspaceId },
+  } = router;
+
   React.useEffect(() => {
-    router.replace(`${router.asPath}/integration`);
-  }, []);
+    if (workspaceId) {
+      router.replace(`${router.asPath}/integration_account`);
+    }
+  }, [workspaceId]);
 
   return <Loader />;
 }

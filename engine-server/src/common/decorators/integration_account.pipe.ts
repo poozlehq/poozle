@@ -1,6 +1,11 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { ArgumentMetadata, Injectable, PipeTransform } from '@nestjs/common';
+import {
+  ArgumentMetadata,
+  BadRequestException,
+  Injectable,
+  PipeTransform,
+} from '@nestjs/common';
 import { IntegrationType } from '@prisma/client';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
@@ -19,6 +24,10 @@ export class ParseIntegrationAccountPipe implements PipeTransform {
 
   async transform(value: Value, metadata: ArgumentMetadata) {
     const integrationType = metadata.data;
+
+    if (!value.workspaceId) {
+      throw new BadRequestException('workspaceId header is must');
+    }
 
     const integrationAccount =
       (await this.integrationAccountService.getIntegrationAccountWithIntegrationType(

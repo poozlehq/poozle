@@ -24,4 +24,13 @@
     "releaseStage": "ALPHA",
     "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/mail/gmail/0.1.4/index.js",
     "integrationType": "MAIL"
+  },
+  {
+    "name": "Slack",
+    "key": "slack",
+    "icon": "slack.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/messaging/slack/0.1.0/index.js",
+    "integrationType": "MESSAGING"
   } ]

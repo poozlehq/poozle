@@ -6,7 +6,7 @@ import { Specification } from '@poozle/engine-idk';
 import {
   getAllInputProperties,
   getProperties,
-} from 'modules/integration/new_integration/new_integration_form_utils';
+} from 'modules/integration_account/new_integration_account/new_integration_account_form_utils';
 
 export function makeId(length: number) {
   let result = '';

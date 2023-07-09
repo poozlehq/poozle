@@ -17,7 +17,7 @@ import {
   getTemplate,
 } from './oauth_callback.utils';
 
-const CALLBACK_URL = `${process.env.FRONTEND_HOST}/api/v1/oauth/callback`;
+const CALLBACK_URL = `${process.env.PUBLIC_FRONTEND_HOST}/api/v1/oauth/callback`;
 
 @Injectable()
 export class OAuthCallbackService {
@@ -69,6 +69,7 @@ export class OAuthCallbackService {
     integrationOAuthAppId: string,
     externalConfig: Record<string, string>,
     redirectURL: string,
+    linkId?: string,
   ) {
     if (!integrationAccountName || !redirectURL) {
       throw new BadRequestException({
@@ -123,6 +124,7 @@ export class OAuthCallbackService {
         integrationAccountName,
         config: externalConfig,
         redirectURL,
+        linkId,
       };
 
       const authorizationUri = simpleOAuthClient.authorizeURL({
@@ -254,6 +256,7 @@ export class OAuthCallbackService {
         sessionRecord.integrationAccountName,
         'OAuth2',
         integrationOAuth.workspaceId,
+        sessionRecord.linkId,
       );
 
       res.redirect(
