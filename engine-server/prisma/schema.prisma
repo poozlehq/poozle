@@ -102,16 +102,19 @@ model IntegrationAccount {
   updatedAt                DateTime              @updatedAt
   fromLinks                Link?                 @relation(fields: [linkId], references: [linkId])
   linkId                   String?
-
-  @@unique([integrationAccountName, workspaceId])
 }
 
 model Link {
-  linkId      String            @id @default(uuid())
-  linkName    String
-  expiresIn   Int               @default(3600)
-  category    IntegrationType[]
-  workspace   Workspace         @relation(references: [workspaceId], fields: [workspaceId])
+  linkId         String @id @default(uuid())
+  linkName       String
+  linkIdentifier String
+
+  expiresIn Int @default(3600)
+
+  category                IntegrationType[]
+  integrationDefinitionId String?
+
+  workspace   Workspace @relation(references: [workspaceId], fields: [workspaceId])
   workspaceId String
 
   createdAt DateTime @default(now())

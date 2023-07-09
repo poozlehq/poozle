@@ -1,7 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { IntegrationType } from '@prisma/client';
-import { IsArray, IsNumber, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 
 import { Link } from '@@generated/link/entities';
 
@@ -9,11 +9,18 @@ export class CreateLinkBody {
   @IsArray()
   category: IntegrationType[];
 
+  @IsString()
+  @IsOptional()
+  integrationDefinitionId?: string;
+
   @IsNumber()
   expiresIn: number;
 
   @IsString()
   workspaceId: string;
+
+  @IsString()
+  linkIdentifier: string;
 
   @IsString()
   linkName: string;

@@ -27,6 +27,9 @@ export class LinkService {
       where: {
         linkId: getLinkRequest.linkId,
       },
+      include: {
+        IntegrationAccount: true,
+      },
     });
 
     const differenceSeconds = differenceInSeconds(
@@ -37,6 +40,12 @@ export class LinkService {
     return {
       expired: differenceSeconds < link.expiresIn ? false : true,
       ...link,
+      integrationAccounts: link.IntegrationAccount.map(
+        (integrationAccount) => ({
+          integrationAccountId: integrationAccount.integrationAccountId,
+          integrationDefinitionId: integrationAccount.integrationDefinitionId,
+        }),
+      ),
     };
   }
 
