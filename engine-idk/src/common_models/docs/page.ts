@@ -9,60 +9,7 @@ export const PageSchema = {
     },
     parent_id: {
       type: 'string',
-      dafault: '',
-    },
-    body: {
-      type: 'array',
-      default: [],
-      items: [
-        {
-          type: 'object',
-          properties: {
-            block_type: {
-              type: 'string',
-              default: '',
-            },
-            plain_text: {
-              type: 'string',
-              default: '',
-            },
-            href: {
-              type: 'string',
-              default: '',
-            },
-            annotations: {
-              type: 'object',
-              propertirs: {
-                bold: {
-                  type: 'string',
-                  default: '',
-                },
-                italic: {
-                  type: 'string',
-                  default: '',
-                },
-                strikethrough: {
-                  type: 'string',
-                  default: '',
-                },
-                underline: {
-                  type: 'string',
-                  default: '',
-                },
-                code: {
-                  type: 'string',
-                  default: '',
-                },
-                color: {
-                  type: 'string',
-                  default: '',
-                },
-              },
-            },
-          },
-          required: ['block_type'],
-        },
-      ],
+      default: '',
     },
     created_by: {
       type: 'string',
@@ -93,7 +40,7 @@ export interface Page {
   updated_by: string;
 }
 
-export interface createPage {
+export interface CreatePage {
   parent_id: string;
   title: string;
 }

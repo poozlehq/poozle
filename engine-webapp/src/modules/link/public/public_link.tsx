@@ -11,8 +11,9 @@ import {
   Group,
   ActionIcon,
   Divider,
+  Alert,
 } from '@mantine/core';
-import { IconChevronLeft } from '@tabler/icons-react';
+import { IconCheck, IconChevronLeft } from '@tabler/icons-react';
 import React from 'react';
 
 import { IntegrationIcon } from 'components';
@@ -99,6 +100,16 @@ export function PublicLink({
           ))}
         </Flex>
       </div>
+
+      {!!link.integrationAccounts.length && (
+        <div>
+          <Alert color="green" m="md" icon={<IconCheck size="1rem" />}>
+            <Text>
+              This link has already {link.integrationAccounts.length} connected.
+            </Text>
+          </Alert>
+        </div>
+      )}
     </div>
   );
 }
