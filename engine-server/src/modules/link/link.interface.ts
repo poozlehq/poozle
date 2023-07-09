@@ -3,6 +3,7 @@
 import { IntegrationType } from '@prisma/client';
 import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 
+import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
 import { Link } from '@@generated/link/entities';
 
 export class CreateLinkBody {
@@ -41,6 +42,14 @@ export class LinkIdRequest {
   linkId: string;
 }
 
+export class IntegrationAccount {
+  integrationAccountId: string;
+  integrationDefinitionId: string;
+}
+
 export class LinkResponse extends Link {
   expired: boolean;
+
+  integrationAccounts?: IntegrationAccount[];
+  integrationDefinitions?: IntegrationDefinition[];
 }

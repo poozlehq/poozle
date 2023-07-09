@@ -4,7 +4,10 @@ import { Injectable } from '@nestjs/common';
 import { differenceInSeconds } from 'date-fns';
 import { PrismaService } from 'nestjs-prisma';
 
+import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
 import { Link } from '@@generated/link/entities';
+
+import { IntegrationDefinitionService } from 'modules/integration_definition/integration_definition.service';
 
 import {
   CreateLinkBody,
@@ -14,7 +17,10 @@ import {
 
 @Injectable()
 export class LinkService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private integrationDefinitionService: IntegrationDefinitionService,
+  ) {}
 
   async createLink(createLinkBody: CreateLinkBody): Promise<Link> {
     return await this.prisma.link.create({
@@ -37,6 +43,28 @@ export class LinkService {
       new Date(link.createdAt),
     );
 
+    let integrationDefinitions: IntegrationDefinition[] = [];
+
+    if (!link.integrationDefinitionId) {
+      integrationDefinitions =
+        await this.integrationDefinitionService.getIntegrationDefinitionsForWorkspace(
+          {
+            workspaceId: link.workspaceId,
+            category: link.category,
+          },
+        );
+    } else {
+      const integrationDefinition =
+        await this.integrationDefinitionService.getIntegrationDefinitionWithId(
+          {
+            integrationDefinitionId: link.integrationDefinitionId,
+          },
+          link.workspaceId,
+        );
+
+      integrationDefinitions = [integrationDefinition];
+    }
+
     return {
       expired: differenceSeconds < link.expiresIn ? false : true,
       ...link,
@@ -46,6 +74,7 @@ export class LinkService {
           integrationDefinitionId: integrationAccount.integrationDefinitionId,
         }),
       ),
+      integrationDefinitions,
     };
   }
 
