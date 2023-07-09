@@ -5,9 +5,6 @@ import { PrismaClient } from '@prisma/client';
 import axios from 'axios';
 import * as readline from 'readline-sync';
 
-// Uncomment this when you are testing in local
-// import * as promptSync from 'prompt-sync';
-
 const prisma = new PrismaClient();
 
 // eslint-disable-next-line prefer-const

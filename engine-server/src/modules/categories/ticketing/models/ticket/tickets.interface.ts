@@ -58,17 +58,17 @@ export class PathParamsWithTicketId {
   ticket_id: string;
 }
 
-export interface TicketAssignee {
+export class TicketAssignee {
   id: string;
   username: string;
 }
 
-export interface TicketTag {
+export class TicketTag {
   id: string;
   name: string;
 }
 
-export interface Ticket {
+export class Ticket {
   id: string;
   parent_id: string;
   collection_id: string;

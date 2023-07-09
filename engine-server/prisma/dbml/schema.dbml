@@ -82,17 +82,15 @@ Table IntegrationAccount {
   updatedAt DateTime [not null]
   fromLinks Link
   linkId String
-
-  indexes {
-    (integrationAccountName, workspaceId) [unique]
-  }
 }
 
 Table Link {
   linkId String [pk]
   linkName String [not null]
+  linkIdentifier String [not null]
   expiresIn Int [not null, default: 3600]
   category IntegrationType[] [not null]
+  integrationDefinitionId String
   workspace Workspace [not null]
   workspaceId String [not null]
   createdAt DateTime [default: `now()`, not null]
@@ -113,6 +111,7 @@ Enum IntegrationType {
   CALENDAR
   TICKETING
   MAIL
+  DOCS
 }
 
 Ref: Workspace.userId > User.userId

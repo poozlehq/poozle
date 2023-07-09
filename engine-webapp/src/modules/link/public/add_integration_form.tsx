@@ -140,8 +140,8 @@ export function Form({
         <TextInput
           pb="md"
           label="Integration account name"
+          disabled
           placeholder="Enter integration account name"
-          disabled={createIsLoading}
           {...form.getInputProps('integrationAccountName')}
         />
 

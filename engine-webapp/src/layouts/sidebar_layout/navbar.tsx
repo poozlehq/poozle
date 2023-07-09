@@ -16,7 +16,6 @@ import {
 } from '@mantine/core';
 import {
   IconSettings,
-  IconApps,
   IconArrowBarLeft,
   IconArrowBarRight,
   IconUser,

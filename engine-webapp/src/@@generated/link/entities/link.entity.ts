@@ -1,6 +1,11 @@
 import { Workspace } from '../../workspace/entities/workspace.entity';
-import { IntegrationAccount } from '../../integrationAccount/entities/integrationAccount.entity';
+
 import { IntegrationType } from 'lib/integration_type';
+
+export class IntegrationAccount {
+  integrationAccountId: string;
+  integrationDefinitionId: string;
+}
 
 export class Link {
   linkId: string;
@@ -11,6 +16,6 @@ export class Link {
   workspaceId: string;
   createdAt: Date;
   updatedAt: Date;
-  IntegrationAccount?: IntegrationAccount[];
+  integrationAccounts: IntegrationAccount[];
   expired: boolean;
 }

@@ -10,6 +10,7 @@ export interface CreateLinkParams {
   category: IntegrationType[];
   expiresIn: number;
   linkName: string;
+  linkIdentifier: string;
   workspaceId: string;
 }
 

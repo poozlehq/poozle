@@ -30,28 +30,35 @@ import { useCreateLinkMutation } from 'services/link';
 
 import { Header } from 'components';
 
+import { CopyLinkModal } from './copy_link_modal';
 import styles from './new_link.module.scss';
 
 export function NewLink() {
+  const router = useRouter();
   const {
     query: { workspaceId },
-  } = useRouter();
+  } = router;
   const form = useForm({
     initialValues: {
       linkName: '',
+      linkIdentifier: '',
       category: [],
       expiresIn: 3600,
     },
   });
   const [errorMessage, setErrorMessage] = React.useState(undefined);
+  const [createdLink, setCreatedLink] = React.useState(undefined);
+
   const { mutate: createLink, isLoading } = useCreateLinkMutation({
-    onSuccess: () => {
+    onSuccess: (data) => {
       notifications.show({
         icon: <IconCheck />,
         title: 'Status',
         color: 'green',
         message: `Link created.`,
       });
+      setCreatedLink(data);
+
       form.reset();
     },
     onError: (err) => {
@@ -82,9 +89,16 @@ export function NewLink() {
               <TextInput
                 pb="md"
                 label="Link name"
-                description="You can use to differentiate company"
+                description="You can use Organisation name"
                 placeholder="Enter link name"
                 {...form.getInputProps('linkName')}
+              />
+              <TextInput
+                pb="md"
+                label="Link identifier"
+                description="You can use organisation identifier"
+                placeholder="Enter link identifier"
+                {...form.getInputProps('linkIdentifier')}
               />
               <NumberInput
                 pb="md"
@@ -123,6 +137,17 @@ export function NewLink() {
             </form>
           </Group>
         </Paper>
+
+        {createdLink && (
+          <CopyLinkModal
+            opened={!!createdLink}
+            link={createdLink}
+            onClose={() => {
+              setCreatedLink(undefined);
+              router.replace(`workspaces/${workspaceId}/link`);
+            }}
+          />
+        )}
       </Container>
     </>
   );

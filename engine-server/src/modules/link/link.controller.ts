@@ -1,9 +1,19 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { Link } from '@@generated/link/entities';
+
+import { AuthGuard } from 'modules/auth/auth.guard';
 
 import {
   CreateLinkBody,
@@ -32,6 +42,7 @@ export class LinkController {
   }
 
   @Post()
+  @UseGuards(new AuthGuard())
   async createLink(
     @Body()
     createLinkBody: CreateLinkBody,
@@ -40,6 +51,7 @@ export class LinkController {
   }
 
   @Get()
+  @UseGuards(new AuthGuard())
   async getLinksForWorkspace(
     @Query()
     workspaceIdQueryRequest: WorkspaceIdQueryRequest,
