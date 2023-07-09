@@ -41,20 +41,28 @@ export class GetPagesPath extends BasePath {
     );
 
     next_cursor = pagesResponse.data.next_cursor;
-    return Promise.all(
-      pagesResponse.data.results?.map((data: any) => {
+    return pagesResponse.data.results?.map((data: any) => {
         return convertPage(data);
-      }),
-    );
+      })
   }
 
   async createPage(url: string, headers: AxiosHeaders, params: Params) {
     const body = {
-      parent: { pageId: params.requestBody?.parent_id },
-      title: params.requestBody?.title,
+      parent: { page_id: params.requestBody?.parent_id.replace(/-/g, '')},
+      properties: {
+        title: [
+          {
+            text: {
+              content: params.requestBody?.title,
+            },
+          },
+        ],
+      },
     };
 
     const response = await axios.post(url, body, { headers });
+
+
     return convertPage(response.data);
   }
 

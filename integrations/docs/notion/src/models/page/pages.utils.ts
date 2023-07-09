@@ -4,13 +4,14 @@
 export const BASE_URL = 'https://api.notion.com/v1';
 
 export function convertPage(pageData: any) {
-  const parentKey = Object.keys(pageData.properties).find(
+  const titleKey = Object.keys(pageData.properties).find(
     (key) => pageData.properties[key].id === 'title',
   );
+
   return {
     id: pageData.id,
-    parent_id: pageData.parent?.id,
-    title: parentKey ? pageData.properties[parentKey].title[0].plain_text : '',
+    parent_id: pageData.parent[pageData.parent?.type] || '',
+    title: titleKey ? pageData.properties[titleKey].title[0]?.plain_text : '',
     created_by: pageData.created_by.id,
     created_at: pageData.created_time,
     updated_at: pageData.last_edited_time,

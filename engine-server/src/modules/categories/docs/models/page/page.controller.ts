@@ -76,10 +76,9 @@ export class PageController {
     return pageResponse;
   }
 
-  @Post('messages')
+  @Post('pages')
   async createPage(
     @Query() query: CommonPageQueryParams,
-
     @Body() createPageBody: CreatePageBody,
     @GetIntegrationAccount(IntegrationType.DOCS)
     integrationAccount: IntegrationAccount,

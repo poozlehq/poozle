@@ -10,6 +10,7 @@ import { loggingMiddleware } from 'common/middleware/logging.middleware';
 import { AnalyticsModule } from 'modules/analytics/analytics.module';
 import { AuthModule } from 'modules/auth/auth.module';
 import { MailModule } from 'modules/categories/mail/mail.module';
+import { DocsModule } from 'modules/categories/docs/docs.module';
 import { TicketingModule } from 'modules/categories/ticketing/ticketing.module';
 import { IntegrationAccountModule } from 'modules/integration_account/integration_account.module';
 import { IntegrationDefinitionModule } from 'modules/integration_definition/integration_definition.module';
@@ -43,6 +44,7 @@ import { AppService } from './app.service';
     // Categories and their modules
     TicketingModule,
     MailModule,
+    DocsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

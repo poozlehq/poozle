@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IsOptional, IsString } from 'class-validator';
+import { IsArray, IsOptional, IsString } from 'class-validator';
 
 import { QueryParams, JustRawParams } from 'common/interfaces/query.interface';
 
@@ -85,9 +85,11 @@ export class UpdatePageBody {
   @IsString()
   block_type: string;
 
+  @IsArray()
   content: Content[];
 }
 
 export class CreatePageBody {
+  @IsArray()
   data: UpdatePageBody[];
 }

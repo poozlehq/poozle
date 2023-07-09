@@ -7,7 +7,7 @@ import { NotionPageModel } from 'models/page/page.model';
 
 import spec from './spec';
 
-class GmailIntegration extends BaseIntegration {
+class NotionIntegration extends BaseIntegration {
   async spec(): SpecificationResponse {
     return spec;
   }
@@ -19,7 +19,7 @@ class GmailIntegration extends BaseIntegration {
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function main(command: string, allParams: any) {
-  const integration = new GmailIntegration();
+  const integration = new NotionIntegration();
 
   const response = await integration.runCommand(command, allParams);
 

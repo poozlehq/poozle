@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
 import { Method, getDataFromAccount } from 'shared/integration_account.utils';
@@ -16,6 +16,9 @@ import {
   PathParamsWithBlockId,
   ListBlocksQueryParams,
   BlocksResponse,
+  CommonBlockQueryParams,
+  CreatePageBody,
+  UpdatePageBody
 } from './block.interface';
 
 @Controller({
@@ -40,7 +43,7 @@ export class BlockController {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      {},
+      params as any,
     );
 
     return blocksResponse;
@@ -48,9 +51,11 @@ export class BlockController {
 
   @Post('blocks/:block_id')
   async createBlocks(
-    @Query() query: ListBlocksQueryParams,
+    @Query() query: CommonBlockQueryParams,
     @Param()
     params: PathParamsWithBlockId,
+    @Body()
+    createPageBody: CreatePageBody,
     @GetIntegrationAccount(IntegrationType.DOCS)
     integrationAccount: IntegrationAccount,
   ): Promise<BlocksResponse> {
@@ -62,27 +67,31 @@ export class BlockController {
       { ...defaultQueryParams, ...(query as any) },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       params as any,
+      createPageBody
     );
 
     return blocksResponse;
   }
 
-  @Post('blocks/:block_id')
+  @Patch('blocks/:block_id')
   async updateBlock(
-    @Query() query: ListBlocksQueryParams,
+    @Query() query: CommonBlockQueryParams,
     @Param()
     params: PathParamsWithBlockId,
+    @Body()
+    updatePageBody: UpdatePageBody,
     @GetIntegrationAccount(IntegrationType.DOCS)
     integrationAccount: IntegrationAccount,
   ): Promise<BlocksResponse> {
     const blocksResponse = await getDataFromAccount(
       integrationAccount,
       `/blocks/${params.block_id}`,
-      Method.GET,
+      Method.PATCH,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       params as any,
+      updatePageBody
     );
 
     return blocksResponse;

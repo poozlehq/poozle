@@ -1,10 +1,9 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 export default {
-  authSupported: ['Api Key'],
-  authSpecification: {
+  auth_specification: {
     'Api Key': {
-      inputSpecification: {
+      input_specification: {
         type: 'object',
         properties: {
           api_key: {
@@ -19,19 +18,5 @@ export default {
         'Notion-Version': '2022-06-28',
       },
     },
-  },
-  supportedFilters: [
-    'subject',
-    'from',
-    'to',
-    'cc',
-    'bcc',
-    'labels',
-    'starred',
-    'unread',
-    'direction',
-    'received_after',
-    'received_before',
-  ],
-  supportedSortBy: ['received_at'],
+  }
 };
