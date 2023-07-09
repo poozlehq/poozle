@@ -72,7 +72,7 @@ export async function getTemplate(
   );
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const template: ProviderTemplate = spec.authSpecification[
+  const template: ProviderTemplate = spec.auth_specification[
     'OAuth2'
   ] as ProviderTemplate;
 

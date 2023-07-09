@@ -4,7 +4,7 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { PrismaModule, PrismaService } from 'nestjs-prisma';
 
-import { IntegrationDefinitionModule } from 'modules/integration_definition /integration_definition.module';
+import { IntegrationDefinitionModule } from 'modules/integration_definition/integration_definition.module';
 import { LinkModule } from 'modules/link/link.module';
 
 import { IntegrationAccountController } from './integration_account.controller';

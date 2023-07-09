@@ -3,11 +3,12 @@
 
 import { PrismaClient } from '@prisma/client';
 import axios from 'axios';
-import * as promptSync from 'prompt-sync';
+import * as readline from 'readline-sync';
+
+// Uncomment this when you are testing in local
+// import * as promptSync from 'prompt-sync';
 
 const prisma = new PrismaClient();
-
-const prompt = promptSync();
 
 // eslint-disable-next-line prefer-const
 let retryTimes = 0;
@@ -41,10 +42,10 @@ async function main() {
     return;
   }
 
-  const email = prompt('Enter email: ');
-  const password = prompt('Enter password: ');
-  const firstName = prompt('Enter firstname: ');
-  const lastName = prompt('Enter lastname: ');
+  const email = readline.question('Enter email: ');
+  const password = readline.question('Enter password: ');
+  const firstName = readline.question('Enter firstname: ');
+  const lastName = readline.question('Enter lastname: ');
 
   const users = await prisma.user.findMany({
     where: {

@@ -13,6 +13,7 @@ export interface SessionRecord {
   integrationAccountName: string;
   config: Record<string, string>;
   redirectURL: string;
+  linkId?: string;
 }
 
 export class BodyInterface {

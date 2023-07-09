@@ -18,31 +18,40 @@ import { useGetIntegrationDefinitionSpecQuery } from 'services/integration_defin
 
 import { Loader } from 'components';
 
-import styles from './update_integration_form.module.scss';
-import { getInitialValues } from './update_integration_form_utils';
+import styles from './update_integration_account_form.module.scss';
+import { getInitialValues } from './update_integration_account_form_utils';
 import {
   getAllInputProperties,
   getPropertyName,
-} from '../new_integration/new_integration_form_utils';
+} from '../new_integration_account/new_integration_account_form_utils';
 
 interface UpdateIntegrationFormProps {
   integrationAccount: IntegrationAccount;
+  onComplete: () => void;
 }
 
 interface FormProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   spec: Specification;
   workspaceId: string;
+  onComplete: () => void;
+
   integrationAccount: IntegrationAccount;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Values = Record<string, any>;
 
-export function Form({ spec, workspaceId, integrationAccount }: FormProps) {
+export function Form({
+  spec,
+  workspaceId,
+  integrationAccount,
+  onComplete,
+}: FormProps) {
   const form = useForm({
     initialValues: getInitialValues(spec, integrationAccount),
   });
+
   const [errorMessage, setErrorMessage] = React.useState(undefined);
 
   const { mutate: checkCredentials, isLoading: checkIsLoading } =
@@ -51,6 +60,7 @@ export function Form({ spec, workspaceId, integrationAccount }: FormProps) {
         if (data.status) {
           onSubmit(form.values);
           setErrorMessage(undefined);
+          onComplete();
         } else {
           setErrorMessage(data?.error);
         }
@@ -116,7 +126,9 @@ export function Form({ spec, workspaceId, integrationAccount }: FormProps) {
             label={property.title}
             description={property.description}
             placeholder={`Enter ${property.title}`}
-            {...form.getInputProps(property.key)}
+            {...form.getInputProps(
+              `${getPropertyName(integrationAccount.authType)}.${property.key}`,
+            )}
           />
         ))}
 
@@ -143,10 +155,12 @@ export function Form({ spec, workspaceId, integrationAccount }: FormProps) {
 
 export function UpdateIntegrationForm({
   integrationAccount,
+  onComplete,
 }: UpdateIntegrationFormProps) {
   const {
     query: { workspaceId },
   } = useRouter();
+
   const {
     data: integrationDefinitionSpec,
     isLoading,
@@ -185,6 +199,7 @@ export function UpdateIntegrationForm({
         spec={integrationDefinitionSpec}
         integrationAccount={integrationAccount}
         workspaceId={workspaceId as string}
+        onComplete={onComplete}
       />
     </div>
   );

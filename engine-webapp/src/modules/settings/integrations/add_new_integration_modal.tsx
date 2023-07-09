@@ -37,7 +37,7 @@ export function AddNewIntegrationModal({
     },
   });
   const [errorMessage, setErrorMessage] = React.useState(undefined);
-  const { mutate: createIntegrationDefinition } =
+  const { mutate: createIntegrationDefinition, isLoading } =
     useCreateIntegrationDefinitionMutation({
       onSuccess: () => {
         onClose();
@@ -90,7 +90,9 @@ export function AddNewIntegrationModal({
           </Alert>
         )}
         <Group pt="xl" position="right">
-          <Button type="submit">Add</Button>
+          <Button type="submit" loading={isLoading}>
+            Add
+          </Button>
         </Group>
       </form>
     </Modal>

@@ -2,6 +2,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import {
+  All,
   BadRequestException,
   Body,
   Controller,
@@ -9,6 +10,7 @@ import {
   Param,
   Post,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
@@ -26,7 +28,6 @@ import {
   IntegrationAccountWithLinkRequestIdBody,
   IntegrationAccountsRequestBody,
   IntegrationCheckBody,
-  ProxyBody,
   UpdateIntegrationAccountBody,
 } from './integration_account.interface';
 import { IntegrationAccountService } from './integration_account.service';
@@ -132,17 +133,20 @@ export class IntegrationAccountController {
     );
   }
 
-  @Post(':integrationAccountId/proxy')
+  @All(':integrationAccountId/proxy/*')
   @UseGuards(new AuthGuard())
   async proxyPost(
     @Body()
-    proxyBody: ProxyBody,
+    body: any,
+    @Req() request: Request,
     @Param()
-    integrationAccountIdRequestIdBody: IntegrationAccountRequestIdBody,
+    integrationAccountIdRequestIdBody: any,
   ): Promise<any> {
-    return this.integrationAccountService.runProxyCommand(
+    return await this.integrationAccountService.runProxyCommand(
       integrationAccountIdRequestIdBody.integrationAccountId,
-      proxyBody,
+      body,
+      request.method,
+      integrationAccountIdRequestIdBody['0'],
     );
   }
 }

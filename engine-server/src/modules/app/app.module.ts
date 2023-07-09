@@ -12,7 +12,7 @@ import { AuthModule } from 'modules/auth/auth.module';
 import { MailModule } from 'modules/categories/mail/mail.module';
 import { TicketingModule } from 'modules/categories/ticketing/ticketing.module';
 import { IntegrationAccountModule } from 'modules/integration_account/integration_account.module';
-import { IntegrationDefinitionModule } from 'modules/integration_definition /integration_definition.module';
+import { IntegrationDefinitionModule } from 'modules/integration_definition/integration_definition.module';
 import { IntegrationOAuthModule } from 'modules/integration_oauth/integration_oauth.module';
 import { LinkModule } from 'modules/link/link.module';
 import { OAuthCallbackModule } from 'modules/oauth_callback/oauth_callback.module';

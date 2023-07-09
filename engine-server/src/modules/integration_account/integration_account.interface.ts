@@ -86,14 +86,3 @@ export class UpdateIntegrationAccountBody {
   @IsObject()
   config: Config;
 }
-
-export class ProxyBody {
-  @IsString()
-  method: string;
-
-  @IsString()
-  path: string;
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  postBody?: any;
-}

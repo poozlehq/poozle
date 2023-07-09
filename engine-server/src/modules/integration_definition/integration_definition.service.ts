@@ -180,12 +180,16 @@ export class IntegrationDefinitionService {
     }
 
     const latestDetails = {
-      isLatest:
-        integrationDefinition.version ===
-        integrationDefinitions[integrationDefinition.key].version,
-      latestVersion: integrationDefinitions[integrationDefinition.key].version,
-      latestVersionSource:
-        integrationDefinitions[integrationDefinition.key].sourceUrl,
+      isLatest: integrationDefinitions[integrationDefinition.key]
+        ? integrationDefinition.version ===
+          integrationDefinitions[integrationDefinition.key].version
+        : true,
+      latestVersion: integrationDefinitions[integrationDefinition.key]
+        ? integrationDefinitions[integrationDefinition.key].version
+        : integrationDefinition.version,
+      latestVersionSource: integrationDefinitions[integrationDefinition.key]
+        ? integrationDefinitions[integrationDefinition.key].sourceUrl
+        : integrationDefinition.sourceUrl,
     };
 
     return {

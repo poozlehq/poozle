@@ -5,7 +5,7 @@ import { Module } from '@nestjs/common';
 import { PrismaModule, PrismaService } from 'nestjs-prisma';
 
 import { IntegrationAccountService } from 'modules/integration_account/integration_account.service';
-import { IntegrationDefinitionService } from 'modules/integration_definition /integration_definition.service';
+import { IntegrationDefinitionService } from 'modules/integration_definition/integration_definition.service';
 import { IntegrationOAuthService } from 'modules/integration_oauth/integration_oauth.service';
 import { LinkModule } from 'modules/link/link.module';
 

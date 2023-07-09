@@ -13,13 +13,12 @@ import {
   runProxyIntegrationCommand,
 } from 'shared/integration_run_utils';
 
-import { IntegrationDefinitionService } from 'modules/integration_definition /integration_definition.service';
+import { IntegrationDefinitionService } from 'modules/integration_definition/integration_definition.service';
 
 import {
   IntegrationAccountRequestBody,
   IntegrationAccountRequestBodyWithIntegrationType,
   IntegrationAccountRequestIdBody,
-  ProxyBody,
   UpdateIntegrationAccountBody,
 } from './integration_account.interface';
 
@@ -57,6 +56,7 @@ export class IntegrationAccountService {
     integrationAccountName: string,
     authType: string,
     workspaceId: string,
+    linkId?: string,
   ) {
     const { status } = await this.checkForIntegrationCredentails(
       integrationDefinitionId,
@@ -73,6 +73,7 @@ export class IntegrationAccountService {
           workspaceId,
           integrationConfiguration: config,
           authType,
+          linkId,
         },
       });
     }
@@ -203,7 +204,11 @@ export class IntegrationAccountService {
     updateIntegrationAccountBody: UpdateIntegrationAccountBody,
   ) {
     return await this.prismaService.integrationAccount.update({
-      data: updateIntegrationAccountBody,
+      data: {
+        integrationAccountName:
+          updateIntegrationAccountBody.integrationAccountName,
+        integrationConfiguration: updateIntegrationAccountBody.config,
+      },
       where: {
         integrationAccountId,
       },
@@ -228,7 +233,13 @@ export class IntegrationAccountService {
     return false;
   }
 
-  async runProxyCommand(integrationAccountId: string, body: ProxyBody) {
+  async runProxyCommand(
+    integrationAccountId: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    body: any,
+    method: string,
+    path: string,
+  ) {
     const integrationAccount =
       await this.prismaService.integrationAccount.findUnique({
         where: {
@@ -241,8 +252,8 @@ export class IntegrationAccountService {
 
     return await runProxyIntegrationCommand(
       integrationAccount.integrationDefinition.sourceUrl,
-      body.path,
-      body.method,
+      path,
+      method,
       integrationAccount.integrationConfiguration as Config,
       integrationAccount.authType,
       {

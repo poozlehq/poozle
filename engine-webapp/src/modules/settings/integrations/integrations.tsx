@@ -30,9 +30,10 @@ import styles from './integrations.module.scss';
 
 interface UpdateComponentInterface {
   id: IntegrationDefinition;
+  refetch: () => void;
 }
 
-function UpdateComponent({ id }: UpdateComponentInterface) {
+function UpdateComponent({ id, refetch }: UpdateComponentInterface) {
   const {
     mutate: updateIntegrationDefinitionServer,
     isLoading: loadingUpdateIntegration,
@@ -44,6 +45,7 @@ function UpdateComponent({ id }: UpdateComponentInterface) {
         color: 'green',
         message: `Integration is updated successfully`,
       });
+      refetch();
     },
     onError: (err) => {
       notifications.show({
@@ -184,7 +186,9 @@ export function Integrations() {
           <div className={styles.tableDataContainer}>
             <Stack align="center" spacing="xs">
               <div>v{data.latestVersion}</div>
-              {!data.isLatest && <UpdateComponent id={data} />}
+              {!data.isLatest && (
+                <UpdateComponent id={data} refetch={refetch} />
+              )}
             </Stack>
           </div>
         );

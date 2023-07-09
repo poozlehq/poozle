@@ -61,7 +61,7 @@ export class IntegrationDefinitionController {
   async getSpecForIntegrationDefinition(
     @Param()
     integrationDefinitionRequestIdBody: IntegrationDefinitionRequestIdBody,
-    @Body()
+    @Query()
     integrationDefinitionRequestWorkspaceIdBody: IntegrationDefinitionRequestWorkspaceIdBody,
   ): Promise<Specification> {
     return await this.integrationDefinitionService.getSpecForIntegrationDefinition(

@@ -42,6 +42,17 @@ export function getInitialValues(
     specProperties.forEach((property: any) => {
       initialValues[getPropertyName(key)][property.key] = '';
     });
+
+    if (spec.other_inputs) {
+      const otherProperties = getProperties(
+        spec.other_inputs.input_specification,
+      );
+
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      otherProperties.forEach((property: any) => {
+        initialValues[getPropertyName(key)][property.key] = '';
+      });
+    }
   });
 
   // Adding integrationAccountName to the initial Values
