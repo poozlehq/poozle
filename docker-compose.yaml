@@ -44,7 +44,7 @@ services:
       - poozle
     environment:
       - BACKEND_URL=${BACKEND_URL}
-      - NEXT_PUBLIC_BASE_HOST=${FRONTEND_HOST}
+      - NEXT_PUBLIC_BASE_HOST=${PUBLIC_FRONTEND_HOST}
       - NEXT_PUBLIC_VERSION=${ENGINE_VERSION}
     ports:
       - 8000:3000
