@@ -8,11 +8,9 @@ import {
   Post,
   Query,
   Res,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { AuthGuard } from 'modules/auth/auth.guard';
 import { LinkService } from 'modules/link/link.service';
 
 import { BodyInterface, CallbackParams } from './oauth_callback.interface';
@@ -30,7 +28,6 @@ export class OAuthCallbackController {
   ) {}
 
   @Post()
-  @UseGuards(new AuthGuard())
   async getRedirectURL(@Body() body: BodyInterface) {
     if (!body.workspaceId && !body.linkId) {
       throw new BadRequestException('Pass either linkId or workspaceId');
