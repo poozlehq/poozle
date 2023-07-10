@@ -3,6 +3,11 @@
 export default {
   auth_specification: {
     OAuth2: {
+      authorization_url: 'https://login.xero.com/identity/connect/authorize',
+      token_url: 'https://identity.xero.com/connect/token',
+      authorization_params: {
+        response_type: 'code'
+      },
       input_specification: {
         type: 'object',
         properties: {

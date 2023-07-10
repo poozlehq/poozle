@@ -3,6 +3,8 @@
 export default {
   auth_specification: {
     OAuth2: {
+      authorization_url: 'https://api.waveapps.com/oauth2/authorize',
+      token_url: 'https://api.waveapps.com/oauth2/token',
       input_specification: {
         type: 'object',
         properties: {

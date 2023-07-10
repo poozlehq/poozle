@@ -3,6 +3,11 @@
 export default {
   auth_specification: {
     OAuth2: {
+      authorization_url: 'https://auth.freshbooks.com/oauth/authorize',
+      token_url: 'https://api.freshbooks.com/auth/oauth/token',
+      authorization_params: {
+        response_type: 'code'
+      },
       input_specification: {
         type: 'object',
         properties: {

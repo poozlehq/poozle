@@ -3,6 +3,11 @@
 export default {
   auth_specification: {
     OAuth2: {
+      authorization_url: 'https://www.sageone.com/oauth2/auth/central',
+      token_url: 'https://oauth.accounting.sage.com/token',
+      authorization_params: {
+        filter: 'apiv3.1'
+      },
       input_specification: {
         type: 'object',
         properties: {
