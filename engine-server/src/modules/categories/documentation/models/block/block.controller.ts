@@ -1,6 +1,15 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Body, Controller, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
 import { Method, getDataFromAccount } from 'shared/integration_account.utils';
@@ -18,14 +27,14 @@ import {
   BlocksResponse,
   CommonBlockQueryParams,
   CreatePageBody,
-  UpdatePageBody
+  UpdatePageBody,
 } from './block.interface';
 
 @Controller({
   version: '1',
-  path: 'docs',
+  path: 'documentation',
 })
-@ApiTags('Docs')
+@ApiTags('Documentation')
 @UseGuards(new AuthGuard())
 export class BlockController {
   @Get('blocks/:block_id')
@@ -33,7 +42,7 @@ export class BlockController {
     @Query() query: ListBlocksQueryParams,
     @Param()
     params: PathParamsWithBlockId,
-    @GetIntegrationAccount(IntegrationType.DOCS)
+    @GetIntegrationAccount(IntegrationType.DOCUMENTATION)
     integrationAccount: IntegrationAccount,
   ): Promise<BlocksResponse> {
     const blocksResponse = await getDataFromAccount(
@@ -56,7 +65,7 @@ export class BlockController {
     params: PathParamsWithBlockId,
     @Body()
     createPageBody: CreatePageBody,
-    @GetIntegrationAccount(IntegrationType.DOCS)
+    @GetIntegrationAccount(IntegrationType.DOCUMENTATION)
     integrationAccount: IntegrationAccount,
   ): Promise<BlocksResponse> {
     const blocksResponse = await getDataFromAccount(
@@ -67,7 +76,7 @@ export class BlockController {
       { ...defaultQueryParams, ...(query as any) },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       params as any,
-      createPageBody
+      createPageBody,
     );
 
     return blocksResponse;
@@ -80,7 +89,7 @@ export class BlockController {
     params: PathParamsWithBlockId,
     @Body()
     updatePageBody: UpdatePageBody,
-    @GetIntegrationAccount(IntegrationType.DOCS)
+    @GetIntegrationAccount(IntegrationType.DOCUMENTATION)
     integrationAccount: IntegrationAccount,
   ): Promise<BlocksResponse> {
     const blocksResponse = await getDataFromAccount(
@@ -91,7 +100,7 @@ export class BlockController {
       { ...defaultQueryParams, ...(query as any) },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       params as any,
-      updatePageBody
+      updatePageBody,
     );
 
     return blocksResponse;

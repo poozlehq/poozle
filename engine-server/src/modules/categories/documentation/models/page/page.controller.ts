@@ -31,15 +31,15 @@ import {
 
 @Controller({
   version: '1',
-  path: 'docs',
+  path: 'documentation',
 })
-@ApiTags('Docs')
+@ApiTags('Documentation')
 @UseGuards(new AuthGuard())
 export class PageController {
   @Get('pages')
   async getPages(
     @Query() query: ListPagesQueryParams,
-    @GetIntegrationAccount(IntegrationType.DOCS)
+    @GetIntegrationAccount(IntegrationType.DOCUMENTATION)
     integrationAccount: IntegrationAccount,
   ): Promise<PagesResponse> {
     const pageResponse = await getDataFromAccount(
@@ -60,7 +60,7 @@ export class PageController {
     @Query() query: CommonPageQueryParams,
     @Param()
     params: PathParamsWithPageId,
-    @GetIntegrationAccount(IntegrationType.DOCS)
+    @GetIntegrationAccount(IntegrationType.DOCUMENTATION)
     integrationAccount: IntegrationAccount,
   ): Promise<PageResponse> {
     const pageResponse = await getDataFromAccount(
@@ -80,7 +80,7 @@ export class PageController {
   async createPage(
     @Query() query: CommonPageQueryParams,
     @Body() createPageBody: CreatePageBody,
-    @GetIntegrationAccount(IntegrationType.DOCS)
+    @GetIntegrationAccount(IntegrationType.DOCUMENTATION)
     integrationAccount: IntegrationAccount,
   ): Promise<PageResponse> {
     const pageResponse = await getDataFromAccount(

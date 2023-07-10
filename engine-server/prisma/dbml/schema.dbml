@@ -111,7 +111,7 @@ Enum IntegrationType {
   CALENDAR
   TICKETING
   MAIL
-  DOCS
+  DOCUMENTATION
 }
 
 Ref: Workspace.userId > User.userId
