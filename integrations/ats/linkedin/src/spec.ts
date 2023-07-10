@@ -3,6 +3,8 @@
 export default {
   auth_specification: {
     OAuth2: {
+      authorization_url: 'https://www.linkedin.com/oauth/v2/authorization',
+      token_url: 'https://www.linkedin.com/oauth/v2/accessToken',
       input_specification: {
         type: 'object',
         properties: {

@@ -3,6 +3,8 @@
 export default {
   auth_specification: {
     OAuth2: {
+      authorization_url: 'https://api.greenhouse.io/oauth/authorize',
+      token_url: 'https://api.greenhouse.io/oauth/token',
       input_specification: {
         type: 'object',
         properties: {

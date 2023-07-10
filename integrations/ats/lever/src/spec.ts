@@ -3,6 +3,13 @@
 export default {
   auth_specification: {
     OAuth2: {
+      authorization_url: 'https://auth.lever.co/authorize',
+      token_url: 'https://auth.lever.co/oauth/token',
+      authorization_params: {
+        response_type: 'code',
+        prompt: 'consent',
+        audience: 'https://api.lever.co/v1'
+      },
       input_specification: {
         type: 'object',
         properties: {
