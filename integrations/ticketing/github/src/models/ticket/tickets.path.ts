@@ -19,6 +19,7 @@ export class GetTicketsPath extends BasePath {
   async fetchData(url: string, headers: AxiosHeaders, params: Params) {
     const page =
       typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+
     const final_params = {
       per_page: params.queryParams?.limit,
       sort:

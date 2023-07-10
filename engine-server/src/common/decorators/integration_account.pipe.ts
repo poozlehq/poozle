@@ -14,7 +14,7 @@ import { IntegrationAccountService } from 'modules/integration_account/integrati
 
 interface Value {
   workspaceId: string;
-  integrationAccountName: string;
+  integrationAccountId: string;
 }
 
 @Injectable()
@@ -33,7 +33,7 @@ export class ParseIntegrationAccountPipe implements PipeTransform {
       (await this.integrationAccountService.getIntegrationAccountWithIntegrationType(
         {
           workspaceId: value.workspaceId,
-          integrationAccountName: value.integrationAccountName,
+          integrationAccountId: value.integrationAccountId,
           integrationType: integrationType as IntegrationType,
         },
       )) as IntegrationAccount;

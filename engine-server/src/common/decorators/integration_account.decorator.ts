@@ -11,7 +11,7 @@ export const IntegrationAccountHeaders = createParamDecorator(
 
     return {
       workspaceId: request.headers['workspaceid'],
-      integrationAccountName: request.headers['integrationaccountname'],
+      integrationAccountId: request.headers['integrationaccountid'],
     };
   },
 );
