@@ -38,7 +38,6 @@ export class LinkService {
       },
     });
 
-
     const differenceSeconds = differenceInSeconds(
       new Date(),
       new Date(link.createdAt),
@@ -78,9 +77,9 @@ export class LinkService {
       integrationDefinitions,
     };
 
-    delete response["IntegrationAccount"];
-    
-    return response
+    delete response['IntegrationAccount'];
+
+    return response;
   }
 
   async getLinksForWorkspace(workspaceIdQueryRequest: WorkspaceIdQueryRequest) {

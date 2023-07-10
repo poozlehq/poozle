@@ -42,13 +42,13 @@ export class GetPagesPath extends BasePath {
 
     next_cursor = pagesResponse.data.next_cursor;
     return pagesResponse.data.results?.map((data: any) => {
-        return convertPage(data);
-      })
+      return convertPage(data);
+    });
   }
 
   async createPage(url: string, headers: AxiosHeaders, params: Params) {
     const body = {
-      parent: { page_id: params.requestBody?.parent_id.replace(/-/g, '')},
+      parent: { page_id: params.requestBody?.parent_id.replace(/-/g, '') },
       properties: {
         title: [
           {
@@ -61,7 +61,6 @@ export class GetPagesPath extends BasePath {
     };
 
     const response = await axios.post(url, body, { headers });
-
 
     return convertPage(response.data);
   }

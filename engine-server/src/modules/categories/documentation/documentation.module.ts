@@ -15,4 +15,4 @@ import { PageController } from './models/page/page.controller';
   providers: [PrismaService],
   exports: [],
 })
-export class DocsModule {}
+export class DocumentationModule {}
