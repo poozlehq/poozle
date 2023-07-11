@@ -25,9 +25,7 @@
 </em>
 </p>
 
-Poozle is building an integration infrastructure for AI apps. AI apps need to extract data from popular SAAS tools like Gmail, Notion, Confluence, Gtihub, Jira, WhatsApp, Salesforce etc. hence in the journey end up building their own integration infrastructure. Poozle provides a Unified API for verticals like Email, Documentation, Ticketing, CRM that  allows you to connect all SAAS tools of that vertical at once. We do the hard work of integrating and smoothing over thousands of SAAS tools, exposing a clean and unified interface to developers. We aim to make it easy for companies to build new integrations.
-
-<img width="1232" alt="Screenshot 2023-06-30 at 1 27 58 AM" src="https://github.com/poozlehq/engine/assets/17528887/3d8f3fa3-79fe-4154-8308-ab627c6d5d30">
+Poozle is building an integration infrastructure for AI apps. AI apps need to extract data from popular SAAS tools like Gmail, Notion, Confluence, Gtihub, Jira, WhatsApp, Salesforce etc. Hence in the journey end up building their own integration infrastructure. Poozle provides a Unified API for verticals like Email, Documentation, Ticketing, and CRM that  allows you to connect all SAAS tools of that vertical at once. We do the hard work of integrating and smoothing over thousands of SAAS tools, exposing a clean and unified interface to developers. We aim to make it easy for companies to build new integrations.
 
 ## Features
 * Managed Authentication
@@ -38,9 +36,37 @@ Poozle is building an integration infrastructure for AI apps. AI apps need to ex
 * Webhooks (coming soon)
 * Built-in monitoring (coming soon)
 
-## Getting Started
+## In your code
+
+-   Add a line to get your users to connect their accounts using our react-sdk:
+
+```js
+<PoozleLink
+  linkId="<link-id>"
+  host="<poozle-instance-url>"
+  redirectURL="<redirect-url>"
+/>
+```
+
+- Once connected you can use the [Unified APIs](https://docs.poozle.dev).
+
+## Getting Started 🚀
 * [Deploy Poozle Open Source](https://docs.poozle.dev/oss/deploy-poozle)
 * Create integrations in minutes with our IDK (Integration development kit).
+
+## 20+ pre-configured Integrations, easily add your own
+
+Poozle works with **any** API and use-case. Adding [Integration]([https://docs.nango.dev/core-concepts#api-configurations](https://docs.poozle.dev/understanding-poozle/protocol)) is easy and we already have the main APIs covered.
+
+20+ Integrations are pre-configured to work out-of-the-box, including:
+
+-   **Accounting**: Xero, Freshbooks, Zoho Books, etc.
+-   **Ticketing**: GitHub, GitLab, Linear, Jira, Asana etc.
+-   **Messaging**: Slack, Gmail etc.
+-   **ATS**: Greenhouse, Lever etc.
+
+If your favourite Integration is missing
+[open a GitHub issue](https://github.com/poozlehq/engine/issues/new)
 
 ## Contributing
 
