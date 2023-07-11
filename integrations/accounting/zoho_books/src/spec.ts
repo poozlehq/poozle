@@ -2,6 +2,21 @@
 
 export default {
   auth_specification: {
+    'Api Key': {
+      input_specification: {
+        type: 'object',
+        properties: {
+          api_key: {
+            type: 'string',
+            title: 'Api Key',
+            description: 'Enter the API Key',
+          },
+        },
+      },
+      headers: {
+        Authorization: 'Zoho-oauthtoken ${api_key}',
+      },
+    },
     OAuth2: {
       authorization_url: 'https://accounts.zoho.com/oauth/v2/auth',
       token_url: 'https://accounts.zoho.com/oauth/v2/token',
