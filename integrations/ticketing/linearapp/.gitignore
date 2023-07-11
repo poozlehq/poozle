@@ -28,6 +28,6 @@ lerna-debug.log*
 .pnp.*
 
 
-linear/
+linearapp/
 
 node_modules/

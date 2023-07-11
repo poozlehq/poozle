@@ -112,6 +112,8 @@ Enum IntegrationType {
   TICKETING
   MAIL
   DOCUMENTATION
+  ACCOUNTING
+  ATS
 }
 
 Ref: Workspace.userId > User.userId

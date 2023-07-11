@@ -1,20 +1,20 @@
 {
-  "name": "@poozle/linear",
+  "name": "@poozle/linearapp",
   "version": "0.1.0",
-  "description": "linear extension for Poozle",
+  "description": "linearapp extension for Poozle",
   "exports": {
     ".": {
-      "types": "./linear",
-      "require": "./linear/index.js"
+      "types": "./linearapp",
+      "require": "./linearapp/index.js"
     }
   },
-  "package": "./linear/index.js",
-  "types": "./linear",
+  "package": "./linearapp/index.js",
+  "types": "./linearapp",
   "files": [
-    "linear"
+    "linearapp"
   ],
   "scripts": {
-    "build": "rimraf linear && npm run build:js",
+    "build": "rimraf linearapp && npm run build:js",
     "build:js": "rollup -c",
     "lint": "eslint --ext js,ts,tsx src",
     "prettier": "prettier --config .prettierrc --write ."
