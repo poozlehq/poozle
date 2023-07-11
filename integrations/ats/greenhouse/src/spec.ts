@@ -2,6 +2,23 @@
 
 export default {
   auth_specification: {
+    'Api Key': {
+      input_specification: {
+        type: 'object',
+        properties: {
+          email_id: {
+            type: 'string',
+            title: 'Email ID',
+            description: 'Enter the Email ID',
+          },
+          api_key: {
+            type: 'string',
+            title: 'Api Key',
+            description: 'Enter the API Key',
+          },
+        },
+      },
+    },
     OAuth2: {
       authorization_url: 'https://api.greenhouse.io/oauth/authorize',
       token_url: 'https://api.greenhouse.io/oauth/token',
