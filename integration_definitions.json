@@ -17,6 +17,51 @@
     "integrationType": "TICKETING"
   },
   {
+    "name": "Asana",
+    "key": "asana",
+    "icon": "asana.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/asana/0.1.0/index.js",
+    "integrationType": "TICKETING"
+  },
+  {
+    "name": "Clickup",
+    "key": "clickup",
+    "icon": "clickup.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/clickup/0.1.0/index.js",
+    "integrationType": "TICKETING"
+  },
+  {
+    "name": "Gitlab",
+    "key": "gitlab",
+    "icon": "gitlab.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/gitlab/0.1.0/index.js",
+    "integrationType": "TICKETING"
+  },
+  {
+    "name": "LinearApp",
+    "key": "linearapp",
+    "icon": "linearapp.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/linearapp/0.1.0/index.js",
+    "integrationType": "TICKETING"
+  },
+  {
+    "name": "Monday",
+    "key": "monday",
+    "icon": "monday.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/monday/0.1.0/index.js",
+    "integrationType": "TICKETING"
+  },
+  {
     "name": "Gmail",
     "key": "gmail",
     "icon": "gmail.svg",

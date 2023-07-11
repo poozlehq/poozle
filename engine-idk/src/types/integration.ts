@@ -15,6 +15,9 @@ export interface AuthSpecification extends GenericInputSpecification {
   authorization_url?: string;
   authorization_params?: Record<string, string>;
   token_params?: Record<string, string>;
+  refresh_params?: Record<string, string>;
+  scope_seperator?: string;
+
   headers?: Record<string, string>;
 }
 

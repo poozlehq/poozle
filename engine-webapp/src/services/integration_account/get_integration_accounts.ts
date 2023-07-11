@@ -26,7 +26,7 @@ export function useGetIntegrationAccounts(
   queryParams: IntegrationAccountsParams,
 ): UseQueryResult<IntegrationAccount[], XHRErrorResponse> {
   return useQuery(
-    [GetIntegrationAccounts],
+    [GetIntegrationAccounts, queryParams],
     () => getIntegrationAccounts(queryParams),
     {
       notifyOnChangeProps: 'tracked',

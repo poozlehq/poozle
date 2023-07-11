@@ -137,4 +137,6 @@ enum IntegrationType {
   TICKETING
   MAIL
   DOCUMENTATION
+  ACCOUNTING
+  ATS
 }

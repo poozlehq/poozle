@@ -16,7 +16,7 @@ export class IntegrationAccountWithLinkRequestIdBody {
 
 export class IntegrationAccountRequestBody {
   @IsString()
-  integrationAccountName: string;
+  integrationAccountId: string;
 
   @IsString()
   workspaceId: string;

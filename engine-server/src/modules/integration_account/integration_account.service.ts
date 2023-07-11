@@ -133,8 +133,8 @@ export class IntegrationAccountService {
       await this.prismaService.integrationAccount.findMany({
         where: {
           workspaceId: integrationAccountRequestBody.workspaceId,
-          integrationAccountName:
-            integrationAccountRequestBody.integrationAccountName,
+          integrationAccountId:
+            integrationAccountRequestBody.integrationAccountId,
         },
         include: {
           integrationDefinition: true,
@@ -155,8 +155,8 @@ export class IntegrationAccountService {
       await this.prismaService.integrationAccount.findMany({
         where: {
           workspaceId: integrationAccountRequestBody.workspaceId,
-          integrationAccountName:
-            integrationAccountRequestBody.integrationAccountName,
+          integrationAccountId:
+            integrationAccountRequestBody.integrationAccountId,
           integrationDefinition: {
             integrationType: integrationAccountRequestBody.integrationType,
           },

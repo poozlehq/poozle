@@ -28,7 +28,7 @@ class GithubIntegration extends BaseIntegration {
       const headers = await this.authHeaders(config);
 
       await axios({
-        url: `https://api.github.com/user`,
+        url: 'https://api.github.com/user',
         headers,
       });
 
