@@ -19,6 +19,14 @@ export default {
       },
     },
     OAuth2: {
+      authorization_url: 'https://app.asana.com/-/oauth_authorize',
+      token_url: 'https://app.asana.com/-/oauth_token',
+      token_params: {
+        grant_type: 'authorization_code',
+      },
+      refresh_params: {
+        grant_type: 'refresh_token',
+      },
       input_specification: {
         type: 'object',
         properties: {

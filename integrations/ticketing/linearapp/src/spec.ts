@@ -19,6 +19,12 @@ export default {
       },
     },
     OAuth2: {
+      authorization_url: 'https://linear.app/oauth/authorize',
+      token_url: 'https://api.linear.app/oauth/token',
+      scope_separator: ',',
+      authorization_params: {
+        prompt: 'consent',
+      },
       input_specification: {
         type: 'object',
         properties: {

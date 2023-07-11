@@ -19,6 +19,8 @@ export default {
       },
     },
     OAuth2: {
+      authorization_url: 'https://app.clickup.com/api',
+      token_url: 'https://api.clickup.com/api/v2/oauth/token',
       input_specification: {
         type: 'object',
         properties: {

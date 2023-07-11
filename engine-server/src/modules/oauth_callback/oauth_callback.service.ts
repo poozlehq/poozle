@@ -203,9 +203,12 @@ export class OAuthCallbackService {
 
     let additionalTokenParams: Record<string, string> = {};
     if (template.token_params !== undefined) {
-      // We need to remove grant_type, simpleOAuth2 handles that for us
       const deepCopy = JSON.parse(JSON.stringify(template.token_params));
       additionalTokenParams = deepCopy;
+    }
+
+    if (template.refresh_params) {
+      additionalTokenParams = template.refresh_params;
     }
 
     const headers: Record<string, string> = {};

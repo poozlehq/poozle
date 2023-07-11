@@ -3,6 +3,8 @@
 export default {
   auth_specification: {
     OAuth2: {
+      authorization_url: 'https://auth.monday.com/oauth2/authorize',
+      token_url: 'https://auth.monday.com/oauth2/token',
       input_specification: {
         type: 'object',
         properties: {

@@ -19,6 +19,11 @@ export default {
       },
     },
     OAuth2: {
+      authorization_url: 'https://gitlab.com/oauth/authorize',
+      token_url: 'https://gitlab.com/oauth/token',
+      authorization_params: {
+        response_type: 'code',
+      },
       input_specification: {
         type: 'object',
         properties: {
