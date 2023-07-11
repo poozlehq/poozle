@@ -87,5 +87,77 @@
     "releaseStage": "ALPHA",
     "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/docs/notion/0.1.2/index.js",
     "integrationType": "DOCUMENTATION"
+  },
+  {
+    "name": "Greenhouse",
+    "key": "greenhouse",
+    "icon": "greenhouse.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ats/greenhouse/0.1.0/index.js",
+    "integrationType": "ATS"
+  },
+  {
+    "name": "Lever",
+    "key": "lever",
+    "icon": "lever.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ats/lever/0.1.0/index.js",
+    "integrationType": "ATS"
+  },
+  {
+    "name": "Linkedin",
+    "key": "linkedin",
+    "icon": "linkedin.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ats/linkedin/0.1.0/index.js",
+    "integrationType": "ATS"
+  },
+  {
+    "name": "Freshbooks",
+    "key": "freshbooks",
+    "icon": "freshbooks.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ats/freshbooks/0.1.0/index.js",
+    "integrationType": "ACCOUNTING"
+  },
+  {
+    "name": "Sage",
+    "key": "sage",
+    "icon": "sage.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ats/sage/0.1.0/index.js",
+    "integrationType": "ACCOUNTING"
+  },
+  {
+    "name": "Wave Accounting",
+    "key": "wave_accounting",
+    "icon": "wave_accounting.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ats/wave_accounting/0.1.0/index.js",
+    "integrationType": "ACCOUNTING"
+  },
+  {
+    "name": "Xero",
+    "key": "xero",
+    "icon": "xero.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ats/xero/0.1.0/index.js",
+    "integrationType": "ACCOUNTING"
+  },
+  {
+    "name": "Zoho Books",
+    "key": "zoho_books",
+    "icon": "zoho_books.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ats/zoho_books/0.1.0/index.js",
+    "integrationType": "ACCOUNTING"
   }
 ]
