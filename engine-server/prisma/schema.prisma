@@ -139,4 +139,5 @@ enum IntegrationType {
   DOCUMENTATION
   ACCOUNTING
   ATS
+  STORAGE
 }

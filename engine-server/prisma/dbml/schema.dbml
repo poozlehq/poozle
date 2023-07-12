@@ -114,6 +114,7 @@ Enum IntegrationType {
   DOCUMENTATION
   ACCOUNTING
   ATS
+  STORAGE
 }
 
 Ref: Workspace.userId > User.userId
