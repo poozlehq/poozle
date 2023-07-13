@@ -1,6 +1,12 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BaseIntegration, CheckResponse, Config, GenericProxyModel, SpecificationResponse } from '@poozle/engine-idk';
+import {
+  BaseIntegration,
+  CheckResponse,
+  Config,
+  GenericProxyModel,
+  SpecificationResponse,
+} from '@poozle/engine-idk';
 import axios from 'axios';
 
 import { NotionBlockModel } from 'models/block/block.model';
@@ -33,7 +39,7 @@ class NotionIntegration extends BaseIntegration {
       };
     }
   }
- 
+
   models() {
     return [new GenericProxyModel(), new NotionPageModel(), new NotionBlockModel()];
   }

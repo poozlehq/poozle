@@ -163,6 +163,7 @@ export class OAuthCallbackService {
     }
 
     const sessionRecord = this.session[params.state];
+
     /**
      * Delete the session once it's used
      */
@@ -246,20 +247,34 @@ export class OAuthCallbackService {
         },
       );
 
-      const integrationConfiguration = {
+      let integrationConfiguration = {
         ...sessionRecord.config,
-        scope: tokensResponse.token.scope,
-        refresh_token: tokensResponse.token.refresh_token,
-        client_id: integrationOAuth.clientId,
-        client_secret: integrationOAuth.clientSecret,
       };
+
+      if (
+        tokensResponse.token.access_token &&
+        tokensResponse.token.refresh_token
+      ) {
+        integrationConfiguration = {
+          ...integrationConfiguration,
+          scope: tokensResponse.token.scope,
+          refresh_token: tokensResponse.token.refresh_token,
+          client_id: integrationOAuth.clientId,
+          client_secret: integrationOAuth.clientSecret,
+        };
+      } else {
+        integrationConfiguration = {
+          ...integrationConfiguration,
+          api_key: tokensResponse.token.access_token,
+        };
+      }
 
       await this.integrationAccountService.createIntegrationAccount(
         integrationOAuth.integrationDefinitionId,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         integrationConfiguration as any,
         sessionRecord.integrationAccountName,
-        'OAuth2',
+        integrationConfiguration.api_key ? 'Api Key' : 'OAuth2',
         integrationOAuth.workspaceId,
         sessionRecord.linkId,
         sessionRecord.accountIdentifier,
