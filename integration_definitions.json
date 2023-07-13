@@ -159,5 +159,14 @@
     "releaseStage": "ALPHA",
     "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ats/zoho_books/0.1.0/index.js",
     "integrationType": "ACCOUNTING"
+  },
+  {
+    "name": "Google Drive",
+    "key": "google_drive",
+    "icon": "google_drive.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/storage/google_drive/0.1.0/index.js",
+    "integrationType": "STORAGE"
   }
 ]

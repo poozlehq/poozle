@@ -1,6 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BaseIntegration, GenericProxyModel, SpecificationResponse } from '@poozle/engine-idk';
+import { BaseIntegration, CheckResponse, Config, GenericProxyModel, SpecificationResponse } from '@poozle/engine-idk';
+import axios from 'axios';
 
 import { NotionBlockModel } from 'models/block/block.model';
 import { NotionPageModel } from 'models/page/page.model';
@@ -12,6 +13,27 @@ class NotionIntegration extends BaseIntegration {
     return spec;
   }
 
+  async check(config: Config): CheckResponse {
+    try {
+      const headers = await this.authHeaders(config);
+
+      await axios({
+        url: 'https://api.notion.com/v1/users',
+        headers,
+      });
+
+      return {
+        status: true,
+        error: '',
+      };
+    } catch (e) {
+      return {
+        status: false,
+        error: e.message,
+      };
+    }
+  }
+ 
   models() {
     return [new GenericProxyModel(), new NotionPageModel(), new NotionBlockModel()];
   }

@@ -2,29 +2,9 @@
 
 export default {
   auth_specification: {
-    'Api Key': {
-      input_specification: {
-        type: 'object',
-        properties: {
-          api_key: {
-            type: 'string',
-            title: 'Api Key',
-            description: 'Enter the API Key',
-          },
-        },
-      },
-      headers: {
-        Authorization: 'Bearer ${api_key}',
-        'Notion-Version': '2022-06-28',
-      },
-    },
     OAuth2: {
-      authorization_url: 'https://api.notion.com/v1/oauth/authorize',
-      token_url: 'https://api.notion.com/v1/oauth/token',
-      authorization_params: {
-        response_type: 'code',
-        owner: 'user'
-      },
+      authorization_url: 'https://accounts.google.com/o/oauth2/v2/auth',
+      token_url: 'https://oauth2.googleapis.com/token',
       input_specification: {
         type: 'object',
         properties: {
@@ -50,9 +30,6 @@ export default {
           },
         },
       },
-      headers: {
-        'Notion-Version': '2022-06-28',
-      }
     },
   },
 };
