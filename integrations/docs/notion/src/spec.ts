@@ -23,7 +23,7 @@ export default {
       token_url: 'https://api.notion.com/v1/oauth/token',
       authorization_params: {
         response_type: 'code',
-        owner: 'user'
+        owner: 'user',
       },
       authorization_method: 'header',
       body_format: 'json',
@@ -54,7 +54,7 @@ export default {
       },
       headers: {
         'Notion-Version': '2022-06-28',
-      }
+      },
     },
   },
 };

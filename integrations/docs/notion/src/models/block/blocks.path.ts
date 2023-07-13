@@ -11,19 +11,25 @@ import {
   convertUpdateBody,
   extractBlockData,
   fetchPageBlocks,
+  SingleBlockResponse,
 } from './block.utils';
 
 export class BlocksPath extends BasePath {
   async getBlocks(url: string, headers: AxiosHeaders, params: Params) {
     const block_id = params.pathParams?.block_id as string;
-    url += `/${block_id.replace(/-/g, '')}/children`;
-    const block_response = (await fetchPageBlocks(url, headers, params)) as BlockResponse[];
+    url += `/${block_id}/children`;
+    const { blocks, meta } = (await fetchPageBlocks(url, headers, params)) as BlockResponse;
 
-    return await Promise.all(
-      block_response.map(async (blockData: BlockResponse) => {
-        return await extractBlockData(blockData);
-      }),
-    );
+    return {
+      data: blocks.map((blockData: SingleBlockResponse) => ({
+        ...extractBlockData(blockData),
+        raw_data: blockData,
+      })),
+      meta: {
+        has_more: meta.has_more,
+        next_cursor: meta.next_cursor,
+      },
+    };
   }
 
   async createBlock(url: string, headers: AxiosHeaders, params: Params) {
@@ -32,11 +38,9 @@ export class BlocksPath extends BasePath {
 
     const block_response = await axios.patch(url, body, { headers });
 
-    return await Promise.all(
-      block_response.data.results.map(async (blockData: BlockResponse) => {
-        return await extractBlockData(blockData);
-      }),
-    );
+    return block_response.data.results.map(async (blockData: SingleBlockResponse) => {
+      return extractBlockData(blockData);
+    });
   }
 
   async updateBlock(url: string, headers: AxiosHeaders, params: Params) {
@@ -45,7 +49,7 @@ export class BlocksPath extends BasePath {
       const body = convertUpdateBody(params.requestBody as Block);
       const response = await axios.patch(url, body, { headers });
 
-      return await extractBlockData(response.data);
+      return extractBlockData(response.data);
     } catch (e) {
       throw new Error(e);
     }
@@ -63,6 +67,7 @@ export class BlocksPath extends BasePath {
 
       case 'PATCH':
         return this.updateBlock(url, headers, params);
+
       default:
         return {};
     }

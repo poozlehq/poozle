@@ -1,13 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Page, Meta, Params } from '@poozle/engine-idk';
+import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 // import { BASE_URL, convertBlock, convertPage, fetchPageBlocks } from './pages.utils';
-import { BASE_URL, convertPage } from './pages.utils';
-
-let next_cursor = '';
+import { BASE_URL, convertPages } from './pages.utils';
 
 export class GetPagesPath extends BasePath {
   async fetchData(url: string, headers: AxiosHeaders, params: Params) {
@@ -40,15 +38,20 @@ export class GetPagesPath extends BasePath {
       { headers },
     );
 
-    next_cursor = pagesResponse.data.next_cursor;
-    return pagesResponse.data.results?.map((data: any) => {
-      return convertPage(data);
-    });
+    return {
+      data: pagesResponse.data.results?.map((data: any) => {
+        return convertPages(data);
+      }),
+      meta: {
+        has_more: pagesResponse.data.has_more,
+        next_cursor: pagesResponse.data.has_more ? pagesResponse.data.next_cursor : '',
+      },
+    };
   }
 
   async createPage(url: string, headers: AxiosHeaders, params: Params) {
     const body = {
-      parent: { page_id: params.requestBody?.parent_id.replace(/-/g, '') },
+      parent: { page_id: params.requestBody?.parent_id },
       properties: {
         title: [
           {
@@ -62,20 +65,7 @@ export class GetPagesPath extends BasePath {
 
     const response = await axios.post(url, body, { headers });
 
-    return convertPage(response.data);
-  }
-
-  async getMetaParams(_data: Page[], params: Params): Promise<Meta> {
-    const page = typeof params.queryParams?.cursor === 'string' ? params.queryParams?.cursor : '';
-
-    return {
-      limit: params.queryParams?.limit as number,
-      cursors: {
-        before: '',
-        current: page,
-        next: next_cursor,
-      },
-    };
+    return convertPages(response.data);
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {

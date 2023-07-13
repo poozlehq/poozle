@@ -1,11 +1,11 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Block, Content, Params } from '@poozle/engine-idk';
+import { Block, BlockType, Content, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 export const BASE_URL = 'https://api.notion.com/v1';
 
-export interface BlockResponse {
+export interface SingleBlockResponse {
   object: string;
   id: string;
   parent: Record<string, string>;
@@ -15,9 +15,19 @@ export interface BlockResponse {
   last_edited_by: Record<string, string>;
   has_children: boolean;
   archived: boolean;
-  type: string;
+  type: BlockType;
+
+  // TODO (harshith): fix the types
   [key: string]: any;
-  children?: BlockResponse[];
+  children?: SingleBlockResponse[];
+}
+
+export interface BlockResponse {
+  blocks: SingleBlockResponse[];
+  meta: {
+    has_more: boolean;
+    next_cursor: string;
+  };
 }
 
 export function convertUpdateBody(data: Block) {
@@ -62,36 +72,35 @@ export async function fetchPageBlocks(
   url: string,
   headers: AxiosHeaders,
   params: Params,
-): Promise<BlockResponse[]> {
+): Promise<BlockResponse> {
   const final_params = {
     ...(params.queryParams?.cursor ? { start_cursor: params.queryParams?.cursor } : {}),
   };
+
   const response = await axios({ url, headers, params: final_params });
   let results = response.data.results;
 
-  if (response.data.has_more) {
-    const page_id = params.queryParams?.page_id as string;
-    const nextUrl = `${BASE_URL}/blocks/${page_id.replace(/-/g, '')}/children`;
-    params.queryParams.cursor = response.data.next_cursor;
-    const nextResults = await fetchPageBlocks(nextUrl, headers, params);
-    return [...results, ...nextResults];
-  }
-
   results = await Promise.all(
-    results?.map(async (block: BlockResponse) => {
+    results?.map(async (block: SingleBlockResponse) => {
       if (block.has_children) {
         const childUrl = `${BASE_URL}/blocks/${block.id.replace(/-/g, '')}/children`;
         const children = await fetchPageBlocks(childUrl, headers, params);
-        return { ...block, children };
+        return { ...block, children: children.blocks };
       }
       return block;
     }),
   );
 
-  return results;
+  return {
+    blocks: results,
+    meta: {
+      has_more: response.data.has_more,
+      next_cursor: response.data.has_more ? response.data.next_cursor : '',
+    },
+  };
 }
 
-export async function extractBlockData(data: BlockResponse): Promise<any> {
+export function extractBlockData(data: SingleBlockResponse): Block {
   const type = data.type;
   const content = data[type].rich_text?.map((richtext: any) => {
     return {
@@ -107,12 +116,9 @@ export async function extractBlockData(data: BlockResponse): Promise<any> {
       href: richtext.href,
     };
   });
+
   const children = data.children
-    ? await Promise.all(
-        data.children?.map(async (data: BlockResponse) => {
-          return await extractBlockData(data);
-        }),
-      )
+    ? data.children?.map((data: SingleBlockResponse) => extractBlockData(data))
     : [];
 
   const block_data = {
@@ -121,7 +127,7 @@ export async function extractBlockData(data: BlockResponse): Promise<any> {
     block_type: data.type,
     content,
     children,
-    raw_data: data,
   };
-  return block_data;
+
+  return block_data as Block;
 }
