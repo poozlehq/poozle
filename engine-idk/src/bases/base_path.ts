@@ -40,28 +40,29 @@ export class BasePath {
   }
 
   async baseRun(method: string, headers: AxiosHeaders, params: Params, config: Config) {
-    const responseFromRun = await this.run(method, headers, params, config);
+    const responseFromRun: any = await this.run(method, headers, params, config);
 
     // if this is a request directly to the integration
     if (params.proxy) {
       return responseFromRun;
     }
 
-    if (Array.isArray(responseFromRun)) {
-      const data = responseFromRun.map((responseItem: any) =>
+    if (responseFromRun.meta && Array.isArray(responseFromRun.data)) {
+      const data = responseFromRun.data.map((responseItem: any) =>
         this.convertToModel(
           responseItem,
           params.queryParams?.raw === true || params.queryParams?.raw === 'true' ? true : false,
         ),
       );
 
-      const meta = await this.getMetaParams(data, params);
+      const meta = await this.getMetaParams(responseFromRun, params);
 
       return {
         data,
         meta,
       };
     }
+
     return {
       data: this.convertToModel(
         responseFromRun,
@@ -71,13 +72,19 @@ export class BasePath {
   }
 
   // Written by the integration
-  async getMetaParams(_data: any, _params: Params): Promise<Meta> {
+  async getMetaParams(response: any, params: Params): Promise<Meta> {
+    const current_cursor =
+      typeof params.queryParams?.cursor === 'string' ? params.queryParams?.cursor : '';
+
+    const next_cursor = response.meta ? response.meta.next_cursor : '';
+    const before_cursor = response.meta ? response.meta.previous_cursor : '';
+
     return {
       limit: 0,
       cursors: {
-        before: '0',
-        current: '0',
-        next: '0',
+        before: before_cursor,
+        current: current_cursor,
+        next: next_cursor,
       },
     };
   }
