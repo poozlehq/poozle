@@ -1,5 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
 import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp/entities';
 import { Alert, Button, Group, Select, TextInput, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
@@ -7,6 +8,7 @@ import { notifications } from '@mantine/notifications';
 import { Specification } from '@poozle/engine-idk';
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import getConfig from 'next/config';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 
 import styles from 'modules/integration_account/new_integration_account/new_integration_account_form.module.scss';
@@ -19,13 +21,12 @@ import { useCreateRedirectURLMutation } from 'services/callback/create_redirect_
 import { useCreateIntegrationAccountWithLinkMutation } from 'services/integration_account';
 import { useGetIntegrationDefinitionSpecQuery } from 'services/integration_definition/get_spec_for_integration_definition';
 
-import { Loader } from 'components';
+import { IntegrationIcon, Loader } from 'components';
 
 import { getAllProperties, getValidateObject } from './public_link_utils';
-import { useRouter } from 'next/router';
 
 interface NewIntegrationFormProps {
-  integrationDefinitionId: string;
+  integrationDefinition: IntegrationDefinition;
   workspaceId: string;
   integrationAccountNameDefault?: string;
   linkId: string;
@@ -40,7 +41,7 @@ interface FormProps {
   workspaceId: string;
   onComplete?: () => void;
   integrationAccountNameDefault?: string;
-  integrationDefinitionId: string;
+  integrationDefinition: IntegrationDefinition;
   linkId: string;
   preferOAuth: boolean;
   oAuthApp?: IntegrationOAuthApp;
@@ -54,7 +55,7 @@ export function Form({
   linkId,
   oAuthApp,
   preferOAuth,
-  integrationDefinitionId,
+  integrationDefinition,
   onComplete,
 }: FormProps) {
   let spec = initialSpec;
@@ -149,7 +150,7 @@ export function Form({
       });
     } else {
       createIntegrationAccount({
-        integrationDefinitionId,
+        integrationDefinitionId: integrationDefinition.integrationDefinitionId,
         linkId,
         accountIdentifier: accountIdentifier as string,
         config: values[getPropertyName(values.authType)],
@@ -171,14 +172,6 @@ export function Form({
           onSubmit(values);
         })}
       >
-        <TextInput
-          pb="md"
-          label="Integration account name"
-          disabled
-          placeholder="Enter integration account name"
-          {...form.getInputProps('integrationAccountName')}
-        />
-
         <Select
           pb="md"
           data={Object.keys(spec.auth_specification)}
@@ -218,7 +211,7 @@ export function Form({
             </Button>
           ) : (
             <Button type="submit" loading={createIsLoading}>
-              Create
+              <Text mr="xs">Connect </Text>
             </Button>
           )}
         </Group>
@@ -228,7 +221,7 @@ export function Form({
 }
 
 export function NewIntegrationForm({
-  integrationDefinitionId,
+  integrationDefinition,
   workspaceId,
   integrationAccountNameDefault,
   linkId,
@@ -241,7 +234,7 @@ export function NewIntegrationForm({
     isLoading,
     error,
   } = useGetIntegrationDefinitionSpecQuery({
-    integrationDefinitionId,
+    integrationDefinitionId: integrationDefinition.integrationDefinitionId,
     workspaceId: workspaceId as string,
   });
 
@@ -271,7 +264,7 @@ export function NewIntegrationForm({
       workspaceId={workspaceId as string}
       onComplete={onComplete}
       linkId={linkId}
-      integrationDefinitionId={integrationDefinitionId}
+      integrationDefinition={integrationDefinition}
       integrationAccountNameDefault={integrationAccountNameDefault}
       oAuthApp={oAuthApp}
     />

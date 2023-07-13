@@ -63,6 +63,10 @@ export function PublicLink({
     : integrationsDefinitions;
 
   if (selectedDefinitionId) {
+    const integrationDefinition = integrationsDefinitionsFinal.find(
+      (id) => id.integrationDefinitionId === selectedDefinitionId,
+    );
+
     return (
       <div>
         <Group p="md">
@@ -73,12 +77,15 @@ export function PublicLink({
           >
             <IconChevronLeft />
           </ActionIcon>
-          <Title order={5}> Connect Integration </Title>
+          <Title order={5}>
+            {' '}
+            Connect {integrationDefinition.name} Integration
+          </Title>
         </Group>
         <Divider className={styles.divider} mb="lg" />
 
         <NewIntegrationForm
-          integrationDefinitionId={selectedDefinitionId}
+          integrationDefinition={integrationDefinition}
           workspaceId={link.workspaceId}
           preferOAuth={link.preferOAuth}
           linkId={link.linkId}
