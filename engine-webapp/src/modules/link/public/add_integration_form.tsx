@@ -1,12 +1,14 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
 import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp/entities';
-import { Alert, Button, Group, Select, TextInput } from '@mantine/core';
+import { Alert, Button, Group, Select, TextInput, Text } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { Specification } from '@poozle/engine-idk';
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import getConfig from 'next/config';
+import { useRouter } from 'next/router';
 import * as React from 'react';
 
 import styles from 'modules/integration_account/new_integration_account/new_integration_account_form.module.scss';
@@ -18,18 +20,19 @@ import {
 import { useCreateRedirectURLMutation } from 'services/callback/create_redirect_url';
 import { useCreateIntegrationAccountWithLinkMutation } from 'services/integration_account';
 import { useGetIntegrationDefinitionSpecQuery } from 'services/integration_definition/get_spec_for_integration_definition';
-import { useGetIntegrationOAuthAppsJustIds } from 'services/integration_oauth';
 
-import { Loader } from 'components';
+import { IntegrationIcon, Loader } from 'components';
 
 import { getAllProperties, getValidateObject } from './public_link_utils';
 
 interface NewIntegrationFormProps {
-  integrationDefinitionId: string;
+  integrationDefinition: IntegrationDefinition;
   workspaceId: string;
   integrationAccountNameDefault?: string;
   linkId: string;
   onComplete?: () => void;
+  oAuthApp?: IntegrationOAuthApp;
+  preferOAuth: boolean;
 }
 
 interface FormProps {
@@ -38,9 +41,9 @@ interface FormProps {
   workspaceId: string;
   onComplete?: () => void;
   integrationAccountNameDefault?: string;
-  integrationDefinitionId: string;
+  integrationDefinition: IntegrationDefinition;
   linkId: string;
-
+  preferOAuth: boolean;
   oAuthApp?: IntegrationOAuthApp;
 }
 
@@ -51,10 +54,61 @@ export function Form({
   integrationAccountNameDefault,
   linkId,
   oAuthApp,
-  integrationDefinitionId,
+  preferOAuth,
+  integrationDefinition,
   onComplete,
 }: FormProps) {
   let spec = initialSpec;
+  const {
+    query: { redirectURL, accountIdentifier },
+  } = useRouter();
+  const [errorMessage, setErrorMessage] = React.useState(undefined);
+  const initialValues = getInitialValues(spec, integrationAccountNameDefault);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const validate: any = getValidateObject(initialValues);
+
+  const onlyOAuthSupport =
+    Object.keys(spec.auth_specification).includes('OAuth2') &&
+    Object.keys(spec.auth_specification).length === 1;
+
+  const form = useForm({
+    initialValues: getInitialValues(spec, integrationAccountNameDefault),
+
+    validate,
+  });
+
+  const { mutate: createRedirectURL, isLoading: redirectURLLoading } =
+    useCreateRedirectURLMutation({
+      onSuccess: (data) => {
+        const redirectURL = data.redirectURL;
+
+        window.location.href = redirectURL;
+      },
+    });
+
+  React.useEffect(() => {
+    if (oAuthApp && (onlyOAuthSupport || preferOAuth)) {
+      createRedirectURL({
+        config: {},
+        linkId,
+        integrationAccountName: integrationAccountNameDefault,
+        accountIdentifier: accountIdentifier as string,
+        redirectURL: redirectURL
+          ? (redirectURL as string)
+          : `${publicRuntimeConfig.NEXT_PUBLIC_BASE_HOST}/link/${linkId}`,
+        integrationOAuthAppId: oAuthApp.integrationOAuthAppId,
+      });
+    }
+  }, []);
+
+  if (oAuthApp && (onlyOAuthSupport || preferOAuth)) {
+    return (
+      <Group align="vertical" position="center" pt="lg" pb="lg">
+        <Loader height={50} />
+        <Text> Redirecting... </Text>
+      </Group>
+    );
+  }
 
   if (!oAuthApp) {
     const currentSpecification = initialSpec.auth_specification;
@@ -65,18 +119,6 @@ export function Form({
       auth_specification: currentSpecification,
     };
   }
-
-  const initialValues = getInitialValues(spec, integrationAccountNameDefault);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const validate: any = getValidateObject(initialValues);
-
-  const [errorMessage, setErrorMessage] = React.useState(undefined);
-
-  const form = useForm({
-    initialValues: getInitialValues(spec, integrationAccountNameDefault),
-
-    validate,
-  });
 
   const { mutate: createIntegrationAccount, isLoading: createIsLoading } =
     useCreateIntegrationAccountWithLinkMutation({
@@ -95,29 +137,22 @@ export function Form({
       },
     });
 
-  const { mutate: createRedirectURL, isLoading: redirectURLLoading } =
-    useCreateRedirectURLMutation({
-      onSuccess: (data) => {
-        const redirectURL = data.redirectURL;
-
-        window.location.href = redirectURL;
-      },
-    });
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (values: any) => {
     if (values.authType === 'OAuth2') {
       createRedirectURL({
         config: values['OAuth2'],
         linkId,
+        accountIdentifier: accountIdentifier as string,
         integrationAccountName: values.integrationAccountName,
         redirectURL: `${publicRuntimeConfig.NEXT_PUBLIC_BASE_HOST}/link/${linkId}`,
         integrationOAuthAppId: oAuthApp.integrationOAuthAppId,
       });
     } else {
       createIntegrationAccount({
-        integrationDefinitionId,
+        integrationDefinitionId: integrationDefinition.integrationDefinitionId,
         linkId,
+        accountIdentifier: accountIdentifier as string,
         config: values[getPropertyName(values.authType)],
         authType: values.authType,
         integrationAccountName: values.integrationAccountName,
@@ -137,14 +172,6 @@ export function Form({
           onSubmit(values);
         })}
       >
-        <TextInput
-          pb="md"
-          label="Integration account name"
-          disabled
-          placeholder="Enter integration account name"
-          {...form.getInputProps('integrationAccountName')}
-        />
-
         <Select
           pb="md"
           data={Object.keys(spec.auth_specification)}
@@ -184,7 +211,7 @@ export function Form({
             </Button>
           ) : (
             <Button type="submit" loading={createIsLoading}>
-              Create
+              <Text mr="xs">Connect </Text>
             </Button>
           )}
         </Group>
@@ -194,10 +221,12 @@ export function Form({
 }
 
 export function NewIntegrationForm({
-  integrationDefinitionId,
+  integrationDefinition,
   workspaceId,
   integrationAccountNameDefault,
   linkId,
+  preferOAuth,
+  oAuthApp,
   onComplete,
 }: NewIntegrationFormProps) {
   const {
@@ -205,22 +234,13 @@ export function NewIntegrationForm({
     isLoading,
     error,
   } = useGetIntegrationDefinitionSpecQuery({
-    integrationDefinitionId,
+    integrationDefinitionId: integrationDefinition.integrationDefinitionId,
     workspaceId: workspaceId as string,
   });
 
-  const { data: oAuthApps, isLoading: oAuthAppsLoading } =
-    useGetIntegrationOAuthAppsJustIds({
-      workspaceId,
-    });
-
-  if (isLoading || oAuthAppsLoading) {
+  if (isLoading) {
     return <Loader />;
   }
-
-  const oAuthApp = oAuthApps.find(
-    (oAuthA) => oAuthA.integrationDefinitionId === integrationDefinitionId,
-  );
 
   if (error) {
     return (
@@ -240,10 +260,11 @@ export function NewIntegrationForm({
   return (
     <Form
       spec={integrationDefinitionSpec}
+      preferOAuth={preferOAuth}
       workspaceId={workspaceId as string}
       onComplete={onComplete}
       linkId={linkId}
-      integrationDefinitionId={integrationDefinitionId}
+      integrationDefinition={integrationDefinition}
       integrationAccountNameDefault={integrationAccountNameDefault}
       oAuthApp={oAuthApp}
     />

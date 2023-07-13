@@ -2,7 +2,7 @@
 
 import { Config } from '@poozle/engine-idk';
 import { IntegrationType } from '@prisma/client';
-import { IsObject, IsString } from 'class-validator';
+import { IsObject, IsOptional, IsString } from 'class-validator';
 
 export class IntegrationAccountRequestIdBody {
   @IsString()
@@ -60,6 +60,10 @@ export class CreateIntegrationAccountBody {
 
   @IsObject()
   config: Config;
+
+  @IsString()
+  @IsOptional()
+  accountIdentifier: string;
 }
 
 export class CreateIntegrationAccountWithLinkBody {
@@ -71,6 +75,10 @@ export class CreateIntegrationAccountWithLinkBody {
 
   @IsString()
   authType: string;
+
+  @IsString()
+  @IsOptional()
+  accountIdentifier: string;
 
   @IsObject()
   config: Config;

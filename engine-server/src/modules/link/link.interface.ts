@@ -21,9 +21,6 @@ export class CreateLinkBody {
   workspaceId: string;
 
   @IsString()
-  linkIdentifier: string;
-
-  @IsString()
   linkName: string;
 }
 
@@ -35,6 +32,12 @@ export class GetLinkRequest {
 export class WorkspaceIdQueryRequest {
   @IsString()
   workspaceId: string;
+}
+
+export class LinkIdentifierQueryParams {
+  @IsString()
+  @IsOptional()
+  accountIdentifier: string;
 }
 
 export class LinkIdRequest {

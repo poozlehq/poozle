@@ -50,6 +50,7 @@ export class OAuthCallbackController {
       body.config ?? {},
       body.redirectURL,
       body.linkId,
+      body.accountIdentifier,
     );
   }
 

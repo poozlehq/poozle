@@ -11,33 +11,22 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React from 'react';
 
-import { useGetIntegrationDefinitionsQuery } from 'services/integration_definition';
 import { useGetLinkQuery } from 'services/link';
 
 import { Loader } from 'components';
 
-import { PublicLink, PublicLinkProps } from './public_link';
+import { PublicLink } from './public_link';
 import styles from './public_link.module.scss';
-
-export function PublicLinkIntegrationDefinitions({ link }: PublicLinkProps) {
-  const { data: integrationDefinitions, isLoading } =
-    useGetIntegrationDefinitionsQuery({
-      workspaceId: link.workspaceId,
-      category: link.category,
-    });
-
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  return (
-    <PublicLink link={link} integrationsDefinitions={integrationDefinitions} />
-  );
-}
 
 export function PublicLinkWrapper() {
   const { query } = useRouter();
-  const { linkId, success, error: errorFromServer, integrationName } = query;
+  const {
+    linkId,
+    success,
+    error: errorFromServer,
+    integrationName,
+    accountIdentifier,
+  } = query;
 
   const theme = useMantineTheme();
 
@@ -67,6 +56,7 @@ export function PublicLinkWrapper() {
     error,
   } = useGetLinkQuery({
     linkId: linkId as string,
+    accountIdentifier: accountIdentifier as string,
   });
 
   if (!linkId || error) {
@@ -104,13 +94,12 @@ export function PublicLinkWrapper() {
               </Alert>
             )}
 
-            {!isLoading &&
-              !error &&
-              linkDetails &&
-              !linkDetails.expired &&
-              linkDetails && (
-                <PublicLinkIntegrationDefinitions link={linkDetails} />
-              )}
+            {!isLoading && !error && linkDetails && !linkDetails.expired && (
+              <PublicLink
+                link={linkDetails}
+                integrationsDefinitions={linkDetails.integrationDefinitions}
+              />
+            )}
 
             {!isLoading && !error && linkDetails && linkDetails.expired && (
               <Alert

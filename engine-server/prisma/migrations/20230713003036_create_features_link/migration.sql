@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Link" ADD COLUMN     "canExpire" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "preferOAuth" BOOLEAN NOT NULL DEFAULT false,
+ALTER COLUMN "expiresIn" DROP DEFAULT;

@@ -60,7 +60,7 @@ export function NewOAuthApp() {
 
   return (
     <>
-      <Header title="New OAuth App" />
+      <Header title="New OAuth App" showBack />
       <Container>
         <Paper mt="lg" className={styles.container}>
           <Group p="md">

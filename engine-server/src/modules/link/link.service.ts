@@ -12,6 +12,7 @@ import { IntegrationDefinitionService } from 'modules/integration_definition/int
 import {
   CreateLinkBody,
   GetLinkRequest,
+  LinkIdentifierQueryParams,
   WorkspaceIdQueryRequest,
 } from './link.interface';
 
@@ -28,8 +29,11 @@ export class LinkService {
     });
   }
 
-  async getLink(getLinkRequest: GetLinkRequest) {
-    const link = await this.prisma.link.findUnique({
+  async getLink(
+    getLinkRequest: GetLinkRequest,
+    accountIdentifierQueryParams?: LinkIdentifierQueryParams,
+  ) {
+    const link = await this.prisma.link.findUniqueOrThrow({
       where: {
         linkId: getLinkRequest.linkId,
       },
@@ -66,14 +70,22 @@ export class LinkService {
     }
 
     const response = {
-      expired: differenceSeconds < link.expiresIn ? false : true,
+      expired: link.canExpire
+        ? differenceSeconds < link.expiresIn
+          ? false
+          : true
+        : false,
       ...link,
-      integrationAccounts: link.IntegrationAccount.map(
-        (integrationAccount) => ({
-          integrationAccountId: integrationAccount.integrationAccountId,
-          integrationDefinitionId: integrationAccount.integrationDefinitionId,
-        }),
-      ),
+      integrationAccounts: accountIdentifierQueryParams?.accountIdentifier
+        ? link.IntegrationAccount.filter(
+            (ia) =>
+              ia.accountIdentifier ===
+              accountIdentifierQueryParams.accountIdentifier,
+          ).map((integrationAccount) => ({
+            integrationAccountId: integrationAccount.integrationAccountId,
+            integrationDefinitionId: integrationAccount.integrationDefinitionId,
+          }))
+        : [],
       integrationDefinitions,
     };
 
@@ -96,7 +108,11 @@ export class LinkService {
       );
 
       return {
-        expired: differenceSeconds < link.expiresIn ? false : true,
+        expired: link.canExpire
+          ? differenceSeconds < link.expiresIn
+            ? false
+            : true
+          : false,
         ...link,
       };
     });

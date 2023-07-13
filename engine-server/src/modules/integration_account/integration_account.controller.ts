@@ -105,6 +105,7 @@ export class IntegrationAccountController {
       createIntegrationAccountBody.integrationAccountName,
       createIntegrationAccountBody.authType,
       createIntegrationAccountBody.workspaceId,
+      createIntegrationAccountBody.accountIdentifier,
     );
   }
 
@@ -130,6 +131,7 @@ export class IntegrationAccountController {
       createIntegrationAccountBody.authType,
       link.workspaceId,
       link.linkId,
+      createIntegrationAccountBody.accountIdentifier,
     );
   }
 
@@ -138,6 +140,8 @@ export class IntegrationAccountController {
   async proxyPost(
     @Body()
     body: any,
+    @Query()
+    query: any,
     @Req() request: Request,
     @Param()
     integrationAccountIdRequestIdBody: any,
@@ -147,6 +151,7 @@ export class IntegrationAccountController {
       body,
       request.method,
       integrationAccountIdRequestIdBody['0'],
+      query,
     );
   }
 }

@@ -9,6 +9,7 @@ import {
   MultiSelect,
   NumberInput,
   Paper,
+  Select,
   TextInput,
   Title,
 } from '@mantine/core';
@@ -41,9 +42,10 @@ export function NewLink() {
   const form = useForm({
     initialValues: {
       linkName: '',
-      linkIdentifier: '',
       category: [],
-      expiresIn: 3600,
+      expiresIn: 0,
+      canExpire: 'No',
+      preferOAuth: 'Yes',
     },
   });
   const [errorMessage, setErrorMessage] = React.useState(undefined);
@@ -68,7 +70,7 @@ export function NewLink() {
 
   return (
     <>
-      <Header title="New Link" />
+      <Header title="New Link" showBack />
       <Container>
         <Paper mt="lg" className={styles.container}>
           <Group p="md">
@@ -82,6 +84,8 @@ export function NewLink() {
               onSubmit={form.onSubmit((values) => {
                 createLink({
                   ...values,
+                  preferOAuth: values.preferOAuth === 'Yes' ? true : false,
+                  canExpire: values.canExpire === 'Yes' ? true : false,
                   workspaceId: workspaceId as string,
                 });
               })}
@@ -93,20 +97,31 @@ export function NewLink() {
                 placeholder="Enter link name"
                 {...form.getInputProps('linkName')}
               />
-              <TextInput
+
+              <Select
                 pb="md"
-                label="Link identifier"
-                description="You can use organisation identifier"
-                placeholder="Enter link identifier"
-                {...form.getInputProps('linkIdentifier')}
+                label="Link expires?"
+                data={['Yes', 'No']}
+                searchable
+                {...form.getInputProps('canExpire')}
               />
-              <NumberInput
+              {form.values.canExpire === 'Yes' && (
+                <NumberInput
+                  pb="md"
+                  label="Link expiry limit"
+                  description="In seconds"
+                  placeholder="Enter time after which link expires"
+                  {...form.getInputProps('expiresIn')}
+                />
+              )}
+              <Select
                 pb="md"
-                label="Link expiry limit"
-                description="In seconds"
-                placeholder="Enter time after which link expires"
-                {...form.getInputProps('expiresIn')}
+                label="Strongly prefer OAuth based authentication"
+                data={['Yes', 'No']}
+                searchable
+                {...form.getInputProps('preferOAuth')}
               />
+
               <MultiSelect
                 pb="md"
                 label="Choose category"
@@ -144,7 +159,6 @@ export function NewLink() {
             link={createdLink}
             onClose={() => {
               setCreatedLink(undefined);
-              router.replace(`workspaces/${workspaceId}/link`);
             }}
           />
         )}

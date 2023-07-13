@@ -10,8 +10,10 @@ export interface CreateLinkParams {
   category: IntegrationType[];
   expiresIn: number;
   linkName: string;
-  linkIdentifier: string;
   workspaceId: string;
+
+  preferOAuth: boolean;
+  canExpire: boolean;
 }
 
 export function createLink(params: CreateLinkParams) {

@@ -18,6 +18,7 @@ import { AuthGuard } from 'modules/auth/auth.guard';
 import {
   CreateLinkBody,
   LinkIdRequest,
+  LinkIdentifierQueryParams,
   LinkResponse,
   WorkspaceIdQueryRequest,
 } from './link.interface';
@@ -35,10 +36,15 @@ export class LinkController {
   async getLink(
     @Param()
     integrationConnectLinkIdRequest: LinkIdRequest,
+    @Query()
+    accountIdentifierQueryParams: LinkIdentifierQueryParams,
   ): Promise<LinkResponse> {
-    return await this.integrationConnectLinkService.getLink({
-      linkId: integrationConnectLinkIdRequest.linkId,
-    });
+    return await this.integrationConnectLinkService.getLink(
+      {
+        linkId: integrationConnectLinkIdRequest.linkId,
+      },
+      accountIdentifierQueryParams,
+    );
   }
 
   @Post()

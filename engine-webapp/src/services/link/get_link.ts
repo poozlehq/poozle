@@ -12,11 +12,16 @@ export const GetLink = 'getLink';
 
 interface LinksParams {
   linkId: string;
+  accountIdentifier?: string;
 }
 
 export function getLink(params: LinksParams) {
+  const baseLink = `/api/v1/link/${params.linkId}`;
+
   return ajaxGet({
-    url: `/api/v1/link/${params.linkId}`,
+    url: params.accountIdentifier
+      ? `${baseLink}?accountIdentifier=${params.accountIdentifier}`
+      : baseLink,
   });
 }
 

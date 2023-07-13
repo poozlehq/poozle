@@ -9,6 +9,7 @@ export interface CreateRedirectURLParams {
   workspaceId?: string;
 
   linkId?: string;
+  accountIdentifier: string;
 
   integrationAccountName: string;
   redirectURL: string;

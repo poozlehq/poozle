@@ -12,8 +12,6 @@ interface CopyLinkModalProps {
 }
 
 export function CopyLinkModal({ opened, onClose, link }: CopyLinkModalProps) {
-  console.log(link);
-
   return (
     <Modal opened={opened} onClose={onClose} title="Send link via URL">
       <Text size="sm" color="gray">
@@ -25,7 +23,7 @@ export function CopyLinkModal({ opened, onClose, link }: CopyLinkModalProps) {
         mt="md"
         value={link.linkId}
         disabled
-        label={`Link URL for ${link.linkName}`}
+        label={`Link Id for ${link.linkName}`}
         rightSection={
           <CopyButton value={link.linkId} timeout={2000}>
             {({ copied, copy }) => (
