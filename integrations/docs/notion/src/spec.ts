@@ -25,6 +25,8 @@ export default {
         response_type: 'code',
         owner: 'user'
       },
+      authorization_method: 'header',
+      body_format: 'json',
       input_specification: {
         type: 'object',
         properties: {
