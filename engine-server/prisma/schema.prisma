@@ -100,20 +100,25 @@ model IntegrationAccount {
   deleted                  DateTime?
   createdAt                DateTime              @default(now())
   updatedAt                DateTime              @updatedAt
-  fromLinks                Link?                 @relation(fields: [linkId], references: [linkId])
-  linkId                   String?
+
+  accountIdentifier String?
+
+  fromLinks Link?   @relation(fields: [linkId], references: [linkId])
+  linkId    String?
 }
 
 model Link {
-  linkId         String @id @default(uuid())
-  linkName       String
-  linkIdentifier String
+  linkId   String @id @default(uuid())
+  linkName String
 
-  expiresIn Int @default(3600)
+  canExpire Boolean @default(false)
+
+  expiresIn Int
 
   category                IntegrationType[]
   integrationDefinitionId String?
 
+  preferOAuth Boolean   @default(false)
   workspace   Workspace @relation(references: [workspaceId], fields: [workspaceId])
   workspaceId String
 

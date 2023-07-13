@@ -14,6 +14,7 @@ export interface SessionRecord {
   config: Record<string, string>;
   redirectURL: string;
   linkId?: string;
+  accountIdentifier?: string;
 }
 
 export class BodyInterface {
@@ -33,6 +34,10 @@ export class BodyInterface {
   @IsString()
   @IsOptional()
   linkId?: string;
+
+  @IsString()
+  @IsOptional()
+  accountIdentifier?: string;
 
   @IsString()
   integrationOAuthAppId: string;

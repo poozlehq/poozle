@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class IntegrationOAuthRequestIdBody {
   @IsString()
@@ -26,6 +26,7 @@ export class IntegrationOAuthCreateBody {
   clientSecret: string;
 
   @IsString()
+  @IsOptional()
   scopes: string;
 
   @IsString()

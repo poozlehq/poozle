@@ -1,3 +1,4 @@
+import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
 import { Workspace } from '../../workspace/entities/workspace.entity';
 
 import { IntegrationType } from 'lib/integration_type';
@@ -10,6 +11,9 @@ export class IntegrationAccount {
 export class Link {
   linkId: string;
   linkName: string;
+
+  canExpire: boolean;
+  preferOAuth: boolean;
   expiresIn: number;
   category: IntegrationType[];
   workspace?: Workspace;
@@ -17,5 +21,7 @@ export class Link {
   createdAt: Date;
   updatedAt: Date;
   integrationAccounts: IntegrationAccount[];
+
+  integrationDefinitions: IntegrationDefinition[];
   expired: boolean;
 }

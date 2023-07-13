@@ -80,6 +80,7 @@ Table IntegrationAccount {
   deleted DateTime
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+  accountIdentifier String
   fromLinks Link
   linkId String
 }
@@ -87,10 +88,11 @@ Table IntegrationAccount {
 Table Link {
   linkId String [pk]
   linkName String [not null]
-  linkIdentifier String [not null]
-  expiresIn Int [not null, default: 3600]
+  canExpire Boolean [not null, default: false]
+  expiresIn Int [not null]
   category IntegrationType[] [not null]
   integrationDefinitionId String
+  preferOAuth Boolean [not null, default: false]
   workspace Workspace [not null]
   workspaceId String [not null]
   createdAt DateTime [default: `now()`, not null]

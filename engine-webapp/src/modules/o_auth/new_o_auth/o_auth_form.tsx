@@ -39,7 +39,6 @@ export function OAuthAppForm({
       clientId: (value) => (value ? null : 'Invalid Client Id'),
       clientSecret: (value) => (value ? null : 'Invalid Client Secret'),
       integrationOAuthAppName: (value) => (value ? null : 'Invalid Name'),
-      scopes: (value) => (value ? null : 'Invalid scopes'),
     },
   });
 

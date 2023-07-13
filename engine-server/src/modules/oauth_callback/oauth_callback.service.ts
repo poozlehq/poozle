@@ -70,6 +70,7 @@ export class OAuthCallbackService {
     externalConfig: Record<string, string>,
     redirectURL: string,
     linkId?: string,
+    accountIdentifier?: string,
   ) {
     if (!integrationAccountName || !redirectURL) {
       throw new BadRequestException({
@@ -125,6 +126,7 @@ export class OAuthCallbackService {
         config: externalConfig,
         redirectURL,
         linkId,
+        accountIdentifier,
       };
 
       const authorizationUri = simpleOAuthClient.authorizeURL({
@@ -260,6 +262,7 @@ export class OAuthCallbackService {
         'OAuth2',
         integrationOAuth.workspaceId,
         sessionRecord.linkId,
+        sessionRecord.accountIdentifier,
       );
 
       res.redirect(

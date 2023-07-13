@@ -57,6 +57,7 @@ export class IntegrationAccountService {
     authType: string,
     workspaceId: string,
     linkId?: string,
+    accountIdentifier?: string,
   ) {
     const { status } = await this.checkForIntegrationCredentails(
       integrationDefinitionId,
@@ -74,6 +75,7 @@ export class IntegrationAccountService {
           integrationConfiguration: config,
           authType,
           linkId,
+          accountIdentifier,
         },
       });
     }
@@ -88,6 +90,7 @@ export class IntegrationAccountService {
     authType: string,
     workspaceId: string,
     linkId: string,
+    accountIdentifier?: string,
   ) {
     const { status } = await this.checkForIntegrationCredentails(
       integrationDefinitionId,
@@ -105,6 +108,7 @@ export class IntegrationAccountService {
           integrationConfiguration: config,
           authType,
           linkId,
+          accountIdentifier,
         },
       });
     }
@@ -239,6 +243,8 @@ export class IntegrationAccountService {
     body: any,
     method: string,
     path: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    queryParams: any,
   ) {
     const integrationAccount =
       await this.prismaService.integrationAccount.findUnique({
@@ -258,6 +264,7 @@ export class IntegrationAccountService {
       integrationAccount.authType,
       {
         requestBody: body.postBody,
+        queryParams,
       },
     );
   }

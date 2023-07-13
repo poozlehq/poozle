@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
@@ -12,15 +13,18 @@ import {
   ActionIcon,
   Divider,
   Alert,
+  Loader,
 } from '@mantine/core';
-import { IconCheck, IconChevronLeft } from '@tabler/icons-react';
+import { IconChevronLeft } from '@tabler/icons-react';
 import React from 'react';
+
+import { useGetIntegrationOAuthAppsJustIds } from 'services/integration_oauth';
 
 import { IntegrationIcon } from 'components';
 
 import { NewIntegrationForm } from './add_integration_form';
 import styles from './public_link.module.scss';
-import { makeId } from './public_link_utils';
+import { makeId, getConnectedAccounts } from './public_link_utils';
 
 export interface PublicLinkProps {
   link: Link;
@@ -32,9 +36,31 @@ interface PublicLinkInterface extends PublicLinkProps {
 
 export function PublicLink({
   integrationsDefinitions,
+
   link,
 }: PublicLinkInterface) {
   const [selectedDefinitionId, setDefinitionId] = React.useState(undefined);
+
+  const { data: oAuthApps, isLoading: oAuthAppsLoading } =
+    useGetIntegrationOAuthAppsJustIds({
+      workspaceId: link.workspaceId,
+    });
+  const connectedAccounts = getConnectedAccounts(link);
+
+  if (oAuthAppsLoading) {
+    return <Loader />;
+  }
+
+  const integrationsDefinitionsFinal = link.preferOAuth
+    ? integrationsDefinitions.filter((id) => {
+        const oAuthApp = oAuthApps.find(
+          (oAuthA) =>
+            oAuthA.integrationDefinitionId === id.integrationDefinitionId,
+        );
+
+        return oAuthApp ? true : false;
+      })
+    : integrationsDefinitions;
 
   if (selectedDefinitionId) {
     return (
@@ -47,14 +73,18 @@ export function PublicLink({
           >
             <IconChevronLeft />
           </ActionIcon>
-          <Title order={5}> Create Integration </Title>
+          <Title order={5}> Connect Integration </Title>
         </Group>
         <Divider className={styles.divider} mb="lg" />
 
         <NewIntegrationForm
           integrationDefinitionId={selectedDefinitionId}
           workspaceId={link.workspaceId}
+          preferOAuth={link.preferOAuth}
           linkId={link.linkId}
+          oAuthApp={oAuthApps.find(
+            (oAuthA) => oAuthA.integrationDefinitionId === selectedDefinitionId,
+          )}
           onComplete={() => {
             setDefinitionId(undefined);
           }}
@@ -76,8 +106,9 @@ export function PublicLink({
           direction={{ base: 'column', sm: 'row' }}
           gap={{ base: 'sm', sm: 'lg' }}
           justify={{ sm: 'apart' }}
+          wrap="wrap"
         >
-          {integrationsDefinitions.map((integrationDefinition) => (
+          {integrationsDefinitionsFinal.map((integrationDefinition) => (
             <Paper
               withBorder
               radius="md"
@@ -101,15 +132,23 @@ export function PublicLink({
         </Flex>
       </div>
 
-      {!!link.integrationAccounts.length && (
-        <div>
-          <Alert color="green" m="md" icon={<IconCheck size="1rem" />}>
-            <Text>
-              This link has already {link.integrationAccounts.length} connected.
-            </Text>
-          </Alert>
-        </div>
-      )}
+      {link &&
+        link.integrationAccounts.length > 0 &&
+        Object.keys(connectedAccounts).length > 0 && (
+          <div>
+            <Alert color="green" m="md">
+              You already have{' '}
+              {Object.keys(connectedAccounts).map((account: any) => (
+                <>
+                  <b>
+                    {connectedAccounts[account]} {account}
+                  </b>{' '}
+                </>
+              ))}
+              connected
+            </Alert>
+          </div>
+        )}
     </div>
   );
 }

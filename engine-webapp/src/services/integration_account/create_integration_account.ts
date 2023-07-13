@@ -19,6 +19,7 @@ export interface CreateIntegrationAccountWithoutWorkspaceParams {
   config: any;
   authType: string;
   integrationAccountName: string;
+  accountIdentifier: string;
   linkId: string;
 }
 

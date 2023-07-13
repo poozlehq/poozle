@@ -42,7 +42,7 @@ export function NewIntegration() {
 
   return (
     <>
-      <Header title="New Integration Account" />
+      <Header title="New Integration Account" showBack />
 
       <Paper m="xl" className={styles.container}>
         <Group p="md">
