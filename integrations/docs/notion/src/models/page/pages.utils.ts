@@ -3,7 +3,7 @@
 
 export const BASE_URL = 'https://api.notion.com/v1';
 
-export function convertPage(pageData: any) {
+export function convertPages(pageData: any) {
   const titleKey = Object.keys(pageData.properties).find(
     (key) => pageData.properties[key].id === 'title',
   );
@@ -12,6 +12,19 @@ export function convertPage(pageData: any) {
     id: pageData.id,
     parent_id: pageData.parent[pageData.parent?.type] || '',
     title: titleKey ? pageData.properties[titleKey].title[0]?.plain_text : '',
+    created_by: pageData.created_by.id,
+    created_at: pageData.created_time,
+    updated_at: pageData.last_edited_time,
+    updated_by: pageData.last_edited_by.id,
+    raw_data: pageData,
+  };
+}
+
+export function convertBlockPage(pageData: any) {
+  return {
+    id: pageData.id,
+    type: pageData.type,
+    title: pageData[pageData.type].title,
     created_by: pageData.created_by.id,
     created_at: pageData.created_time,
     updated_at: pageData.last_edited_time,
