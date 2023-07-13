@@ -63,23 +63,7 @@ export async function main(command: string, allParams: any) {
 
   const response = await integration.runCommand(command, allParams);
 
-  console.log(response);
   return response;
 }
 
 export default main;
-
-main('RUN', {
-  path: '/collections',
-  method: 'GET',
-  params: {
-    queryParams: {
-      limit: 10,
-    },
-  },
-  config: {
-    api_key: '',
-    workspace_id: '',
-    authType: 'API Key',
-  },
-});
