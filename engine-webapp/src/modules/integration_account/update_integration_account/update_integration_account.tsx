@@ -27,8 +27,6 @@ export function UpdateIntegration() {
     integrationAccountId: integrationAccountId as string,
   });
 
-  console.log(integrationAccount);
-
   return (
     <>
       <Header title="Integration" />

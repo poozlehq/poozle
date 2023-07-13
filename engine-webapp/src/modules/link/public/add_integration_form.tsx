@@ -66,6 +66,10 @@ export function Form({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const validate: any = getValidateObject(initialValues);
 
+  const onlyOAuthSupport =
+    Object.keys(spec.auth_specification).includes('OAuth2') &&
+    Object.keys(spec.auth_specification).length === 1;
+
   const form = useForm({
     initialValues: getInitialValues(spec, integrationAccountNameDefault),
 
@@ -82,19 +86,21 @@ export function Form({
     });
 
   React.useEffect(() => {
-    createRedirectURL({
-      config: {},
-      linkId,
-      integrationAccountName: integrationAccountNameDefault,
-      accountIdentifier: accountIdentifier as string,
-      redirectURL: redirectURL
-        ? (redirectURL as string)
-        : `${publicRuntimeConfig.NEXT_PUBLIC_BASE_HOST}/link/${linkId}`,
-      integrationOAuthAppId: oAuthApp.integrationOAuthAppId,
-    });
+    if (oAuthApp && (onlyOAuthSupport || preferOAuth)) {
+      createRedirectURL({
+        config: {},
+        linkId,
+        integrationAccountName: integrationAccountNameDefault,
+        accountIdentifier: accountIdentifier as string,
+        redirectURL: redirectURL
+          ? (redirectURL as string)
+          : `${publicRuntimeConfig.NEXT_PUBLIC_BASE_HOST}/link/${linkId}`,
+        integrationOAuthAppId: oAuthApp.integrationOAuthAppId,
+      });
+    }
   }, []);
 
-  if (oAuthApp && preferOAuth) {
+  if (oAuthApp && (onlyOAuthSupport || preferOAuth)) {
     return (
       <Group align="vertical" position="center" pt="lg" pb="lg">
         <Loader height={50} />
