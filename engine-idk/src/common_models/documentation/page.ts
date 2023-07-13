@@ -19,6 +19,10 @@ export const PageSchema = {
       type: 'string',
       default: '',
     },
+    type: {
+      type: 'string',
+      default: '',
+    },
     created_at: {
       type: 'string',
       default: '',
@@ -34,6 +38,7 @@ export interface Page {
   id: string;
   parent_id: string;
   title: string;
+  type?: string;
   created_by: string;
   created_at: string;
   updated_at: string;
