@@ -18,6 +18,7 @@ export interface SingleBlockResponse {
   type: BlockType;
 
   // TODO (harshith): fix the types
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
   children?: SingleBlockResponse[];
 }
@@ -85,8 +86,10 @@ export async function fetchPageBlocks(
       if (block.has_children) {
         const childUrl = `${BASE_URL}/blocks/${block.id.replace(/-/g, '')}/children`;
         const children = await fetchPageBlocks(childUrl, headers, params);
+
         return { ...block, children: children.blocks };
       }
+
       return block;
     }),
   );
@@ -102,28 +105,33 @@ export async function fetchPageBlocks(
 
 export function extractBlockData(data: SingleBlockResponse): Block {
   const type = data.type;
-  const content = data[type].rich_text?.map((richtext: any) => {
-    return {
-      annotations: {
-        bold: richtext.annotations.bold ?? '',
-        italic: richtext.annotations.italic ?? '',
-        strikethrough: richtext.annotations.strikethrough ?? '',
-        underline: richtext.annotations.underline ?? '',
-        code: richtext.annotations.code ?? '',
-        color: richtext.annotations.color ?? '',
-      },
-      plain_text: richtext.plain_text,
-      href: richtext.href,
-    };
-  });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const content =
+    'rich_text' in data[type]
+      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        data[type].rich_text?.map((richtext: any) => {
+          return {
+            annotations: {
+              bold: richtext.annotations.bold ?? '',
+              italic: richtext.annotations.italic ?? '',
+              strikethrough: richtext.annotations.strikethrough ?? '',
+              underline: richtext.annotations.underline ?? '',
+              code: richtext.annotations.code ?? '',
+              color: richtext.annotations.color ?? '',
+            },
+            plain_text: richtext.plain_text,
+            href: richtext.href,
+          };
+        })
+      : data[type];
 
   const children = data.children
     ? data.children?.map((data: SingleBlockResponse) => extractBlockData(data))
     : [];
 
   const block_data = {
-    id: data.id,
-    parent_id: data.parent?.id,
+    id: data.id.replace(/-/g, ''),
+    parent_id: data.parent?.type ? data.parent[data.parent.type].replace(/-/g, '') : '',
     block_type: data.type,
     content,
     children,

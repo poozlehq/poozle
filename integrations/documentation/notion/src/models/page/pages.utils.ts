@@ -9,7 +9,7 @@ export function convertPages(pageData: any) {
   );
 
   return {
-    id: pageData.id,
+    id: pageData.id.replace(/-/g, ''),
     parent_id: pageData.parent[pageData.parent?.type] || '',
     title: titleKey ? pageData.properties[titleKey].title[0]?.plain_text : '',
     created_by: pageData.created_by.id,
@@ -22,7 +22,7 @@ export function convertPages(pageData: any) {
 
 export function convertBlockPage(pageData: any) {
   return {
-    id: pageData.id,
+    id: pageData.id.replace(/-/g, ''),
     type: pageData.type,
     title: pageData[pageData.type].title,
     created_by: pageData.created_by.id,
