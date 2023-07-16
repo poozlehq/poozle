@@ -5,6 +5,10 @@ import { IntegrationType } from '@prisma/client';
 import { IsObject, IsOptional, IsString } from 'class-validator';
 
 export class IntegrationAccountRequestIdBody {
+  /**
+   * Id for the integration account
+   * @example Kitty
+   */
   @IsString()
   integrationAccountId: string;
 }
@@ -23,6 +27,10 @@ export class IntegrationAccountRequestBody {
 }
 
 export class IntegrationAccountsRequestBody {
+  /**
+   * Workspace ID of the integration accounts you want to fetch
+   * @example 0a58f56e-3f59-4f4e-a8e1-a9e47aae5c3c
+   */
   @IsString()
   workspaceId: string;
 }

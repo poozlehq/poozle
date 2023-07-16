@@ -77,12 +77,12 @@ export class BasePath {
       typeof params.queryParams?.cursor === 'string' ? params.queryParams?.cursor : '';
 
     const next_cursor = response.meta ? response.meta.next_cursor : '';
-    const before_cursor = response.meta ? response.meta.previous_cursor ?? '' : '';
+    const previous_cursor = response.meta ? response.meta.previous_cursor ?? '' : '';
 
     return {
       limit: 0,
       cursors: {
-        before: before_cursor,
+        previous: previous_cursor,
         current: current_cursor,
         next: next_cursor,
       },

@@ -13,7 +13,11 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { CheckResponse } from '@poozle/engine-idk';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
@@ -37,6 +41,16 @@ import { IntegrationAccountService } from './integration_account.service';
   path: 'integration_account',
 })
 @ApiTags('Integration Account')
+@ApiBadRequestResponse({
+  status: 400,
+  type: 'string',
+  description: 'Bad Request',
+})
+@ApiUnauthorizedResponse({
+  status: 401,
+  type: 'string',
+  description: 'Not authorised',
+})
 export class IntegrationAccountController {
   constructor(
     private integrationAccountService: IntegrationAccountService,
