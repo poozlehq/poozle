@@ -25,7 +25,7 @@
 </em>
 </p>
 
-Poozle is building an integration infrastructure for AI apps. AI apps need to extract data from popular SAAS tools like Gmail, Notion, Confluence, Gtihub, Jira, WhatsApp, Salesforce etc. Hence in the journey end up building their own integration infrastructure. Poozle provides a Unified API for verticals like Email, Documentation, Ticketing, and CRM that  allows you to connect all SAAS tools of that vertical at once. We do the hard work of integrating and smoothing over thousands of SAAS tools, exposing a clean and unified interface to developers. We aim to make it easy for companies to build new integrations.
+Poozle is building an integration infrastructure for ticketing integrations. Companies need to extract their customers' data from ticketing SAAS tools like Gtihub, Jira, Linear, Zendesk, Intercom etc. Hence in the journey companies end up building their own integration infrastructure. Poozle provides a Unified API for the same that  enables companies to integrate multiple of these tools at once. We do the hard work of integrating and smoothing them and exposing a clean and unified interface to developers. We aim to make it easy for companies to build new integrations.
 
 ## Features
 * Managed Authentication
@@ -58,12 +58,10 @@ Poozle is building an integration infrastructure for AI apps. AI apps need to ex
 
 Poozle works with **any** API and use-case. Adding [Integration]([https://docs.nango.dev/core-concepts#api-configurations](https://docs.poozle.dev/understanding-poozle/protocol)) is easy and we already have the main APIs covered.
 
-20+ Integrations are pre-configured to work out-of-the-box, including:
+5+ Integrations are pre-configured to work out-of-the-box, including:
 
--   **Accounting**: Xero, Freshbooks, Zoho Books, etc.
 -   **Ticketing**: GitHub, GitLab, Linear, Jira, Asana etc.
 -   **Messaging**: Slack, Gmail etc.
--   **ATS**: Greenhouse, Lever etc.
 
 If your favourite Integration is missing
 [open a GitHub issue](https://github.com/poozlehq/engine/issues/new)
