@@ -54,9 +54,9 @@ Poozle is building an integration infrastructure for ticketing SAAS tools. Compa
 * [Deploy Poozle Open Source](https://docs.poozle.dev/oss/deploy-poozle)
 * Create integrations in minutes with our IDK (Integration development kit).
 
-## 20+ pre-configured Integrations, easily add your own
+## 5+ pre-configured Integrations, easily add your own
 
-Poozle works with **any** API and use-case. Adding [Integration]([https://docs.nango.dev/core-concepts#api-configurations](https://docs.poozle.dev/understanding-poozle/protocol)) is easy and we already have the main APIs covered.
+Poozle works with **any** API and use-case. Adding [Integration](https://docs.poozle.dev/understanding-poozle/protocol) is easy and we already have the main APIs covered.
 
 5+ Integrations are pre-configured to work out-of-the-box, including:
 
