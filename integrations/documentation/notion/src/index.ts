@@ -2,11 +2,11 @@
 
 import { BaseIntegration, CheckResponse, Config, SpecificationResponse } from '@poozle/engine-idk';
 import axios from 'axios';
+import { ProxyPath } from 'proxy';
 
 import { BlocksPath } from 'models/block/blocks.path';
 import { PagePath } from 'models/page/page.path';
 import { PagesPath } from 'models/page/pages.path';
-import { ProxyPath } from 'proxy';
 
 import spec from './spec';
 

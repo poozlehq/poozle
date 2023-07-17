@@ -151,6 +151,7 @@ export async function fetchPageBlocks(
   };
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function extractContent(data: any): Content[] {
   const type = data.type;
   switch (type) {
@@ -184,7 +185,8 @@ export function extractContent(data: any): Content[] {
 
     default:
       return 'rich_text' in data[type]
-        ? data[type]?.rich_text?.map((richtext: any) => {
+        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          data[type]?.rich_text?.map((richtext: any) => {
             return {
               annotations: {
                 bold: richtext.annotations.bold ?? '',
@@ -206,11 +208,13 @@ export function extractChildrenData(data: SingleBlockResponse): Block[] {
   if (data.type === BlockType.table_row) {
     const cells = data[data.type].cells ? data[data.type].cells : [];
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return cells.map((cell: any) => ({
       id: data.id,
       parent_id: data.parent?.type ? data.parent[data.parent.type] : '',
       block_type: BlockType.table_cell,
       content: [
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ...cell?.map((richtext: any) => ({
           annotations: {
             bold: richtext.annotations.bold ?? '',
@@ -230,17 +234,26 @@ export function extractChildrenData(data: SingleBlockResponse): Block[] {
 
   const caption = data[data.type].caption ? data[data.type].caption : [];
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return caption.map((richtext: any) => ({
-    annotations: {
-      bold: richtext.annotations.bold ?? '',
-      italic: richtext.annotations.italic ?? '',
-      strikethrough: richtext.annotations.strikethrough ?? '',
-      underline: richtext.annotations.underline ?? '',
-      code: richtext.annotations.code ?? '',
-      color: richtext.annotations.color ?? '',
-    },
-    plain_text: richtext.plain_text,
-    href: richtext.href,
+    id: data.id,
+    parent_id: data.parent?.type ? data.parent[data.parent.type] : '',
+    block_type: BlockType.bookmark_text,
+    content: [
+      {
+        annotations: {
+          bold: richtext.annotations.bold ?? '',
+          italic: richtext.annotations.italic ?? '',
+          strikethrough: richtext.annotations.strikethrough ?? '',
+          underline: richtext.annotations.underline ?? '',
+          code: richtext.annotations.code ?? '',
+          color: richtext.annotations.color ?? '',
+        },
+        plain_text: richtext.plain_text,
+        href: richtext.href,
+      },
+    ],
+    children: [],
   }));
 }
 

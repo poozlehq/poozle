@@ -84,9 +84,9 @@
     "name": "Notion",
     "key": "notion",
     "icon": "notion.svg",
-    "version": "0.1.7",
+    "version": "0.1.8",
     "releaseStage": "ALPHA",
-    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/documentation/notion/0.1.7/index.js",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/documentation/notion/0.1.8/index.js",
     "integrationType": "DOCUMENTATION"
   },
   {

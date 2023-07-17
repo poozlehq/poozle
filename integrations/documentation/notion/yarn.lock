@@ -1109,10 +1109,10 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@poozle/engine-idk@^0.1.23":
-  version "0.1.23"
-  resolved "https://registry.yarnpkg.com/@poozle/engine-idk/-/engine-idk-0.1.23.tgz#aa60e925df06f08b35874a69cfb94ced3df99f8b"
-  integrity sha512-DVLYwiEqdBGJbMtFC89AZjr8RQZcREt+Uhinf2kF96oIJuzblprhZ6kVBuGMlUHFWwqWEFNfkFXnOSL3y9mOig==
+"@poozle/engine-idk@^0.1.24":
+  version "0.1.24"
+  resolved "https://registry.yarnpkg.com/@poozle/engine-idk/-/engine-idk-0.1.24.tgz#9dce7e45d16cbbf8bf8e2b42225872c0aa59d13d"
+  integrity sha512-yO4JS+zcQj/v9nvF3FriZGTdeQytcqAQQXF/Qd+dx9QtCah2SoBD93zy2pYtpoXPCZuw1z2WPQWcxhsyom5BDA==
   dependencies:
     axios "^1.3.2"
     qs "^6.11.2"

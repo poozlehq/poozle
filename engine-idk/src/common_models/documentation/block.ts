@@ -23,6 +23,7 @@ export interface Block {
 
 export enum BlockType {
   bookmark = 'bookmark',
+  bookmark_text = 'bookmark_text',
   breadcrumb = 'breadcrumb',
   bulleted_list_item = 'bulleted_list_item',
   callout = 'callout',
@@ -48,6 +49,7 @@ export enum BlockType {
   table = 'table',
   table_of_contents = 'table_of_contents',
   table_row = 'table_row',
+  table_cell = 'table_cell',
   template = 'template',
   to_do = 'to_do',
   toggle = 'toggle',
