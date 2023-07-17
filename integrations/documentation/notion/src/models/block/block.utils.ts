@@ -103,35 +103,56 @@ export async function fetchPageBlocks(
   };
 }
 
-export function extractBlockData(data: SingleBlockResponse): Block {
+export function extractContent(data: any): Content | Content[] {
   const type = data.type;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const content =
-    'rich_text' in data[type]
-      ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data[type].rich_text?.map((richtext: any) => {
-          return {
-            annotations: {
-              bold: richtext.annotations.bold ?? '',
-              italic: richtext.annotations.italic ?? '',
-              strikethrough: richtext.annotations.strikethrough ?? '',
-              underline: richtext.annotations.underline ?? '',
-              code: richtext.annotations.code ?? '',
-              color: richtext.annotations.color ?? '',
-            },
-            plain_text: richtext.plain_text,
-            href: richtext.href,
-          };
-        })
-      : data[type];
+  switch (type) {
+    case BlockType.equation:
+      return {
+        plain_text: data[type].expression,
+      } as Content;
+
+    case BlockType.video:
+    case BlockType.image:
+    case BlockType.file:
+    case BlockType.pdf:
+      const contentType = data[type].type
+      return {
+        href: data[type][contentType]?.url,
+      } as Content;
+
+    case BlockType.bookmark:
+      return {
+        href: data[type].url,
+      } as Content;
+
+    default:
+      return data[type]?.rich_text?.map((richtext: any) => {
+        return {
+          annotations: {
+            bold: richtext.annotations.bold ?? '',
+            italic: richtext.annotations.italic ?? '',
+            strikethrough: richtext.annotations.strikethrough ?? '',
+            underline: richtext.annotations.underline ?? '',
+            code: richtext.annotations.code ?? '',
+            color: richtext.annotations.color ?? '',
+          },
+          plain_text: richtext.plain_text,
+          href: richtext.href,
+        };
+      });
+  }
+}
+
+export function extractBlockData(data: SingleBlockResponse): Block {
+  const content = extractContent(data);
 
   const children = data.children
     ? data.children?.map((data: SingleBlockResponse) => extractBlockData(data))
     : [];
 
   const block_data = {
-    id: data.id.replace(/-/g, ''),
-    parent_id: data.parent?.type ? data.parent[data.parent.type].replace(/-/g, '') : '',
+    id: data.id,
+    parent_id: data.parent?.type ? data.parent[data.parent.type] : '',
     block_type: data.type,
     content,
     children,

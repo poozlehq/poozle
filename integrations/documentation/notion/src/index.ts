@@ -6,6 +6,7 @@ import axios from 'axios';
 import { BlocksPath } from 'models/block/blocks.path';
 import { PagePath } from 'models/page/page.path';
 import { PagesPath } from 'models/page/pages.path';
+import { ProxyPath } from 'proxy';
 
 import spec from './spec';
 
@@ -37,6 +38,7 @@ class NotionIntegration extends BaseIntegration {
 
   paths() {
     return [
+      new ProxyPath(/^\/?proxy$/g, ['GET', 'POST', 'PATCH', 'DELETE']),
       /**
        * Blocks.
        * 1. Fetching the blocks

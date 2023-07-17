@@ -84,9 +84,9 @@
     "name": "Notion",
     "key": "notion",
     "icon": "notion.svg",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "releaseStage": "ALPHA",
-    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/documentation/notion/0.1.4/index.js",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/documentation/notion/0.1.6/index.js",
     "integrationType": "DOCUMENTATION"
   },
   {
@@ -165,9 +165,9 @@
     "name": "Google Drive",
     "key": "google_drive",
     "icon": "google_drive.svg",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "releaseStage": "ALPHA",
-    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/storage/google_drive/0.1.0/index.js",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/storage/google_drive/0.1.1/index.js",
     "integrationType": "STORAGE"
   }
 ]
