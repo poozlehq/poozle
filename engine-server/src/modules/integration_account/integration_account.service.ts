@@ -130,6 +130,17 @@ export class IntegrationAccountService {
     });
   }
 
+  async deleteIntegrationAccount(
+    integrationAccountRequestIdBody: IntegrationAccountRequestIdBody,
+  ) {
+    return await this.prismaService.integrationAccount.delete({
+      where: {
+        integrationAccountId:
+          integrationAccountRequestIdBody.integrationAccountId,
+      },
+    });
+  }
+
   async getIntegrationAccount(
     integrationAccountRequestBody: IntegrationAccountRequestBody,
   ) {

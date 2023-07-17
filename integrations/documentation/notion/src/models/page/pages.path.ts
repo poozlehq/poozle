@@ -7,7 +7,7 @@ import axios, { AxiosHeaders } from 'axios';
 // import { BASE_URL, convertBlock, convertPage, fetchPageBlocks } from './pages.utils';
 import { BASE_URL, convertPages } from './pages.utils';
 
-export class GetPagesPath extends BasePath {
+export class PagesPath extends BasePath {
   async fetchData(url: string, headers: AxiosHeaders, params: Params) {
     const pagesResponse = await axios.post(
       url,
@@ -39,6 +39,7 @@ export class GetPagesPath extends BasePath {
     );
 
     return {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: pagesResponse.data.results?.map((data: any) => {
         return convertPages(data);
       }),

@@ -1,6 +1,6 @@
 {
   "name": "@poozle/engine-idk",
-  "version": "0.1.18",
+  "version": "0.1.21",
   "description": "Used to develop integrations for Poozle",
   "license": "MIT",
   "author": "Poozle <support@poozle.in>",

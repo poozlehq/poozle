@@ -46,7 +46,7 @@ export function OAuthApps() {
               width={25}
               height={25}
             />
-            <Text>{data.integrationDefinition.name}</Text>
+            <Text pl="xs">{data.integrationDefinition.name}</Text>
           </div>
         </div>
       ),

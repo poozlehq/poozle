@@ -121,7 +121,7 @@ export function Integrations() {
           <div className={styles.tableDataContainer}>
             <div className={styles.integrationName}>
               <IntegrationIcon icon={data.icon} width={25} height={25} />
-              <Text>{data.name}</Text>
+              <Text pl="sm">{data.name}</Text>
             </div>
           </div>
         );

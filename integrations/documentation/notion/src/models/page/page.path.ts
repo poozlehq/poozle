@@ -6,7 +6,7 @@ import axios, { AxiosHeaders } from 'axios';
 
 import { BASE_URL, convertBlockPage } from './pages.utils';
 
-export class GetPagePath extends BasePath {
+export class PagePath extends BasePath {
   async fetchSinglePage(url: string, headers: AxiosHeaders, _params: Params) {
     const response = await axios({
       url,

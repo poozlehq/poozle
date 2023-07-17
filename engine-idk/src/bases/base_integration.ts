@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
+import { AxiosHeaders } from 'axios';
 import { getAccessToken, interpolateHeaders, interpolateString } from 'utils/oAuthUtils';
 
 import {
@@ -13,6 +14,8 @@ import {
   RunResponse,
   Params,
 } from 'types/integration';
+
+import { BasePath } from './base_path';
 
 export class BaseIntegration implements BaseIntegrationInterface {
   /*
@@ -71,17 +74,18 @@ export class BaseIntegration implements BaseIntegrationInterface {
     }
   }
 
-  models(): any[] {
+  paths(): any[] {
     return [];
   }
 
   async run(path: string, method: string, config: Config, params: Params): RunResponse {
-    const models = this.models();
+    const paths = this.paths();
 
-    const modelToRun = models.find((model) => model.hasPath(path, method));
+    const pathToRun: BasePath | undefined = paths.find((p) => p.isPath(path, method));
 
-    if (modelToRun) {
-      return await modelToRun.run(path, method, await this.authHeaders(config), params, config);
+    if (pathToRun) {
+      const headers = await this.authHeaders(config);
+      return await pathToRun.baseRun(method, headers as AxiosHeaders, params, config);
     }
 
     return {

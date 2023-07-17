@@ -6,6 +6,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -57,6 +58,9 @@ export class IntegrationAccountController {
     private linkService: LinkService,
   ) {}
 
+  /**
+   * Get all integration accounts in a workspace
+   */
   @Get()
   @UseGuards(new AuthGuard())
   async getIntegrationAccounts(
@@ -68,6 +72,9 @@ export class IntegrationAccountController {
     );
   }
 
+  /**
+   * Get a integration accounts in a workspace
+   */
   @Get(':integrationAccountId')
   @UseGuards(new AuthGuard())
   async getIntegrationAccount(
@@ -79,6 +86,23 @@ export class IntegrationAccountController {
     );
   }
 
+  /**
+   * Delete a Integration account
+   */
+  @Delete(':integrationAccountId')
+  @UseGuards(new AuthGuard())
+  async deleteIntegrationAccount(
+    @Param()
+    integrationAccountIdRequestIdBody: IntegrationAccountRequestIdBody,
+  ) {
+    return await this.integrationAccountService.deleteIntegrationAccount(
+      integrationAccountIdRequestIdBody,
+    );
+  }
+
+  /**
+   * Check credentials for a integration definition
+   */
   @Post('check')
   @UseGuards(new AuthGuard())
   async checkCredentialsForIntegrationAccount(
@@ -93,6 +117,9 @@ export class IntegrationAccountController {
     );
   }
 
+  /**
+   * Update a integration account in workspace
+   */
   @Post(':integrationAccountId')
   @UseGuards(new AuthGuard())
   async updateIntegrationAccount(
@@ -107,6 +134,9 @@ export class IntegrationAccountController {
     );
   }
 
+  /**
+   * Create integration account in a workspace
+   */
   @Post()
   @UseGuards(new AuthGuard())
   async createIntegrationAccount(
@@ -123,6 +153,9 @@ export class IntegrationAccountController {
     );
   }
 
+  /**
+   * Get integration account for a link
+   */
   @Post('link/:linkId')
   async createIntegrationAccountWithLink(
     @Param()
@@ -149,9 +182,12 @@ export class IntegrationAccountController {
     );
   }
 
+  /**
+   * Proxy all the calls to the integration directly
+   */
   @All(':integrationAccountId/proxy/*')
   @UseGuards(new AuthGuard())
-  async proxyPost(
+  async proxy(
     @Body()
     body: any,
     @Query()

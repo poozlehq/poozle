@@ -137,5 +137,5 @@ export function extractBlockData(data: SingleBlockResponse): Block {
     children,
   };
 
-  return block_data as Block;
+  return block_data;
 }

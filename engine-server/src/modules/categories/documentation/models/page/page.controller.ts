@@ -50,6 +50,9 @@ import {
   description: 'Not authorised',
 })
 export class PageController {
+  /**
+   * Get all pages
+   */
   @Get('pages')
   async getPages(
     @Query() query: ListPagesQueryParams,
@@ -69,6 +72,9 @@ export class PageController {
     return pageResponse;
   }
 
+  /**
+   * Get a single page
+   */
   @Get('pages/:page_id')
   async getPageeId(
     @Query() query: CommonPageQueryParams,
@@ -90,6 +96,9 @@ export class PageController {
     return pageResponse;
   }
 
+  /**
+   * Create a page
+   */
   @Post('pages')
   async createPage(
     @Query() query: CommonPageQueryParams,

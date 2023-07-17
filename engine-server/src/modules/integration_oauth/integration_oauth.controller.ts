@@ -9,7 +9,11 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 
 import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp/entities';
 
@@ -29,9 +33,22 @@ import { IntegrationOAuthService } from './integration_oauth.service';
   path: 'integration_oauth',
 })
 @ApiTags('Integration OAuth Apps')
+@ApiBadRequestResponse({
+  status: 400,
+  type: 'string',
+  description: 'Bad Request',
+})
+@ApiUnauthorizedResponse({
+  status: 401,
+  type: 'string',
+  description: 'Not authorised',
+})
 export class IntegrationOAuthController {
   constructor(private integrationOAuthService: IntegrationOAuthService) {}
 
+  /**
+   * Get all integration oAuth apps in a workspace
+   */
   @Get()
   @UseGuards(new AuthGuard())
   async getIntegrationOAuthByWorkspace(

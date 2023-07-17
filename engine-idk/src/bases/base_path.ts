@@ -3,7 +3,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { AxiosHeaders } from 'axios';
-import { convertToModelKeys } from 'utils';
 
 import { Config, Params } from 'types/integration';
 import { Meta } from 'types/path';
@@ -11,13 +10,11 @@ import { Meta } from 'types/path';
 export class BasePath {
   pathRegex: RegExp;
   method: string | string[];
-  schema: Record<string, any>;
 
-  constructor(pathRegex: RegExp, method: string | string[], schema: Record<string, any>) {
+  constructor(pathRegex: RegExp, method: string | string[]) {
     this.pathRegex = pathRegex;
     this.method =
       typeof method === 'string' ? method.toLowerCase() : method.map((m) => m.toLowerCase());
-    this.schema = schema;
   }
 
   isMatchingMethod(method: string): boolean {
@@ -32,13 +29,6 @@ export class BasePath {
     return this.pathRegex.test(path) && this.isMatchingMethod(method);
   }
 
-  convertToModel(data: any, raw: boolean) {
-    const raw_data = data['raw_data'];
-    delete data['raw_data'];
-
-    return convertToModelKeys(data, this.schema, raw_data, raw);
-  }
-
   async baseRun(method: string, headers: AxiosHeaders, params: Params, config: Config) {
     const responseFromRun: any = await this.run(method, headers, params, config);
 
@@ -47,28 +37,24 @@ export class BasePath {
       return responseFromRun;
     }
 
-    if (responseFromRun.meta && Array.isArray(responseFromRun.data)) {
-      const data = responseFromRun.data.map((responseItem: any) =>
-        this.convertToModel(
-          responseItem,
-          params.queryParams?.raw === true || params.queryParams?.raw === 'true' ? true : false,
-        ),
-      );
+    const response: any = {
+      data: responseFromRun.data,
+    };
 
+    if (responseFromRun.meta && Array.isArray(responseFromRun.data)) {
       const meta = await this.getMetaParams(responseFromRun, params);
 
-      return {
-        data,
-        meta,
-      };
+      response['meta'] = meta;
     }
 
-    return {
-      data: this.convertToModel(
-        responseFromRun,
-        params.queryParams?.raw === true || params.queryParams?.raw === 'true' ? true : false,
-      ),
-    };
+    if (
+      (params.queryParams?.raw === true || params.queryParams?.raw === 'true' ? true : false) &&
+      responseFromRun.raw
+    ) {
+      response['raw'] = responseFromRun.raw;
+    }
+
+    return response;
   }
 
   // Written by the integration

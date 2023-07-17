@@ -21,7 +21,7 @@ import { useCreateRedirectURLMutation } from 'services/callback/create_redirect_
 import { useCreateIntegrationAccountWithLinkMutation } from 'services/integration_account';
 import { useGetIntegrationDefinitionSpecQuery } from 'services/integration_definition/get_spec_for_integration_definition';
 
-import { IntegrationIcon, Loader } from 'components';
+import { Loader } from 'components';
 
 import { getAllProperties, getValidateObject } from './public_link_utils';
 

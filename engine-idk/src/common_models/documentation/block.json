@@ -1,0 +1,57 @@
+{
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "parent_id": {
+      "type": "string"
+    },
+    "block_type": {
+      "type": "string"
+    },
+    "content": {
+      "type": "array",
+      "items": [
+        {
+          "annotations": {
+            "type": "array",
+            "items": [
+              {
+                "properties": {
+                  "bold": {
+                    "type": "string"
+                  },
+                  "italic": {
+                    "type": "string"
+                  },
+                  "strikethrough": {
+                    "type": "string"
+                  },
+                  "underline": {
+                    "type": "string"
+                  },
+                  "code": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string"
+                  }
+                }
+              }
+            ]
+          },
+          "plain_text": {
+            "type": "string"
+          },
+          "href": {
+            "type": "string"
+          }
+        }
+      ]
+    },
+    "children": {
+      "type": "array"
+    }
+  }
+}
