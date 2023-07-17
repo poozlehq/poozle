@@ -69,6 +69,52 @@ export function convertAppendBody(data: Block[]) {
   };
 }
 
+export async function fetchBlockChildren(
+  block: SingleBlockResponse,
+  headers: AxiosHeaders,
+): Promise<any> {
+  const childUrl = `${BASE_URL}/blocks/${block.id.replace(/-/g, '')}/children`;
+
+  const params = {
+    page_size: 100,
+  };
+
+  const response = await axios({ url: childUrl, headers, params });
+  let results = response.data.results;
+  let has_more = response.data.has_more;
+  let next_cursor = response.data.has_more ? response.data.next_cursor : '';
+
+  while (has_more) {
+    const next_response = await axios({
+      url: childUrl,
+      headers,
+      params: {
+        start_cursor: next_cursor,
+      },
+    });
+
+    results = results.concat(next_response.data.results);
+
+    has_more = next_response.data.has_more;
+    next_cursor = next_response.data.has_more ? next_response.data.next_cursor : '';
+  }
+
+  results = await Promise.all(
+    results?.map(async (block: SingleBlockResponse) => {
+      if (block.has_children) {
+        const children = await fetchBlockChildren(block, headers);
+        return { ...block, children: children.blocks };
+      }
+
+      return block;
+    }),
+  );
+
+  return {
+    blocks: results,
+  };
+}
+
 export async function fetchPageBlocks(
   url: string,
   headers: AxiosHeaders,
@@ -87,8 +133,7 @@ export async function fetchPageBlocks(
   results = await Promise.all(
     results?.map(async (block: SingleBlockResponse) => {
       if (block.has_children) {
-        const childUrl = `${BASE_URL}/blocks/${block.id.replace(/-/g, '')}/children`;
-        const children = await fetchPageBlocks(childUrl, headers, params);
+        const children = await fetchBlockChildren(block, headers);
 
         return { ...block, children: children.blocks };
       }
@@ -135,20 +180,7 @@ export function extractContent(data: any): Content[] {
       ] as Content[];
 
     case BlockType.table_row:
-      return data[type].cells.map((cell: any) => {
-        return cell?.map((richtext: any) => ({
-          annotations: {
-            bold: richtext.annotations.bold ?? '',
-            italic: richtext.annotations.italic ?? '',
-            strikethrough: richtext.annotations.strikethrough ?? '',
-            underline: richtext.annotations.underline ?? '',
-            code: richtext.annotations.code ?? '',
-            color: richtext.annotations.color ?? '',
-          },
-          plain_text: richtext.plain_text,
-          href: richtext.href,
-        }));
-      });
+      return [];
 
     default:
       return 'rich_text' in data[type]
@@ -170,12 +202,60 @@ export function extractContent(data: any): Content[] {
   }
 }
 
+export function extractChildrenData(data: SingleBlockResponse): Block[] {
+  if (data.type === BlockType.table_row) {
+    const cells = data[data.type].cells ? data[data.type].cells : [];
+
+    return cells.map((cell: any) => ({
+      id: data.id,
+      parent_id: data.parent?.type ? data.parent[data.parent.type] : '',
+      block_type: BlockType.table_cell,
+      content: [
+        ...cell?.map((richtext: any) => ({
+          annotations: {
+            bold: richtext.annotations.bold ?? '',
+            italic: richtext.annotations.italic ?? '',
+            strikethrough: richtext.annotations.strikethrough ?? '',
+            underline: richtext.annotations.underline ?? '',
+            code: richtext.annotations.code ?? '',
+            color: richtext.annotations.color ?? '',
+          },
+          plain_text: richtext.plain_text,
+          href: richtext.href,
+        })),
+      ],
+      children: [],
+    })) as Block[];
+  }
+
+  const caption = data[data.type].caption ? data[data.type].caption : [];
+
+  return caption.map((richtext: any) => ({
+    annotations: {
+      bold: richtext.annotations.bold ?? '',
+      italic: richtext.annotations.italic ?? '',
+      strikethrough: richtext.annotations.strikethrough ?? '',
+      underline: richtext.annotations.underline ?? '',
+      code: richtext.annotations.code ?? '',
+      color: richtext.annotations.color ?? '',
+    },
+    plain_text: richtext.plain_text,
+    href: richtext.href,
+  }));
+}
+
 export function extractBlockData(data: SingleBlockResponse): Block {
   const content = extractContent(data);
 
-  const children = data.children
-    ? data.children?.map((data: SingleBlockResponse) => extractBlockData(data))
-    : [];
+  let children: Block[] = [];
+
+  if (data.type === BlockType.table_row || data.type === BlockType.bookmark) {
+    children = extractChildrenData(data);
+  } else {
+    children = data.children
+      ? data.children?.map((data: SingleBlockResponse) => extractBlockData(data))
+      : [];
+  }
 
   const block_data = {
     id: data.id,
