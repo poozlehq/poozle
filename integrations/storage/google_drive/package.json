@@ -1,6 +1,6 @@
 {
   "name": "@poozle/google_drive",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "google_drive extension for Poozle",
   "exports": {
     ".": {
