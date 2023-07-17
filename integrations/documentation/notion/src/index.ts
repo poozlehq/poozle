@@ -1,16 +1,12 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import {
-  BaseIntegration,
-  CheckResponse,
-  Config,
-  GenericProxyModel,
-  SpecificationResponse,
-} from '@poozle/engine-idk';
+import { BaseIntegration, CheckResponse, Config, SpecificationResponse } from '@poozle/engine-idk';
 import axios from 'axios';
 
-import { NotionBlockModel } from 'models/block/block.model';
-import { NotionPageModel } from 'models/page/page.model';
+import { BlocksPath } from 'models/block/blocks.path';
+import { PagePath } from 'models/page/page.path';
+import { PagesPath } from 'models/page/pages.path';
+import { ProxyPath } from 'proxy';
 
 import spec from './spec';
 
@@ -40,8 +36,31 @@ class NotionIntegration extends BaseIntegration {
     }
   }
 
-  models() {
-    return [new GenericProxyModel(), new NotionPageModel(), new NotionBlockModel()];
+  paths() {
+    return [
+      new ProxyPath(/^\/?proxy$/g, ['GET', 'POST', 'PATCH', 'DELETE']),
+      /**
+       * Blocks.
+       * 1. Fetching the blocks
+       * 2. Updating the blocks
+       * 3. Creating a block
+       */
+      new BlocksPath(/^\/?blocks+/g, ['GET', 'POST', 'PATCH']),
+
+      /**
+       * Pages.
+       * 1. Fetch Pages
+       * 2. Create Page
+       * Matches /pages
+       */
+      new PagesPath(/^\/?pages$/g, ['GET', 'POST']),
+
+      /**
+       * Get a page
+       * Matches /page
+       */
+      new PagePath(/^\/?pages+/g, ['GET']),
+    ];
   }
 }
 
