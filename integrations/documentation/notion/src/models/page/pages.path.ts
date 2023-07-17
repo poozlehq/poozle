@@ -9,6 +9,7 @@ import { BASE_URL, convertPages } from './pages.utils';
 
 export class PagesPath extends BasePath {
   async fetchData(url: string, headers: AxiosHeaders, params: Params) {
+    const limit = params.queryParams?.limit ? parseInt(params.queryParams?.limit.toString()) : 10;
     const pagesResponse = await axios.post(
       url,
       {
@@ -17,7 +18,7 @@ export class PagesPath extends BasePath {
           value: 'page',
           property: 'object',
         },
-        page_size: 10,
+        page_size: limit,
         ...(params.queryParams?.cursor ? { start_cursor: params.queryParams?.cursor } : {}),
         ...(params.queryParams?.direction === 'asc'
           ? {
@@ -43,8 +44,8 @@ export class PagesPath extends BasePath {
       data: pagesResponse.data.results?.map((data: any) => {
         return convertPages(data);
       }),
+      raw: pagesResponse.data.results,
       meta: {
-        has_more: pagesResponse.data.has_more,
         next_cursor: pagesResponse.data.has_more ? pagesResponse.data.next_cursor : '',
       },
     };
@@ -66,7 +67,9 @@ export class PagesPath extends BasePath {
 
     const response = await axios.post(url, body, { headers });
 
-    return convertPages(response.data);
+    return {
+      data: convertPages(response.data),
+    };
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {

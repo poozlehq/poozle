@@ -26,7 +26,6 @@ export class BlocksPath extends BasePath {
       })),
       raw: blocks,
       meta: {
-        has_more: meta.has_more,
         next_cursor: meta.next_cursor,
       },
     };

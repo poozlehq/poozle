@@ -9,27 +9,25 @@ export function convertPages(pageData: any) {
   );
 
   return {
-    id: pageData.id.replace(/-/g, ''),
-    parent_id: pageData.parent[pageData.parent?.type] || '',
+    id: pageData.id,
+    parent_id: pageData.parent?.type === "workspace" ? '' : (pageData.parent[pageData.parent?.type] ?? ''),
     title: titleKey ? pageData.properties[titleKey].title[0]?.plain_text : '',
     created_by: pageData.created_by.id,
     created_at: pageData.created_time,
     updated_at: pageData.last_edited_time,
     updated_by: pageData.last_edited_by.id,
-    raw_data: pageData,
   };
 }
 
 export function convertBlockPage(pageData: any) {
   return {
-    id: pageData.id.replace(/-/g, ''),
+    id: pageData.id,
     type: pageData.type,
     title: pageData[pageData.type].title,
     created_by: pageData.created_by.id,
     created_at: pageData.created_time,
     updated_at: pageData.last_edited_time,
     updated_by: pageData.last_edited_by.id,
-    raw_data: pageData,
   };
 }
 

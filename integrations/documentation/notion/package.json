@@ -1,6 +1,6 @@
 {
   "name": "@poozle/notion",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "notion extension for Poozle",
   "exports": {
     ".": {
@@ -47,7 +47,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@poozle/engine-idk": "^0.1.21",
+    "@poozle/engine-idk": "^0.1.22",
     "axios": "^1.4.0"
   },
   "browserslist": {

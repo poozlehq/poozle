@@ -66,7 +66,7 @@ export class BasePath {
     const previous_cursor = response.meta ? response.meta.previous_cursor ?? '' : '';
 
     return {
-      limit: 0,
+      limit: params.queryParams?.limit ? parseInt(params.queryParams?.limit.toString()) : 10,
       cursors: {
         previous: previous_cursor,
         current: current_cursor,

@@ -74,7 +74,10 @@ export async function fetchPageBlocks(
   headers: AxiosHeaders,
   params: Params,
 ): Promise<BlockResponse> {
+  const limit = params.queryParams?.limit ? parseInt(params.queryParams?.limit.toString()) : 10;
+
   const final_params = {
+    page_size: limit,
     ...(params.queryParams?.cursor ? { start_cursor: params.queryParams?.cursor } : {}),
   };
 
@@ -103,31 +106,37 @@ export async function fetchPageBlocks(
   };
 }
 
-export function extractContent(data: any): Content | Content[] {
+export function extractContent(data: any): Content[] {
   const type = data.type;
   switch (type) {
     case BlockType.equation:
-      return {
-        plain_text: data[type].expression,
-      } as Content;
+      return [
+        {
+          plain_text: data[type].expression,
+        },
+      ] as Content[];
 
     case BlockType.video:
     case BlockType.image:
     case BlockType.file:
     case BlockType.pdf:
-      const contentType = data[type].type
-      return {
-        href: data[type][contentType]?.url,
-      } as Content;
+      const contentType = data[type].type;
+      return [
+        {
+          href: data[type][contentType]?.url,
+        },
+      ] as Content[];
 
     case BlockType.bookmark:
-      return {
-        href: data[type].url,
-      } as Content;
+      return [
+        {
+          href: data[type].url,
+        },
+      ] as Content[];
 
-    default:
-      return data[type]?.rich_text?.map((richtext: any) => {
-        return {
+    case BlockType.table_row:
+      return data[type].cells.map((cell: any) => {
+        return cell?.map((richtext: any) => ({
           annotations: {
             bold: richtext.annotations.bold ?? '',
             italic: richtext.annotations.italic ?? '',
@@ -138,8 +147,26 @@ export function extractContent(data: any): Content | Content[] {
           },
           plain_text: richtext.plain_text,
           href: richtext.href,
-        };
+        }));
       });
+
+    default:
+      return 'rich_text' in data[type]
+        ? data[type]?.rich_text?.map((richtext: any) => {
+            return {
+              annotations: {
+                bold: richtext.annotations.bold ?? '',
+                italic: richtext.annotations.italic ?? '',
+                strikethrough: richtext.annotations.strikethrough ?? '',
+                underline: richtext.annotations.underline ?? '',
+                code: richtext.annotations.code ?? '',
+                color: richtext.annotations.color ?? '',
+              },
+              plain_text: richtext.plain_text,
+              href: richtext.href,
+            };
+          })
+        : [];
   }
 }
 

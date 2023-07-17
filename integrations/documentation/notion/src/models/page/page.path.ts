@@ -13,7 +13,11 @@ export class PagePath extends BasePath {
       headers,
     });
 
-    return convertBlockPage(response.data);
+
+    return {
+      data: convertBlockPage(response.data),
+      raw: response.data,
+    };
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
