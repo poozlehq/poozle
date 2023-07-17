@@ -3,7 +3,7 @@
 export interface Meta {
   limit: number;
   cursors: {
-    before: string;
+    previous: string;
     current: string;
     next: string;
   };

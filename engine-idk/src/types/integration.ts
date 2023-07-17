@@ -62,10 +62,10 @@ export interface BaseIntegrationInterface {
   check(config: Config): CheckResponse;
   // Return Auth headers to send to be sent in the query
   authHeaders(config: Config): AuthHeaderResponse;
-  // Return all models part of this integration
-  // TODO (harshith): Return model type
+  // Return all paths part of this integration
+  // TODO (harshith): Return part type
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  models(): any[];
+  paths(): any[];
   // return reponse from a path
   run(path: string, method: string, config: Config, params: Params): RunResponse;
 }

@@ -2,7 +2,16 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
-import { Alert, Button, Group, TextInput, Title } from '@mantine/core';
+import {
+  Alert,
+  Button,
+  Group,
+  Popover,
+  Stack,
+  TextInput,
+  Title,
+  Text,
+} from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { Specification } from '@poozle/engine-idk';
@@ -12,6 +21,7 @@ import * as React from 'react';
 
 import {
   useCheckCredentialsMutation,
+  useDeleteIntegrationAccount,
   useUpdateIntegrationAccountMutation,
 } from 'services/integration_account';
 import { useGetIntegrationDefinitionSpecQuery } from 'services/integration_definition';
@@ -48,6 +58,7 @@ export function Form({
   integrationAccount,
   onComplete,
 }: FormProps) {
+  const router = useRouter();
   const form = useForm({
     initialValues: getInitialValues(spec, integrationAccount),
   });
@@ -82,6 +93,15 @@ export function Form({
         setErrorMessage(err);
       },
     });
+
+  const {
+    mutate: deleteIntegrationAccount,
+    isLoading: deletingIntegrationAccount,
+  } = useDeleteIntegrationAccount({
+    onSuccess: () => {
+      router.back();
+    },
+  });
 
   const onSubmit = (values: Values) => {
     updateIntegrationAccount({
@@ -144,6 +164,36 @@ export function Form({
         )}
 
         <Group pt="xl" position="right">
+          <Popover width={200} position="bottom" withArrow shadow="md">
+            <Popover.Target>
+              <Button color="red" loading={deletingIntegrationAccount}>
+                Delete
+              </Button>
+            </Popover.Target>
+            <Popover.Dropdown>
+              <Stack>
+                <Text size="sm">Do this only when you are really sure</Text>
+                <div>
+                  <Group position="right">
+                    <Button
+                      variant="subtle"
+                      color="red"
+                      size="xs"
+                      onClick={() =>
+                        deleteIntegrationAccount({
+                          integrationAccountId:
+                            integrationAccount.integrationAccountId,
+                        })
+                      }
+                    >
+                      Delete
+                    </Button>
+                  </Group>
+                </div>
+              </Stack>
+            </Popover.Dropdown>
+          </Popover>
+
           <Button type="submit" loading={checkIsLoading || createIsLoading}>
             Update
           </Button>

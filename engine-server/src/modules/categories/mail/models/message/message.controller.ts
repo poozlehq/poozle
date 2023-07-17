@@ -9,7 +9,11 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
 import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 
@@ -35,6 +39,16 @@ import {
 })
 @ApiTags('Mail')
 @UseGuards(new AuthGuard())
+@ApiBadRequestResponse({
+  status: 400,
+  type: 'string',
+  description: 'Bad Request',
+})
+@ApiUnauthorizedResponse({
+  status: 401,
+  type: 'string',
+  description: 'Not authorised',
+})
 export class MessagesController {
   @Get('messages')
   async getMessages(

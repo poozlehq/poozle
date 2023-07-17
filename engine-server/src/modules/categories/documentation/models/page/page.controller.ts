@@ -9,7 +9,11 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import {
+  ApiBadRequestResponse,
+  ApiTags,
+  ApiUnauthorizedResponse,
+} from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
 import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 
@@ -35,7 +39,20 @@ import {
 })
 @ApiTags('Documentation')
 @UseGuards(new AuthGuard())
+@ApiBadRequestResponse({
+  status: 400,
+  type: 'string',
+  description: 'Bad Request',
+})
+@ApiUnauthorizedResponse({
+  status: 401,
+  type: 'string',
+  description: 'Not authorised',
+})
 export class PageController {
+  /**
+   * Get all pages
+   */
   @Get('pages')
   async getPages(
     @Query() query: ListPagesQueryParams,
@@ -55,6 +72,9 @@ export class PageController {
     return pageResponse;
   }
 
+  /**
+   * Get a single page
+   */
   @Get('pages/:page_id')
   async getPageeId(
     @Query() query: CommonPageQueryParams,
@@ -76,6 +96,9 @@ export class PageController {
     return pageResponse;
   }
 
+  /**
+   * Create a page
+   */
   @Post('pages')
   async createPage(
     @Query() query: CommonPageQueryParams,

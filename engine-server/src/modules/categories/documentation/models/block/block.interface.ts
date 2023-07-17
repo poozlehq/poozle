@@ -1,23 +1,35 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IsArray, IsOptional, IsString } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
+import { Meta, BlockType } from '@poozle/engine-idk';
+import { IsArray, IsOptional, IsString, IsEnum } from 'class-validator';
 
 import { QueryParams, JustRawParams } from 'common/interfaces/query.interface';
 
-export class ListBlocksQueryParams extends QueryParams {
-  @IsOptional()
-  @IsString()
-  cursor?: string;
-}
+export class ListBlocksQueryParams extends QueryParams {}
 
 export class CommonBlockQueryParams extends JustRawParams {}
 
+export class PathParamsWithParentId {
+  /**
+   * This will be parent id of the block you want to create
+   */
+  @IsString()
+  parent_id: string;
+}
+
 export class PathParamsWithBlockId {
+  /**
+   * Block id of the block you want to update
+   */
   @IsString()
   block_id: string;
 }
 
-export interface Content {
+export class BlockContent {
+  /**
+   * All the properties about the text
+   */
   annotations: {
     bold: string;
     italic: string;
@@ -26,20 +38,49 @@ export interface Content {
     code: string;
     color: string;
   };
+
+  /**
+   * The text in the block
+   */
   plain_text: string;
+
+  /**
+   * All the properties about the text
+   */
   href: string;
 }
 
-export interface Block {
+export class Block {
+  /**
+   * A unique identifier for the block.
+   */
   id: string;
-  parent_id: string;
-  block_type: string;
-  content: Content[];
+
+  /**
+   * Id of the parent block
+   */
+  parent_id?: string;
+
+  @ApiProperty({
+    enum: BlockType,
+    description: 'Type of the block',
+  })
+  block_type: BlockType;
+
+  /**
+   * Content of the block
+   */
+  content: BlockContent[];
+
+  /**
+   * Block children
+   */
   children: Block[];
 }
 
 export class BlocksResponse {
-  data: Block | Block[];
+  data: Block;
+  meta?: Meta;
 }
 
 export class Annotations {
@@ -72,24 +113,40 @@ export class Content {
   @IsOptional()
   annotations: Annotations;
 
+  /**
+   * Text for the block
+   */
   @IsOptional()
   @IsString()
   plain_text: string;
 
+  /**
+   * Link for the block. Example blocks: Youtube, Bookmarks
+   */
   @IsOptional()
   @IsString()
   href: string;
 }
 
-export class UpdatePageBody {
+export class PageBody {
+  @ApiProperty({
+    enum: BlockType,
+    description: 'Type of the block',
+  })
   @IsString()
+  @IsEnum(BlockType)
   block_type: string;
 
+  /**
+   * Content of the block
+   */
   @IsArray()
   content: Content[];
 }
 
+export class UpdatePageBody extends PageBody {}
+
 export class CreatePageBody {
   @IsArray()
-  data: UpdatePageBody[];
+  data: PageBody[];
 }

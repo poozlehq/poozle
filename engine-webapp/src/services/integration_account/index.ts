@@ -5,3 +5,4 @@ export * from './create_integration_account';
 export * from './get_integration_accounts';
 export * from './get_integration_account';
 export * from './update_integration_account';
+export * from './delete_integration_account';

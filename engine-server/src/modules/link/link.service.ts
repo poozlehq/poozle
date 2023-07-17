@@ -81,10 +81,21 @@ export class LinkService {
             (ia) =>
               ia.accountIdentifier ===
               accountIdentifierQueryParams.accountIdentifier,
-          ).map((integrationAccount) => ({
-            integrationAccountId: integrationAccount.integrationAccountId,
-            integrationDefinitionId: integrationAccount.integrationDefinitionId,
-          }))
+          ).map((integrationAccount) => {
+            const integrationDefinition = integrationDefinitions.find(
+              (id) =>
+                id.integrationDefinitionId ===
+                integrationAccount.integrationDefinitionId,
+            );
+
+            return {
+              integrationAccountId: integrationAccount.integrationAccountId,
+              integrationDefinitionId:
+                integrationAccount.integrationDefinitionId,
+              integrationDefinitionName: integrationDefinition.name,
+              integrationDefinitionKey: integrationDefinition.key,
+            };
+          })
         : [],
       integrationDefinitions,
     };

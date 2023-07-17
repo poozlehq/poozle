@@ -1,11 +1,18 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 import { IsBoolean, IsOptional } from 'class-validator';
 
 import { PaginationParams } from './pagination.interface';
 
 export class QueryParams extends PaginationParams {
+  @ApiProperty({
+    name: 'raw',
+    type: 'boolean',
+    description:
+      'Include raw response. When you want more data from the source',
+  })
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => {
@@ -15,6 +22,12 @@ export class QueryParams extends PaginationParams {
 }
 
 export class JustRawParams {
+  @ApiProperty({
+    name: 'raw',
+    type: 'boolean',
+    description:
+      'Include raw response. When you want more data from the source',
+  })
   @IsBoolean()
   @IsOptional()
   @Transform(({ value }) => {
