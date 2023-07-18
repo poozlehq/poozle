@@ -1,0 +1,29 @@
+---
+title: "Deploy Poozle"
+description: "Deploying Poozle Open-Source just takes 1 minute."
+---
+
+1. Install Docker on your workstation (see instructions). Make sure you're on the latest version of docker-compose.
+
+2. Run the following commands in your terminal:
+
+```bash
+git clone https://github.com/poozlehq/engine.git
+cd engine
+docker compose up -d
+```
+
+3. Create user using the following commands
+
+```bash
+docker exec -ti poozle-server sh
+yarn create-user
+```
+
+<Note>You can create more users by following step 3 again.</Note>
+
+4. You can now check poozle at `http://localhost:8000`
+
+## FAQ
+
+If there are any questions that we couldn't answer here, we'd love to help you get started. [Join our Slack](https://join.slack.com/t/poozle-community/shared_invite/zt-1u4mz911h-FeWpOA82wA8kyrz3xg58xQ) and feel free to ask your questions in the #support channel.

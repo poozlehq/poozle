@@ -1,0 +1,222 @@
+---
+title: Protocol
+---
+
+## Goals
+
+The Poozle Protocol describes a series of standard components and all the interactions between them in order to declare an integration. A compiled JS function is called to talk to all these integrations.
+
+This document describes the protocol as it exists in its CURRENT form. Stay tuned for an RFC on how the protocol will evolve.
+
+This document is intended to contain ALL the rules of the Poozle Protocol in one place. Anything not contained in this document is NOT part of the Protocol.
+
+## Key Concepts
+
+There are 3 major components in Poozle Protocol are: Integration, Model and Path.
+
+The key primitives that the Protocol uses to describe data are Model and Path:
+
+- [Integration](#integration-interface) - Has multiple models
+- [Model](#model-interface) - A Model refers to a specifc schema and paths connected.
+- [Path](#path-interface) - A Path refers to how when called with different methods and path regex should it interact with the SAAS tool.
+
+Each of these concepts is described in greater depth in their respective section.
+
+## Integration Interface
+
+This section describes important details about the interface over integration.
+
+The following part of the interface is identical across all integrations:
+
+```
+spec() -> Specification
+check(Config) -> CheckResponse
+authHeaders(Config) -> AuthHeaderResponse
+models() -> Models[]
+```
+
+These methods are described in their respective sections ([spec](#spec), [check](#check), [authHeaders](#auth-headers)).
+
+### Spec
+
+```
+spec() -> Specification
+```
+
+The `spec` function allows an integration to broadcast information about itself and how it can be configured.
+
+#### Input:
+
+1. none.
+
+#### Output:
+
+1. `spec` - a [Specification](#specification).
+
+### Check
+
+```
+check(Config) -> CheckResponse
+```
+
+The `check` function validates that, given a configuration, that the Integration is able to connect and access all resources that it needs in order to operate.
+
+#### Input:
+
+1. `config` - A configuration JSON object
+
+#### Output:
+
+1. `checkResponseStatus` - an [CheckResponse](#checkresponse).
+
+### Auth Headers
+
+```
+authHeaders() -> AuthHeaderResponse
+```
+
+The `authHeaders` function return all the headers needed to talk to the SAAS tool.
+
+#### Input:
+
+1. `config` - A configuration JSON object
+
+#### Output:
+
+1. `headers` - a [AuthHeaderResponse](#authheaderresponse).
+
+### Model
+
+```
+models() -> Model[]
+```
+
+The `models` function return all the models that the integration supports.
+
+#### Input:
+
+1. none.
+
+#### Output:
+
+1. `Model[]` - a [Model](#model-interface).
+
+## Model Interface
+
+This section describes important details about the interface over model.
+
+The following part of the interface is identical across all Models:
+
+```
+paths() -> Path[]
+```
+
+These methods are described in their respective sections ([paths](#path-interface)).
+
+## Path Interface
+
+This section describes important details about the interface over path.
+
+The following part of the interface is identical across all Paths:
+
+```
+run(method, headers, params, config) -> Path[]
+```
+
+These methods are described in their respective sections ([run](#run)).
+
+### Specification
+
+The specification allows the Integration to share information about itself.
+
+The `specification` is a JSON that describes what information needs to the integration for it operate.
+
+The specification also contains information about what features the Integration supports.
+
+- `supportedSortBy` - describes using what you can sort the models.
+- `supportedFilters` - describes which filters an integration is able to support.
+
+```json
+{
+  "authSupported": ["Api Key", "OAuth2"],
+  "authSpecification": {
+    "Api Key": {
+      "inputSpecification": {
+        "type": "object",
+        "properties": {
+          "api_key": {
+            "type": "string",
+            "title": "Api Key",
+            "description": "Enter the API Key"
+          },
+          "org": {
+            "type": "string",
+            "title": "Organisation",
+            "description": "Enter the organisation identifier"
+          }
+        }
+      },
+      "headers": { "Authorization": "token ${api_key}", "User-Agent": "Poozle" }
+    },
+    "OAuth2": {
+      "token_url": "https://github.com/login/oauth/access_token",
+      "authorization_url": "https://github.com/login/oauth/authorize",
+      "inputSpecification": {
+        "type": "object",
+        "properties": {
+          "org": {
+            "type": "string",
+            "title": "Organisation",
+            "description": "Enter the organisation identifier"
+          }
+        }
+      }
+    }
+  },
+  "supportedFilters": ["status", "since", "assignee_id", "direction"],
+  "supportedSortBy": ["created_at", "updated_at"]
+}
+```
+
+### Run
+
+This is the function which majorly needs to be written from scratch. This gets all the needed information from Method, Final headers, Params which includes the path parameters and query parameters.
+
+Sample run function
+
+```js
+  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
+    const BASE_URL = `https://${config.jira_domain}.atlassian.net`;
+    let url = '';
+
+    switch (method) {
+      case 'GET':
+        url = `${BASE_URL}/rest/api/2/user?accountId=${params.pathParams?.user_id}`;
+        return this.fetchSingleUser(url, headers, params);
+
+      default:
+        return {};
+    }
+  }
+```
+
+### CheckResponse
+
+This json reports whether an Integration was able to connect to its underlying SAAS tool with all the permissions it needs to succeed.
+
+```json
+{
+  "status": true,
+  "error": ""
+}
+```
+
+### AuthHeaderResponse
+
+The return json has all the headers that are needed to talk to SAAS tool.
+
+```json
+{
+  "Authorization": "Bearer <token>"
+}
+```

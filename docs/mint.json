@@ -1,0 +1,169 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "Poozle docs",
+  "logo": {
+    "dark": "/logo/dark.svg",
+    "light": "/logo/light.svg"
+  },
+  "favicon": "/favicon.png",
+  "colors": {
+    "primary": "#2D6BFA",
+    "light": "#2D6BFA",
+    "dark": "#004E7A"
+  },
+  "topbarLinks": [
+    {
+      "name": "Signup",
+      "url": "https://poozle.dev"
+    }
+  ],
+  "topbarCtaButton": {
+    "type": "github",
+    "url": "https://github.com/poozlehq/engine"
+  },
+  "primaryTab": {
+    "name": "Get Started"
+  },
+  "tabs": [
+    {
+      "name": "Common API Reference",
+      "url": "api-reference"
+    },
+    {
+      "name": "Ticketing",
+      "url": "ticketing"
+    },
+    {
+      "name": "Mail",
+      "url": "mail"
+    },
+    {
+      "name": "Documentation",
+      "url": "documentation"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": [ "introduction", "quickstart" ]
+    },
+    {
+      "group": "Poozle Open Source (OSS)",
+      "pages": [ "oss/deploy-poozle" ]
+    },
+    {
+      "group": "Contributing",
+      "pages": [ "contributing/code-of-conduct", "contributing/issues-prs" ]
+    },
+    {
+      "group": "Understanding Poozle",
+      "pages": [ "understanding-poozle/protocol" ]
+    },
+    {
+      "group": "API Documentation",
+      "pages": [ "api-reference/overview", "api-reference/authentication" ]
+    },
+    {
+      "group": "Modules",
+      "pages": [ "api-reference/integration_definition/overview", "api-reference/integration_account/overview", "api-reference/link/overview", "api-reference/oauth/overview" ]
+    },
+    {
+      "group": "User",
+      "pages": [ "api-reference/user/get" ]
+    },
+    {
+      "group": "Integration Account",
+      "pages": [ "api-reference/integration_account/get_integration_accounts", "api-reference/integration_account/get_integration_account", "api-reference/integration_account/create_integration_account", "api-reference/integration_account/check", "api-reference/integration_account/delete_integration_account" ]
+    },
+    {
+      "group": "Integration Definition",
+      "pages": [ "api-reference/integration_definition/get_integration_definitions", "api-reference/integration_definition/get_integration_definition", "api-reference/integration_definition/create_integration_definition", "api-reference/integration_definition/spec" ]
+    },
+    {
+      "group": "Link",
+      "pages": [ "api-reference/link/get_link", "api-reference/link/create_link" ]
+    },
+    {
+      "group": "OAuth",
+      "pages": [ "api-reference/oauth/get_oauths", "api-reference/oauth/get_oauth", "api-reference/oauth/create_oauth" ]
+    },
+    {
+      "group": "Get Started",
+      "pages": [ "ticketing/overview" ]
+    },
+    {
+      "group": "Get Started",
+      "pages": [ "mail/overview" ]
+    },
+    {
+      "group": "Get Started",
+      "pages": [ "documentation/overview" ]
+    },
+    {
+      "group": "Integrations",
+      "pages": [ "ticketing/integrations/github", "ticketing/integrations/jira" ]
+    },
+    {
+      "group": "Integrations",
+      "pages": [ "mail/integrations/gmail" ]
+    },
+    {
+      "group": "Integrations",
+      "pages": [ "documentation/integrations/notion" ]
+    },
+    {
+      "group": "Collection",
+      "pages": [ "ticketing/collection/get_collections", "ticketing/collection/get_collection" ]
+    },
+    {
+      "group": "User",
+      "pages": [ "ticketing/user/get_users", "ticketing/user/get_user" ]
+    },
+    {
+      "group": "Ticket",
+      "pages": [ "ticketing/ticket/get_tickets", "ticketing/ticket/get_ticket", "ticketing/ticket/create_ticket", "ticketing/ticket/update_ticket" ]
+    },
+    {
+      "group": "Comment",
+      "pages": [ "ticketing/comment/get_comments", "ticketing/comment/get_comment", "ticketing/comment/create_comment", "ticketing/comment/update_comment" ]
+    },
+    {
+      "group": "Team",
+      "pages": [ "ticketing/team/get_teams", "ticketing/team/get_team", "ticketing/team/create_team", "ticketing/team/update_team" ]
+    },
+    {
+      "group": "Tag",
+      "pages": [ "ticketing/tag/get_tags", "ticketing/tag/get_tag", "ticketing/tag/create_tag", "ticketing/tag/update_tag" ]
+    },
+    {
+      "group": "Message",
+      "pages": [ "mail/messages/get_messages", "mail/messages/get_message", "mail/messages/create_message" ]
+    },
+    {
+      "group": "Threads",
+      "pages": [ "mail/threads/get_threads", "mail/threads/get_thread" ]
+    },
+    {
+      "group": "Pages",
+      "pages": [ "documentation/pages/get_pages", "documentation/pages/get_page", "documentation/pages/create_page" ]
+    },
+    {
+      "group": "Block",
+      "pages": [ "documentation/blocks/get_block", "documentation/blocks/update_block", "documentation/blocks/create_block" ]
+    }
+  ],
+  "footerSocials": {
+    "twitter": "https://twitter.com/poozlehq",
+    "github": "https://github.com/poozlehq/engine",
+    "linkedin": "https://www.linkedin.com/company/poozle",
+    "website": "http://poozle.dev"
+  },
+  "backgroundImage": "/background.png",
+  "api": {
+    "baseUrl": "http://localhost:8000/api",
+    "auth": {
+      "method": "bearer"
+    }
+  }
+
+}

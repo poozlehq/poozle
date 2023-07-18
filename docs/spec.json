@@ -1,0 +1,5704 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/health": {
+      "get": {
+        "operationId": "AppController_health",
+        "parameters": [ ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/v1/user": {
+      "post": {
+        "operationId": "UserController_createUser",
+        "parameters": [ ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      },
+      "get": {
+        "operationId": "UserController_getUser",
+        "parameters": [ ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/v1/user/token": {
+      "post": {
+        "operationId": "UserController_createJWT",
+        "parameters": [ ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTokenBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "User"
+        ]
+      }
+    },
+    "/v1/integration_account": {
+      "get": {
+        "operationId": "IntegrationAccountController_getIntegrationAccounts",
+        "summary": "",
+        "description": "Get all integration accounts in a workspace",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "query",
+            "description": "Workspace ID of the integration accounts you want to fetch",
+            "example": "0a58f56e-3f59-4f4e-a8e1-a9e47aae5c3c",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IntegrationAccount"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Account"
+        ]
+      },
+      "post": {
+        "operationId": "IntegrationAccountController_createIntegrationAccount",
+        "summary": "",
+        "description": "Create integration account in a workspace",
+        "parameters": [ ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIntegrationAccountBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationAccount"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Account"
+        ]
+      }
+    },
+    "/v1/integration_account/{integrationAccountId}": {
+      "get": {
+        "operationId": "IntegrationAccountController_getIntegrationAccount",
+        "summary": "",
+        "description": "Get a integration accounts in a workspace",
+        "parameters": [
+          {
+            "name": "integrationAccountId",
+            "required": true,
+            "in": "path",
+            "description": "Id for the integration account",
+            "example": "Kitty",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationAccount"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Account"
+        ]
+      },
+      "delete": {
+        "operationId": "IntegrationAccountController_deleteIntegrationAccount",
+        "summary": "",
+        "description": "Delete a Integration account",
+        "parameters": [
+          {
+            "name": "integrationAccountId",
+            "required": true,
+            "in": "path",
+            "description": "Id for the integration account",
+            "example": "Kitty",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Account"
+        ]
+      },
+      "post": {
+        "operationId": "IntegrationAccountController_updateIntegrationAccount",
+        "summary": "",
+        "description": "Update a integration account in workspace",
+        "parameters": [
+          {
+            "name": "integrationAccountId",
+            "required": true,
+            "in": "path",
+            "description": "Id for the integration account",
+            "example": "Kitty",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateIntegrationAccountBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationAccount"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Account"
+        ]
+      }
+    },
+    "/v1/integration_account/check": {
+      "post": {
+        "operationId": "IntegrationAccountController_checkCredentialsForIntegrationAccount",
+        "summary": "",
+        "description": "Check credentials for a integration definition",
+        "parameters": [ ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntegrationCheckBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Account"
+        ]
+      }
+    },
+    "/v1/integration_account/link/{linkId}": {
+      "post": {
+        "operationId": "IntegrationAccountController_createIntegrationAccountWithLink",
+        "summary": "",
+        "description": "Get integration account for a link",
+        "parameters": [
+          {
+            "name": "linkId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateIntegrationAccountWithLinkBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationAccount"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Account"
+        ]
+      }
+    },
+    "/v1/integration_account/{integrationAccountId}/proxy/*": {
+      "get": {
+        "operationId": "IntegrationAccountController_proxy_get",
+        "summary": "",
+        "description": "Proxy all the calls to the integration directly",
+        "parameters": [ ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Account"
+        ]
+      },
+      "post": {
+        "operationId": "IntegrationAccountController_proxy_post",
+        "summary": "",
+        "description": "Proxy all the calls to the integration directly",
+        "parameters": [ ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Account"
+        ]
+      },
+      "put": {
+        "operationId": "IntegrationAccountController_proxy_put",
+        "summary": "",
+        "description": "Proxy all the calls to the integration directly",
+        "parameters": [ ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Account"
+        ]
+      },
+      "delete": {
+        "operationId": "IntegrationAccountController_proxy_delete",
+        "summary": "",
+        "description": "Proxy all the calls to the integration directly",
+        "parameters": [ ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Account"
+        ]
+      },
+      "patch": {
+        "operationId": "IntegrationAccountController_proxy_patch",
+        "summary": "",
+        "description": "Proxy all the calls to the integration directly",
+        "parameters": [ ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Account"
+        ]
+      },
+      "options": {
+        "operationId": "IntegrationAccountController_proxy_options",
+        "summary": "",
+        "description": "Proxy all the calls to the integration directly",
+        "parameters": [ ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Account"
+        ]
+      },
+      "head": {
+        "operationId": "IntegrationAccountController_proxy_head",
+        "summary": "",
+        "description": "Proxy all the calls to the integration directly",
+        "parameters": [ ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Account"
+        ]
+      }
+    },
+    "/v1/integration_definition": {
+      "get": {
+        "operationId": "IntegrationDefinitionController_getIntegrationDefinitionsByWorkspace",
+        "summary": "",
+        "description": "Get all integration definitions in a workspace",
+        "parameters": [
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "description": "Category integration belongs to\nExample: Ticketing, Documentation etc",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "query",
+            "description": "Unique identifier used to identify all the other resources.\nYou can find this in the UI after the host and /workspaces/{workspaceId}",
+            "example": "0a58f56e-3f59-4f4e-a8e1-a9e47aae5c3c",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IntegrationDefinitionResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Definition"
+        ]
+      },
+      "post": {
+        "operationId": "IntegrationDefinitionController_createIntegrationDefinition",
+        "summary": "",
+        "description": "Create a integration definition.\nUsed for custom integrations",
+        "parameters": [ ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntegrationDefinitionCreateBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationDefinition"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Definition"
+        ]
+      }
+    },
+    "/v1/integration_definition/{integrationDefinitionId}": {
+      "post": {
+        "operationId": "IntegrationDefinitionController_updateIntegrationDefinition",
+        "summary": "",
+        "description": "Update a integration definition in a workspace",
+        "parameters": [
+          {
+            "name": "integrationDefinitionId",
+            "required": true,
+            "in": "path",
+            "description": "A unique identifier for Integration Definition",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntegrationDefinitionUpdateBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Definition"
+        ]
+      },
+      "get": {
+        "operationId": "IntegrationDefinitionController_getIntegrationDefinitionWithId",
+        "summary": "",
+        "description": "Get a integration definition in a workspace",
+        "parameters": [
+          {
+            "name": "integrationDefinitionId",
+            "required": true,
+            "in": "path",
+            "description": "A unique identifier for Integration Definition",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "description": "Category integration belongs to\nExample: Ticketing, Documentation etc",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "query",
+            "description": "Unique identifier used to identify all the other resources.\nYou can find this in the UI after the host and /workspaces/{workspaceId}",
+            "example": "0a58f56e-3f59-4f4e-a8e1-a9e47aae5c3c",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationDefinitionResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Definition"
+        ]
+      }
+    },
+    "/v1/integration_definition/{integrationDefinitionId}/spec": {
+      "get": {
+        "operationId": "IntegrationDefinitionController_getSpecForIntegrationDefinition",
+        "summary": "",
+        "description": "Get spec for integration definition in a workspace",
+        "parameters": [
+          {
+            "name": "integrationDefinitionId",
+            "required": true,
+            "in": "path",
+            "description": "A unique identifier for Integration Definition",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "category",
+            "required": false,
+            "in": "query",
+            "description": "Category integration belongs to\nExample: Ticketing, Documentation etc",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "query",
+            "description": "Unique identifier used to identify all the other resources.\nYou can find this in the UI after the host and /workspaces/{workspaceId}",
+            "example": "0a58f56e-3f59-4f4e-a8e1-a9e47aae5c3c",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration Definition"
+        ]
+      }
+    },
+    "/v1/link/{linkId}": {
+      "get": {
+        "operationId": "LinkController_getLink",
+        "summary": "",
+        "description": "Get link details from linkId.\nUsed in public API calls.",
+        "parameters": [
+          {
+            "name": "linkId",
+            "required": true,
+            "in": "path",
+            "description": "A unique identifier for the Link Object",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "accountIdentifier",
+            "required": true,
+            "in": "query",
+            "description": "A unique identifier can be passed to identify a group of Accounts.\nExample: You can pass user_id or random hash.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Link"
+        ]
+      }
+    },
+    "/v1/link": {
+      "post": {
+        "operationId": "LinkController_createLink",
+        "summary": "",
+        "description": "Create a link in the workspace",
+        "parameters": [ ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateLinkBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Link"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Link"
+        ]
+      },
+      "get": {
+        "operationId": "LinkController_getLinksForWorkspace",
+        "summary": "",
+        "description": "Get all links in a workspace",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "query",
+            "description": "Unique identifier used to identify all the other resources.\nYou can find this in the UI after the host and /workspaces/{workspaceId}",
+            "example": "0a58f56e-3f59-4f4e-a8e1-a9e47aae5c3c",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LinkResponse"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Link"
+        ]
+      }
+    },
+    "/v1/integration_oauth": {
+      "get": {
+        "operationId": "IntegrationOAuthController_getIntegrationOAuthByWorkspace",
+        "summary": "",
+        "description": "Get all integration oAuth apps in a workspace",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "query",
+            "description": "Unique identifier used to identify all the other resources.\nYou can find this in the UI after the host and /workspaces/{workspaceId}",
+            "example": "0a58f56e-3f59-4f4e-a8e1-a9e47aae5c3c",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IntegrationOAuthApp"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration OAuth Apps"
+        ]
+      },
+      "post": {
+        "operationId": "IntegrationOAuthController_createIntegrationOAuthApp",
+        "summary": "",
+        "description": "Create a integration oAuth app in a workspace",
+        "parameters": [ ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntegrationOAuthCreateBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationOAuthApp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration OAuth Apps"
+        ]
+      }
+    },
+    "/v1/integration_oauth/just_ids": {
+      "get": {
+        "operationId": "IntegrationOAuthController_getIntegrationOAuthByWorkspaceJustIds",
+        "summary": "",
+        "description": "Get all integration oAuth apps in a workspace.\nThis is used in the public API calls",
+        "parameters": [
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "query",
+            "description": "Unique identifier used to identify all the other resources.\nYou can find this in the UI after the host and /workspaces/{workspaceId}",
+            "example": "0a58f56e-3f59-4f4e-a8e1-a9e47aae5c3c",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/IntegrationOAuthAppsFlat"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration OAuth Apps"
+        ]
+      }
+    },
+    "/v1/integration_oauth/{integrationOAuthAppId}": {
+      "post": {
+        "operationId": "IntegrationOAuthController_updateIntegrationOAuthApp",
+        "summary": "",
+        "description": "Update a integration oAuth app in a workspace",
+        "parameters": [
+          {
+            "name": "integrationOAuthAppId",
+            "required": true,
+            "in": "path",
+            "description": "A unique identifier for Integration OAuth apps",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/IntegrationOAuthRequestUpdateBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationOAuthApp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration OAuth Apps"
+        ]
+      },
+      "get": {
+        "operationId": "IntegrationOAuthController_getIntegrationOAuthApp",
+        "summary": "",
+        "description": "Get a integration oAuth app in a workspace",
+        "parameters": [
+          {
+            "name": "integrationOAuthAppId",
+            "required": true,
+            "in": "path",
+            "description": "A unique identifier for Integration OAuth apps",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "workspaceId",
+            "required": true,
+            "in": "query",
+            "description": "Unique identifier used to identify all the other resources.\nYou can find this in the UI after the host and /workspaces/{workspaceId}",
+            "example": "0a58f56e-3f59-4f4e-a8e1-a9e47aae5c3c",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationOAuthApp"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Integration OAuth Apps"
+        ]
+      }
+    },
+    "/v1/oauth": {
+      "post": {
+        "operationId": "OAuthCallbackController_getRedirectURL",
+        "parameters": [ ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BodyInterface"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "OAuth Utils"
+        ]
+      }
+    },
+    "/v1/oauth/callback": {
+      "get": {
+        "operationId": "OAuthCallbackController_callback",
+        "parameters": [ ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "OAuth Utils"
+        ]
+      }
+    },
+    "/v1/ticketing/collections": {
+      "get": {
+        "operationId": "CollectionController_getCollections",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor to start from. You can find cursors for next & previous pages in the meta.cursors property of the response.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "direction",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingCollectionsResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      }
+    },
+    "/v1/ticketing/collections/{collection_id}": {
+      "get": {
+        "operationId": "CollectionController_getCollection",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingCollectionResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      }
+    },
+    "/v1/ticketing/{collection_id}/users/{user_id}": {
+      "get": {
+        "operationId": "UsersController_getUserId",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "user_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingUserResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      }
+    },
+    "/v1/ticketing/{collection_id}/users": {
+      "get": {
+        "operationId": "UsersController_getUsers",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor to start from. You can find cursors for next & previous pages in the meta.cursors property of the response.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingUsersResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      }
+    },
+    "/v1/ticketing/teams": {
+      "get": {
+        "operationId": "TeamController_getTeams",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor to start from. You can find cursors for next & previous pages in the meta.cursors property of the response.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "direction",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingTeamsResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      },
+      "post": {
+        "operationId": "TeamController_createTeam",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTeamBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingTeamResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      }
+    },
+    "/v1/ticketing/teams/{team_name}": {
+      "get": {
+        "operationId": "TeamController_getTeam",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "team_name",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingTeamResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      },
+      "patch": {
+        "operationId": "TeamController_patchTeam",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "team_name",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTeamBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingTeamResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      }
+    },
+    "/v1/ticketing/{collection_id}/tickets": {
+      "get": {
+        "operationId": "TicketsController_getTickets",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor to start from. You can find cursors for next & previous pages in the meta.cursors property of the response.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "direction",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "since",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assignee_id",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingTicketsResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      },
+      "post": {
+        "operationId": "TicketsController_createTicket",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTicketBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingTicketResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      }
+    },
+    "/v1/ticketing/{collection_id}/tickets/{ticket_id}": {
+      "get": {
+        "operationId": "TicketsController_getTicketId",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor to start from. You can find cursors for next & previous pages in the meta.cursors property of the response.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "direction",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "since",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assignee_id",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ticket_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingTicketResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      },
+      "patch": {
+        "operationId": "TicketsController_patchTicket",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ticket_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTicketBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingTicketResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      }
+    },
+    "/v1/ticketing/{collection_id}/tickets/{ticket_id}/comments": {
+      "get": {
+        "operationId": "CommentController_getComments",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor to start from. You can find cursors for next & previous pages in the meta.cursors property of the response.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "direction",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ticket_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingCommentsResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      },
+      "post": {
+        "operationId": "CommentController_createComment",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ticket_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCommentBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingCommentResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      }
+    },
+    "/v1/ticketing/{collection_id}/tickets/{ticket_id}/comments/{comment_id}": {
+      "get": {
+        "operationId": "CommentController_getComment",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "comment_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ticket_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingCommentResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      },
+      "patch": {
+        "operationId": "CommentController_patchComment",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "comment_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ticket_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCommentBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingCommentResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      }
+    },
+    "/v1/ticketing/{collection_id}/tags": {
+      "get": {
+        "operationId": "TagController_getTags",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor to start from. You can find cursors for next & previous pages in the meta.cursors property of the response.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingTagsResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      },
+      "post": {
+        "operationId": "TagController_createTag",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTagBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingTagResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      }
+    },
+    "/v1/ticketing/{collection_id}/tags/{tag_id}": {
+      "get": {
+        "operationId": "TagController_getTag",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "tag_name",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingTagResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      },
+      "patch": {
+        "operationId": "TagController_patchTag",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "tag_name",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "collection_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTagBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TicketingTagResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Ticketing"
+        ]
+      }
+    },
+    "/v1/mail/messages": {
+      "get": {
+        "operationId": "MessagesController_getMessages",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor to start from. You can find cursors for next & previous pages in the meta.cursors property of the response.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "received_after",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "received_before",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subject",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "to",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cc",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "bcc",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "labes",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "starred",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "unread",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "direction",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MailMessagesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Mail"
+        ]
+      },
+      "post": {
+        "operationId": "MessagesController_sendMessage",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateMessageBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MailMessageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Mail"
+        ]
+      }
+    },
+    "/v1/mail/messages/{message_id}": {
+      "get": {
+        "operationId": "MessagesController_getMessageId",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "message_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MailMessageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Mail"
+        ]
+      }
+    },
+    "/v1/mail/threads": {
+      "get": {
+        "operationId": "ThreadsController_getThreads",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor to start from. You can find cursors for next & previous pages in the meta.cursors property of the response.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "started_after",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "started_before",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "last_updated_before",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "last_updated_after",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assignee_id",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MailThreadsResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Mail"
+        ]
+      }
+    },
+    "/v1/mail/threads/{thread_id}": {
+      "get": {
+        "operationId": "ThreadsController_getThreadId",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor to start from. You can find cursors for next & previous pages in the meta.cursors property of the response.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "started_after",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "started_before",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "last_updated_before",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "last_updated_after",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assignee_id",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "thread_id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MailThreadResponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Mail"
+        ]
+      }
+    },
+    "/v1/documentation/pages": {
+      "get": {
+        "operationId": "PageController_getPages",
+        "summary": "",
+        "description": "Get all pages",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor to start from. You can find cursors for next & previous pages in the meta.cursors property of the response.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "title",
+            "required": false,
+            "in": "query",
+            "description": "Filter by title",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "description": "You can the use values from enum to sort the respose",
+            "schema": {
+              "enum": [
+                "created_at",
+                "updated_at"
+              ],
+              "type": "string"
+            }
+          },
+          {
+            "name": "direction",
+            "required": false,
+            "in": "query",
+            "description": "You can pass asc/desc",
+            "schema": {
+              "enum": [
+                "asc",
+                "desc"
+              ],
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PagesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Documentation"
+        ]
+      },
+      "post": {
+        "operationId": "PageController_createPage",
+        "summary": "",
+        "description": "Create a page",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePageBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Documentation"
+        ]
+      }
+    },
+    "/v1/documentation/pages/{page_id}": {
+      "get": {
+        "operationId": "PageController_getPageeId",
+        "summary": "",
+        "description": "Get a single page",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "page_id",
+            "required": true,
+            "in": "path",
+            "description": "A unique identifier for the page",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PageResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Documentation"
+        ]
+      }
+    },
+    "/v1/documentation/{parent_id}/blocks": {
+      "get": {
+        "operationId": "BlockController_getBlocks",
+        "summary": "",
+        "description": "Get all the block for a specific parent_id",
+        "parameters": [
+          {
+            "name": "cursor",
+            "required": false,
+            "in": "query",
+            "description": "Cursor to start from. You can find cursors for next & previous pages in the meta.cursors property of the response.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "parent_id",
+            "required": true,
+            "in": "path",
+            "description": "This will be parent id of the block you want to create",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlocksResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Documentation"
+        ]
+      },
+      "post": {
+        "operationId": "BlockController_createBlocks",
+        "summary": "",
+        "description": "Create a block in a parent block",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "parent_id",
+            "required": true,
+            "in": "path",
+            "description": "This will be parent id of the block you want to create",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreatePageBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlocksResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Documentation"
+        ]
+      }
+    },
+    "/v1/documentation/blocks/{block_id}": {
+      "patch": {
+        "operationId": "BlockController_updateBlock",
+        "summary": "",
+        "description": "Update the block with a specific Id",
+        "parameters": [
+          {
+            "name": "raw",
+            "required": false,
+            "in": "query",
+            "description": "Include raw response. When you want more data from the source",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "block_id",
+            "required": true,
+            "in": "path",
+            "description": "Block id of the block you want to update",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdatePageBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BlocksResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiException"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Documentation"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Poozle",
+    "description": "The poozle API description",
+    "version": "1.0",
+    "contact": { }
+  },
+  "tags": [ ],
+  "servers": [ ],
+  "components": {
+    "schemas": {
+      "CreateUserInput": {
+        "type": "object",
+        "properties": {
+          "firstname": {
+            "type": "string"
+          },
+          "lastname": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "firstname",
+          "lastname",
+          "email"
+        ]
+      },
+      "Workspace": {
+        "type": "object",
+        "properties": {
+          "workspaceId": {
+            "type": "string"
+          },
+          "slug": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "initialSetupComplete": {
+            "type": "boolean"
+          },
+          "anonymousDataCollection": {
+            "type": "boolean"
+          },
+          "deleted": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "workspaceId",
+          "slug",
+          "userId",
+          "initialSetupComplete",
+          "anonymousDataCollection",
+          "deleted"
+        ]
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "firstname": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastname": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string"
+          },
+          "Workspace": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Workspace"
+            }
+          }
+        },
+        "required": [
+          "userId",
+          "createdAt",
+          "updatedAt",
+          "firstname",
+          "lastname",
+          "email"
+        ]
+      },
+      "CreateTokenBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "seconds": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "name",
+          "seconds"
+        ]
+      },
+      "ApiException": {
+        "type": "object",
+        "properties": {
+          "statusCode": {
+            "type": "number"
+          },
+          "message": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "error": {
+            "type": "string"
+          },
+          "errors": {
+            "type": "object"
+          },
+          "timestamp": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          }
+        }
+      },
+      "IntegrationDefinition": {
+        "type": "object",
+        "properties": {
+          "integrationDefinitionId": {
+            "type": "string",
+            "description": "A unique identifier for Integration Definition"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the integration"
+          },
+          "key": {
+            "type": "string",
+            "description": "A unique identifier in text used to identify Integration"
+          },
+          "icon": {
+            "type": "string",
+            "nullable": true,
+            "description": "Icon for the integration"
+          },
+          "version": {
+            "type": "string",
+            "description": "Current version of the integration"
+          },
+          "releaseStage": {
+            "type": "object",
+            "description": "This tells the status of the integration.\nIf Alpha most features will be working but can expect some issues."
+          },
+          "sourceUrl": {
+            "type": "string",
+            "description": "This is the URL where the compiled source code of integration"
+          },
+          "integrationType": {
+            "type": "object",
+            "description": "Category integration belongs to\nExample: Ticketing, Documentation etc"
+          },
+          "workspaceId": {
+            "type": "string",
+            "nullable": true,
+            "description": "A unique identifier for Workspace"
+          },
+          "deleted": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true,
+            "description": "When this account is deleted. If deleted"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "When the integration account was created."
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "When the integration account was updated last."
+          }
+        },
+        "required": [
+          "integrationDefinitionId",
+          "name",
+          "key",
+          "icon",
+          "version",
+          "releaseStage",
+          "sourceUrl",
+          "integrationType",
+          "workspaceId",
+          "deleted",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "IntegrationAccount": {
+        "type": "object",
+        "properties": {
+          "integrationAccountId": {
+            "type": "string",
+            "description": "A unique identifier for Integration Account"
+          },
+          "integrationDefinitionId": {
+            "type": "string",
+            "description": "A unique identifier for Integration Definition"
+          },
+          "integrationConfiguration": {
+            "type": "object",
+            "nullable": true,
+            "description": "Configuration used to configure the integration"
+          },
+          "authType": {
+            "type": "string",
+            "description": "Type of authentication used to create this account\nExmaple: OAuth2, Api Key etc"
+          },
+          "workspaceId": {
+            "type": "string",
+            "description": "A unique identifier for Workspace"
+          },
+          "integrationAccountName": {
+            "type": "string",
+            "description": "This is used for User experience. You can pass a name\nto easily identify the account in UI"
+          },
+          "deleted": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true,
+            "description": "When this account is deleted. If deleted"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "When the integration account was created."
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "When the integration account was updated last."
+          },
+          "linkId": {
+            "type": "string",
+            "nullable": true,
+            "description": "This will be linkId of the link used to created this account"
+          }
+        },
+        "required": [
+          "integrationAccountId",
+          "integrationDefinitionId",
+          "integrationConfiguration",
+          "authType",
+          "workspaceId",
+          "integrationAccountName",
+          "deleted",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "linkId": {
+            "type": "string",
+            "description": "A unique identifier for Link"
+          },
+          "linkName": {
+            "type": "string",
+            "description": "Name of the link. Majorly used to easily search for this in UI\nExample: You can use customer name: Poozle"
+          },
+          "canExpire": {
+            "type": "boolean",
+            "description": "Boolean to tell if the link can expire"
+          },
+          "preferOAuth": {
+            "type": "boolean",
+            "description": "Boolean to tell if only OAuth should be accepted\nas authentication process"
+          },
+          "expiresIn": {
+            "type": "number",
+            "description": "If canExpire is set to true. This indicates\nseconds in which the link will expire."
+          },
+          "category": {
+            "description": "Category integration belongs to\nExample: Ticketing, Documentation etc",
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "workspaceId": {
+            "type": "string",
+            "description": "Unique identifier for Workspace."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "When the Link was created."
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "When the Link was updated last."
+          },
+          "IntegrationAccount": {
+            "description": "Integration Accounts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntegrationAccount"
+            }
+          }
+        },
+        "required": [
+          "linkId",
+          "linkName",
+          "canExpire",
+          "preferOAuth",
+          "expiresIn",
+          "category",
+          "workspaceId",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "IntegrationCheckBody": {
+        "type": "object",
+        "properties": {
+          "integrationDefinitionId": {
+            "type": "string"
+          },
+          "config": {
+            "type": "object"
+          },
+          "authType": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "integrationDefinitionId",
+          "config",
+          "authType",
+          "workspaceId"
+        ]
+      },
+      "UpdateIntegrationAccountBody": {
+        "type": "object",
+        "properties": {
+          "integrationAccountName": {
+            "type": "string"
+          },
+          "authType": {
+            "type": "string"
+          },
+          "config": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "integrationAccountName",
+          "authType",
+          "config"
+        ]
+      },
+      "CreateIntegrationAccountBody": {
+        "type": "object",
+        "properties": {
+          "integrationDefinitionId": {
+            "type": "string"
+          },
+          "integrationAccountName": {
+            "type": "string"
+          },
+          "authType": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "config": {
+            "type": "object"
+          },
+          "accountIdentifier": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "integrationDefinitionId",
+          "integrationAccountName",
+          "authType",
+          "workspaceId",
+          "config",
+          "accountIdentifier"
+        ]
+      },
+      "CreateIntegrationAccountWithLinkBody": {
+        "type": "object",
+        "properties": {
+          "integrationDefinitionId": {
+            "type": "string"
+          },
+          "integrationAccountName": {
+            "type": "string"
+          },
+          "authType": {
+            "type": "string"
+          },
+          "accountIdentifier": {
+            "type": "string"
+          },
+          "config": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "integrationDefinitionId",
+          "integrationAccountName",
+          "authType",
+          "accountIdentifier",
+          "config"
+        ]
+      },
+      "IntegrationDefinitionResponse": {
+        "type": "object",
+        "properties": {
+          "integrationDefinitionId": {
+            "type": "string",
+            "description": "A unique identifier for Integration Definition"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the integration"
+          },
+          "key": {
+            "type": "string",
+            "description": "A unique identifier in text used to identify Integration"
+          },
+          "icon": {
+            "type": "string",
+            "nullable": true,
+            "description": "Icon for the integration"
+          },
+          "version": {
+            "type": "string",
+            "description": "Current version of the integration"
+          },
+          "releaseStage": {
+            "type": "object",
+            "description": "This tells the status of the integration.\nIf Alpha most features will be working but can expect some issues."
+          },
+          "sourceUrl": {
+            "type": "string",
+            "description": "This is the URL where the compiled source code of integration"
+          },
+          "integrationType": {
+            "type": "object",
+            "description": "Category integration belongs to\nExample: Ticketing, Documentation etc"
+          },
+          "workspaceId": {
+            "type": "string",
+            "nullable": true,
+            "description": "A unique identifier for Workspace"
+          },
+          "deleted": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true,
+            "description": "When this account is deleted. If deleted"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "When the integration account was created."
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "When the integration account was updated last."
+          },
+          "isLatest": {
+            "type": "boolean",
+            "description": "Boolean to validate if the integration is on latest version"
+          },
+          "latestVersion": {
+            "type": "string",
+            "description": "Current latest version for the integration"
+          },
+          "latestVersionSource": {
+            "type": "string",
+            "description": "Link to the source code for the latest version"
+          }
+        },
+        "required": [
+          "integrationDefinitionId",
+          "name",
+          "key",
+          "icon",
+          "version",
+          "releaseStage",
+          "sourceUrl",
+          "integrationType",
+          "workspaceId",
+          "deleted",
+          "createdAt",
+          "updatedAt",
+          "isLatest",
+          "latestVersion",
+          "latestVersionSource"
+        ]
+      },
+      "IntegrationDefinitionUpdateBody": {
+        "type": "object",
+        "properties": {
+          "sourceUrl": {
+            "type": "string",
+            "description": "This is the URL where the compiled source code of integration"
+          },
+          "version": {
+            "type": "string",
+            "description": "Current version of the integration"
+          }
+        },
+        "required": [
+          "sourceUrl",
+          "version"
+        ]
+      },
+      "IntegrationDefinitionCreateBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the integration"
+          },
+          "sourceUrl": {
+            "type": "string",
+            "description": "This is the URL where the compiled source code of integration"
+          },
+          "integrationType": {
+            "type": "object",
+            "description": "Category integration belongs to\nExample: Ticketing, Documentation etc"
+          },
+          "workspaceId": {
+            "type": "string",
+            "description": "Unique identifier used to identify all the other resources.\nYou can find this in the UI after the host and /workspaces/{workspaceId}",
+            "example": "0a58f56e-3f59-4f4e-a8e1-a9e47aae5c3c"
+          }
+        },
+        "required": [
+          "name",
+          "sourceUrl",
+          "integrationType",
+          "workspaceId"
+        ]
+      },
+      "LinkResponse": {
+        "type": "object",
+        "properties": {
+          "linkId": {
+            "type": "string",
+            "description": "A unique identifier for Link"
+          },
+          "linkName": {
+            "type": "string",
+            "description": "Name of the link. Majorly used to easily search for this in UI\nExample: You can use customer name: Poozle"
+          },
+          "canExpire": {
+            "type": "boolean",
+            "description": "Boolean to tell if the link can expire"
+          },
+          "preferOAuth": {
+            "type": "boolean",
+            "description": "Boolean to tell if only OAuth should be accepted\nas authentication process"
+          },
+          "expiresIn": {
+            "type": "number",
+            "description": "If canExpire is set to true. This indicates\nseconds in which the link will expire."
+          },
+          "category": {
+            "description": "Category integration belongs to\nExample: Ticketing, Documentation etc",
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "workspaceId": {
+            "type": "string",
+            "description": "Unique identifier for Workspace."
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "When the Link was created."
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "When the Link was updated last."
+          },
+          "IntegrationAccount": {
+            "description": "Integration Accounts",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntegrationAccount"
+            }
+          },
+          "expired": {
+            "type": "boolean",
+            "description": "Tells if the link is expired or not"
+          },
+          "integrationAccounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntegrationAccount"
+            }
+          },
+          "integrationDefinitions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntegrationDefinition"
+            }
+          }
+        },
+        "required": [
+          "linkId",
+          "linkName",
+          "canExpire",
+          "preferOAuth",
+          "expiresIn",
+          "category",
+          "workspaceId",
+          "createdAt",
+          "updatedAt",
+          "expired"
+        ]
+      },
+      "CreateLinkBody": {
+        "type": "object",
+        "properties": {
+          "category": {
+            "description": "Integration categories you want this link to support.\nExample: Ticketing, Documentation etc",
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          },
+          "integrationDefinitionId": {
+            "type": "string",
+            "description": "Integration definition Id when you want to restrict the link to specific integration"
+          },
+          "expiresIn": {
+            "type": "number",
+            "description": "Link expires after the specified seconds"
+          },
+          "linkName": {
+            "type": "string",
+            "description": "Name of the link. Majorly used to easily search for this in UI\nExample: You can use customer name: Poozle"
+          },
+          "workspaceId": {
+            "type": "string",
+            "description": "Unique identifier used to identify all the other resources.\nYou can find this in the UI after the host and /workspaces/{workspaceId}",
+            "example": "0a58f56e-3f59-4f4e-a8e1-a9e47aae5c3c"
+          }
+        },
+        "required": [
+          "category",
+          "expiresIn",
+          "linkName",
+          "workspaceId"
+        ]
+      },
+      "IntegrationOAuthApp": {
+        "type": "object",
+        "properties": {
+          "integrationOAuthAppId": {
+            "type": "string",
+            "description": "A unique identifier for Integration OAuth app"
+          },
+          "integrationOAuthAppName": {
+            "type": "string",
+            "description": "Name for integration Oauth apps"
+          },
+          "integrationDefinitionId": {
+            "type": "string",
+            "description": "A unique identifier for Integration Definition"
+          },
+          "clientId": {
+            "type": "string",
+            "description": "Client Id for the OAuth to configure"
+          },
+          "clientSecret": {
+            "type": "string",
+            "description": "Client secret for the OAuth to configure"
+          },
+          "scopes": {
+            "type": "string",
+            "description": "Scopes needed for this oAuth app"
+          },
+          "workspaceId": {
+            "type": "string",
+            "description": "A unique identifier for Workspace"
+          },
+          "deleted": {
+            "format": "date-time",
+            "type": "string",
+            "nullable": true,
+            "description": "When this integration OAuth App is deleted. If deleted"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "When the integration OAuth App was created."
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string",
+            "description": "When the integration OAuth App was updated last."
+          }
+        },
+        "required": [
+          "integrationOAuthAppId",
+          "integrationOAuthAppName",
+          "integrationDefinitionId",
+          "clientId",
+          "clientSecret",
+          "scopes",
+          "workspaceId",
+          "deleted",
+          "createdAt",
+          "updatedAt"
+        ]
+      },
+      "IntegrationOAuthAppsFlat": {
+        "type": "object",
+        "properties": {
+          "integrationDefinitionId": {
+            "type": "string",
+            "description": "A unique identifier for Integration Definition"
+          },
+          "integrationOAuthAppId": {
+            "type": "string",
+            "description": "A unique identifier for Integration OAuth apps"
+          }
+        },
+        "required": [
+          "integrationDefinitionId",
+          "integrationOAuthAppId"
+        ]
+      },
+      "IntegrationOAuthCreateBody": {
+        "type": "object",
+        "properties": {
+          "integrationDefinitionId": {
+            "type": "string",
+            "description": "A unique identifier for Integration Definition"
+          },
+          "clientId": {
+            "type": "string",
+            "description": "Client id to configure OAuth app"
+          },
+          "clientSecret": {
+            "type": "string",
+            "description": "Client secret to configure OAuth app"
+          },
+          "scopes": {
+            "type": "string",
+            "description": "Scopes needed to configure OAuth app"
+          },
+          "integrationOAuthAppName": {
+            "type": "string",
+            "description": "Name of the OAuth app configured"
+          },
+          "workspaceId": {
+            "type": "string",
+            "description": "Unique identifier used to identify all the other resources.\nYou can find this in the UI after the host and /workspaces/{workspaceId}",
+            "example": "0a58f56e-3f59-4f4e-a8e1-a9e47aae5c3c"
+          }
+        },
+        "required": [
+          "integrationDefinitionId",
+          "clientId",
+          "clientSecret",
+          "scopes",
+          "integrationOAuthAppName",
+          "workspaceId"
+        ]
+      },
+      "IntegrationOAuthRequestUpdateBody": {
+        "type": "object",
+        "properties": {
+          "clientId": {
+            "type": "string",
+            "description": "Client id to configure OAuth app"
+          },
+          "clientSecret": {
+            "type": "string",
+            "description": "Client secret to configure OAuth app"
+          },
+          "scopes": {
+            "type": "string",
+            "description": "Scopes needed to configure OAuth app"
+          },
+          "integrationOAuthAppName": {
+            "type": "string",
+            "description": "Name of the OAuth app configured"
+          }
+        },
+        "required": [
+          "clientId",
+          "clientSecret",
+          "scopes",
+          "integrationOAuthAppName"
+        ]
+      },
+      "BodyInterface": {
+        "type": "object",
+        "properties": {
+          "config": {
+            "type": "object"
+          },
+          "integrationAccountName": {
+            "type": "string"
+          },
+          "redirectURL": {
+            "type": "string"
+          },
+          "workspaceId": {
+            "type": "string"
+          },
+          "linkId": {
+            "type": "string"
+          },
+          "accountIdentifier": {
+            "type": "string"
+          },
+          "integrationOAuthAppId": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "integrationAccountName",
+          "redirectURL",
+          "integrationOAuthAppId"
+        ]
+      },
+      "Collection": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "parent_id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "parent_id",
+          "type",
+          "name",
+          "description",
+          "updated_at",
+          "created_at"
+        ]
+      },
+      "Meta": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "number"
+          },
+          "cursors": {
+            "type": "object",
+            "properties": {
+              "before": {
+                "type": "string"
+              },
+              "current": {
+                "type": "string"
+              },
+              "next": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "required": [
+          "limit",
+          "cursors"
+        ]
+      },
+      "TicketingCollectionsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Collection"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
+      "TicketingCollectionResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Collection"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "TicketingUser": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "photo_url": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "first_name",
+          "last_name",
+          "email",
+          "photo_url",
+          "updated_at",
+          "created_at"
+        ]
+      },
+      "TicketingUserResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/TicketingUser"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "TicketingUsersResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketingUser"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
+      "Member": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "username"
+        ]
+      },
+      "Team": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Member"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "members"
+        ]
+      },
+      "TicketingTeamsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Team"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
+      "TicketingTeamResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Team"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UpdateTeamBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        }
+      },
+      "CreateTeamBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            }
+          }
+        },
+        "required": [
+          "name",
+          "description"
+        ]
+      },
+      "TicketAssignee": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "username": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "username"
+        ]
+      },
+      "TicketTag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name"
+        ]
+      },
+      "Ticket": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "parent_id": {
+            "type": "string"
+          },
+          "collection_id": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "priority": {
+            "type": "string"
+          },
+          "ticket_url": {
+            "type": "string"
+          },
+          "assignees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketAssignee"
+            }
+          },
+          "updated_at": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "string"
+          },
+          "due_date": {
+            "type": "string"
+          },
+          "completed_at": {
+            "type": "string"
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketTag"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "parent_id",
+          "collection_id",
+          "type",
+          "name",
+          "description",
+          "status",
+          "priority",
+          "ticket_url",
+          "assignees",
+          "updated_at",
+          "created_at",
+          "created_by",
+          "due_date",
+          "completed_at",
+          "tags"
+        ]
+      },
+      "TicketingTicketsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Ticket"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
+      "TicketingTicketResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Ticket"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UpdateTicketBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "assignees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketAssignee"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketTag"
+            }
+          },
+          "status": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "assignees",
+          "tags",
+          "status",
+          "created_by",
+          "type"
+        ]
+      },
+      "CreateTicketBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "assignees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketAssignee"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TicketTag"
+            }
+          },
+          "created_by": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "assignees",
+          "tags",
+          "created_by",
+          "type"
+        ]
+      },
+      "Comment": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "ticket_id": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "html_body": {
+            "type": "string"
+          },
+          "created_by_id": {
+            "type": "string"
+          },
+          "created_by": {
+            "type": "object"
+          },
+          "is_private": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "ticket_id",
+          "body",
+          "html_body",
+          "created_by_id",
+          "created_by",
+          "is_private",
+          "created_at",
+          "updated_at"
+        ]
+      },
+      "TicketingCommentsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Comment"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
+      "TicketingCommentResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Comment"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UpdateCommentBody": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "body"
+        ]
+      },
+      "CreateCommentBody": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "body"
+        ]
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "description",
+          "color"
+        ]
+      },
+      "TicketingTagsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Tag"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
+      "TicketingTagResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Tag"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UpdateTagBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "color"
+        ]
+      },
+      "CreateTagBody": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "description",
+          "color"
+        ]
+      },
+      "Recipient": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "name"
+        ]
+      },
+      "Message": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "html_body": {
+            "type": "string"
+          },
+          "user_id": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "snippet": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "thread_id": {
+            "type": "string"
+          },
+          "starred": {
+            "type": "boolean"
+          },
+          "unread": {
+            "type": "boolean"
+          },
+          "cc": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recipient"
+            }
+          },
+          "bcc": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recipient"
+            }
+          },
+          "from": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recipient"
+            }
+          },
+          "reply_to": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recipient"
+            }
+          },
+          "labels": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "in_reply_to": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "body",
+          "html_body",
+          "user_id",
+          "date",
+          "snippet",
+          "subject",
+          "thread_id",
+          "starred",
+          "unread",
+          "cc",
+          "bcc",
+          "from",
+          "reply_to",
+          "labels",
+          "in_reply_to"
+        ]
+      },
+      "MailMessagesResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
+      "MailMessageResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Message"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CreateMessageBody": {
+        "type": "object",
+        "properties": {
+          "subject": {
+            "type": "string"
+          },
+          "body": {
+            "type": "string"
+          },
+          "html_body": {
+            "type": "string"
+          },
+          "thread": {
+            "type": "string"
+          },
+          "cc": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recipient"
+            }
+          },
+          "bcc": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recipient"
+            }
+          },
+          "from": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recipient"
+            }
+          },
+          "to": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recipient"
+            }
+          },
+          "reply_to": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Recipient"
+            }
+          },
+          "in_reply_to": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "subject"
+        ]
+      },
+      "Thread": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "history_id": {
+            "type": "string"
+          },
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Message"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "history_id",
+          "messages"
+        ]
+      },
+      "MailThreadsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Thread"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
+      "MailThreadResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Thread"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "Page": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "A unique identifier for the page"
+          },
+          "parent_id": {
+            "type": "string",
+            "description": "Page/Block id of the parent"
+          },
+          "title": {
+            "type": "string",
+            "description": "Title of the page"
+          },
+          "created_by": {
+            "type": "string",
+            "description": "The account associated with the page"
+          },
+          "created_at": {
+            "type": "string",
+            "description": "Time at which the page is created"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "Last updated time"
+          },
+          "updated_by": {
+            "type": "string",
+            "description": "The account associated with the last update"
+          }
+        },
+        "required": [
+          "id",
+          "parent_id",
+          "title",
+          "created_by",
+          "created_at",
+          "updated_at",
+          "updated_by"
+        ]
+      },
+      "PagesResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Page"
+            }
+          },
+          "meta": {
+            "$ref": "#/components/schemas/Meta"
+          }
+        },
+        "required": [
+          "data",
+          "meta"
+        ]
+      },
+      "PageResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Page"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CreatePageBody": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PageBody"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "BlockContent": {
+        "type": "object",
+        "properties": {
+          "annotations": {
+            "type": "object",
+            "properties": {
+              "bold": {
+                "type": "string"
+              },
+              "italic": {
+                "type": "string"
+              },
+              "strikethrough": {
+                "type": "string"
+              },
+              "underline": {
+                "type": "string"
+              },
+              "code": {
+                "type": "string"
+              },
+              "color": {
+                "type": "string"
+              }
+            }
+          },
+          "plain_text": {
+            "type": "string",
+            "description": "The text in the block"
+          },
+          "href": {
+            "type": "string",
+            "description": "All the properties about the text"
+          }
+        },
+        "required": [
+          "annotations",
+          "plain_text",
+          "href"
+        ]
+      },
+      "Block": {
+        "type": "object",
+        "properties": {
+          "block_type": {
+            "enum": [
+              "bookmark",
+              "breadcrumb",
+              "bulleted_list_item",
+              "callout",
+              "child_database",
+              "child_page",
+              "column",
+              "column_list",
+              "divider",
+              "embed",
+              "equation",
+              "file",
+              "heading_1",
+              "heading_2",
+              "heading_3",
+              "image",
+              "link_preview",
+              "link_to_page",
+              "numbered_list_item",
+              "paragraph",
+              "pdf",
+              "quote",
+              "synced_block",
+              "table",
+              "table_of_contents",
+              "table_row",
+              "template",
+              "to_do",
+              "toggle",
+              "unsupported",
+              "video"
+            ],
+            "type": "string",
+            "description": "Type of the block"
+          },
+          "id": {
+            "type": "string",
+            "description": "A unique identifier for the block."
+          },
+          "parent_id": {
+            "type": "string",
+            "description": "Id of the parent block"
+          },
+          "content": {
+            "description": "Content of the block",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BlockContent"
+            }
+          }
+        },
+        "required": [
+          "block_type",
+          "id",
+          "content",
+          "children"
+        ]
+      },
+      "BlocksResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/Block"
+          },
+          "meta": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "Annotations": {
+        "type": "object",
+        "properties": {
+          "bold": {
+            "type": "string"
+          },
+          "italic": {
+            "type": "string"
+          },
+          "strikethrough": {
+            "type": "string"
+          },
+          "underline": {
+            "type": "string"
+          },
+          "code": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "bold",
+          "italic",
+          "strikethrough",
+          "underline",
+          "code",
+          "color"
+        ]
+      },
+      "Content": {
+        "type": "object",
+        "properties": {
+          "annotations": {
+            "$ref": "#/components/schemas/Annotations"
+          },
+          "plain_text": {
+            "type": "string",
+            "description": "Text for the block"
+          },
+          "href": {
+            "type": "string",
+            "description": "Link for the block. Example blocks: Youtube, Bookmarks"
+          }
+        },
+        "required": [
+          "annotations",
+          "plain_text",
+          "href"
+        ]
+      },
+      "PageBody": {
+        "type": "object",
+        "properties": {
+          "block_type": {
+            "type": "string",
+            "enum": [
+              "bookmark",
+              "breadcrumb",
+              "bulleted_list_item",
+              "callout",
+              "child_database",
+              "child_page",
+              "column",
+              "column_list",
+              "divider",
+              "embed",
+              "equation",
+              "file",
+              "heading_1",
+              "heading_2",
+              "heading_3",
+              "image",
+              "link_preview",
+              "link_to_page",
+              "numbered_list_item",
+              "paragraph",
+              "pdf",
+              "quote",
+              "synced_block",
+              "table",
+              "table_of_contents",
+              "table_row",
+              "template",
+              "to_do",
+              "toggle",
+              "unsupported",
+              "video"
+            ],
+            "description": "Type of the block"
+          },
+          "content": {
+            "description": "Content of the block",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Content"
+            }
+          }
+        },
+        "required": [
+          "block_type",
+          "content"
+        ]
+      },
+      "UpdatePageBody": {
+        "type": "object",
+        "properties": {
+          "block_type": {
+            "type": "string",
+            "enum": [
+              "bookmark",
+              "breadcrumb",
+              "bulleted_list_item",
+              "callout",
+              "child_database",
+              "child_page",
+              "column",
+              "column_list",
+              "divider",
+              "embed",
+              "equation",
+              "file",
+              "heading_1",
+              "heading_2",
+              "heading_3",
+              "image",
+              "link_preview",
+              "link_to_page",
+              "numbered_list_item",
+              "paragraph",
+              "pdf",
+              "quote",
+              "synced_block",
+              "table",
+              "table_of_contents",
+              "table_row",
+              "template",
+              "to_do",
+              "toggle",
+              "unsupported",
+              "video"
+            ],
+            "description": "Type of the block"
+          },
+          "content": {
+            "description": "Content of the block",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Content"
+            }
+          }
+        },
+        "required": [
+          "block_type",
+          "content"
+        ]
+      }
+    }
+  }
+}

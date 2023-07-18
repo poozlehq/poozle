@@ -1,0 +1,34 @@
+---
+title: Quickstart
+sidebarTitle: 🚀 Quickstart
+description: "See Poozle in action in 5 minutes"
+---
+
+Experience Poozle by fetching GitHub issues from your public repos in 5 minutes.
+
+## Authorize an API (Github)
+
+1. First, you can [deploy Poozle](/oss/deploy-poozle) using docker. Don't worry it's just `docker-compose up`:
+
+2. On the [Accounts tab](http://localhost:8000/workspaces), click `+ New Integration Account` on the left side:
+
+<Frame>
+  <img src="/images/integration_account/create_button.png" />
+</Frame>
+
+3. Choose Github in the select and give the API Key. You can check [Github Settings](https://github.com/settings/tokens) page to create a new token.
+
+4. Connect Github and Hurray you are connected.
+
+## Fetching issues from a unified Ticketing API
+
+1. On the [Accounts tab](http://localhost:8000/workspaces), click on the connected integration.
+
+2. In the URL `http://localhost:8000/workspaces/0a58f56e-3f59-4f4e-a8e1-a9e47aae5c3c/integration_account/874aa40c-f4bb-4985-8db7-01d2a259b9a0`. Take
+   workspaceId `0a58f56e-3f59-4f4e-a8e1-a9e47aae5c3c` and integrationAccountId `874aa40c-f4bb-4985-8db7-01d2a259b9a0` Copy them.
+
+3. Go to `Settings` page and click on API Keys. Generate a new key to use it as a Bearer token.
+
+4. You can call `http://localhost:8000/api/v1/ticketing/{repo_name}/tickets` with headers `workspaceId`, `integrationAccountId` and `Authorization` with its values respectively.
+
+5. Hurray you can now all access all the data from [ticketing models](/ticketing/overview).
