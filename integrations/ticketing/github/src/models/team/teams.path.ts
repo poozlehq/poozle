@@ -1,16 +1,14 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, convertToRequestBody, Team, Meta } from '@poozle/engine-idk';
+import { BasePath, Config, Params, convertToRequestBody } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { BASE_URL } from 'common';
 
-import { convertTag } from 'models/tag/tag.utils';
-
+import { TeamResponse, TeamsResponse } from './team.interface';
 import { convertTeam, teamMapping } from './team.utils';
 
-const BASE_URL = 'https://api.github.com';
-
 export class TeamsPath extends BasePath {
-  async getTeams(url: string, headers: AxiosHeaders, params: Params) {
+  async getTeams(url: string, headers: AxiosHeaders, params: Params): Promise<TeamsResponse> {
     const page =
       typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
 
@@ -24,29 +22,26 @@ export class TeamsPath extends BasePath {
       headers,
       params: final_params,
     });
-    return response.data.map((data: any) => convertTeam(data));
-  }
-
-  async getMetaParams(_data: Team[], params: Params): Promise<Meta> {
-    const page =
-      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
 
     return {
-      limit: params.queryParams?.limit as number,
-      cursors: {
-        before: (page > 1 ? page - 1 : 1).toString(),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data: response.data.map((data: any) => convertTeam(data)),
+      raw: response.data,
+      meta: {
+        previous: (page > 1 ? page - 1 : 1).toString(),
         current: page.toString(),
         next: (page + 1).toString(),
       },
     };
   }
 
-  async createTeams(url: string, headers: AxiosHeaders, params: Params) {
+  async createTeams(url: string, headers: AxiosHeaders, params: Params): Promise<TeamResponse> {
     const body = params.requestBody;
     const createBody = convertToRequestBody(body, teamMapping);
 
     const response = await axios.post(url, createBody, { headers });
-    return convertTag(response.data);
+
+    return { data: convertTeam(response.data), raw: response.data };
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
@@ -59,7 +54,7 @@ export class TeamsPath extends BasePath {
         return this.createTeams(url, headers, params);
 
       default:
-        return [];
+        throw new Error('Method not found');
     }
   }
 }

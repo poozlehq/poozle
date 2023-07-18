@@ -2,29 +2,28 @@
 
 import { BasePath, Config, Params, convertToRequestBody } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { BASE_URL } from 'common';
 
-import { convertTag } from 'models/tag/tag.utils';
-
+import { TeamResponse } from './team.interface';
 import { convertTeam, teamMapping } from './team.utils';
-
-const BASE_URL = 'https://api.github.com';
 
 export class TeamPath extends BasePath {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async getTeam(url: string, headers: AxiosHeaders, _params: Params) {
+  async getTeam(url: string, headers: AxiosHeaders, _params: Params): Promise<TeamResponse> {
     const response = await axios({
       url,
       headers,
     });
 
-    return convertTeam(response.data);
+    return { data: convertTeam(response.data), raw: response.data };
   }
 
-  async updateTeam(url: string, headers: AxiosHeaders, params: Params) {
+  async updateTeam(url: string, headers: AxiosHeaders, params: Params): Promise<TeamResponse> {
     const body = params.requestBody;
     const createBody = convertToRequestBody(body, teamMapping);
     const response = await axios.patch(url, createBody, { headers });
-    return convertTag(response.data);
+
+    return { data: convertTeam(response.data), raw: response.data };
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
@@ -37,7 +36,7 @@ export class TeamPath extends BasePath {
         return this.updateTeam(url, headers, params);
 
       default:
-        return [];
+        throw new Error('Method not found');
     }
   }
 }

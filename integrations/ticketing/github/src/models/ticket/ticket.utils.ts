@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-export function convertTicket(data: any, collection_id: string | null) {
+import { Ticket } from '@poozle/engine-idk';
+
+export function convertTicket(data: any, collection_id: string | null): Ticket {
   return {
     id: data.number,
     name: data.title,
@@ -21,7 +23,12 @@ export function convertTicket(data: any, collection_id: string | null) {
       id: lab.id,
       name: lab.name,
     })),
-    raw_data: data,
+
+    // Extra fields
+    parent_id: '',
+    priority: '',
+    due_date: '',
+    completed_at: '',
   };
 }
 

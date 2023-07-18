@@ -37,40 +37,50 @@ export class BasePath {
       return responseFromRun;
     }
 
-    const response: any = {
-      data: responseFromRun.data,
-    };
+    try {
+      const response: any = {
+        data: responseFromRun.data,
+      };
 
-    if (responseFromRun.meta && Array.isArray(responseFromRun.data)) {
-      const meta = await this.getMetaParams(responseFromRun, params);
+      if (responseFromRun.meta && Array.isArray(responseFromRun.data)) {
+        const meta = await this.getMetaParams(responseFromRun, params);
 
-      response['meta'] = meta;
+        response['meta'] = meta;
+      }
+
+      if (
+        (params.queryParams?.raw === true || params.queryParams?.raw === 'true' ? true : false) &&
+        responseFromRun.raw
+      ) {
+        response['raw'] = responseFromRun.raw;
+      }
+
+      return response;
+    } catch (e) {
+      return {
+        data: {},
+        error: e,
+      };
     }
-
-    if (
-      (params.queryParams?.raw === true || params.queryParams?.raw === 'true' ? true : false) &&
-      responseFromRun.raw
-    ) {
-      response['raw'] = responseFromRun.raw;
-    }
-
-    return response;
   }
 
   // Written by the integration
   async getMetaParams(response: any, params: Params): Promise<Meta> {
-    const current_cursor =
-      typeof params.queryParams?.cursor === 'string' ? params.queryParams?.cursor : '';
+    let current = typeof params.queryParams?.cursor === 'string' ? params.queryParams?.cursor : '';
 
-    const next_cursor = response.meta ? response.meta.next_cursor : '';
-    const previous_cursor = response.meta ? response.meta.previous_cursor ?? '' : '';
+    if (response.data && response.data.current) {
+      current = response.data.current;
+    }
+
+    const next = response.meta ? response.meta.next : '';
+    const previous = response.meta ? response.meta.previous ?? '' : '';
 
     return {
       limit: params.queryParams?.limit ? parseInt(params.queryParams?.limit.toString()) : 10,
       cursors: {
-        previous: previous_cursor,
-        current: current_cursor,
-        next: next_cursor,
+        previous,
+        current,
+        next,
       },
     };
   }

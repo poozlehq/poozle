@@ -1,20 +1,21 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import {
-  BaseIntegration,
-  CheckResponse,
-  Config,
-  GenericProxyModel,
-  SpecificationResponse,
-} from '@poozle/engine-idk';
+import { BaseIntegration, CheckResponse, Config, SpecificationResponse } from '@poozle/engine-idk';
 import axios from 'axios';
+import { ProxyPath } from 'proxy';
 
-import { GithubCollectionModel } from 'models/collection/collection.model';
-import { GithubCommentModel } from 'models/comment/comment.model';
-import { GithubTagModel } from 'models/tag/tag.model';
-import { GithubTeamModel } from 'models/team/team.model';
-import { GithubTicketModel } from 'models/ticket/ticket.model';
-import { GithubUserModel } from 'models/user/user.model';
+import { CollectionPath } from 'models/collection/collection.path';
+import { CollectionsPath } from 'models/collection/collections.path';
+import { CommentPath } from 'models/comment/comment.path';
+import { CommentsPath } from 'models/comment/comments.path';
+import { TagPath } from 'models/tag/tag.path';
+import { TagsPath } from 'models/tag/tags.path';
+import { TeamPath } from 'models/team/team.path';
+import { TeamsPath } from 'models/team/teams.path';
+import { TicketPath } from 'models/ticket/ticket.path';
+import { TicketsPath } from 'models/ticket/tickets.path';
+import { UserPath } from 'models/user/user.path';
+import { UsersPath } from 'models/user/users.path';
 
 import spec from './spec';
 
@@ -44,15 +45,48 @@ class GithubIntegration extends BaseIntegration {
     }
   }
 
-  models() {
+  paths() {
     return [
-      new GenericProxyModel(),
-      new GithubTicketModel(),
-      new GithubCollectionModel(),
-      new GithubCommentModel(),
-      new GithubTagModel(),
-      new GithubTeamModel(),
-      new GithubUserModel(),
+      /**
+       * PROXY API calls to the third party directly
+       */
+      new ProxyPath(/^\/?proxy$/g, ['GET', 'POST', 'PATCH', 'DELETE']),
+
+      /**
+       * This paths get the repos from github
+       */
+      new CollectionsPath(/^\/?collections$/g, 'GET'),
+      new CollectionPath(/^\/?collections+/g, 'GET'),
+
+      /**
+       * These map to issues comments
+       */
+      new CommentsPath(/^\/?comments$/g, ['GET', 'POST']),
+      new CommentPath(/^\/?comments+/g, ['GET', 'PATCH']),
+
+      /**
+       * These map to tags
+       */
+      new TagsPath(/^\/?tags$/g, ['GET', 'POST']),
+      new TagPath(/^\/?tags+/g, ['GET', 'PATCH']),
+
+      /**
+       * Mapped to teams
+       */
+      new TeamsPath(/^\/?teams$/g, ['GET', 'POST']),
+      new TeamPath(/^\/?teams+/g, ['GET', 'PATCH']),
+
+      /**
+       * Mapped to issues
+       */
+      new TicketsPath(/^\/?tickets$/g, ['GET', 'POST']),
+      new TicketPath(/^\/?tickets+/g, ['GET', 'PATCH']),
+
+      /**
+       * Mapped to users
+       */
+      new UsersPath(/^\/?users$/g, 'GET'),
+      new UserPath(/^\/?users+/g, 'GET'),
     ];
   }
 }

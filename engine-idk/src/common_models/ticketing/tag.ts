@@ -1,27 +1,5 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-export const TagSchema = {
-  type: 'object',
-  properties: {
-    id: {
-      type: 'string',
-      default: '',
-    },
-    name: {
-      type: 'string',
-      default: '',
-    },
-    description: {
-      type: 'string',
-      default: '',
-    },
-    color: {
-      type: 'string',
-      default: '',
-    },
-  },
-};
-
 export interface Tag {
   id: string;
   name: string;

@@ -2,22 +2,19 @@
 
 import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { BASE_URL } from 'common';
 
+import { UserResponse } from './user.interface';
 import { convertUser } from './user.utils';
-const BASE_URL = 'https://api.github.com';
 
 export class UserPath extends BasePath {
-  async fetchSingleUser(headers: AxiosHeaders, params: Params) {
-    try {
-      const response = await axios({
-        url: `${BASE_URL}/users/${params.pathParams?.user_id}`,
-        headers,
-      });
+  async fetchSingleUser(headers: AxiosHeaders, params: Params): Promise<UserResponse> {
+    const response = await axios({
+      url: `${BASE_URL}/users/${params.pathParams?.user_id}`,
+      headers,
+    });
 
-      return convertUser(response.data);
-    } catch (e) {
-      throw new Error(e);
-    }
+    return { data: convertUser(response.data), raw: response.data };
   }
 
   async run(
@@ -32,7 +29,7 @@ export class UserPath extends BasePath {
         return this.fetchSingleUser(headers, params);
 
       default:
-        return {};
+        throw new Error('Method not found');
     }
   }
 }

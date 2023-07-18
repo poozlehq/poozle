@@ -26,6 +26,10 @@
   },
   "tabs": [
     {
+      "name": "Guides",
+      "url": "guides"
+    },
+    {
       "name": "Common API Reference",
       "url": "api-reference"
     },
@@ -53,19 +57,31 @@
     },
     {
       "group": "Contributing",
-      "pages": [ "contributing/code-of-conduct", "contributing/issues-prs" ]
+      "pages": [ "contributing/create-new-integration", "contributing/code-of-conduct", "contributing/issues-prs" ]
     },
     {
       "group": "Understanding Poozle",
       "pages": [ "understanding-poozle/protocol" ]
     },
     {
-      "group": "API Documentation",
-      "pages": [ "api-reference/overview", "api-reference/authentication" ]
+      "group": "Overview",
+      "pages": [ "guides/overview" ]
     },
     {
-      "group": "Modules",
-      "pages": [ "api-reference/integration_definition/overview", "api-reference/integration_account/overview", "api-reference/link/overview", "api-reference/oauth/overview" ]
+      "group": "Basics",
+      "pages": [ "guides/create_user", "guides/authentication" ]
+    },
+    {
+      "group": "Integrations",
+      "pages": [ "guides/build_new_integration" ]
+    },
+    {
+      "group": "Other",
+      "pages": [ "guides/create_integration_account", "guides/create_link", "guides/create_oauth" ]
+    },
+    {
+      "group": "API Documentation",
+      "pages": [ "api-reference/overview", "api-reference/authentication" ]
     },
     {
       "group": "User",

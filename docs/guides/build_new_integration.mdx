@@ -1,0 +1,34 @@
+---
+title: "Build an Integration"
+---
+
+## Integration Development
+
+Poozle support ticketing integrations currently. A integration takes the form of a build javascript file which follows the [Poozle specification](/understanding-poozle/protocol).
+
+To build a new integration in Typescript, we provide templates so you don't need to start everything from scratch.
+
+<Note>
+  You are not required to maintain the integrations you create. The goal is that
+  Poozle and the community maintain the integration.
+</Note>
+
+### Creating a integration from a template
+
+```bash
+cd integration-bases/generator
+yarn
+yarn generate
+```
+
+This will generate a new integration in the integrations/ticketing/{your-integration} directory. As you implement here
+are 3 things to keep in mind.
+
+1. Search the generated directory for "TODO"s and follow them to implement your integration.
+2. You can also check the README to check how to test the integration.
+3. Make sure to review the [Github integration](https://github.com/poozlehq/engine/tree/main/integrations/ticketing/github) which we wrote for better understanding.
+
+<Warning>
+  We are still trying to streamline this process. You have any questions kindly
+  reach out to us in slack.
+</Warning>

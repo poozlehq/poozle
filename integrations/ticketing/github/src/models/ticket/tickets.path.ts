@@ -5,18 +5,16 @@ import {
   Config,
   convertToRequestBody,
   CreateTicketBody,
-  Meta,
   Params,
-  Ticket,
 } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { BASE_URL } from 'common';
 
+import { TicketResponse, TicketsResponse } from './ticket.interface';
 import { convertTicket, ticketMappings } from './ticket.utils';
 
-const BASE_URL = 'https://api.github.com';
-
-export class GetTicketsPath extends BasePath {
-  async fetchData(url: string, headers: AxiosHeaders, params: Params) {
+export class TicketsPath extends BasePath {
+  async fetchData(url: string, headers: AxiosHeaders, params: Params): Promise<TicketsResponse> {
     const page =
       typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
 
@@ -43,33 +41,31 @@ export class GetTicketsPath extends BasePath {
 
     const responseData = response.data;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return responseData.map((data: any) =>
-      convertTicket(data, params.pathParams?.collection_id as string | null),
-    );
+    return {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data: responseData.map((data: any) =>
+        convertTicket(data, params.pathParams?.collection_id as string | null),
+      ),
+      raw: response.data,
+      meta: {
+        previous: (page > 1 ? page - 1 : 1).toString(),
+        current: page.toString(),
+        next: (page + 1).toString(),
+      },
+    };
   }
 
-  async createTicket(url: string, headers: AxiosHeaders, params: Params) {
+  async createTicket(url: string, headers: AxiosHeaders, params: Params): Promise<TicketResponse> {
     const body: CreateTicketBody = params.requestBody as CreateTicketBody;
     const createBody = convertToRequestBody(body, ticketMappings);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     createBody.assignees = createBody.assignees.map((assignee: any) => assignee.id);
 
     const response = await axios.post(url, createBody, { headers });
 
-    return convertTicket(response.data, params.pathParams?.collection_id as string | null);
-  }
-
-  async getMetaParams(_data: Ticket[], params: Params): Promise<Meta> {
-    const page =
-      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
-
     return {
-      limit: params.queryParams?.limit as number,
-      cursors: {
-        before: (page > 1 ? page - 1 : 1).toString(),
-        current: page.toString(),
-        next: (page + 1).toString(),
-      },
+      data: convertTicket(response.data, params.pathParams?.collection_id as string | null),
+      raw: response.data,
     };
   }
 
@@ -84,7 +80,7 @@ export class GetTicketsPath extends BasePath {
         return this.createTicket(url, headers, params);
 
       default:
-        return [];
+        throw new Error('Method not found');
     }
   }
 }

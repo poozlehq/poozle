@@ -1,11 +1,11 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Comment, Config, Params } from '@poozle/engine-idk';
+import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { BASE_URL } from 'common';
 
+import { CommentResponse } from './comment.interface';
 import { convertComment } from './comment.utils';
-
-const BASE_URL = 'https://api.github.com';
 
 export class CommentPath extends BasePath {
   async fetchSingleComment(
@@ -13,35 +13,22 @@ export class CommentPath extends BasePath {
     headers: AxiosHeaders,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _params: Params,
-  ): Promise<Partial<Comment>> {
-    try {
-      const response = await axios({
-        url,
-        headers,
-      });
+  ): Promise<CommentResponse> {
+    const response = await axios({
+      url,
+      headers,
+    });
 
-      return convertComment(response.data);
-    } catch (e) {
-      throw new Error(e);
-    }
+    return { data: convertComment(response.data), raw: response.data };
   }
 
-  async patchComment(
-    url: string,
-    headers: AxiosHeaders,
-    params: Params,
-  ): Promise<Partial<Comment>> {
+  async patchComment(url: string, headers: AxiosHeaders, params: Params): Promise<CommentResponse> {
     const response = await axios.patch(url, params.requestBody, { headers });
 
-    return convertComment(response.data);
+    return { data: convertComment(response.data), raw: response.data };
   }
 
-  async run(
-    method: string,
-    headers: AxiosHeaders,
-    params: Params,
-    config: Config,
-  ): Promise<Partial<Comment>> {
+  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
     const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues/comments/${params.pathParams?.comment_id}`;
 
     switch (method) {
@@ -53,7 +40,7 @@ export class CommentPath extends BasePath {
         return this.fetchSingleComment(url, headers, params);
 
       default:
-        return {};
+        throw new Error('Method not found');
     }
   }
 }

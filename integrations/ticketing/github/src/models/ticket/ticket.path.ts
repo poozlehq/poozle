@@ -2,31 +2,37 @@
 
 import { BasePath, Config, convertToRequestBody, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { BASE_URL } from 'common';
 
+import { TicketResponse } from './ticket.interface';
 import { convertTicket, ticketMappings } from './ticket.utils';
 
-const BASE_URL = 'https://api.github.com';
+export class TicketPath extends BasePath {
+  async fetchSingleTicket(
+    url: string,
+    headers: AxiosHeaders,
+    params: Params,
+  ): Promise<TicketResponse> {
+    const response = await axios({
+      url,
+      headers,
+    });
 
-export class GetTicketPath extends BasePath {
-  async fetchSingleTicket(url: string, headers: AxiosHeaders, params: Params) {
-    try {
-      const response = await axios({
-        url,
-        headers,
-      });
-
-      return convertTicket(response.data, params.pathParams?.collection_id as string | null);
-    } catch (e) {
-      throw new Error(e);
-    }
+    return {
+      data: convertTicket(response.data, params.pathParams?.collection_id as string | null),
+      raw: response.data,
+    };
   }
 
-  async patchTicket(url: string, headers: AxiosHeaders, params: Params) {
+  async patchTicket(url: string, headers: AxiosHeaders, params: Params): Promise<TicketResponse> {
     const body = params.requestBody;
     const createBody = convertToRequestBody(body, ticketMappings);
     const response = await axios.patch(url, createBody, { headers });
 
-    return convertTicket(response.data, params.pathParams?.collection_id as string | null);
+    return {
+      data: convertTicket(response.data, params.pathParams?.collection_id as string | null),
+      raw: response.data,
+    };
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
@@ -41,7 +47,7 @@ export class GetTicketPath extends BasePath {
         return this.fetchSingleTicket(url, headers, params);
 
       default:
-        return {};
+        throw new Error('Method not found');
     }
   }
 }

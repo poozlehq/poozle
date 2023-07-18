@@ -1,11 +1,11 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, Comment, Meta } from '@poozle/engine-idk';
+import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { BASE_URL } from 'common';
 
+import { CommentResponse, CommentsResponse } from './comment.interface';
 import { convertComment } from './comment.utils';
-
-const BASE_URL = 'https://api.github.com';
 
 export class CommentsPath extends BasePath {
   async fetchData(
@@ -13,7 +13,7 @@ export class CommentsPath extends BasePath {
     headers: AxiosHeaders,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     params: Params,
-  ): Promise<Array<Partial<Comment>>> {
+  ): Promise<CommentsResponse> {
     const page =
       typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
     const final_params = {
@@ -37,27 +37,26 @@ export class CommentsPath extends BasePath {
       responseData = [response.data];
     }
 
-    return responseData.map((data: any) => convertComment(data));
-  }
-
-  async createComment(url: string, headers: AxiosHeaders, params: Params) {
-    const response = await axios.post(url, params.requestBody, { headers });
-
-    return [convertComment(response.data)];
-  }
-
-  async getMetaParams(_data: Comment[], params: Params): Promise<Meta> {
-    const page =
-      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
-
     return {
-      limit: params.queryParams?.limit as number,
-      cursors: {
-        before: (page > 1 ? page - 1 : 1).toString(),
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data: responseData.map((data: any) => convertComment(data)),
+      raw: response.data,
+      meta: {
+        previous: (page > 1 ? page - 1 : 1).toString(),
         current: page.toString(),
         next: (page + 1).toString(),
       },
     };
+  }
+
+  async createComment(
+    url: string,
+    headers: AxiosHeaders,
+    params: Params,
+  ): Promise<CommentResponse> {
+    const response = await axios.post(url, params.requestBody, { headers });
+
+    return { data: convertComment(response.data), raw: response.data };
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {

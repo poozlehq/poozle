@@ -1,43 +1,5 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-export const TeamSchema = {
-  type: 'object',
-  properties: {
-    id: {
-      type: 'string',
-      default: '',
-    },
-    name: {
-      type: 'string',
-      default: '',
-    },
-    description: {
-      type: 'string',
-      default: '',
-    },
-    members: {
-      type: 'array',
-      default: [],
-      items: [
-        {
-          type: 'object',
-          properties: {
-            id: {
-              type: 'string',
-              default: '',
-            },
-            username: {
-              type: 'string',
-              default: '',
-            },
-          },
-          required: ['id', 'username'],
-        },
-      ],
-    },
-  },
-};
-
 export interface Member {
   id: string;
   username: string;
