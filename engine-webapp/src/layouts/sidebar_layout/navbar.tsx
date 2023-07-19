@@ -22,6 +22,8 @@ import {
   IconKey,
   IconLink,
   IconUsers,
+  IconDatabase,
+  IconExternalLink,
 } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useRouter } from 'next/router';
@@ -78,12 +80,20 @@ function NavbarLink({
         { [styles.open]: open },
       )}
     >
-      <Icon stroke={1.5} size="24" />
-      {open && (
-        <Text ml="md" size="sm">
-          {label}
-        </Text>
-      )}
+      <Group position="apart" className={styles.linkGroup}>
+        <Group spacing={0}>
+          <Icon stroke={1.5} size="24" />
+          {open && (
+            <Text ml="md" size="sm">
+              {label}
+            </Text>
+          )}
+        </Group>
+
+        {open && !routeKey && (
+          <IconExternalLink stroke={1.5} size={20} color="gray" />
+        )}
+      </Group>
     </UnstyledButton>
   );
 }
@@ -94,6 +104,7 @@ const LINK_DATA = [
   { icon: IconKey, label: 'OAuth', routeKey: '/o_auth' },
   { icon: IconLink, label: 'Link', routeKey: '/link' },
   { icon: IconSettings, label: 'Settings', routeKey: '/settings' },
+  { icon: IconDatabase, label: 'Docs', routeKey: '/docs' },
 ];
 
 interface NavbarProps {
@@ -112,17 +123,37 @@ export function Navbar({ open, onToggle }: NavbarProps) {
   );
   const queryClient = useQueryClient();
 
-  const links = LINK_DATA.map((link) => (
-    <NavbarLink
-      {...link}
-      key={link.label}
-      open={open}
-      active={router.route.includes(link.routeKey)}
-      onClick={(routeKey) =>
-        router.push(`/workspaces/${workspaceId}${routeKey}`)
-      }
-    />
-  ));
+  const links = LINK_DATA.map((link) => {
+    if (link.routeKey === '/docs') {
+      return (
+        <NavbarLink
+          {...link}
+          key={link.label}
+          open={open}
+          routeKey={undefined}
+          active={false}
+          onClick={() => {
+            window.open(
+              'https://docs.poozle.dev',
+              '_blank', // <- This is what makes it open in a new window.
+            );
+          }}
+        />
+      );
+    }
+
+    return (
+      <NavbarLink
+        {...link}
+        key={link.label}
+        open={open}
+        active={router.route.includes(link.routeKey)}
+        onClick={(routeKey) =>
+          router.push(`/workspaces/${workspaceId}${routeKey}`)
+        }
+      />
+    );
+  });
 
   return (
     <MNavbar width={{ base: open ? 240 : 80 }} pt={0}>
@@ -163,7 +194,7 @@ export function Navbar({ open, onToggle }: NavbarProps) {
       <Divider className={classnames(styles.divider)} />
       <MNavbar.Section
         grow
-        mt="sm"
+        mt="xl"
         px="sm"
         className={classnames(styles.section, { [styles.openedSection]: open })}
       >

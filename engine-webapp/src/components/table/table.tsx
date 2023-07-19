@@ -15,7 +15,7 @@ interface CustomTableProps extends TableProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any;
   idKey: string;
-  onRowClick: (id: string) => void;
+  onRowClick?: (id: string) => void;
 }
 
 export function Table<TableDataType>({
@@ -27,9 +27,9 @@ export function Table<TableDataType>({
 }: CustomTableProps) {
   const rows = data.map((element: TableDataType) => (
     <tr
-      className={styles.dataRow}
+      className={onRowClick ? styles.dataRowClickable : ''}
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      onClick={() => onRowClick((element as any)[idKey])}
+      onClick={() => onRowClick && onRowClick((element as any)[idKey])}
     >
       {columns.map((column) => (
         <td>{column.render(element)}</td>

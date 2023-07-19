@@ -1,9 +1,12 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BaseIntegration, GenericProxyModel, SpecificationResponse } from '@poozle/engine-idk';
+import { BaseIntegration, SpecificationResponse } from '@poozle/engine-idk';
+import { ProxyPath } from 'proxy';
 
-import { GmailMessageModel } from 'models/message/message.model';
-import { GmailThreadModel } from 'models/thread/thread.model';
+import { MessagePath } from 'models/message/message.path';
+import { MessagesPath } from 'models/message/messages.path';
+import { ThreadPath } from 'models/thread/thread.path';
+import { ThreadsPath } from 'models/thread/threads.path';
 
 import spec from './spec';
 
@@ -12,8 +15,25 @@ class GmailIntegration extends BaseIntegration {
     return spec;
   }
 
-  models() {
-    return [new GenericProxyModel(), new GmailMessageModel(), new GmailThreadModel()];
+  paths() {
+    return [
+      /**
+       * PROXY API calls to the third party directly
+       */
+      new ProxyPath(/^\/?proxy$/g, ['GET', 'POST', 'PATCH', 'DELETE']),
+
+      /**
+       * Read and send emails
+       */
+      new MessagesPath(/^\/?messages$/g, ['GET', 'POST']),
+      new MessagePath(/^\/?messages+/g, ['GET']),
+
+      /**
+       * Read and send email threads
+       */
+      new ThreadsPath(/^\/?threads$/g, ['GET']),
+      new ThreadPath(/^\/?threads+/g, ['GET']),
+    ];
   }
 }
 

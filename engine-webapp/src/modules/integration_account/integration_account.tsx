@@ -20,6 +20,7 @@ import {
 } from 'components';
 
 import styles from './integration_account.module.scss';
+import { showDateInTable } from 'utils';
 
 export function Integration() {
   const router = useRouter();
@@ -73,9 +74,9 @@ export function Integration() {
       name: 'Last Updated',
       key: 'last_updated',
       render: (data: IntegrationAccount) => (
-        <div className={styles.tableDataContainer}>
-          {new Date(data.updatedAt).toLocaleString()}
-        </div>
+        <Text className={styles.tableDataContainer} size="xs" color="gray">
+          {showDateInTable(data.updatedAt)}
+        </Text>
       ),
     },
   ];
@@ -88,6 +89,7 @@ export function Integration() {
     <div>
       <Header
         title="Integration Accounts"
+        description="Integrations between your users’ accounts and third-party apps."
         actions={
           <Button onClick={() => router.push(`${router.asPath}/new`)}>
             + New Integration Account

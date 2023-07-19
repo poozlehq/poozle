@@ -1,15 +1,11 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { Thread } from '@poozle/engine-idk';
+
 import { convertMessage } from 'models/message/message.utils';
 
-export interface threadResponse {
-  id: string;
-  snippet: string;
-  historyId: string;
-}
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function convertThread(data: any) {
+export function convertThread(data: any): Thread {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const messages = data.messages.map((message: any) => {
     return convertMessage(message);

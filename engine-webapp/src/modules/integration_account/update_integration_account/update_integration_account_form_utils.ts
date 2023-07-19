@@ -45,6 +45,8 @@ export function getInitialValues(
   // Adding integrationAccountName to the initial Values
   initialValues['integrationAccountName'] =
     integrationAccount.integrationAccountName;
+  initialValues['integrationAccountId'] =
+    integrationAccount.integrationAccountId;
 
   // eslint-disable-next-line prefer-destructuring
   initialValues['authType'] = integrationAccount.authType;

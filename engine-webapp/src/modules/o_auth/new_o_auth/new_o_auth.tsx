@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Alert, Container, Divider, Group, Paper, Title } from '@mantine/core';
+import { Alert, Divider, Group, Paper, Title } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
@@ -60,58 +60,60 @@ export function NewOAuthApp() {
 
   return (
     <>
-      <Header title="New OAuth App" showBack />
-      <Container>
-        <Paper mt="lg" className={styles.container}>
-          <Group p="md">
-            <Title order={5}>Set up the OAuth App </Title>
-          </Group>
-          <Divider className={styles.divider} />
+      <Header
+        title="New OAuth App"
+        description="Configure your own OAuth credentials for integration"
+      />
 
-          <Group p="md">
-            {error && (
-              <Alert
-                color="red"
-                mt="md"
-                icon={<IconAlertCircle size="1rem" />}
-                title="Error!"
-              >
-                {<>{error}</>}
-              </Alert>
-            )}
-          </Group>
-          <Group p="md" className={styles.group}>
-            <Select
-              label="Integration type"
-              data={getSelectData()}
-              searchable
-              onChange={(value: string) => setIntegrationDefinition(value)}
-              className={styles.integrationSelect}
-            ></Select>
-          </Group>
+      <Paper m="xl" className={styles.container}>
+        <Group p="md">
+          <Title order={5}>Set up the OAuth App </Title>
+        </Group>
+        <Divider className={styles.divider} />
 
-          <Group>
-            {selectedIntegrationDefinition && (
-              <OAuthAppForm
-                workspaceId={workspaceId as string}
-                update={false}
-                initialValues={{}}
-                onSubmit={(values) => {
-                  createIntegrationOAuthApp({
-                    integrationDefinitionId: selectedIntegrationDefinition,
-                    integrationOAuthAppName: values.integrationOAuthAppName,
-                    clientId: values.clientId,
-                    clientSecret: values.clientSecret,
-                    scopes: values.scopes,
-                    workspaceId: workspaceId as string,
-                  });
-                }}
-                loading={isLoading}
-              />
-            )}
-          </Group>
-        </Paper>
-      </Container>
+        <Group p="md">
+          {error && (
+            <Alert
+              color="red"
+              mt="md"
+              icon={<IconAlertCircle size="1rem" />}
+              title="Error!"
+            >
+              {<>{error}</>}
+            </Alert>
+          )}
+        </Group>
+        <Group p="md" className={styles.group}>
+          <Select
+            label="Integration type"
+            data={getSelectData()}
+            searchable
+            onChange={(value: string) => setIntegrationDefinition(value)}
+            className={styles.integrationSelect}
+          ></Select>
+        </Group>
+
+        <Group>
+          {selectedIntegrationDefinition && (
+            <OAuthAppForm
+              workspaceId={workspaceId as string}
+              update={false}
+              initialValues={{}}
+              onSubmit={(values) => {
+                createIntegrationOAuthApp({
+                  integrationDefinitionId: selectedIntegrationDefinition,
+                  integrationOAuthAppName: values.integrationOAuthAppName,
+                  clientId: values.clientId,
+                  clientSecret: values.clientSecret,
+                  scopes: values.scopes,
+                  workspaceId: workspaceId as string,
+                });
+              }}
+              loading={isLoading}
+            />
+          )}
+        </Group>
+      </Paper>
     </>
   );
 }

@@ -15,7 +15,7 @@ export class ThreadPath extends BasePath {
       headers,
     });
 
-    return convertThread(response.data);
+    return { data: convertThread(response.data), raw: response.data };
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -26,7 +26,7 @@ export class ThreadPath extends BasePath {
         return this.getThread(url, headers, params);
 
       default:
-        return {};
+        throw new Error(`Unknown method ${method}`);
     }
   }
 }

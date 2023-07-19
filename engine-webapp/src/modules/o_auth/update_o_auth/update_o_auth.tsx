@@ -1,11 +1,12 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Container, Divider, Group, Paper, Title } from '@mantine/core';
+import { Group, Paper, Text, Stack, Tabs } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
-import { IconCheck } from '@tabler/icons-react';
+import { IconCheck, IconLine, IconSettings } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { SessionAuth } from 'supertokens-auth-react/recipe/session';
+import { showDateInUI } from 'utils';
 
 import { SideBarLayout } from 'layouts/sidebar_layout';
 import { GetUserData } from 'wrappers/get_user_data';
@@ -15,8 +16,9 @@ import {
   useUpdateIntegrationOAuthAppMutation,
 } from 'services/integration_oauth';
 
-import { Header, Loader } from 'components';
+import { Header, IntegrationIcon, IntegrationType, Loader } from 'components';
 
+import { Settings } from './settings';
 import styles from './update_o_auth.module.scss';
 import { OAuthAppForm } from '../new_o_auth/o_auth_form';
 
@@ -48,38 +50,80 @@ export function UpdateOAuthApp() {
 
   return (
     <>
-      <Header title="Update OAuth App" />
-      <Container>
-        <Paper mt="lg" className={styles.container}>
-          <Group p="md">
-            <Title order={5}>Update the OAuth App </Title>
-          </Group>
-          <Divider className={styles.divider} />
-
-          <Group pt="md">
-            <OAuthAppForm
-              workspaceId={workspaceId as string}
-              update
-              initialValues={{
-                clientId: integrationOAuthApp.clientId,
-                scopes: integrationOAuthApp.scopes,
-                integrationOAuthAppName:
-                  integrationOAuthApp.integrationOAuthAppName,
-              }}
-              loading={updateLoading}
-              onSubmit={(values) => {
-                updateIntegrationOAuthApp({
-                  integrationOAuthAppName: values.integrationOAuthAppName,
-                  clientId: values.clientId,
-                  clientSecret: values.clientSecret,
-                  scopes: values.scopes,
-                  integrationOAuthAppId: integrationOAuthAppId as string,
-                });
-              }}
+      <Header
+        title={
+          <Group align="center">
+            <Text>{integrationOAuthApp.integrationOAuthAppName}</Text>
+            <IntegrationType
+              type={integrationOAuthApp.integrationDefinition.integrationType}
+            />
+            <IntegrationIcon
+              icon={integrationOAuthApp.integrationDefinition.icon}
+              height={20}
+              width={20}
             />
           </Group>
-        </Paper>
-      </Container>
+        }
+        description="Manage the OAuth app"
+        actions={
+          <Text size="sm" color="gray">
+            Created {showDateInUI(integrationOAuthApp.createdAt)}
+          </Text>
+        }
+      />
+
+      <Stack>
+        <Tabs defaultValue="overview" pt="lg" px="xl">
+          <Tabs.List className={styles.tabList} mb="xl">
+            <Tabs.Tab
+              className={styles.tab}
+              icon={<IconLine size="1.25rem" />}
+              value="overview"
+            >
+              Overview
+            </Tabs.Tab>
+            <Tabs.Tab
+              className={styles.tab}
+              icon={<IconSettings size="1.25rem" />}
+              value="settings"
+            >
+              Settings
+            </Tabs.Tab>
+          </Tabs.List>
+
+          <Tabs.Panel value="overview">
+            <Paper className={styles.container}>
+              <Group pt="md">
+                <OAuthAppForm
+                  workspaceId={workspaceId as string}
+                  update
+                  initialValues={{
+                    clientId: integrationOAuthApp.clientId,
+                    scopes: integrationOAuthApp.scopes,
+                    integrationOAuthAppName:
+                      integrationOAuthApp.integrationOAuthAppName,
+                  }}
+                  loading={updateLoading}
+                  onSubmit={(values) => {
+                    updateIntegrationOAuthApp({
+                      integrationOAuthAppName: values.integrationOAuthAppName,
+                      clientId: values.clientId,
+                      clientSecret: values.clientSecret,
+                      scopes: values.scopes,
+                      integrationOAuthAppId: integrationOAuthAppId as string,
+                    });
+                  }}
+                />
+              </Group>
+            </Paper>
+          </Tabs.Panel>
+          <Tabs.Panel value="settings">
+            <Settings
+              integrationOAuthAppId={integrationOAuthApp.integrationOAuthAppId}
+            />
+          </Tabs.Panel>
+        </Tabs>
+      </Stack>
     </>
   );
 }

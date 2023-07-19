@@ -42,7 +42,10 @@ export function NewIntegration() {
 
   return (
     <>
-      <Header title="New Integration Account" showBack />
+      <Header
+        title="New Integration Account"
+        description="Integrate a new user account with third-party apps."
+      />
 
       <Paper m="xl" className={styles.container}>
         <Group p="md">

@@ -3,6 +3,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -112,6 +113,17 @@ export class IntegrationOAuthController {
     return await this.integrationOAuthService.getIntegrationOAuthApp(
       integrationOAuthRequestIdBody,
       integrationOAuthRequestWorkspaceIdBody.workspaceId,
+    );
+  }
+
+  @Delete(':integrationOAuthAppId')
+  @UseGuards(new AuthGuard())
+  async deleteIntegrationOAuthApp(
+    @Param()
+    integrationOAuthRequestIdBody: IntegrationOAuthRequestIdBody,
+  ): Promise<IntegrationOAuthApp> {
+    return await this.integrationOAuthService.deleteIntegrationOAuth(
+      integrationOAuthRequestIdBody.integrationOAuthAppId,
     );
   }
 }

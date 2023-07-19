@@ -23,6 +23,10 @@ $dim: 40;
   }
 }
 
+.linkGroup {
+  width: 100%;
+}
+
 .linkActive {
   color: var(--mantine-color-black);
   font-weight: bold;
@@ -32,7 +36,7 @@ $min-height: 60px;
 
 .button {
   width: 100%;
-  padding: var(--mantine-spacing-xs);
+  padding: var(--mantine-spacing-md) var(--mantine-spacing-xs);
   border-radius: var(--mantine-radius-md);
   min-height: $min-height;
 

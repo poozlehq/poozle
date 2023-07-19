@@ -98,4 +98,12 @@ export class IntegrationOAuthService {
       },
     });
   }
+
+  async deleteIntegrationOAuth(integrationOAuthAppId: string) {
+    return await this.prisma.integrationOAuthApp.delete({
+      where: {
+        integrationOAuthAppId,
+      },
+    });
+  }
 }

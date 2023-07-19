@@ -3,25 +3,22 @@
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 import {
+  ActionIcon,
   Alert,
   Button,
+  CopyButton,
   Group,
-  Popover,
-  Stack,
   TextInput,
-  Title,
-  Text,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { Specification } from '@poozle/engine-idk';
-import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
+import { IconAlertCircle, IconCheck, IconCopy } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
 import {
   useCheckCredentialsMutation,
-  useDeleteIntegrationAccount,
   useUpdateIntegrationAccountMutation,
 } from 'services/integration_account';
 import { useGetIntegrationDefinitionSpecQuery } from 'services/integration_definition';
@@ -58,7 +55,6 @@ export function Form({
   integrationAccount,
   onComplete,
 }: FormProps) {
-  const router = useRouter();
   const form = useForm({
     initialValues: getInitialValues(spec, integrationAccount),
   });
@@ -94,15 +90,6 @@ export function Form({
       },
     });
 
-  const {
-    mutate: deleteIntegrationAccount,
-    isLoading: deletingIntegrationAccount,
-  } = useDeleteIntegrationAccount({
-    onSuccess: () => {
-      router.back();
-    },
-  });
-
   const onSubmit = (values: Values) => {
     updateIntegrationAccount({
       config: values[getPropertyName(values.authType)],
@@ -134,6 +121,30 @@ export function Form({
           pb="md"
           disabled
           description="This is used as an unique identifier"
+          label="Integration account ID"
+          placeholder="Enter integration account name"
+          rightSection={
+            <CopyButton
+              value={integrationAccount.integrationAccountId}
+              timeout={2000}
+            >
+              {({ copied, copy }) => (
+                <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
+                  {copied ? (
+                    <IconCheck size="1rem" />
+                  ) : (
+                    <IconCopy size="1rem" />
+                  )}
+                </ActionIcon>
+              )}
+            </CopyButton>
+          }
+          {...form.getInputProps('integrationAccountId')}
+        />
+        <TextInput
+          pb="md"
+          disabled
+          description="This is used in the UI to find accounts"
           label="Integration account name"
           placeholder="Enter integration account name"
           {...form.getInputProps('integrationAccountName')}
@@ -164,36 +175,6 @@ export function Form({
         )}
 
         <Group pt="xl" position="right">
-          <Popover width={200} position="bottom" withArrow shadow="md">
-            <Popover.Target>
-              <Button color="red" loading={deletingIntegrationAccount}>
-                Delete
-              </Button>
-            </Popover.Target>
-            <Popover.Dropdown>
-              <Stack>
-                <Text size="sm">Do this only when you are really sure</Text>
-                <div>
-                  <Group position="right">
-                    <Button
-                      variant="subtle"
-                      color="red"
-                      size="xs"
-                      onClick={() =>
-                        deleteIntegrationAccount({
-                          integrationAccountId:
-                            integrationAccount.integrationAccountId,
-                        })
-                      }
-                    >
-                      Delete
-                    </Button>
-                  </Group>
-                </div>
-              </Stack>
-            </Popover.Dropdown>
-          </Popover>
-
           <Button type="submit" loading={checkIsLoading || createIsLoading}>
             Update
           </Button>
@@ -241,10 +222,6 @@ export function UpdateIntegrationForm({
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <Title order={6}>Update the integration configuration</Title>
-      </div>
-
       <Form
         spec={integrationDefinitionSpec}
         integrationAccount={integrationAccount}

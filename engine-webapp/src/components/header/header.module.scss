@@ -1,10 +1,12 @@
 // To adjust with the sidebar
-$height: 61px;
+$height: 80px;
 
 .header {
   height: $height;
-  background-color: var(--mantine-color-white);
-  border-bottom: 1px solid var(--mantine-color-gray-2);
+}
+
+.plainHeader {
+  height: $height;
 }
 
 .container {

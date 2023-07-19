@@ -3,6 +3,7 @@
 import { Link } from '@@generated/link/entities';
 import { ActionIcon, CopyButton, Modal, Text, TextInput } from '@mantine/core';
 import { IconCheck, IconCopy } from '@tabler/icons-react';
+import getConfig from 'next/config';
 import React from 'react';
 
 interface CopyLinkModalProps {
@@ -10,6 +11,8 @@ interface CopyLinkModalProps {
   link: Link;
   onClose: () => void;
 }
+
+const { publicRuntimeConfig } = getConfig();
 
 export function CopyLinkModal({ opened, onClose, link }: CopyLinkModalProps) {
   return (
@@ -21,11 +24,14 @@ export function CopyLinkModal({ opened, onClose, link }: CopyLinkModalProps) {
 
       <TextInput
         mt="md"
-        value={link.linkId}
+        value={`${publicRuntimeConfig.NEXT_PUBLIC_BASE_HOST}/link/${link.linkId}`}
         disabled
-        label={`Link Id for ${link.linkName}`}
+        label={`Link URL for ${link.linkName}`}
         rightSection={
-          <CopyButton value={link.linkId} timeout={2000}>
+          <CopyButton
+            value={`${publicRuntimeConfig.NEXT_PUBLIC_BASE_HOST}/link/${link.linkId}`}
+            timeout={2000}
+          >
             {({ copied, copy }) => (
               <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
                 {copied ? <IconCheck size="1rem" /> : <IconCopy size="1rem" />}

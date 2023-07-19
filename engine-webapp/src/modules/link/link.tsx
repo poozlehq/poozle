@@ -7,6 +7,7 @@ import {
   Group,
   Paper,
   ThemeIcon,
+  Text,
   Tooltip,
 } from '@mantine/core';
 import { IconAlertSmall, IconCheck, IconCopy } from '@tabler/icons-react';
@@ -14,6 +15,7 @@ import getConfig from 'next/config';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { SessionAuth } from 'supertokens-auth-react/recipe/session';
+import { showDateInTable } from 'utils';
 
 import { SideBarLayout } from 'layouts/sidebar_layout';
 import { GetUserData } from 'wrappers/get_user_data';
@@ -65,9 +67,9 @@ export function LinkComponent() {
       name: 'Created',
       key: 'created',
       render: (data: Link) => (
-        <div className={styles.tableDataContainer}>
-          {new Date(data.createdAt).toLocaleString()}
-        </div>
+        <Text className={styles.tableDataContainer} size="xs" color="gray">
+          {showDateInTable(data.createdAt)}
+        </Text>
       ),
     },
 
@@ -120,6 +122,7 @@ export function LinkComponent() {
     <div>
       <Header
         title="Links"
+        description="Create links to sSend your users a secure URL to authorize their integrations in production."
         actions={
           <Button onClick={() => router.push(`${router.asPath}/new`)}>
             + New Link
@@ -133,7 +136,6 @@ export function LinkComponent() {
             horizontalSpacing="lg"
             columns={columns}
             idKey="linkId"
-            onRowClick={(id: string) => console.log(id)}
             data={links}
           />
         </Paper>

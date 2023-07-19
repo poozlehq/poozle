@@ -37,6 +37,7 @@
     "classnames": "^2.3.2",
     "cookies": "^0.8.0",
     "date-fns": "^2.29.3",
+    "dayjs": "^1.11.9",
     "http-proxy": "^1.18.1",
     "http-proxy-middleware": "^2.0.6",
     "next": "13.1.1",

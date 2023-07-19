@@ -4,22 +4,23 @@
 import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
+import { MessageResponse } from './message.interface';
 import { convertMessage } from './message.utils';
 
 const BASE_URL = 'https://www.googleapis.com/gmail/v1/users/me/messages';
 
-export class GetMessagePath extends BasePath {
-  async fetchSingleMessage(url: string, headers: AxiosHeaders, _params: Params) {
-    try {
-      const response = await axios({
-        url,
-        headers,
-      });
+export class MessagePath extends BasePath {
+  async fetchSingleMessage(
+    url: string,
+    headers: AxiosHeaders,
+    _params: Params,
+  ): Promise<MessageResponse> {
+    const response = await axios({
+      url,
+      headers,
+    });
 
-      return convertMessage(response.data);
-    } catch (e) {
-      throw new Error(e);
-    }
+    return { data: convertMessage(response.data), raw: response.data };
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
@@ -30,7 +31,7 @@ export class GetMessagePath extends BasePath {
         return this.fetchSingleMessage(url, headers, params);
 
       default:
-        return {};
+        throw new Error(`Unknown method ${method}`);
     }
   }
 }

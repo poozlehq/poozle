@@ -3,7 +3,6 @@
 import {
   Alert,
   Button,
-  Container,
   Divider,
   Group,
   MultiSelect,
@@ -70,99 +69,103 @@ export function NewLink() {
 
   return (
     <>
-      <Header title="New Link" showBack />
-      <Container>
-        <Paper mt="lg" className={styles.container}>
-          <Group p="md">
-            <Title order={5}>Create a new Link </Title>
-          </Group>
-          <Divider className={styles.divider} />
+      <Header
+        title="New Link"
+        description="Send your users a secure URL to authorize their integrations in production."
+      />
 
-          <Group p="md" pt="md" className={styles.formContainer}>
-            <form
-              className={styles.form}
-              onSubmit={form.onSubmit((values) => {
-                createLink({
-                  ...values,
-                  preferOAuth: values.preferOAuth === 'Yes' ? true : false,
-                  canExpire: values.canExpire === 'Yes' ? true : false,
-                  workspaceId: workspaceId as string,
-                });
-              })}
-            >
-              <TextInput
+      <Paper m="xl" className={styles.container}>
+        <Group p="md">
+          <Title order={5}>Create a new Link </Title>
+        </Group>
+        <Divider className={styles.divider} />
+
+        <Group p="md" pt="md" className={styles.formContainer}>
+          <form
+            className={styles.form}
+            onSubmit={form.onSubmit((values) => {
+              createLink({
+                ...values,
+                preferOAuth: values.preferOAuth === 'Yes' ? true : false,
+                canExpire: values.canExpire === 'Yes' ? true : false,
+                workspaceId: workspaceId as string,
+              });
+            })}
+          >
+            <TextInput
+              pb="md"
+              label="Link name"
+              description="You can use Organisation name"
+              placeholder="Enter link name"
+              {...form.getInputProps('linkName')}
+            />
+
+            <Select
+              pb="md"
+              label="Link expires?"
+              description="When used with react-sdk set it to false"
+              data={['Yes', 'No']}
+              searchable
+              {...form.getInputProps('canExpire')}
+            />
+            {form.values.canExpire === 'Yes' && (
+              <NumberInput
                 pb="md"
-                label="Link name"
-                description="You can use Organisation name"
-                placeholder="Enter link name"
-                {...form.getInputProps('linkName')}
+                label="Link expiry limit"
+                description="In seconds"
+                placeholder="Enter time after which link expires"
+                {...form.getInputProps('expiresIn')}
               />
+            )}
+            <Select
+              pb="md"
+              label="Strongly prefer OAuth based authentication"
+              description="Ensure that you have already created OAuth app"
+              data={['Yes', 'No']}
+              searchable
+              {...form.getInputProps('preferOAuth')}
+            />
 
-              <Select
-                pb="md"
-                label="Link expires?"
-                data={['Yes', 'No']}
-                searchable
-                {...form.getInputProps('canExpire')}
-              />
-              {form.values.canExpire === 'Yes' && (
-                <NumberInput
-                  pb="md"
-                  label="Link expiry limit"
-                  description="In seconds"
-                  placeholder="Enter time after which link expires"
-                  {...form.getInputProps('expiresIn')}
-                />
-              )}
-              <Select
-                pb="md"
-                label="Strongly prefer OAuth based authentication"
-                data={['Yes', 'No']}
-                searchable
-                {...form.getInputProps('preferOAuth')}
-              />
+            <MultiSelect
+              pb="md"
+              label="Choose category"
+              data={Object.keys(IntegrationType).map((value) => ({
+                label: IntegrationTypeSelectData[value as IntegrationType],
+                value,
+              }))}
+              multiple
+              searchable
+              {...form.getInputProps('category')}
+            />
 
-              <MultiSelect
-                pb="md"
-                label="Choose category"
-                data={Object.keys(IntegrationType).map((value) => ({
-                  label: IntegrationTypeSelectData[value as IntegrationType],
-                  value,
-                }))}
-                multiple
-                searchable
-                {...form.getInputProps('category')}
-              />
+            {errorMessage && (
+              <Alert
+                color="red"
+                mt="md"
+                icon={<IconAlertCircle size="1rem" />}
+                title="Error!"
+              >
+                {<>{errorMessage}</>}
+              </Alert>
+            )}
+            <Group pt="xl" position="right">
+              <Button type="submit" loading={isLoading}>
+                Create
+              </Button>
+            </Group>
+          </form>
+        </Group>
+      </Paper>
 
-              {errorMessage && (
-                <Alert
-                  color="red"
-                  mt="md"
-                  icon={<IconAlertCircle size="1rem" />}
-                  title="Error!"
-                >
-                  {<>{errorMessage}</>}
-                </Alert>
-              )}
-              <Group pt="xl" position="right">
-                <Button type="submit" loading={isLoading}>
-                  Create
-                </Button>
-              </Group>
-            </form>
-          </Group>
-        </Paper>
-
-        {createdLink && (
-          <CopyLinkModal
-            opened={!!createdLink}
-            link={createdLink}
-            onClose={() => {
-              setCreatedLink(undefined);
-            }}
-          />
-        )}
-      </Container>
+      {createdLink && (
+        <CopyLinkModal
+          opened={!!createdLink}
+          link={createdLink}
+          onClose={() => {
+            setCreatedLink(undefined);
+          }}
+        />
+      )}
     </>
   );
 }

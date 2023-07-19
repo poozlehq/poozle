@@ -1,22 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
-import { Recipient } from '@poozle/engine-idk';
+import { Message, Recipient } from '@poozle/engine-idk';
 
-export interface messageResponse {
-  id: string;
-  thread_id: string;
-}
-
-interface file {
-  content_id: string;
-  content_type: string;
-  filename: string;
-}
-interface extractedBody {
-  textBody: string;
-  htmlBody: string;
-  files: file[];
-}
+import { ExtractedBody } from './message.interface';
 
 function getReceipts(data: string) {
   const regex = /([^<>\r\n]+)|<([^\s@]+@[^\s@]+)>|([\w.-]+@[\w.-]+)/g;
@@ -56,8 +42,8 @@ function flattenParts(parts: any[]) {
   return flattenedParts;
 }
 
-function extractBody(parts: any): extractedBody {
-  const response: extractedBody = { textBody: '', htmlBody: '', files: [] };
+function extractBody(parts: any): ExtractedBody {
+  const response: ExtractedBody = { textBody: '', htmlBody: '', files: [] };
   const flattenedParts = flattenParts(parts);
 
   flattenedParts.forEach((part: any) => {
@@ -77,7 +63,7 @@ function extractBody(parts: any): extractedBody {
   return response;
 }
 
-export function convertMessage(data: any) {
+export function convertMessage(data: any): Message {
   const responseHeaders = data.payload.headers.reduce(
     (acc: any, header: any) => ({ ...acc, [header.name]: header.value }),
     {},
@@ -91,7 +77,7 @@ export function convertMessage(data: any) {
     body: body.textBody,
     html_body: body.htmlBody,
     user_id: labels.has('SENT') ? responseHeaders['From'] : responseHeaders['Delivered-To'],
-    date: Date.parse(responseHeaders.Date) / 1000,
+    date: (Date.parse(responseHeaders.Date) / 1000).toString(),
     snippet: data.snippet,
     subject: responseHeaders.Subject ?? '',
     thread_id: data.threadId,
@@ -103,8 +89,6 @@ export function convertMessage(data: any) {
     from: getReceipts(responseHeaders.From ?? ''),
     reply_to: getReceipts(responseHeaders['Reply-To'] ?? ''),
     labels: data.labelIds,
-    files: body.files,
-    raw_data: data,
   };
 }
 

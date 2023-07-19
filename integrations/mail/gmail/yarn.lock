@@ -1109,12 +1109,13 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
-"@poozle/engine-idk@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@poozle/engine-idk/-/engine-idk-0.1.8.tgz#606e6566fcf1f68ed3b0513909d041048c12cbd2"
-  integrity sha512-2wliwg8JygzSkw34wrFymo97Wt1JNo67n4qvJsbNL21QF/r8wmA0Xj1ahHNfLAu/Exw7CgvwjLyFvOQgVLb7Qg==
+"@poozle/engine-idk@^0.1.25":
+  version "0.1.25"
+  resolved "https://registry.yarnpkg.com/@poozle/engine-idk/-/engine-idk-0.1.25.tgz#cfccb108d9b763c2346ab6e4c54832e2fd822497"
+  integrity sha512-rvq/Uuh3QPwOmVDA50L7gKR9q4fyDrdZUv8HrwmEHS4v+2aIN9TsRuBkhR8qa1bC/PcnsNY18/VmSGm4MAooCg==
   dependencies:
     axios "^1.3.2"
+    qs "^6.11.2"
 
 "@rollup/plugin-babel@6.0.2":
   version "6.0.2"
@@ -2766,6 +2767,13 @@ punycode@^2.1.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/punycode/-/punycode-2.3.0.tgz#f67fa67c94da8f4d0cfff981aee4118064199b8f"
   integrity sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==
+
+qs@^6.11.2:
+  version "6.11.2"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.11.2.tgz#64bea51f12c1f5da1bc01496f48ffcff7c69d7d9"
+  integrity sha512-tDNIz22aBzCDxLtVH++VnTfzxlfeK5CbqohpSqpJgj1Wg/cQbStNAz3NuqCs5vV+pjBsK4x4pN9HlVh7rcYRiA==
+  dependencies:
+    side-channel "^1.0.4"
 
 queue-microtask@^1.2.2:
   version "1.2.3"

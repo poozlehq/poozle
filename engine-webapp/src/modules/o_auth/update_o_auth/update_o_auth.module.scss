@@ -13,3 +13,13 @@
 .integrationSelect {
   width: 100%;
 }
+
+.tabList {
+  margin-bottom: var(--mantine-spacing-xl);
+  border-bottom: 1px solid var(--mantine-color-gray-2);
+}
+
+.tab {
+  margin-right: var(--mantine-spacing-lg);
+  font-size: var(--mantine-font-size-sm);
+}

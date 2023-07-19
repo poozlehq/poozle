@@ -201,7 +201,7 @@ export function Integrations() {
   }
 
   return (
-    <div className={styles.tableContainer}>
+    <div>
       <Group position="right" mb="md">
         <Button onClick={() => setAddNewIntegrationState(true)}>
           + Add Integration

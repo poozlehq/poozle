@@ -5,6 +5,7 @@ import { Button, Paper, Text } from '@mantine/core';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { SessionAuth } from 'supertokens-auth-react/recipe/session';
+import { showDateInTable } from 'utils';
 
 import { SideBarLayout } from 'layouts/sidebar_layout';
 import { GetUserData } from 'wrappers/get_user_data';
@@ -55,9 +56,9 @@ export function OAuthApps() {
       name: 'Last Updated',
       key: 'last_updated',
       render: (data: IntegrationOAuthApp) => (
-        <div className={styles.tableDataContainer}>
-          {new Date(data.updatedAt).toLocaleString()}
-        </div>
+        <Text className={styles.tableDataContainer} size="xs" color="gray">
+          {showDateInTable(data.updatedAt)}
+        </Text>
       ),
     },
   ];
@@ -70,6 +71,7 @@ export function OAuthApps() {
     <div>
       <Header
         title="OAuth Apps"
+        description="Configure your own OAuth credentials"
         actions={
           <Button onClick={() => router.push(`${router.asPath}/new`)}>
             + New OAuth app

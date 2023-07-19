@@ -1,16 +1,19 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Paper } from '@mantine/core';
+import { Group, Paper, Stack, Tabs, Text } from '@mantine/core';
+import { IconLine, IconSettings } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { SessionAuth } from 'supertokens-auth-react/recipe/session';
+import { showDateInUI } from 'utils';
 
 import { SideBarLayout } from 'layouts/sidebar_layout';
 import { GetUserData } from 'wrappers/get_user_data';
 
 import { useGetIntegrationAccountQuery } from 'services/integration_account';
 
-import { Header, Loader } from 'components';
+import { Header, IntegrationIcon, IntegrationType, Loader } from 'components';
 
+import { Settings } from './settings';
 import styles from './update_integration_account.module.scss';
 import { UpdateIntegrationForm } from './update_integration_account_form';
 
@@ -27,23 +30,72 @@ export function UpdateIntegration() {
     integrationAccountId: integrationAccountId as string,
   });
 
+  if (isLoading || !integrationAccount) {
+    return <Loader />;
+  }
+
   return (
     <>
-      <Header title="Integration" />
+      <Header
+        title={
+          <Group align="center">
+            <Text>{integrationAccount.integrationAccountName}</Text>
+            <IntegrationType
+              type={integrationAccount.integrationDefinition.integrationType}
+            />
+            <IntegrationIcon
+              icon={integrationAccount.integrationDefinition.icon}
+              height={20}
+              width={20}
+            />
+          </Group>
+        }
+        description="Manage the integration account"
+        actions={
+          <Text size="sm" color="gray">
+            Connected {showDateInUI(integrationAccount.createdAt)}
+          </Text>
+        }
+      />
+      <Stack>
+        <Tabs defaultValue="overview" pt="lg" px="xl">
+          <Tabs.List className={styles.tabList} mb="xl">
+            <Tabs.Tab
+              className={styles.tab}
+              icon={<IconLine size="1.25rem" />}
+              value="overview"
+            >
+              Overview
+            </Tabs.Tab>
 
-      <Paper m="xl" className={styles.container}>
-        {isLoading && !integrationAccount ? (
-          <Loader />
-        ) : (
-          <UpdateIntegrationForm
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            integrationAccount={integrationAccount as any}
-            onComplete={() => {
-              refetch();
-            }}
-          />
-        )}
-      </Paper>
+            <Tabs.Tab
+              className={styles.tab}
+              icon={<IconSettings size="1.25rem" />}
+              value="settings"
+            >
+              Settings
+            </Tabs.Tab>
+          </Tabs.List>
+
+          <Tabs.Panel value="overview">
+            <Paper className={styles.container}>
+              <UpdateIntegrationForm
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                integrationAccount={integrationAccount as any}
+                onComplete={() => {
+                  refetch();
+                }}
+              />
+            </Paper>
+          </Tabs.Panel>
+
+          <Tabs.Panel value="settings">
+            <Settings
+              integrationAccountId={integrationAccount.integrationAccountId}
+            />
+          </Tabs.Panel>
+        </Tabs>
+      </Stack>
     </>
   );
 }
