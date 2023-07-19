@@ -66,9 +66,9 @@
     "name": "Gmail",
     "key": "gmail",
     "icon": "gmail.svg",
-    "version": "0.1.4",
+    "version": "0.1.5",
     "releaseStage": "ALPHA",
-    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/mail/gmail/0.1.4/index.js",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/mail/gmail/0.1.5/index.js",
     "integrationType": "MAIL"
   },
   {
