@@ -1,11 +1,11 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Comment } from '@poozle/engine-idk';
+import { CommentWithRaw } from './comment.interface';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function convertComment(data: any): Comment {
+export function convertComment(data: any): CommentWithRaw {
   return {
-    id: data.id,
+    id: data.id.toString(),
     ticket_id: data.issue_url.match(/\/(\d+)$/)?.[1],
     body: data.body,
     html_body: '',
@@ -14,5 +14,8 @@ export function convertComment(data: any): Comment {
     created_by: data.user.login,
     created_at: data.created_at,
     updated_at: data.updated_at,
+
+    // Raw
+    raw: data,
   };
 }

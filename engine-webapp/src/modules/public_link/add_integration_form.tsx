@@ -8,7 +8,6 @@ import { notifications } from '@mantine/notifications';
 import { Specification } from '@poozle/engine-idk';
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
 import getConfig from 'next/config';
-import { useRouter } from 'next/router';
 import * as React from 'react';
 
 import styles from 'modules/integration_account/new_integration_account/new_integration_account_form.module.scss';
@@ -29,10 +28,14 @@ interface NewIntegrationFormProps {
   integrationDefinition: IntegrationDefinition;
   workspaceId: string;
   integrationAccountNameDefault?: string;
-  linkId: string;
   onComplete?: () => void;
   oAuthApp?: IntegrationOAuthApp;
   preferOAuth: boolean;
+
+  // Far Parent
+  linkId: string;
+  redirectURL: string;
+  accountIdentifier: string;
 }
 
 interface FormProps {
@@ -42,9 +45,13 @@ interface FormProps {
   onComplete?: () => void;
   integrationAccountNameDefault?: string;
   integrationDefinition: IntegrationDefinition;
-  linkId: string;
   preferOAuth: boolean;
   oAuthApp?: IntegrationOAuthApp;
+
+  // Far Parent
+  linkId: string;
+  redirectURL: string;
+  accountIdentifier: string;
 }
 
 const { publicRuntimeConfig } = getConfig();
@@ -56,12 +63,12 @@ export function Form({
   oAuthApp,
   preferOAuth,
   integrationDefinition,
+  redirectURL,
+  accountIdentifier,
   onComplete,
 }: FormProps) {
   let spec = initialSpec;
-  const {
-    query: { redirectURL, accountIdentifier },
-  } = useRouter();
+
   const [errorMessage, setErrorMessage] = React.useState(undefined);
   const initialValues = getInitialValues(spec, integrationAccountNameDefault);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -82,7 +89,7 @@ export function Form({
       onSuccess: (data) => {
         const redirectURL = data.redirectURL;
 
-        window.location.href = redirectURL;
+        window.parent.location.href = redirectURL;
       },
     });
 
@@ -92,7 +99,7 @@ export function Form({
         config: {},
         linkId,
         integrationAccountName: integrationAccountNameDefault,
-        accountIdentifier: accountIdentifier as string,
+        accountIdentifier: accountIdentifier ? accountIdentifier : undefined,
         redirectURL: redirectURL
           ? (redirectURL as string)
           : `${publicRuntimeConfig.NEXT_PUBLIC_BASE_HOST}/link/${linkId}`,
@@ -228,6 +235,9 @@ export function NewIntegrationForm({
   preferOAuth,
   oAuthApp,
   onComplete,
+
+  redirectURL,
+  accountIdentifier,
 }: NewIntegrationFormProps) {
   const {
     data: integrationDefinitionSpec,
@@ -267,6 +277,8 @@ export function NewIntegrationForm({
       integrationDefinition={integrationDefinition}
       integrationAccountNameDefault={integrationAccountNameDefault}
       oAuthApp={oAuthApp}
+      accountIdentifier={accountIdentifier}
+      redirectURL={redirectURL}
     />
   );
 }

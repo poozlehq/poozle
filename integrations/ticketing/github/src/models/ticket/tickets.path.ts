@@ -1,25 +1,29 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import {
-  BasePath,
-  Config,
-  convertToRequestBody,
-  CreateTicketBody,
-  Params,
-} from '@poozle/engine-idk';
+import { BasePath, Config, convertToRequestBody, CreateTicketBody } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL } from 'common';
+import { BASE_URL, getMetaParams } from 'common';
 
-import { TicketResponse, TicketsResponse } from './ticket.interface';
+import {
+  CreateTicketParams,
+  GetTicketsParams,
+  TicketResponse,
+  TicketsResponse,
+} from './ticket.interface';
 import { convertTicket, ticketMappings } from './ticket.utils';
 
 export class TicketsPath extends BasePath {
-  async fetchData(url: string, headers: AxiosHeaders, params: Params): Promise<TicketsResponse> {
-    const page =
-      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+  async fetchData(
+    url: string,
+    headers: AxiosHeaders,
+    params: GetTicketsParams,
+  ): Promise<TicketsResponse> {
+    const page = params.queryParams?.cursor ? parseInt(params.queryParams?.cursor) : 1;
+
+    const limit = params.queryParams.limit ?? 10;
 
     const final_params = {
-      per_page: params.queryParams?.limit,
+      per_page: limit,
       sort:
         params.queryParams?.sort === 'created_at'
           ? 'created'
@@ -46,16 +50,16 @@ export class TicketsPath extends BasePath {
       data: responseData.map((data: any) =>
         convertTicket(data, params.pathParams?.collection_id as string | null),
       ),
-      raw: response.data,
-      meta: {
-        previous: (page > 1 ? page - 1 : 1).toString(),
-        current: page.toString(),
-        next: (page + 1).toString(),
-      },
+
+      meta: getMetaParams(response.data, limit, page),
     };
   }
 
-  async createTicket(url: string, headers: AxiosHeaders, params: Params): Promise<TicketResponse> {
+  async createTicket(
+    url: string,
+    headers: AxiosHeaders,
+    params: CreateTicketParams,
+  ): Promise<TicketResponse> {
     const body: CreateTicketBody = params.requestBody as CreateTicketBody;
     const createBody = convertToRequestBody(body, ticketMappings);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -65,19 +69,23 @@ export class TicketsPath extends BasePath {
 
     return {
       data: convertTicket(response.data, params.pathParams?.collection_id as string | null),
-      raw: response.data,
     };
   }
 
-  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
+  async run(
+    method: string,
+    headers: AxiosHeaders,
+    params: GetTicketsParams | CreateTicketParams,
+    config: Config,
+  ) {
     const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues`;
 
     switch (method) {
       case 'GET':
-        return this.fetchData(url, headers, params);
+        return this.fetchData(url, headers, params as GetTicketsParams);
 
       case 'POST':
-        return this.createTicket(url, headers, params);
+        return this.createTicket(url, headers, params as CreateTicketParams);
 
       default:
         throw new Error('Method not found');

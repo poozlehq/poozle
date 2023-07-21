@@ -1,14 +1,8 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Alert, Box, Paper, useMantineTheme, Text } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
-import {
-  IconAlertCircle,
-  IconAlertSmall,
-  IconCheck,
-} from '@tabler/icons-react';
+import { IconAlertCircle } from '@tabler/icons-react';
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import React from 'react';
 
 import { useGetLinkQuery } from 'services/link';
@@ -18,37 +12,20 @@ import { Loader } from 'components';
 import { PublicLink } from './public_link';
 import styles from './public_link.module.scss';
 
-export function PublicLinkWrapper() {
-  const { query } = useRouter();
-  const {
-    linkId,
-    success,
-    error: errorFromServer,
-    integrationName,
-    accountIdentifier,
-  } = query;
+interface PublicLinkLayoutProps {
+  linkId: string;
+  accountIdentifier?: string;
+  redirectURL?: string;
+  onClose: () => void;
+}
 
+export function PublicLinkLayout({
+  linkId,
+  accountIdentifier,
+  redirectURL,
+  onClose,
+}: PublicLinkLayoutProps) {
   const theme = useMantineTheme();
-
-  React.useEffect(() => {
-    if (typeof success !== 'undefined') {
-      if (success === 'true') {
-        notifications.show({
-          icon: <IconCheck />,
-          title: 'Status',
-          color: 'green',
-          message: `${integrationName} is successfully connected`,
-        });
-      } else {
-        notifications.show({
-          icon: <IconAlertSmall />,
-          title: 'Status',
-          color: 'red',
-          message: errorFromServer,
-        });
-      }
-    }
-  }, [success]);
 
   const {
     data: linkDetails,
@@ -97,7 +74,11 @@ export function PublicLinkWrapper() {
             {!isLoading && !error && linkDetails && !linkDetails.expired && (
               <PublicLink
                 link={linkDetails}
+                closed={closed}
+                close={onClose}
                 integrationsDefinitions={linkDetails.integrationDefinitions}
+                accountIdentifier={accountIdentifier}
+                redirectURL={redirectURL}
               />
             )}
 

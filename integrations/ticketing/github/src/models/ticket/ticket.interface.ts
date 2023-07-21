@@ -1,17 +1,59 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Ticket } from '@poozle/engine-idk';
+import { CreateTicketBody, Ticket, UpdateTicketBody } from '@poozle/engine-idk';
 import { Meta } from 'common';
 
-export interface TicketsResponse {
-  data: Ticket[];
-  meta: Meta;
+export interface TicketWithRaw extends Ticket {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   raw: any;
 }
 
+export interface TicketsResponse {
+  data: TicketWithRaw[];
+  meta: Meta;
+}
+
 export interface TicketResponse {
-  data: Ticket;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  raw: any;
+  data: TicketWithRaw;
+}
+
+export interface GetTicketsParams {
+  queryParams: {
+    limit: number;
+    cursor: string;
+
+    sort?: string;
+    direction?: string;
+    since?: string;
+    state?: string;
+    assignee_id?: string;
+  };
+
+  pathParams: {
+    collection_id: string;
+  };
+}
+
+export interface GetTicketParams {
+  pathParams: {
+    collection_id: string;
+    ticket_id: string;
+  };
+}
+
+export interface CreateTicketParams {
+  requestBody: CreateTicketBody;
+
+  pathParams: {
+    collection_id: string;
+  };
+}
+
+export interface UpdateTicketParams {
+  requestBody: UpdateTicketBody;
+
+  pathParams: {
+    ticket_id: string;
+    collection_id: string;
+  };
 }

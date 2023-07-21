@@ -1,17 +1,17 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, convertToRequestBody } from '@poozle/engine-idk';
+import { BasePath, Config, convertToRequestBody } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL } from 'common';
+import { BASE_URL, getMetaParams } from 'common';
 
-import { TagResponse, TagsResponse } from './tag.interface';
+import { CreateTagParams, GetTagsParams, TagResponse, TagsResponse } from './tag.interface';
 import { convertTag, tagMapping } from './tag.utils';
 
 export class TagsPath extends BasePath {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async getTags(url: string, headers: AxiosHeaders, params: Params): Promise<TagsResponse> {
-    const page =
-      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+  async getTags(url: string, headers: AxiosHeaders, params: GetTagsParams): Promise<TagsResponse> {
+    const page = params.queryParams?.cursor ? parseInt(params.queryParams?.cursor) : 1;
+
     const final_params = {
       per_page: params.queryParams?.limit,
       page,
@@ -26,32 +26,36 @@ export class TagsPath extends BasePath {
     return {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: response.data.map((data: any) => convertTag(data)),
-      raw: response.data,
-      meta: {
-        previous: (page > 1 ? page - 1 : 1).toString(),
-        current: page.toString(),
-        next: (page + 1).toString(),
-      },
+      meta: getMetaParams(response.data, params.queryParams?.limit, page),
     };
   }
 
-  async createTag(url: string, headers: AxiosHeaders, params: Params): Promise<TagResponse> {
+  async createTag(
+    url: string,
+    headers: AxiosHeaders,
+    params: CreateTagParams,
+  ): Promise<TagResponse> {
     const body = params.requestBody;
     const createBody = convertToRequestBody(body, tagMapping);
 
     const response = await axios.post(url, createBody, { headers });
 
-    return { data: convertTag(response.data), raw: response.data };
+    return { data: convertTag(response.data) };
   }
 
-  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
+  async run(
+    method: string,
+    headers: AxiosHeaders,
+    params: GetTagsParams | CreateTagParams,
+    config: Config,
+  ) {
     const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/labels`;
     switch (method) {
       case 'GET':
-        return this.getTags(url, headers, params);
+        return this.getTags(url, headers, params as GetTagsParams);
 
       case 'POST':
-        return this.createTag(url, headers, params);
+        return this.createTag(url, headers, params as CreateTagParams);
 
       default:
         throw new Error('Method not found');

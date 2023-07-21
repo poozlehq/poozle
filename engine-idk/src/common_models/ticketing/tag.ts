@@ -7,13 +7,13 @@ export interface Tag {
   color: string;
 }
 
-export interface CreateTag {
+export interface CreateTagBody {
   name: string;
   description: string;
   color: string;
 }
 
-export interface UpdateTag {
+export interface UpdateTagBody {
   name: string;
   description: string;
   color: string;

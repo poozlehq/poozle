@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Ticket } from '@poozle/engine-idk';
+import { TicketWithRaw } from './ticket.interface';
 
-export function convertTicket(data: any, collection_id: string | null): Ticket {
+export function convertTicket(data: any, collection_id: string | null): TicketWithRaw {
   return {
-    id: data.number,
+    id: data.number.toString(),
     name: data.title,
     collection_id: collection_id ? collection_id : '',
     description: data.body,
@@ -29,6 +29,9 @@ export function convertTicket(data: any, collection_id: string | null): Ticket {
     priority: '',
     due_date: '',
     completed_at: '',
+
+    // Raw
+    raw: data,
   };
 }
 

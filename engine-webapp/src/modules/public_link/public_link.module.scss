@@ -11,7 +11,7 @@
 }
 
 .paper {
-  min-width: 400px;
+  width: 400px;
 }
 
 .linkContainer {
@@ -38,4 +38,8 @@
 
 .divider {
   border-top-color: var(--mantine-color-gray-2);
+}
+
+.retryContainer {
+  width: 100%;
 }

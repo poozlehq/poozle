@@ -1,21 +1,20 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params } from '@poozle/engine-idk';
+import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL } from 'common';
+import { BASE_URL, getMetaParams } from 'common';
 
-import { CollectionsResponse } from './collection.interface';
+import { CollectionsResponse, GetCollectionsParams } from './collection.interface';
 import { convertCollection } from './collection.utils';
 
 export class CollectionsPath extends BasePath {
   async run(
     _method: string,
     headers: AxiosHeaders,
-    params: Params,
+    params: GetCollectionsParams,
     config: Config,
   ): Promise<CollectionsResponse> {
-    const page =
-      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+    const page = params.queryParams?.cursor ? parseInt(params.queryParams?.cursor) : 1;
 
     const final_params = {
       per_page: params.queryParams?.limit,
@@ -38,12 +37,7 @@ export class CollectionsPath extends BasePath {
     return {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: response.data.map((data: any) => convertCollection(data)),
-      raw: response.data,
-      meta: {
-        previous: (page > 1 ? page - 1 : 1).toString(),
-        current: page.toString(),
-        next: (page + 1).toString(),
-      },
+      meta: getMetaParams(response.data, params.queryParams?.limit, page),
     };
   }
 }

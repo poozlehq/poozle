@@ -15,7 +15,7 @@ export class TagPath extends BasePath {
       headers,
     });
 
-    return { data: convertTag(response.data), raw: response.data };
+    return { data: convertTag(response.data) };
   }
 
   async updateTag(url: string, headers: AxiosHeaders, params: Params): Promise<TagResponse> {
@@ -24,7 +24,7 @@ export class TagPath extends BasePath {
 
     const response = await axios.patch(url, createBody, { headers });
 
-    return { data: convertTag(response.data), raw: response.data };
+    return { data: convertTag(response.data) };
   }
 
   async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {

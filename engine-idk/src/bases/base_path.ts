@@ -48,11 +48,21 @@ export class BasePath {
         response['meta'] = meta;
       }
 
-      if (
-        (params.queryParams?.raw === true || params.queryParams?.raw === 'true' ? true : false) &&
-        responseFromRun.raw
-      ) {
-        response['raw'] = responseFromRun.raw;
+      const sendRaw =
+        params.queryParams?.raw === true || params.queryParams?.raw === 'true' ? true : false;
+
+      if (Array.isArray(response.data)) {
+        response.data = response.data.map(({ raw, ...otherRecord }: any) => ({
+          ...otherRecord,
+          ...(sendRaw ? { raw } : {}),
+        }));
+      } else {
+        const { raw, ...otherRecord } = response.data;
+
+        response.data = {
+          ...otherRecord,
+          ...(sendRaw ? { raw } : {}),
+        };
       }
 
       return response;
@@ -68,8 +78,8 @@ export class BasePath {
   async getMetaParams(response: any, params: Params): Promise<Meta> {
     let current = typeof params.queryParams?.cursor === 'string' ? params.queryParams?.cursor : '';
 
-    if (response.data && response.data.current) {
-      current = response.data.current;
+    if (response.meta && response.meta.current) {
+      current = response.meta.current;
     }
 
     const next = response.meta ? response.meta.next : '';

@@ -12,13 +12,13 @@ export interface Team {
   members: Member[];
 }
 
-export interface createTeam {
+export interface CreateTeamBody {
   name: string;
   description: string;
   memberts: Array<Exclude<Member, 'username'>>;
 }
 
-export interface updateTeam {
+export interface UpdateTeamBody {
   name: string;
   description: string;
   memberts: Array<Exclude<Member, 'username'>>;

@@ -46,7 +46,12 @@ async function bootstrap() {
   if (corsConfig.enabled) {
     app.enableCors({
       origin: configService.get('FRONTEND_HOST').split(',') || '',
-      allowedHeaders: ['content-type', ...supertokens.getAllCORSHeaders()],
+      allowedHeaders: [
+        'content-type',
+        ...supertokens.getAllCORSHeaders(),
+        'integrationaccountid',
+        'workspaceid',
+      ],
       credentials: true,
     });
   }

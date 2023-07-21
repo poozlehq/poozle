@@ -1,14 +1,17 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Tag } from '@poozle/engine-idk';
+import { TagWithRaw } from './tag.interface';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function convertTag(data: any): Tag {
+export function convertTag(data: any): TagWithRaw {
   return {
-    id: data.id,
+    id: data.id.toString(),
     name: data.name,
     description: data.description,
     color: data.color,
+
+    // Raw
+    raw: data,
   };
 }
 

@@ -41,10 +41,5 @@ module.exports = {
     // Will be available on both server and client
     NEXT_PUBLIC_BASE_HOST: process.env.NEXT_PUBLIC_BASE_HOST,
   },
-  experimental: {
-    outputStandalone: true,
-  },
-  api: {
-    responseLimit: false,
-  },
+  output: 'standalone',
 };

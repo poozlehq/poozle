@@ -15,7 +15,7 @@ import {
   Alert,
   Loader,
 } from '@mantine/core';
-import { IconChevronLeft } from '@tabler/icons-react';
+import { IconChevronLeft, IconX } from '@tabler/icons-react';
 import React from 'react';
 
 import { useGetIntegrationOAuthAppsJustIds } from 'services/integration_oauth';
@@ -32,12 +32,19 @@ export interface PublicLinkProps {
 
 interface PublicLinkInterface extends PublicLinkProps {
   integrationsDefinitions: IntegrationDefinition[];
+  closed: boolean;
+  close: () => void;
+
+  redirectURL: string;
+  accountIdentifier: string;
 }
 
 export function PublicLink({
   integrationsDefinitions,
-
   link,
+  close,
+  redirectURL,
+  accountIdentifier,
 }: PublicLinkInterface) {
   const [selectedDefinitionId, setDefinitionId] = React.useState(undefined);
 
@@ -69,18 +76,23 @@ export function PublicLink({
 
     return (
       <div>
-        <Group p="md">
-          <ActionIcon
-            size="sm"
-            color="gray"
-            onClick={() => setDefinitionId(undefined)}
-          >
-            <IconChevronLeft />
+        <Group p="md" position="apart" align="center">
+          <Group>
+            <ActionIcon
+              size="sm"
+              color="gray"
+              onClick={() => setDefinitionId(undefined)}
+            >
+              <IconChevronLeft />
+            </ActionIcon>
+            <Title order={5}>
+              Connect {integrationDefinition.name} Integration
+            </Title>
+          </Group>
+
+          <ActionIcon onClick={close}>
+            <IconX size={20} />
           </ActionIcon>
-          <Title order={5}>
-            {' '}
-            Connect {integrationDefinition.name} Integration
-          </Title>
         </Group>
         <Divider className={styles.divider} mb="lg" />
 
@@ -96,6 +108,8 @@ export function PublicLink({
             setDefinitionId(undefined);
           }}
           integrationAccountNameDefault={`${link.linkName}_${makeId(5)}`}
+          redirectURL={redirectURL}
+          accountIdentifier={accountIdentifier}
         />
       </div>
     );
@@ -103,8 +117,11 @@ export function PublicLink({
 
   return (
     <div>
-      <Group p="md">
+      <Group p="md" position="apart" align="center">
         <Title order={5}> Select Integration </Title>
+        <ActionIcon onClick={close}>
+          <IconX size={20} />
+        </ActionIcon>
       </Group>
       <Divider className={styles.divider} />
 

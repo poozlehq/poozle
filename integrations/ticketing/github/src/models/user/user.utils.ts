@@ -1,9 +1,9 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { User } from '@poozle/engine-idk';
+import { UserWithRaw } from './user.interface';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function convertUser(data: any): User {
+export function convertUser(data: any): UserWithRaw {
   return {
     id: data.login,
     name: data.login,
@@ -11,5 +11,8 @@ export function convertUser(data: any): User {
 
     // Extra field
     email_address: '',
+
+    // Raw
+    raw: data,
   };
 }

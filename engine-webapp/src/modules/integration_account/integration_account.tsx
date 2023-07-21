@@ -5,6 +5,7 @@ import { Button, Paper, Text } from '@mantine/core';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 import { SessionAuth } from 'supertokens-auth-react/recipe/session';
+import { showDateInTable } from 'utils';
 
 import { SideBarLayout } from 'layouts/sidebar_layout';
 import { GetUserData } from 'wrappers/get_user_data';
@@ -20,7 +21,6 @@ import {
 } from 'components';
 
 import styles from './integration_account.module.scss';
-import { showDateInTable } from 'utils';
 
 export function Integration() {
   const router = useRouter();

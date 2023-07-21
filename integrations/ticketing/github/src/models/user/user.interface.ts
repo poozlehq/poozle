@@ -3,15 +3,34 @@
 import { User } from '@poozle/engine-idk';
 import { Meta } from 'common';
 
-export interface UsersResponse {
-  data: User[];
-  meta: Meta;
+export interface UserWithRaw extends User {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   raw: any;
 }
 
+export interface UsersResponse {
+  data: UserWithRaw[];
+  meta: Meta;
+}
+
 export interface UserResponse {
-  data: User;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  raw: any;
+  data: UserWithRaw;
+}
+
+export interface GetUsersParams {
+  queryParams: {
+    limit: number;
+    cursor: string;
+  };
+
+  pathParams: {
+    collection_id: string;
+  };
+}
+
+export interface GetUserParams {
+  pathParams: {
+    collection_id: string;
+    user_id: string;
+  };
 }
