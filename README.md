@@ -21,11 +21,11 @@
 </div>
 
 <p align="center">
-    <em>Poozle is open-source Plaid for ticketing SAAS tools
+    <em>Poozle is an open-source Plaid for ticketing SAAS tools
 </em>
 </p>
 
-Poozle is building an integration infrastructure for ticketing SAAS tools. Companies need to extract their customers' data from ticketing SAAS tools like Gtihub, Jira, Linear, Zendesk, Intercom etc. Hence in the journey companies end up building their own integration infrastructure. Poozle provides a single API for the same that enables companies to integrate multiple of these tools at once. We do the hard work of integrating and smoothing them and exposing a clean and unified interface to developers. We aim to make it easy for companies to build new integrations.
+Poozle is building an integration infrastructure for ticketing SAAS tools. Companies need to extract their customers' data from ticketing SAAS tools like Gtihub, Jira, Linear, Zendesk, Intercom etc. Hence in the journey companies end up building their own integration infrastructure. Poozle provides a single API for the same that enables companies to integrate multiple of these tools at once. We do the hard work of integrating and smoothing them and exposing developers to a clean and unified interface. We aim to make it easy for companies to build new integrations.
 
 ## Features
 * Managed Authentication
@@ -41,22 +41,19 @@ Poozle is building an integration infrastructure for ticketing SAAS tools. Compa
 -   Add a line to get your users to connect their accounts using our react-sdk:
 
 ```js
-<PoozleLink
-  linkId="<link-id>"
-  host="<poozle-instance-url>"
-  redirectURL="<redirect-url>"
-/>
+  import { usePoozleLink } from "@poozle/react-poozle-link";
+
+  const { open: poozleOpen, isReady } = usePoozleLink({
+    linkId: "bb966689-5b7e-4aee-ac78-fe036c2612ce",
+  });
 ```
 
-- Once connected you can use the [Unified APIs](https://docs.poozle.dev).
-
 ## Getting Started 🚀
-* [Deploy Poozle Open Source](https://docs.poozle.dev/oss/deploy-poozle)
-* Create integrations in minutes with our IDK (Integration development kit).
+Try Poozle in 10 minutes with the [Quickstart](https://docs.poozle.dev/quickstart) 🚀.
 
 ## 5+ pre-configured Integrations, easily add your own
 
-Poozle works with **any** API and use-case. Adding [Integration](https://docs.poozle.dev/understanding-poozle/protocol) is easy and we already have the main APIs covered.
+Poozle works with **any** API and use-case. Adding [Integration](https://docs.poozle.dev/guides/build_new_integration) is easy and we already have the main APIs covered.
 
 5+ Integrations are pre-configured to work out-of-the-box, including:
 
