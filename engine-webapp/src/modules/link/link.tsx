@@ -122,7 +122,7 @@ export function LinkComponent() {
     <div>
       <Header
         title="Links"
-        description="Create links to sSend your users a secure URL to authorize their integrations in production."
+        description="Create links to send your users a secure URL to authorize their integrations in production"
         actions={
           <Button onClick={() => router.push(`${router.asPath}/new`)}>
             + New Link

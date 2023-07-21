@@ -89,7 +89,7 @@ export function Integration() {
     <div>
       <Header
         title="Integration Accounts"
-        description="Integrations between your users’ accounts and third-party apps."
+        description="Integrations between your users’ accounts and third-party apps"
         actions={
           <Button onClick={() => router.push(`${router.asPath}/new`)}>
             + New Integration Account
