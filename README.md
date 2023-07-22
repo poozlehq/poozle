@@ -21,11 +21,11 @@
 </div>
 
 <p align="center">
-    <em>Poozle is an open-source Plaid for ticketing SAAS tools
+    <em>Poozle is an open-source Plaid for CRM SAAS tools
 </em>
 </p>
 
-Poozle is building an integration infrastructure for ticketing SAAS tools. Companies need to extract their customers' data from ticketing SAAS tools like Gtihub, Jira, Linear, Zendesk, Intercom etc. Hence in the journey companies end up building their own integration infrastructure. Poozle provides a single API for the same that enables companies to integrate multiple of these tools at once. We do the hard work of integrating and smoothing them and exposing developers to a clean and unified interface. We aim to make it easy for companies to build new integrations.
+Poozle is building an integration infrastructure for CRM SAAS tools. Companies need to retrieve their customers' deals, contact, and lead information from Salesforce, Pipedrive, Hubspot, and other platforms. Hence in the journey companies end up building their own integration infrastructure. Poozle provides a single API for the same that enables companies to integrate multiple of these tools at once. We do the hard work of integrating and smoothing them and exposing developers to a clean and unified interface. We aim to make it easy for companies to build new integrations.
 
 ## Features
 * Managed Authentication
