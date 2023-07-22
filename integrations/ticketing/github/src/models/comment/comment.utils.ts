@@ -10,8 +10,8 @@ export function convertComment(data: any): CommentWithRaw {
     body: data.body,
     html_body: '',
     is_private: false,
-    created_by_id: data.user.id,
-    created_by: data.user.login,
+    created_by_id: data.user.id.toString(),
+    created_by: {id: data.user.id.toString(), username: data.user.login},
     created_at: data.created_at,
     updated_at: data.updated_at,
 

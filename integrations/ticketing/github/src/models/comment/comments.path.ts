@@ -69,7 +69,9 @@ export class CommentsPath extends BasePath {
   ) {
     let url = '';
     switch (method) {
-      case 'GET' && params.pathParams?.ticket_id:
+      case 'GET':
+      case params.pathParams?.collection_id:
+      case params.pathParams?.ticket_id:
         url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues/${params.pathParams?.ticket_id}/comments`;
         return this.fetchData(url, headers, params as GetCommentsParams);
 

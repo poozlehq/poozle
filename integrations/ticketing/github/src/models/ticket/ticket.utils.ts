@@ -15,12 +15,12 @@ export function convertTicket(data: any, collection_id: string | null): TicketWi
     created_by: data.user.login,
     type: data.pull_request ? 'pull_request' : 'issue',
     assignees: data.assignees.map((ass: any) => ({
-      id: ass.id,
+      id: ass.id.toString(),
       username: ass.login,
     })),
     ticket_url: data.url,
     tags: data.labels.map((lab: any) => ({
-      id: lab.id,
+      id: lab.id.toString(),
       name: lab.name,
     })),
 
