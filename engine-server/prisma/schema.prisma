@@ -101,7 +101,12 @@ model IntegrationAccount {
   createdAt                DateTime              @default(now())
   updatedAt                DateTime              @updatedAt
 
+  // to map to the customer organisations
   accountIdentifier String?
+
+  // Sync parameters
+  syncEnabled Boolean @default(false)
+  syncPeriod  String?
 
   fromLinks Link?   @relation(fields: [linkId], references: [linkId])
   linkId    String?
@@ -126,6 +131,30 @@ model Link {
   updatedAt DateTime @updatedAt
 
   IntegrationAccount IntegrationAccount[]
+}
+
+model Job {
+  jobId String @id @default(uuid())
+
+  // Used to match the id with in temporal
+  temporalId           String
+  integrationAccountId String
+  status               JobStatus
+
+  failedMessage String?
+
+  recordsSynced Int?
+  logs          String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum JobStatus {
+  PENDING
+  RUNNING
+  FAILED
+  SUCCEEDED
 }
 
 enum ReleaseStage {

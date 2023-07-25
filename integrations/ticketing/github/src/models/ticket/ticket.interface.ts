@@ -21,12 +21,7 @@ export interface GetTicketsParams {
   queryParams: {
     limit: number;
     cursor: string;
-
-    sort?: string;
-    direction?: string;
     since?: string;
-    state?: string;
-    assignee_id?: string;
   };
 
   pathParams: {

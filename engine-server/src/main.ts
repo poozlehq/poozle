@@ -5,13 +5,14 @@ import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
 import supertokens from 'supertokens-node';
 
 import type { CorsConfig, NestConfig } from 'common/configs/config.interface';
 
 import { SupertokensExceptionFilter } from 'modules/auth/auth.filter';
+import { IntegrationAccountService } from 'modules/integration_account/integration_account.service';
 
 import { AppModule } from './modules/app/app.module';
 
@@ -41,6 +42,10 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
   const nestConfig = configService.get<NestConfig>('nest');
   const corsConfig = configService.get<CorsConfig>('cors');
+
+  // Check for schedules at start of the application
+  const integrationAccountService = app.get(IntegrationAccountService);
+  integrationAccountService.init();
 
   // Cors
   if (corsConfig.enabled) {

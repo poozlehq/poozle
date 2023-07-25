@@ -24,17 +24,8 @@ export class TicketsPath extends BasePath {
 
     const final_params = {
       per_page: limit,
-      sort:
-        params.queryParams?.sort === 'created_at'
-          ? 'created'
-          : params.queryParams?.sort === 'updated_at'
-          ? 'updated'
-          : '',
-      direction: params.queryParams?.direction,
       since: params.queryParams?.since,
       page,
-      ...(params.queryParams?.state && { state: params.queryParams.state }),
-      ...(params.queryParams?.assignee_id && { assignee: params.queryParams.assignee_id }),
     };
 
     const response = await axios({

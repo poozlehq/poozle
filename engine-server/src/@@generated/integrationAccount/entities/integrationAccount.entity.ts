@@ -35,10 +35,30 @@ export class IntegrationAccount {
   workspaceId: string;
 
   /**
+   * Name used to fetch data from database
+   */
+  workspaceName?: string;
+
+  /**
    * This is used for User experience. You can pass a name
    * to easily identify the account in UI
    */
   integrationAccountName: string;
+
+  /**
+   * This is used to map organisations/user_id fo the customers
+   */
+  accountIdentifier?: string;
+
+  /**
+   * Boolean to check if syncing is enabled
+   */
+  syncEnabled: boolean;
+
+  /**
+   * Internal for sync
+   */
+  syncPeriod?: string;
 
   /**
    * When this account is deleted. If deleted

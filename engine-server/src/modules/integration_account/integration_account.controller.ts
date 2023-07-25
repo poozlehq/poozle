@@ -144,12 +144,7 @@ export class IntegrationAccountController {
     createIntegrationAccountBody: CreateIntegrationAccountBody,
   ): Promise<IntegrationAccount> {
     return await this.integrationAccountService.createIntegrationAccount(
-      createIntegrationAccountBody.integrationDefinitionId,
-      createIntegrationAccountBody.config,
-      createIntegrationAccountBody.integrationAccountName,
-      createIntegrationAccountBody.authType,
-      createIntegrationAccountBody.workspaceId,
-      createIntegrationAccountBody.accountIdentifier,
+      createIntegrationAccountBody,
     );
   }
 

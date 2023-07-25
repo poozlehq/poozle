@@ -66,7 +66,10 @@ export function NewIntegration() {
         <Group>
           {selectedIntegrationDefinition && (
             <NewIntegrationForm
-              integrationDefinitionId={selectedIntegrationDefinition}
+              integrationDefinition={integrationDefinitions.find(
+                (id) =>
+                  id.integrationDefinitionId === selectedIntegrationDefinition,
+              )}
               workspaceId={workspaceId as string}
             />
           )}

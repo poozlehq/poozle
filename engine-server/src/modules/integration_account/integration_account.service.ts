@@ -14,8 +14,10 @@ import {
 } from 'shared/integration_run_utils';
 
 import { IntegrationDefinitionService } from 'modules/integration_definition/integration_definition.service';
+import { SyncService } from 'modules/sync/sync.service';
 
 import {
+  CreateIntegrationAccountBody,
   IntegrationAccountRequestBody,
   IntegrationAccountRequestBodyWithIntegrationType,
   IntegrationAccountRequestIdBody,
@@ -27,6 +29,7 @@ export class IntegrationAccountService {
   constructor(
     private prismaService: PrismaService,
     private integrationDefinitionService: IntegrationDefinitionService,
+    private syncService: SyncService,
   ) {}
 
   async checkForIntegrationCredentails(
@@ -51,14 +54,19 @@ export class IntegrationAccountService {
   }
 
   async createIntegrationAccount(
-    integrationDefinitionId: string,
-    config: Config,
-    integrationAccountName: string,
-    authType: string,
-    workspaceId: string,
-    linkId?: string,
-    accountIdentifier?: string,
+    createIntegrationAccountBody: CreateIntegrationAccountBody,
   ) {
+    const {
+      integrationDefinitionId,
+      config,
+      integrationAccountName,
+      authType,
+      workspaceId,
+      accountIdentifier,
+      syncEnabled,
+      syncPeriod,
+    } = createIntegrationAccountBody;
+
     const { status } = await this.checkForIntegrationCredentails(
       integrationDefinitionId,
       config,
@@ -66,18 +74,43 @@ export class IntegrationAccountService {
       workspaceId,
     );
 
-    if (status) {
-      return await this.prismaService.integrationAccount.create({
-        data: {
-          integrationAccountName,
-          integrationDefinitionId,
+    if (syncEnabled) {
+      const integrationDefinition =
+        await this.integrationDefinitionService.getIntegrationDefinitionWithId(
+          {
+            integrationDefinitionId,
+          },
           workspaceId,
-          integrationConfiguration: config,
-          authType,
-          linkId,
-          accountIdentifier,
-        },
-      });
+        );
+
+      if (integrationDefinition.integrationType !== IntegrationType.TICKETING) {
+        throw new BadRequestException(
+          'Sync currently is only supported to ticketing category',
+        );
+      }
+    }
+
+    if (status) {
+      const integrationAccount =
+        await this.prismaService.integrationAccount.create({
+          data: {
+            integrationAccountName,
+            integrationDefinitionId,
+            workspaceId,
+            integrationConfiguration: config,
+            authType,
+            syncEnabled,
+            syncPeriod,
+            accountIdentifier,
+          },
+        });
+
+      if (integrationAccount.syncEnabled) {
+        await this.syncService.createScheduleIfNotExist(integrationAccount);
+        await this.syncService.runInitialSync(integrationAccount);
+      }
+
+      return integrationAccount;
     }
 
     throw new BadRequestException('Not a valid credentials');
@@ -133,6 +166,18 @@ export class IntegrationAccountService {
   async deleteIntegrationAccount(
     integrationAccountRequestIdBody: IntegrationAccountRequestIdBody,
   ) {
+    const integrationAccount = await this.getIntegrationAccountWithId(
+      integrationAccountRequestIdBody,
+    );
+
+    const status = await this.syncService.deleteSyncSchedule(
+      integrationAccount,
+    );
+
+    if (!status) {
+      throw new BadRequestException('Deleting scheduling failed');
+    }
+
     return await this.prismaService.integrationAccount.delete({
       where: {
         integrationAccountId:
@@ -178,6 +223,7 @@ export class IntegrationAccountService {
         },
         include: {
           integrationDefinition: true,
+          workspace: true,
         },
       });
 
@@ -185,7 +231,10 @@ export class IntegrationAccountService {
       throw new NotFoundException('No integration found');
     }
 
-    return integrationAccounts[0];
+    return {
+      ...integrationAccounts[0],
+      workspaceName: integrationAccounts[0].workspace.slug.replace(/-/g, ''),
+    };
   }
 
   async getIntegrationAccountsForCategory(category: IntegrationType) {
@@ -218,16 +267,37 @@ export class IntegrationAccountService {
     integrationAccountId: string,
     updateIntegrationAccountBody: UpdateIntegrationAccountBody,
   ) {
-    return await this.prismaService.integrationAccount.update({
-      data: {
-        integrationAccountName:
-          updateIntegrationAccountBody.integrationAccountName,
-        integrationConfiguration: updateIntegrationAccountBody.config,
-      },
-      where: {
+    if (updateIntegrationAccountBody.syncEnabled) {
+      const integrationAccount = await this.getIntegrationAccountWithId({
         integrationAccountId,
-      },
-    });
+      });
+
+      if (
+        integrationAccount.integrationDefinition.integrationType !==
+        IntegrationType.TICKETING
+      ) {
+        throw new BadRequestException(
+          'Sync currently is only supported to ticketing category',
+        );
+      }
+    }
+    const integrationAccount =
+      await this.prismaService.integrationAccount.update({
+        data: {
+          integrationAccountName:
+            updateIntegrationAccountBody.integrationAccountName,
+          integrationConfiguration: updateIntegrationAccountBody.config,
+          syncEnabled: updateIntegrationAccountBody.syncEnabled,
+          syncPeriod: updateIntegrationAccountBody.syncPeriod,
+        },
+        where: {
+          integrationAccountId,
+        },
+      });
+
+    await this.syncService.updateSchedule(integrationAccount);
+
+    return integrationAccount;
   }
 
   async checkForIntegrationAccountName(
@@ -278,5 +348,16 @@ export class IntegrationAccountService {
         queryParams,
       },
     );
+  }
+
+  async init() {
+    const integrationAccounts =
+      await this.prismaService.integrationAccount.findMany({
+        where: {
+          syncEnabled: true,
+        },
+      });
+
+    await this.syncService.initiate(integrationAccounts);
   }
 }

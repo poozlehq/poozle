@@ -3,6 +3,7 @@
 import { IntegrationAccount } from '@@generated/integrationAccount/entities/integrationAccount.entity';
 import { useMutation } from 'react-query';
 import { ajaxPost } from 'utils';
+import { SYNC_OPTION_ENUM } from 'utils/sync';
 
 export interface CreateIntegrationAccountParams {
   integrationDefinitionId: string;
@@ -11,6 +12,9 @@ export interface CreateIntegrationAccountParams {
   authType: string;
   workspaceId: string;
   integrationAccountName: string;
+
+  syncEnabled?: boolean;
+  syncPeriod?: SYNC_OPTION_ENUM;
 }
 
 export interface CreateIntegrationAccountWithoutWorkspaceParams {

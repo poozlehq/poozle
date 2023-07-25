@@ -1,51 +1,32 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { IsArray, IsEnum, IsOptional, IsString } from 'class-validator';
+import { Transform } from 'class-transformer';
+import { IsArray, IsBoolean, IsOptional, IsString } from 'class-validator';
 
-import {
-  QueryParams,
-  JustRawParams,
-  DIRECTION_ENUM,
-} from 'common/interfaces/query.interface';
+import { QueryParams, JustRawParams } from 'common/interfaces/query.interface';
 import { Meta } from 'common/interfaces/response.interface';
-
-enum SORT_ENUM {
-  'name' = 'name',
-  'created_at' = 'created_at',
-  'updated_at' = 'updated_at',
-}
-
-enum STATUS_ENUM {
-  'open' = 'open',
-  'closed' = 'closed',
-  'all' = 'all',
-}
 
 export class ListTicketsQueryParams extends QueryParams {
   @IsOptional()
-  @IsEnum(SORT_ENUM)
-  sort?: string;
+  @IsBoolean()
+  @Transform(({ value }) => {
+    return value === 'true' || value === 'True' || value === true;
+  })
+  realtime?: boolean = false;
+}
 
+export class GetTicketsQueryParams extends QueryParams {
   @IsOptional()
-  @IsEnum(DIRECTION_ENUM)
-  direction?: string;
-
-  @IsOptional()
-  @IsEnum(STATUS_ENUM)
-  status?: string;
-
-  @IsOptional()
-  @IsString()
-  since?: string;
-
-  @IsOptional()
-  @IsString()
-  assignee_id?: string;
+  @IsBoolean()
+  @Transform(({ value }) => {
+    return value === 'true' || value === 'True' || value === true;
+  })
+  realtime?: boolean = false;
 }
 
 export class CommonTicketQueryParams extends JustRawParams {}
 
-export class PathParams {
+export class PathParamsWithCollectionId {
   @IsString()
   collection_id: string;
 }
@@ -86,6 +67,24 @@ export class Ticket {
   completed_at: string;
   tags: TicketTag[];
 }
+export const TICKET_KEYS = [
+  'id',
+  'parent_id',
+  'collection_id',
+  'type',
+  'name',
+  'description',
+  'status',
+  'priority',
+  'ticket_url',
+  'assignees',
+  'updated_at',
+  'created_at',
+  'created_by',
+  'due_date',
+  'completed_at',
+  'tags',
+];
 
 export class TicketingTicketResponse {
   data: Ticket;

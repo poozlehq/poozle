@@ -11,6 +11,20 @@ export class IntegrationAccount {
   workspace?: Workspace;
   workspaceId: string;
   integrationAccountName: string;
+  /**
+   * This is used to map organisations/user_id fo the customers
+   */
+  accountIdentifier?: string;
+
+  /**
+   * Boolean to check if syncing is enabled
+   */
+  syncEnabled: boolean;
+
+  /**
+   * Internal for sync
+   */
+  syncPeriod?: string;
   deleted: Date | null;
   createdAt: Date;
   updatedAt: Date;

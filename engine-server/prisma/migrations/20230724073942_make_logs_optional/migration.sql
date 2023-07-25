@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Job" ALTER COLUMN "recordsSynced" DROP NOT NULL,
+ALTER COLUMN "logs" DROP NOT NULL;

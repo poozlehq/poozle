@@ -21,8 +21,8 @@ import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
 
+import { TicketService } from './ticket.service';
 import {
-  PathParams,
   PathParamsWithTicketId,
   ListTicketsQueryParams,
   TicketingTicketResponse,
@@ -30,6 +30,8 @@ import {
   CommonTicketQueryParams,
   UpdateTicketBody,
   CreateTicketBody,
+  GetTicketsQueryParams,
+  PathParamsWithCollectionId,
 } from './tickets.interface';
 
 @Controller({
@@ -39,22 +41,34 @@ import {
 @ApiTags('Ticketing')
 @UseGuards(new AuthGuard())
 export class TicketsController {
-  @Get(':collection_id/tickets')
+  constructor(private ticketService: TicketService) {}
+
+  @Get('tickets')
   async getTickets(
     @Query() query: ListTicketsQueryParams,
-    @Param()
-    params: PathParams,
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingTicketsResponse> {
-    const ticketsResponse = await getDataFromAccount(
+    const ticketsResponse = await this.ticketService.getTickets(
       integrationAccount,
-      '/tickets',
-      Method.GET,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      params as any,
+      query,
+    );
+
+    return ticketsResponse;
+  }
+
+  @Get(':collection_id/tickets')
+  async getCollectionTickets(
+    @Query() query: ListTicketsQueryParams,
+    @Param()
+    params: PathParamsWithCollectionId,
+    @GetIntegrationAccount(IntegrationType.TICKETING)
+    integrationAccount: IntegrationAccount,
+  ): Promise<TicketingTicketsResponse> {
+    const ticketsResponse = await this.ticketService.getCollectionTickets(
+      integrationAccount,
+      query,
+      params,
     );
 
     return ticketsResponse;
@@ -62,20 +76,16 @@ export class TicketsController {
 
   @Get(':collection_id/tickets/:ticket_id')
   async getTicketId(
-    @Query() query: ListTicketsQueryParams,
+    @Query() query: GetTicketsQueryParams,
     @Param()
     params: PathParamsWithTicketId,
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingTicketResponse> {
-    const ticketResponse = await getDataFromAccount(
+    const ticketResponse = await this.ticketService.getTicket(
       integrationAccount,
-      `/tickets/${params.ticket_id}`,
-      Method.GET,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      params as any,
+      query,
+      params,
     );
 
     return ticketResponse;
@@ -107,7 +117,7 @@ export class TicketsController {
   async createTicket(
     @Query() query: CommonTicketQueryParams,
     @Param()
-    params: PathParams,
+    params: PathParamsWithCollectionId,
     @Body() createTicketBody: CreateTicketBody,
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,

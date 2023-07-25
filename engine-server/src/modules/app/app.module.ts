@@ -17,6 +17,7 @@ import { IntegrationDefinitionModule } from 'modules/integration_definition/inte
 import { IntegrationOAuthModule } from 'modules/integration_oauth/integration_oauth.module';
 import { LinkModule } from 'modules/link/link.module';
 import { OAuthCallbackModule } from 'modules/oauth_callback/oauth_callback.module';
+import { SyncModule } from 'modules/sync/sync.module';
 import { UserModule } from 'modules/user/user.module';
 import { WorkspaceModule } from 'modules/workspace/workspace.module';
 
@@ -41,6 +42,7 @@ import { AppService } from './app.service';
     IntegrationOAuthModule,
     OAuthCallbackModule,
     LinkModule,
+    SyncModule,
     // Categories and their modules
     TicketingModule,
     MailModule,
