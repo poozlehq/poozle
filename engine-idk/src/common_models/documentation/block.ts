@@ -22,6 +22,7 @@ export interface Block {
 }
 
 export enum BlockType {
+  block_card = 'block_card',
   bookmark = 'bookmark',
   bookmark_text = 'bookmark_text',
   breadcrumb = 'breadcrumb',
@@ -29,6 +30,7 @@ export enum BlockType {
   callout = 'callout',
   child_database = 'child_database',
   child_page = 'child_page',
+  code= 'code',
   column = 'column',
   column_list = 'column_list',
   divider = 'divider',
@@ -39,8 +41,10 @@ export enum BlockType {
   heading_2 = 'heading_2',
   heading_3 = 'heading_3',
   image = 'image',
+  inline_card = 'inline_card',
   link_preview = 'link_preview',
   link_to_page = 'link_to_page',
+  list_item = 'list_item',
   numbered_list_item = 'numbered_list_item',
   paragraph = 'paragraph',
   pdf = 'pdf',
@@ -50,7 +54,9 @@ export enum BlockType {
   table_of_contents = 'table_of_contents',
   table_row = 'table_row',
   table_cell = 'table_cell',
+  table_header = 'table_header',
   template = 'template',
+  text = 'text',
   to_do = 'to_do',
   toggle = 'toggle',
   unsupported = 'unsupported',
