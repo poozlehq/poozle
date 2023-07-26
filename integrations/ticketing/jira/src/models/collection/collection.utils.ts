@@ -6,6 +6,8 @@ export function convertCollection(data: any) {
     id: data.id,
     name: data.name,
     type: data.projectTypeKey,
-    raw_data: data,
+
+    // Raw
+    raw: data,
   };
 }

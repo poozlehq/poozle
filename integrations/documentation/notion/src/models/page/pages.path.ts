@@ -13,28 +13,12 @@ export class PagesPath extends BasePath {
     const pagesResponse = await axios.post(
       url,
       {
-        query: params.queryParams?.title ?? '',
         filter: {
           value: 'page',
           property: 'object',
         },
         page_size: limit,
         ...(params.queryParams?.cursor ? { start_cursor: params.queryParams?.cursor } : {}),
-        ...(params.queryParams?.direction === 'asc'
-          ? {
-              sort: {
-                direction: 'ascending',
-                timestamp:
-                  params.queryParams?.sort === 'created_at' ? 'created_time' : 'last_edited_time',
-              },
-            }
-          : {
-              sort: {
-                direction: 'descending',
-                timestamp:
-                  params.queryParams?.sort === 'created_at' ? 'created_time' : 'last_edited_time',
-              },
-            }),
       },
       { headers },
     );
@@ -44,9 +28,10 @@ export class PagesPath extends BasePath {
       data: pagesResponse.data.results?.map((data: any) => {
         return convertPages(data);
       }),
-      raw: pagesResponse.data.results,
       meta: {
-        next_cursor: pagesResponse.data.has_more ? pagesResponse.data.next_cursor : '',
+        previous: '',
+        current: params.queryParams?.cursor ? params.queryParams?.cursor : '',
+        next: pagesResponse.data.has_more ? pagesResponse.data.next_cursor : '',
       },
     };
   }

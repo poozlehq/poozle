@@ -1,5 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { TicketWithRaw } from './ticket.interface';
+
 export const ticketMappings = {
   name: 'summary',
   description: 'description',
@@ -10,7 +12,7 @@ export const ticketMappings = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function convertTicket(data: any, collection_id: string | null) {
+export function convertTicket(data: any, collection_id: string | null): TicketWithRaw {
   return {
     id: data.id,
     name: data.fields.summary,
@@ -33,7 +35,12 @@ export function convertTicket(data: any, collection_id: string | null) {
       id: lab.id,
       name: lab.displayName,
     })),
-    raw_data: data,
+
+    // extra
+    completed_at: '',
+
+    // Raw
+    raw: data,
   };
 }
 

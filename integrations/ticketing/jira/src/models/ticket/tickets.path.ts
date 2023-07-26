@@ -1,18 +1,19 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, CreateTicketBody, Ticket, Meta } from '@poozle/engine-idk';
+import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { getMetaParams } from 'common';
 
+import { CreateTicketParams, FetchTicketsParams } from './ticket.interface';
 import { convertTicket, JIRATicketBody } from './ticket.utils';
 
 export class TicketsPath extends BasePath {
-  async fetchTickets(url: string, headers: AxiosHeaders, params: Params) {
-    const page = params.queryParams?.cursor ? parseInt(params.queryParams?.cursor.toString()) : 1;
-    const startAt =
-      page * (params.queryParams?.limit ? parseInt(params.queryParams?.limit.toString()) : 10);
+  async fetchTickets(url: string, headers: AxiosHeaders, params: FetchTicketsParams) {
+    const page = params.queryParams.cursor ? parseInt(params.queryParams.cursor) : 1;
+    const startAt = page * (params.queryParams.limit ? params.queryParams.limit : 10);
 
     const final_params = {
-      maxResults: params.queryParams?.limit,
+      maxResults: params.queryParams.limit,
       startAt,
     };
 
@@ -23,40 +24,45 @@ export class TicketsPath extends BasePath {
         params: final_params,
       });
 
-      return response.data.issues.map((data: any) =>
-        convertTicket(data, params.pathParams?.collection_id as string | null),
-      );
+      return {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        data: response.data.issues.map((data: any) =>
+          convertTicket(data, params.pathParams?.collection_id as string | null),
+        ),
+        meta: getMetaParams(response.data, params.queryParams.limit, page),
+      };
     } catch (e) {
       throw new Error(e);
     }
   }
 
-  async createTickets(url: string, headers: AxiosHeaders, params: Params) {
+  async createTickets(url: string, headers: AxiosHeaders, params: CreateTicketParams) {
     try {
-      const body: CreateTicketBody = params.requestBody as CreateTicketBody;
+      const body = params.requestBody;
 
       const createBody: JIRATicketBody = {
         fields: {
           project: {
-            id: params.pathParams?.collection_id as string,
+            id: params.pathParams.collection_id as string,
           },
-          summary: body?.name,
+          summary: body.name,
           issuetype: {
-            name: body?.type,
+            name: body.type,
           },
           assignee: {
-            accountId: body?.assignees[0].id,
+            accountId: body.assignees[0].id,
           },
           reporter: {
-            name: body?.created_by,
+            name: body.created_by,
           },
-          labels: body?.tags.map((tag) => tag.name),
+          labels: body.tags.map((tag) => tag.name),
         },
       };
 
       const cleanedCreateBody = {
         fields: Object.fromEntries(
           Object.entries(createBody.fields).filter(
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             ([_, value]) => value !== undefined && value !== null,
           ),
         ),
@@ -65,50 +71,34 @@ export class TicketsPath extends BasePath {
       const createResponse = await axios.post(url, cleanedCreateBody, { headers });
 
       const response = await axios.get(createResponse.data.self, { headers });
-      return convertTicket(response.data, params.pathParams?.collection_id as string | null);
+      return {
+        data: convertTicket(response.data, params.pathParams.collection_id),
+      };
     } catch (e) {
       throw new Error(e);
     }
   }
 
-  async getMetaParams(_data: Ticket[], params: Params): Promise<Meta> {
-    const page =
-      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
-
-    return {
-      limit: params.queryParams?.limit as number,
-      cursors: {
-        before: (page > 1 ? page - 1 : 1).toString(),
-        current: page.toString(),
-        next: (page + 1).toString(),
-      },
-    };
-  }
-
-  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
+  async run(
+    method: string,
+    headers: AxiosHeaders,
+    params: FetchTicketsParams | CreateTicketParams,
+    config: Config,
+  ) {
     const BASE_URL = `https://${config.jira_domain}.atlassian.net`;
     let url = '';
 
     switch (method) {
       case 'GET':
         url = `${BASE_URL}/rest/api/2/search?jql=project=${params.pathParams?.collection_id}`;
-        if (params.queryParams?.sort && params.queryParams?.direction) {
-          const sort =
-            params.queryParams?.sort === 'created_at'
-              ? 'created'
-              : params.queryParams?.sort === 'updated_at'
-              ? 'updated'
-              : 'created';
-          url += ` ORDER BY ${sort} ${params.queryParams?.direction}`;
-        }
         return this.fetchTickets(url, headers, params);
 
       case 'POST':
         url = `${BASE_URL}/rest/api/2/issue`;
-        return this.createTickets(url, headers, params);
+        return this.createTickets(url, headers, params as CreateTicketParams);
 
       default:
-        return {};
+        throw new Error('Method not found');
     }
   }
 }

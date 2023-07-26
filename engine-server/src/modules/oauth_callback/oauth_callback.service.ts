@@ -251,6 +251,8 @@ export class OAuthCallbackService {
         ...sessionRecord.config,
       };
 
+      console.log(tokensResponse.token);
+
       if (
         tokensResponse.token.access_token &&
         tokensResponse.token.refresh_token

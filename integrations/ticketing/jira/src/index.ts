@@ -4,18 +4,21 @@ import {
   BaseIntegration,
   CheckResponse,
   Config,
-  GenericProxyModel,
   SpecificationResponse,
   getAccessToken,
   interpolateString,
 } from '@poozle/engine-idk';
 import axios from 'axios';
+import { ProxyPath } from 'proxy';
 
-import { JiraAttachmentModel } from 'models/attachment/attachment.model';
-import { JiraCollectionModel } from 'models/collection/collection.model';
-import { JiraCommentModel } from 'models/comment/comments.model';
-import { JiraTicketModel } from 'models/ticket/ticket.model';
-import { JiraUserModel } from 'models/user/user.model';
+import { CollectionPath } from 'models/collection/collection.path';
+import { CollectionsPath } from 'models/collection/collections.path';
+import { CommentPath } from 'models/comment/comment.path';
+import { CommentsPath } from 'models/comment/comments.path';
+import { TicketPath } from 'models/ticket/ticket.path';
+import { TicketsPath } from 'models/ticket/tickets.path';
+import { UserPath } from 'models/user/user.path';
+import { UsersPath } from 'models/user/users.path';
 
 import spec from './spec';
 
@@ -77,14 +80,30 @@ class JiraIntegration extends BaseIntegration {
     }
   }
 
-  models() {
+  paths() {
     return [
-      new GenericProxyModel(),
-      new JiraTicketModel(),
-      new JiraCollectionModel(),
-      new JiraCommentModel(),
-      new JiraUserModel(),
-      new JiraAttachmentModel(),
+      /**
+       * PROXY API calls to the third party directly
+       */
+      new ProxyPath(/^\/?proxy$/g, ['GET', 'POST', 'PATCH', 'DELETE']),
+
+      /**
+       * This paths get the projects from github
+       */
+      new CollectionsPath(/^\/?collections$/g, 'GET'),
+      new CollectionPath(/^\/?collections+/g, 'GET'),
+
+      /**
+       * These map to tickets
+       */
+      new TicketsPath(/^\/?tickets$/g, ['GET', 'POST']),
+      new TicketPath(/^\/?tickets+/g, ['GET', 'PATCH']),
+
+      new CommentsPath(/^\/?comments$/g, ['GET', 'POST']),
+      new CommentPath(/^\/?comments+/g, ['GET', 'PATCH']),
+
+      new UsersPath(/^\/?users$/g, 'GET'),
+      new UserPath(/^\/?users+/g, 'GET'),
     ];
   }
 }

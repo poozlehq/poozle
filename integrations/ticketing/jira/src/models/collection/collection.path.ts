@@ -5,14 +5,14 @@ import axios, { AxiosHeaders } from 'axios';
 
 import { convertCollection } from './collection.utils';
 
-export class GetCollectionPath extends BasePath {
+export class CollectionPath extends BasePath {
   async fetchSingleCollection(url: string, headers: AxiosHeaders) {
     const response = await axios({
       url,
       headers,
     });
 
-    return convertCollection(response.data);
+    return { data: convertCollection(response.data) };
   }
 
   async run(_method: string, headers: AxiosHeaders, params: Params, config: Config) {

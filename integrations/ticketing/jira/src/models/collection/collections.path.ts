@@ -1,7 +1,8 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Collection, Config, Meta, Params } from '@poozle/engine-idk';
+import { BasePath, Collection, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { getMetaParams } from 'common';
 
 import { convertCollection } from './collection.utils';
 
@@ -10,7 +11,7 @@ function paginate(array: Collection[], page_size: number, page_number: number) {
   return array.slice((page_number - 1) * page_size, page_number * page_size);
 }
 
-export class GetCollectionsPath extends BasePath {
+export class CollectionsPath extends BasePath {
   async fetchCollections(url: string, headers: AxiosHeaders, params: Params) {
     const page =
       typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
@@ -20,24 +21,21 @@ export class GetCollectionsPath extends BasePath {
       headers,
     });
 
-    return paginate(
+    const data = paginate(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       response.data.map((data: any) => convertCollection(data)),
       params.queryParams?.limit as number,
       page,
     );
-  }
-
-  async getMetaParams(_data: Collection[], params: Params): Promise<Meta> {
-    const page =
-      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
 
     return {
-      limit: params.queryParams?.limit as number,
-      cursors: {
-        before: (page > 1 ? page - 1 : 1).toString(),
-        current: page.toString(),
-        next: (page + 1).toString(),
-      },
+      data: paginate(
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        response.data.map((data: any) => convertCollection(data)),
+        params.queryParams?.limit as number,
+        page,
+      ),
+      meta: getMetaParams(data, params.queryParams?.limit as number, page),
     };
   }
 
@@ -49,7 +47,7 @@ export class GetCollectionsPath extends BasePath {
         return this.fetchCollections(url, headers, params);
 
       default:
-        return {};
+        throw new Error('Method not found');
     }
   }
 }

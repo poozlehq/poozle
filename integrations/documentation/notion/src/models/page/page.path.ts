@@ -13,10 +13,8 @@ export class PagePath extends BasePath {
       headers,
     });
 
-
     return {
       data: convertBlockPage(response.data),
-      raw: response.data,
     };
   }
 
@@ -28,7 +26,7 @@ export class PagePath extends BasePath {
         return this.fetchSinglePage(url, headers, params);
 
       default:
-        return {};
+        throw new Error('Method not found');
     }
   }
 }

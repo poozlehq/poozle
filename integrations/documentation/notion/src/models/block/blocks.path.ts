@@ -1,39 +1,50 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Block, Config, Params } from '@poozle/engine-idk';
+import { BasePath, Block, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 import {
+  BlocksParams,
+  BlocksResponse,
+  CreateBlockParams,
+  SingleBlockResponse,
+  UpdateBlockParams,
+} from './block.interface';
+import {
   BASE_URL,
-  BlockResponse,
   convertAppendBody,
   convertUpdateBody,
   extractBlockData,
   fetchPageBlocks,
-  SingleBlockResponse,
 } from './block.utils';
 
 export class BlocksPath extends BasePath {
-  async getBlocks(url: string, headers: AxiosHeaders, params: Params) {
+  async getBlocks(
+    url: string,
+    headers: AxiosHeaders,
+    params: BlocksParams,
+  ): Promise<BlocksResponse> {
     const block_id = params.pathParams?.parent_id as string;
     url += `/${block_id}/children`;
-    const { blocks, meta } = (await fetchPageBlocks(url, headers, params)) as BlockResponse;
+    const { blocks, meta } = await fetchPageBlocks(url, headers, params);
 
     return {
       data: blocks.map((blockData: SingleBlockResponse) => ({
         ...extractBlockData(blockData),
       })),
-      raw: blocks,
       meta: {
-        next_cursor: meta.next_cursor,
+        previous: '',
+        current: params.queryParams?.cursor ? params.queryParams?.cursor : '',
+        next: meta.has_more ? meta.next_cursor : '',
       },
     };
   }
 
-  async createBlock(url: string, headers: AxiosHeaders, params: Params) {
+  async createBlocks(url: string, headers: AxiosHeaders, params: CreateBlockParams) {
     url += `/${params.pathParams?.parent_id}/children`;
-    const body = convertAppendBody(params.requestBody?.data as Block[]);
+
+    const body = convertAppendBody(params.requestBody.data);
 
     const block_response = await axios.patch(url, body, { headers });
 
@@ -41,11 +52,10 @@ export class BlocksPath extends BasePath {
       data: block_response.data.results.map((blockData: SingleBlockResponse) => {
         return extractBlockData(blockData);
       }),
-      raw: block_response.data.results,
     };
   }
 
-  async updateBlock(url: string, headers: AxiosHeaders, params: Params) {
+  async updateBlock(url: string, headers: AxiosHeaders, params: UpdateBlockParams) {
     try {
       url += `/${params.pathParams?.block_id}`;
       const body = convertUpdateBody(params.requestBody as Block);
@@ -53,28 +63,32 @@ export class BlocksPath extends BasePath {
 
       return {
         data: extractBlockData(response.data),
-        raw: response,
       };
     } catch (e) {
       throw new Error(e);
     }
   }
 
-  async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
+  async run(
+    method: string,
+    headers: AxiosHeaders,
+    params: BlocksParams | CreateBlockParams | UpdateBlockParams,
+    _config: Config,
+  ) {
     const url = `${BASE_URL}/blocks`;
 
     switch (method) {
       case 'GET':
-        return this.getBlocks(url, headers, params);
+        return this.getBlocks(url, headers, params as BlocksParams);
 
       case 'POST':
-        return this.createBlock(url, headers, params);
+        return this.createBlocks(url, headers, params as CreateBlockParams);
 
       case 'PATCH':
-        return this.updateBlock(url, headers, params);
+        return this.updateBlock(url, headers, params as UpdateBlockParams);
 
       default:
-        return {};
+        throw new Error(`Unknown method ${method}`);
     }
   }
 }
