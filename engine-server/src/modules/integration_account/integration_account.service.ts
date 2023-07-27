@@ -196,6 +196,11 @@ export class IntegrationAccountService {
           integrationAccountId:
             integrationAccountRequestBody.integrationAccountId,
         },
+        orderBy: [
+          {
+            updatedAt: 'asc',
+          },
+        ],
         include: {
           integrationDefinition: true,
         },
@@ -221,6 +226,11 @@ export class IntegrationAccountService {
             integrationType: integrationAccountRequestBody.integrationType,
           },
         },
+        orderBy: [
+          {
+            updatedAt: 'asc',
+          },
+        ],
         include: {
           integrationDefinition: true,
           workspace: true,
@@ -244,6 +254,11 @@ export class IntegrationAccountService {
           integrationType: category,
         },
       },
+      orderBy: [
+        {
+          updatedAt: 'asc',
+        },
+      ],
       include: {
         integrationDefinition: true,
       },
@@ -257,6 +272,11 @@ export class IntegrationAccountService {
           workspaceId,
         },
       },
+      orderBy: [
+        {
+          updatedAt: 'asc',
+        },
+      ],
       include: {
         integrationDefinition: true,
       },
@@ -295,7 +315,11 @@ export class IntegrationAccountService {
         },
       });
 
-    await this.syncService.updateSchedule(integrationAccount);
+    if (integrationAccount.syncEnabled) {
+      await this.syncService.updateSchedule(integrationAccount);
+    } else {
+      await this.syncService.deleteSyncSchedule(integrationAccount);
+    }
 
     return integrationAccount;
   }

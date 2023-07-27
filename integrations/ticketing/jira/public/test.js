@@ -3,7 +3,25 @@
 const { main } = require('../jira/index');
 
 async function run() {
-  const response = await main('SPEC', {});
+  const response = await main('RUN', {
+    path: '/tickets',
+    method: 'GET',
+    config: {
+      authType: 'Api Key',
+      email_id: '',
+      jira_domain: '',
+      api_key: '',
+    },
+    params: {
+      queryParams: {
+        limit: 5,
+        raw: true,
+      },
+      pathParams: {
+        collection_id: '10006',
+      },
+    },
+  });
 
   console.log(response);
 }

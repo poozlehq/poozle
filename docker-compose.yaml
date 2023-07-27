@@ -15,55 +15,55 @@ services:
       - postgres-data:/var/lib/postgresql/data
     restart: unless-stopped
 
-  # server:
-  #   image: poozlehq/engine-server:${ENGINE_VERSION}
-  #   platform: linux/amd64
-  #   container_name: poozle-server
-  #   depends_on:
-  #     - db
-  #   restart: unless-stopped
-  #   networks:
-  #     - poozle
-  #   environment:
-  #     - ENGINE_VERSION=${ENGINE_VERSION}
-  #     - DATABASE_URL=${DATABASE_URL}
-  #     - SYNC_DATABASE_URL=${SYNC_DATABASE_URL}
-  #     - FRONTEND_HOST=${FRONTEND_HOST}
-  #     - PUBLIC_FRONTEND_HOST=${PUBLIC_FRONTEND_HOST}
-  #     - BACKEND_HOST=${BACKEND_HOST}
-  #     - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
-  #     - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
-  #     - PORT=${PORT}
-  #     - SUPERTOKEN_CONNECTION_URI=${SUPERTOKEN_CONNECTION_URI}
+  server:
+    image: poozlehq/engine-server:${ENGINE_VERSION}
+    platform: linux/amd64
+    container_name: poozle-server
+    depends_on:
+      - db
+    restart: unless-stopped
+    networks:
+      - poozle
+    environment:
+      - ENGINE_VERSION=${ENGINE_VERSION}
+      - DATABASE_URL=${DATABASE_URL}
+      - SYNC_DATABASE_URL=${SYNC_DATABASE_URL}
+      - FRONTEND_HOST=${FRONTEND_HOST}
+      - PUBLIC_FRONTEND_HOST=${PUBLIC_FRONTEND_HOST}
+      - BACKEND_HOST=${BACKEND_HOST}
+      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - PORT=${PORT}
+      - SUPERTOKEN_CONNECTION_URI=${SUPERTOKEN_CONNECTION_URI}
 
-  # webapp:
-  #   image: poozlehq/engine-webapp:${ENGINE_VERSION}
-  #   platform: linux/amd64
-  #   container_name: poozle-webapp
-  #   restart: unless-stopped
-  #   networks:
-  #     - poozle
-  #   environment:
-  #     - BACKEND_URL=${BACKEND_URL}
-  #     - NEXT_PUBLIC_BASE_HOST=${PUBLIC_FRONTEND_HOST}
-  #     - NEXT_PUBLIC_VERSION=${ENGINE_VERSION}
-  #   ports:
-  #     - 8000:3000
+  webapp:
+    image: poozlehq/engine-webapp:${ENGINE_VERSION}
+    platform: linux/amd64
+    container_name: poozle-webapp
+    restart: unless-stopped
+    networks:
+      - poozle
+    environment:
+      - BACKEND_URL=${BACKEND_URL}
+      - NEXT_PUBLIC_BASE_HOST=${PUBLIC_FRONTEND_HOST}
+      - NEXT_PUBLIC_VERSION=${ENGINE_VERSION}
+    ports:
+      - 8000:3000
 
-  # worker:
-  #   image: poozlehq/engine-worker:${ENGINE_VERSION}
-  #   platform: linux/amd64
-  #   container_name: poozle-worker
-  #   restart: unless-stopped
-  #   networks:
-  #     - poozle
-  #   environment:
-  #     - DATABASE_URL=${SYNC_DATABASE_URL}
-  #     - TEMPORAL_ADDRESS=${TEMPORAL_ADDRESS}
-  #     - DB_SCHEMA=${DB_SCHEMA}
-  #     - CONFIG_PATH=${CONFIG_PATH}
-  #     - TOKEN=${TOKEN}
-  #     - FRONTEND_HOST=${FRONTEND_HOST}
+  worker:
+    image: poozlehq/engine-worker:${ENGINE_VERSION}
+    platform: linux/amd64
+    container_name: poozle-worker
+    restart: unless-stopped
+    networks:
+      - poozle
+    environment:
+      - DATABASE_URL=${SYNC_DATABASE_URL}
+      - TEMPORAL_ADDRESS=${TEMPORAL_ADDRESS}
+      - DB_SCHEMA=${DB_SCHEMA}
+      - CONFIG_PATH=${CONFIG_PATH}
+      - TOKEN=${TOKEN}
+      - FRONTEND_HOST=${FRONTEND_HOST}
 
   temporal:
     image: temporalio/auto-setup:${TEMPORAL_VERSION}
@@ -81,18 +81,18 @@ services:
     networks:
       - poozle
 
-  temporal-ui:
-    container_name: temporal-ui
-    depends_on:
-      - temporal
-    environment:
-      - TEMPORAL_ADDRESS=temporal:7233
-      - TEMPORAL_CORS_ORIGINS=http://localhost:3000
-    image: temporalio/ui:${TEMPORAL_UI_VERSION}
-    networks:
-      - poozle
-    ports:
-      - 8080:8080
+  # temporal-ui:
+  #   container_name: temporal-ui
+  #   depends_on:
+  #     - temporal
+  #   environment:
+  #     - TEMPORAL_ADDRESS=temporal:7233
+  #     - TEMPORAL_CORS_ORIGINS=http://localhost:3000
+  #   image: temporalio/ui:${TEMPORAL_UI_VERSION}
+  #   networks:
+  #     - poozle
+  #   ports:
+  #     - 8080:8080
 
   supertokens:
     image: registry.supertokens.io/supertokens/supertokens-postgresql:5.0

@@ -9,6 +9,7 @@ import {
   ScheduleOverlapPolicy,
 } from '@temporalio/client';
 import ms from 'ms';
+import { PrismaService } from 'nestjs-prisma';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
@@ -21,7 +22,7 @@ const OVERLAP_POLICY: ScheduleOverlapPolicy = ScheduleOverlapPolicy.ALLOW_ALL;
 export class SyncService {
   client: Client | null = null;
 
-  constructor() {
+  constructor(private prismaService: PrismaService) {
     this.init();
   }
 
@@ -52,7 +53,6 @@ export class SyncService {
   async runInitialSyncWithId(integrationAccountId: string) {
     const scheduleId = `${DEFAULT_QUEUE}.${integrationAccountId}`;
 
-    console.log('here');
     const scheduleHandle = this.client?.schedule.getHandle(scheduleId);
     await scheduleHandle?.trigger(ScheduleOverlapPolicy.BUFFER_ALL);
   }
@@ -141,11 +141,44 @@ export class SyncService {
     try {
       await workflowService?.deleteSchedule({
         scheduleId,
+        namespace: 'default',
       });
       return true;
     } catch (e) {
       console.log(e);
       return false;
     }
+  }
+
+  async getSyncSchedule(integrationAccountId: string) {
+    try {
+      const scheduleId = `${DEFAULT_QUEUE}.${integrationAccountId}`;
+
+      const scheduleHandle = this.client?.schedule.getHandle(scheduleId);
+
+      return await scheduleHandle.describe();
+    } catch (e) {
+      return undefined;
+    }
+  }
+
+  async getJobs(integrationAccountId: string) {
+    const jobs = await this.prismaService.job.findMany({
+      where: {
+        integrationAccountId,
+      },
+      orderBy: [
+        {
+          updatedAt: 'asc',
+        },
+      ],
+    });
+
+    const schedule = await this.getSyncSchedule(integrationAccountId);
+
+    return {
+      jobs,
+      schedule,
+    };
   }
 }

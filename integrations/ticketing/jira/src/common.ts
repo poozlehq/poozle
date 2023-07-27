@@ -1,7 +1,5 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-export const BASE_URL = 'https://api.github.com';
-
 export interface Meta {
   previous: string;
   next: string;
@@ -15,4 +13,8 @@ export function getMetaParams(data: any[], limit: number, page: number) {
     current: page.toString(),
     next: data.length === limit ? (page + 1).toString() : '',
   };
+}
+
+export function convertTimestampToTZFormat(date: string) {
+  return new Date(date).toISOString();
 }

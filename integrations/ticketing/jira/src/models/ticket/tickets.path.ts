@@ -29,7 +29,7 @@ export class TicketsPath extends BasePath {
         data: response.data.issues.map((data: any) =>
           convertTicket(data, params.pathParams?.collection_id as string | null),
         ),
-        meta: getMetaParams(response.data, params.queryParams.limit, page),
+        meta: getMetaParams(response.data.issues, params.queryParams.limit, page),
       };
     } catch (e) {
       throw new Error(e);
@@ -71,6 +71,7 @@ export class TicketsPath extends BasePath {
       const createResponse = await axios.post(url, cleanedCreateBody, { headers });
 
       const response = await axios.get(createResponse.data.self, { headers });
+
       return {
         data: convertTicket(response.data, params.pathParams.collection_id),
       };
@@ -90,7 +91,7 @@ export class TicketsPath extends BasePath {
 
     switch (method) {
       case 'GET':
-        url = `${BASE_URL}/rest/api/2/search?jql=project=${params.pathParams?.collection_id}`;
+        url = `${BASE_URL}/rest/api/2/search?jql=project=${params.pathParams.collection_id}`;
         return this.fetchTickets(url, headers, params);
 
       case 'POST':

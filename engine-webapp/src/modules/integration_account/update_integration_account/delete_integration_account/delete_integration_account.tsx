@@ -1,5 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 import {
   Paper,
   Stack,
@@ -16,11 +17,11 @@ import { useDeleteIntegrationAccount } from 'services/integration_account';
 import styles from './delete_integration_account.module.scss';
 
 interface DeleteIntegrationAccountProps {
-  integrationAccountId: string;
+  integrationAccount: IntegrationAccount;
 }
 
 export function DeleteIntegrationAccount({
-  integrationAccountId,
+  integrationAccount,
 }: DeleteIntegrationAccountProps) {
   const router = useRouter();
 
@@ -61,7 +62,8 @@ export function DeleteIntegrationAccount({
                       size="xs"
                       onClick={() =>
                         deleteIntegrationAccount({
-                          integrationAccountId,
+                          integrationAccountId:
+                            integrationAccount.integrationAccountId,
                         })
                       }
                     >

@@ -1,5 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { IntegrationType } from 'lib/integration_type';
+
 export enum SYNC_OPTION_ENUM {
   EVERY_HALF_DAY = 'EVERY_HALF_DAY',
   EVERY_HALF_HOUR = 'EVERY_HALF_HOUR',
@@ -15,3 +17,7 @@ export const SYNC_OPTIONS = {
   EVERY_HOUR: 'every hour',
   EVERY_DAY: 'every day',
 };
+
+export function isSyncEnabled(integrationType: IntegrationType): boolean {
+  return integrationType === IntegrationType.TICKETING;
+}

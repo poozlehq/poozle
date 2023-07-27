@@ -3,6 +3,7 @@
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 import { useMutation } from 'react-query';
 import { ajaxPost } from 'utils';
+import { SYNC_OPTION_ENUM } from 'utils/sync';
 
 export interface UpdateIntegrationAccountParams {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -10,6 +11,9 @@ export interface UpdateIntegrationAccountParams {
   integrationAccountName: string;
   authType: string;
   integrationAccountId: string;
+
+  syncEnabled?: boolean;
+  syncPeriod?: SYNC_OPTION_ENUM;
 }
 
 export function updateIntegrationAccount({

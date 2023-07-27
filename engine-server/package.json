@@ -1,6 +1,6 @@
 {
   "name": "engine-server",
-  "version": "0.1.4-alpha",
+  "version": "0.1.7-alpha",
   "description": "Poozle engine",
   "author": "Poozle",
   "license": "MIT",
@@ -26,7 +26,7 @@
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
-    "start:migrate:prod": "yarn migrate:deploy && yarn seed && node dist/main",
+    "start:migrate:prod": "yarn migrate:deploy && node dist/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "migrate:dev": "prisma migrate dev --preview-feature",
     "migrate:dev:create": "prisma migrate dev --create-only --preview-feature",

@@ -84,8 +84,6 @@ export class TicketService {
       queryParams.cursor,
     );
 
-    console.log(limit);
-
     let query = getBaseQuery<Ticket>(
       workspaceName,
       table,

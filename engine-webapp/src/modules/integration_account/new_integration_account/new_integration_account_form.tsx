@@ -8,9 +8,7 @@ import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
 import { Specification } from '@poozle/engine-idk';
 import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
-import { IntegrationType } from 'lib/integration_type';
 import * as React from 'react';
-import { SYNC_OPTIONS, SYNC_OPTION_ENUM } from 'utils/sync';
 
 import {
   useCheckCredentialsMutation,
@@ -145,33 +143,6 @@ export function Form({
             )}
           />
         ))}
-
-        {integrationDefinition.integrationType ===
-          IntegrationType.TICKETING && (
-          <>
-            <Select
-              pb="md"
-              label="Sync Enabled"
-              placeholder="Choose if sync needs to be enabled"
-              data={['Yes', 'No']}
-              disabled={checkIsLoading || createIsLoading}
-              {...form.getInputProps('syncEnabled')}
-            />
-            <Select
-              pb="md"
-              label="Sync Period"
-              data={Object.keys(SYNC_OPTIONS).map(
-                (option: SYNC_OPTION_ENUM) => ({
-                  label: SYNC_OPTIONS[option],
-                  value: option,
-                }),
-              )}
-              placeholder="Choose sync period"
-              disabled={checkIsLoading || createIsLoading}
-              {...form.getInputProps('syncPeriod')}
-            />
-          </>
-        )}
 
         {errorMessage && (
           <Alert

@@ -1,10 +1,11 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Group, Paper, Stack, Tabs, Text } from '@mantine/core';
-import { IconLine, IconSettings } from '@tabler/icons-react';
+import { IconBox, IconLine, IconSettings } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { SessionAuth } from 'supertokens-auth-react/recipe/session';
 import { showDateInUI } from 'utils';
+import { isSyncEnabled } from 'utils/sync';
 
 import { SideBarLayout } from 'layouts/sidebar_layout';
 import { GetUserData } from 'wrappers/get_user_data';
@@ -13,6 +14,7 @@ import { useGetIntegrationAccountQuery } from 'services/integration_account';
 
 import { Header, IntegrationIcon, IntegrationType, Loader } from 'components';
 
+import { Data } from './data';
 import { Settings } from './settings';
 import styles from './update_integration_account.module.scss';
 import { UpdateIntegrationForm } from './update_integration_account_form';
@@ -68,6 +70,18 @@ export function UpdateIntegration() {
               Overview
             </Tabs.Tab>
 
+            {isSyncEnabled(
+              integrationAccount.integrationDefinition.integrationType,
+            ) && (
+              <Tabs.Tab
+                className={styles.tab}
+                icon={<IconBox size="1.25rem" />}
+                value="data"
+              >
+                Data
+              </Tabs.Tab>
+            )}
+
             <Tabs.Tab
               className={styles.tab}
               icon={<IconSettings size="1.25rem" />}
@@ -89,9 +103,18 @@ export function UpdateIntegration() {
             </Paper>
           </Tabs.Panel>
 
+          {isSyncEnabled(
+            integrationAccount.integrationDefinition.integrationType,
+          ) && (
+            <Tabs.Panel value="data">
+              <Data integrationAccount={integrationAccount} />
+            </Tabs.Panel>
+          )}
+
           <Tabs.Panel value="settings">
             <Settings
-              integrationAccountId={integrationAccount.integrationAccountId}
+              integrationAccount={integrationAccount}
+              refetch={refetch}
             />
           </Tabs.Panel>
         </Tabs>
