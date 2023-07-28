@@ -9,11 +9,16 @@ import {
   colors,
 } from 'unique-names-generator';
 
+import { IntegrationDefinitionService } from 'modules/integration_definition/integration_definition.service';
+
 import { CreateUserInput, UpdateUserInput } from './user.interface';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private integrationDefinitionService: IntegrationDefinitionService,
+  ) {}
 
   async updateUser(
     userId: string,
@@ -44,7 +49,7 @@ export class UserService {
       separator: '-',
     }); // big_red
 
-    return this.prisma.user.create({
+    const user = await this.prisma.user.create({
       data: {
         ...userData,
         userId,
@@ -58,5 +63,12 @@ export class UserService {
         Workspace: true,
       },
     });
+
+    const workspace = user.Workspace[0];
+    await this.integrationDefinitionService.updateIntegrationDefinitions(
+      workspace.workspaceId,
+    );
+
+    return user;
   }
 }

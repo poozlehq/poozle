@@ -269,7 +269,7 @@ export class OAuthCallbackService {
         };
       }
 
-      await this.integrationAccountService.createIntegrationAccount(
+      await this.integrationAccountService.createIntegrationAccountWithLink(
         integrationOAuth.integrationDefinitionId,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         integrationConfiguration as any,

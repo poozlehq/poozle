@@ -18,7 +18,6 @@ import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
-import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
 
@@ -41,7 +40,7 @@ export class TeamController {
   @Get()
   @UseGuards(new AuthGuard())
   async getTeams(
-    @Query() query: TeamQueryParams = defaultQueryParams,
+    @Query() query: TeamQueryParams,
 
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
@@ -51,7 +50,7 @@ export class TeamController {
       '/teams',
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       {},
     );
 
@@ -71,7 +70,7 @@ export class TeamController {
       `/teams/${params.team_name}`,
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       params,
     );
 
@@ -92,7 +91,7 @@ export class TeamController {
       `/teams/${params.team_name}`,
       Method.PATCH,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       params,
       updateTeamBody,
     );
@@ -112,7 +111,7 @@ export class TeamController {
       `/teams`,
       Method.POST,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       {},
       createTeamBody,
     );

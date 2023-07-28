@@ -55,6 +55,7 @@ export class BaseIntegration implements BaseIntegrationInterface {
           config,
         );
         headers = {
+          ...headers,
           Authorization: `Bearer ${token}`,
         };
       } else {

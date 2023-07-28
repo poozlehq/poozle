@@ -1,26 +1,30 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, UpdateTicketBody } from '@poozle/engine-idk';
+import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { getBaseUrl } from 'common';
 
+import { FetchTicketParams, UpdateTicketParams } from './ticket.interface';
 import { convertTicket, JIRATicketBody } from './ticket.utils';
 
 export class TicketPath extends BasePath {
-  async fetchSingleTicket(url: string, headers: AxiosHeaders, params: Params) {
+  async fetchSingleTicket(url: string, headers: AxiosHeaders, params: FetchTicketParams) {
     try {
       const response = await axios({
         url,
         headers,
       });
 
-      return convertTicket(response.data, params.pathParams?.collection_id as string | null);
+      return {
+        data: convertTicket(response.data, params.pathParams.collection_id),
+      };
     } catch (e) {
       throw new Error(e);
     }
   }
 
-  async patchTicket(url: string, headers: AxiosHeaders, params: Params) {
-    const body: UpdateTicketBody = params.requestBody as UpdateTicketBody;
+  async patchTicket(url: string, headers: AxiosHeaders, params: UpdateTicketParams) {
+    const body = params.requestBody;
 
     const createBody: JIRATicketBody = {
       fields: {
@@ -41,6 +45,7 @@ export class TicketPath extends BasePath {
     const cleanedCreateBody = {
       fields: Object.fromEntries(
         Object.entries(createBody.fields).filter(
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
           ([_, value]) => value !== undefined && value !== null,
         ),
       ),
@@ -48,22 +53,29 @@ export class TicketPath extends BasePath {
 
     const response = await axios.put(url, cleanedCreateBody, { headers });
 
-    return response.data;
+    return {
+      data: convertTicket(response.data, params.pathParams.collection_id),
+    };
   }
-  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
-    const BASE_URL = `https://${config.jira_domain}.atlassian.net`;
-    const url = `${BASE_URL}/rest/api/2/issue/${params.pathParams?.ticket_id}`;
+
+  async run(
+    method: string,
+    headers: AxiosHeaders,
+    params: FetchTicketParams | UpdateTicketParams,
+    config: Config,
+  ) {
+    const url = `${getBaseUrl(config)}/issue/${params.pathParams?.ticket_id}`;
 
     switch (method) {
       case 'GET':
         return this.fetchSingleTicket(url, headers, params);
 
       case 'PATCH':
-        await this.patchTicket(url, headers, params);
+        await this.patchTicket(url, headers, params as UpdateTicketParams);
         return this.fetchSingleTicket(url, headers, params);
 
       default:
-        return {};
+        throw new Error('Method not found');
     }
   }
 }

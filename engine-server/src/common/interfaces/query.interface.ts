@@ -2,11 +2,39 @@
 
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsOptional } from 'class-validator';
+import { IsBoolean, IsOptional, IsString } from 'class-validator';
 
 import { PaginationParams } from './pagination.interface';
 
 export class QueryParams extends PaginationParams {
+  /**
+   * Get all resources created after
+   */
+  @IsOptional()
+  @IsString()
+  created_after?: string;
+
+  /**
+   * Get all resources created before
+   */
+  @IsOptional()
+  @IsString()
+  created_before?: string;
+
+  /**
+   * Get all resources updated after
+   */
+  @IsOptional()
+  @IsString()
+  updated_after?: string;
+
+  /**
+   * Get all resources updated before
+   */
+  @IsOptional()
+  @IsString()
+  updated_before?: string;
+
   @ApiProperty({
     name: 'raw',
     type: 'boolean',
@@ -18,7 +46,7 @@ export class QueryParams extends PaginationParams {
   @Transform(({ value }) => {
     return value === 'true' || value === 'True' || value === true;
   })
-  raw?: boolean;
+  raw = false;
 }
 
 export class JustRawParams {
@@ -33,7 +61,7 @@ export class JustRawParams {
   @Transform(({ value }) => {
     return value === 'true' || value === 'True' || value === true;
   })
-  raw?: boolean;
+  raw = false;
 }
 
 export enum DIRECTION_ENUM {

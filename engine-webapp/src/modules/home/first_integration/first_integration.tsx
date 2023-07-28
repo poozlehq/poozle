@@ -62,7 +62,10 @@ export function FirstIntegration() {
         <Group>
           {selectedIntegrationDefinition && (
             <NewIntegrationForm
-              integrationDefinitionId={selectedIntegrationDefinition}
+              integrationDefinition={integrationDefinitions.find(
+                (id) =>
+                  id.integrationDefinitionId === selectedIntegrationDefinition,
+              )}
               workspaceId={workspaceId as string}
               onComplete={() => {
                 // TODO (harshith): Change the status in workspace

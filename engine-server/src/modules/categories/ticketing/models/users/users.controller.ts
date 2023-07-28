@@ -8,7 +8,6 @@ import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
-import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
 
@@ -30,7 +29,7 @@ import {
 export class UsersController {
   @Get(':collection_id/users/:user_id')
   async getUserId(
-    @Query() query: GetUserParams = defaultQueryParams,
+    @Query() query: GetUserParams,
     @Param()
     params: PathParamsWithUserId,
     @GetIntegrationAccount(IntegrationType.TICKETING)
@@ -41,7 +40,7 @@ export class UsersController {
       `/users/${params.user_id}`,
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       params as any,
     );
@@ -51,7 +50,7 @@ export class UsersController {
 
   @Get(':collection_id/users')
   async getUsers(
-    @Query() query: ListUserParams = defaultQueryParams,
+    @Query() query: ListUserParams,
     @Param()
     params: PathParams,
     @GetIntegrationAccount(IntegrationType.TICKETING)
@@ -62,7 +61,7 @@ export class UsersController {
       '/users',
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       params as any,
     );

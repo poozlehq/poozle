@@ -3,7 +3,7 @@
 
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { Specification } from '@poozle/engine-idk';
-import { ReleaseStage } from '@prisma/client';
+import { IntegrationType, ReleaseStage } from '@prisma/client';
 import axios from 'axios';
 import { PrismaService } from 'nestjs-prisma';
 import { getIntegrationSpec } from 'shared/integration_run_utils';
@@ -29,9 +29,6 @@ export class IntegrationDefinitionService {
       {
         workspaceId: integrationDefinitionRequestWorkspaceIdBody.workspaceId,
       },
-      {
-        workspaceId: null,
-      },
     ];
 
     if (
@@ -41,10 +38,6 @@ export class IntegrationDefinitionService {
       ORRequests = [
         ...integrationDefinitionRequestWorkspaceIdBody.category.map((cat) => ({
           workspaceId: integrationDefinitionRequestWorkspaceIdBody.workspaceId,
-          integrationType: cat,
-        })),
-        ...integrationDefinitionRequestWorkspaceIdBody.category.map((cat) => ({
-          workspaceId: null,
           integrationType: cat,
         })),
       ];
@@ -196,5 +189,49 @@ export class IntegrationDefinitionService {
       ...integrationDefinition,
       ...latestDetails,
     };
+  }
+
+  async updateIntegrationDefinitions(workspaceId: string) {
+    const integrationDefinitions =
+      await this.prisma.integrationDefinition.findMany({
+        where: {
+          workspaceId,
+        },
+      });
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const integrationDefinitionsResponse: any = await axios.get(
+      'https://raw.githubusercontent.com/poozlehq/engine/main/integration_definitions.json',
+    );
+
+    const totalIntegrationDefinitions = integrationDefinitionsResponse.data;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const integrationDefinitionCreate: any[] = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    totalIntegrationDefinitions.forEach((integrationDefinition: any) => {
+      const integrationExists = integrationDefinitions.find(
+        (id) => id.key === integrationDefinition.key,
+      );
+
+      if (!integrationExists) {
+        integrationDefinitionCreate.push({
+          ...integrationDefinition,
+          workspaceId,
+          releaseStage:
+            ReleaseStage[integrationDefinition.releaseStage as ReleaseStage],
+          integrationType:
+            IntegrationType[
+              integrationDefinition.integrationType as IntegrationType
+            ],
+        });
+      }
+    });
+
+    if (integrationDefinitionCreate.length > 0) {
+      await this.prisma.integrationDefinition.createMany({
+        data: integrationDefinitionCreate,
+      });
+    }
   }
 }

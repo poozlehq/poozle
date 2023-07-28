@@ -18,7 +18,6 @@ import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
-import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
 
@@ -42,7 +41,7 @@ export class CommentController {
   @Get(':collection_id/tickets/:ticket_id/comments')
   @UseGuards(new AuthGuard())
   async getComments(
-    @Query() query: CommentQueryParams = defaultQueryParams,
+    @Query() query: CommentQueryParams,
     @Param()
     params: PathParams,
     @GetIntegrationAccount(IntegrationType.TICKETING)
@@ -53,7 +52,7 @@ export class CommentController {
       '/comments',
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       params,
     );
 
@@ -73,7 +72,7 @@ export class CommentController {
       `/comments/${params.comment_id}`,
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       params,
     );
 
@@ -94,7 +93,7 @@ export class CommentController {
       `/comments/${params.comment_id}`,
       Method.PATCH,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       params,
       updateCommentBody,
     );
@@ -116,7 +115,7 @@ export class CommentController {
       `/comments`,
       Method.POST,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       params,
       createCommentBody,
     );

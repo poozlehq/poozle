@@ -18,7 +18,6 @@ import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
-import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
 
@@ -42,7 +41,7 @@ export class TagController {
   @Get(':collection_id/tags')
   @UseGuards(new AuthGuard())
   async getTags(
-    @Query() query: TagQueryParams = defaultQueryParams,
+    @Query() query: TagQueryParams,
     @Param()
     params: PathParams,
     @GetIntegrationAccount(IntegrationType.TICKETING)
@@ -53,7 +52,7 @@ export class TagController {
       '/tags',
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       params,
     );
 
@@ -73,7 +72,7 @@ export class TagController {
       `/tags/${params.tag_name}`,
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       params,
     );
 
@@ -94,7 +93,7 @@ export class TagController {
       `/tags/${params.tag_name}`,
       Method.PATCH,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       params,
       updateTagBody,
     );
@@ -116,7 +115,7 @@ export class TagController {
       `/tags`,
       Method.POST,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       params,
       createTagBody,
     );

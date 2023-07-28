@@ -2,9 +2,17 @@
 
 import { Config } from '@poozle/engine-idk';
 import { IntegrationType } from '@prisma/client';
-import { IsObject, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsObject,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 import { WorkspaceIdRequestBody } from 'common/interfaces/workspace.interface';
+
+import { SyncPeriod } from 'modules/sync/sync.util';
 
 export class IntegrationAccountRequestIdBody {
   /**
@@ -93,6 +101,21 @@ export class CreateIntegrationAccountBody extends WorkspaceIdRequestBody {
   @IsString()
   @IsOptional()
   accountIdentifier: string;
+
+  /**
+   * Enable sync for this account
+   */
+  @IsOptional()
+  @IsBoolean()
+  syncEnabled = false;
+
+  /**
+   * Enable sync for this account
+   */
+  @IsOptional()
+  @IsString()
+  @IsEnum(SyncPeriod)
+  syncPeriod?: SyncPeriod;
 }
 
 export class CreateIntegrationAccountWithLinkBody {
@@ -149,4 +172,19 @@ export class UpdateIntegrationAccountBody {
    */
   @IsObject()
   config: Config;
+
+  /**
+   * Enable sync for this account
+   */
+  @IsOptional()
+  @IsBoolean()
+  syncEnabled = false;
+
+  /**
+   * Enable sync for this account
+   */
+  @IsOptional()
+  @IsString()
+  @IsEnum(SyncPeriod)
+  syncPeriod?: SyncPeriod;
 }

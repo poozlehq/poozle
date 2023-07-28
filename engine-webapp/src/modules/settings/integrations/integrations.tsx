@@ -7,94 +7,22 @@ import {
   Group,
   Loader,
   Paper,
-  Popover,
   Stack,
   Text,
   UnstyledButton,
 } from '@mantine/core';
-import { notifications } from '@mantine/notifications';
-import { IconAlertSmall, IconCheck } from '@tabler/icons-react';
+import axios from 'axios';
 import { useRouter } from 'next/router';
 import * as React from 'react';
 
-import {
-  useGetIntegrationDefinitionsQuery,
-  useUpdateIntegrationDefinitionMutation,
-} from 'services/integration_definition';
+import { useGetIntegrationDefinitionsQuery } from 'services/integration_definition';
 
 import { IntegrationIcon, IntegrationType, Table } from 'components';
 import { ReleaseStage } from 'components/release_stage';
 
 import { AddNewIntegrationModal } from './add_new_integration_modal';
 import styles from './integrations.module.scss';
-
-interface UpdateComponentInterface {
-  id: IntegrationDefinition;
-  refetch: () => void;
-}
-
-function UpdateComponent({ id, refetch }: UpdateComponentInterface) {
-  const {
-    mutate: updateIntegrationDefinitionServer,
-    isLoading: loadingUpdateIntegration,
-  } = useUpdateIntegrationDefinitionMutation({
-    onSuccess: () => {
-      notifications.show({
-        icon: <IconCheck />,
-        title: 'Status',
-        color: 'green',
-        message: `Integration is updated successfully`,
-      });
-      refetch();
-    },
-    onError: (err) => {
-      notifications.show({
-        icon: <IconAlertSmall />,
-        title: 'Status',
-        color: 'red',
-        message: err,
-      });
-    },
-  });
-
-  const updateIntegrationDefinition = (id: IntegrationDefinition) => {
-    updateIntegrationDefinitionServer({
-      integrationDefinitionId: id.integrationDefinitionId,
-      sourceUrl: id.latestVersionSource,
-      version: id.latestVersion,
-    });
-  };
-
-  return (
-    <div>
-      <Popover width={200} position="bottom" withArrow shadow="md">
-        <Popover.Target>
-          <Button variant="subtle" size="xs" compact>
-            Update
-          </Button>
-        </Popover.Target>
-        <Popover.Dropdown>
-          <Stack>
-            <Text size="sm">Do this only when you are really sure</Text>
-            <div>
-              <Group position="right">
-                <Button
-                  variant="subtle"
-                  size="xs"
-                  compact
-                  loading={loadingUpdateIntegration}
-                  onClick={() => updateIntegrationDefinition(id)}
-                >
-                  Update
-                </Button>
-              </Group>
-            </div>
-          </Stack>
-        </Popover.Dropdown>
-      </Popover>
-    </div>
-  );
-}
+import { UpdateComponent } from './update_integration';
 
 export function Integrations() {
   const router = useRouter();
@@ -111,6 +39,14 @@ export function Integrations() {
   } = useGetIntegrationDefinitionsQuery({
     workspaceId: workspaceId as string,
   });
+
+  const updateintegrationDefinitions = async () => {
+    await axios.get(
+      `/api/v1/integration_definition/get_latest?workspaceId=${workspaceId}`,
+    );
+
+    refetch();
+  };
 
   const columns = [
     {
@@ -202,12 +138,18 @@ export function Integrations() {
 
   return (
     <div>
-      <Group position="right" mb="md">
+      <Group position="right" mb="lg">
         <Button onClick={() => setAddNewIntegrationState(true)}>
           + Add Integration
         </Button>
+        <Button
+          variant="outline"
+          onClick={async () => await updateintegrationDefinitions()}
+        >
+          Fetch latest integrations
+        </Button>
       </Group>
-      <Paper radius="md" className={styles.tablePaper}>
+      <Paper radius="md" mb="lg" className={styles.tablePaper}>
         <Table
           horizontalSpacing="lg"
           columns={columns}

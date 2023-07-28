@@ -110,6 +110,11 @@ export class LinkService {
       where: {
         workspaceId: workspaceIdQueryRequest.workspaceId,
       },
+      orderBy: [
+        {
+          updatedAt: 'asc',
+        },
+      ],
     });
 
     return links.map((link) => {

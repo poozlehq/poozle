@@ -18,6 +18,8 @@ import { Specification } from '@poozle/engine-idk';
 
 import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
 
+import { WorkspaceIdRequestBody } from 'common/interfaces/workspace.interface';
+
 import { AuthGuard } from 'modules/auth/auth.guard';
 
 import {
@@ -105,6 +107,20 @@ export class IntegrationDefinitionController {
   ): Promise<IntegrationDefinition> {
     return await this.integrationDefinitionService.createIntegrationDefinition(
       integrationDefinitionCreateBody,
+    );
+  }
+
+  /**
+   * Check if there are latest integrations
+   * if there update in the database
+   */
+  @Get('get_latest')
+  async updateIntegrationDefinitions(
+    @Query()
+    workspaceIdRequestBody: WorkspaceIdRequestBody,
+  ) {
+    return await this.integrationDefinitionService.updateIntegrationDefinitions(
+      workspaceIdRequestBody.workspaceId,
     );
   }
 

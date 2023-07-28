@@ -2,6 +2,7 @@
 /* eslint-disable prettier/prettier */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
 import { Alert, Button, Group, Select, TextInput } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { notifications } from '@mantine/notifications';
@@ -25,7 +26,7 @@ import {
 } from './new_integration_account_form_utils';
 
 interface NewIntegrationFormProps {
-  integrationDefinitionId: string;
+  integrationDefinition: IntegrationDefinition;
   workspaceId: string;
   integrationAccountNameDefault?: string;
   onComplete?: () => void;
@@ -36,14 +37,14 @@ interface FormProps {
   workspaceId: string;
   onComplete?: () => void;
   integrationAccountNameDefault?: string;
-  integrationDefinitionId: string;
+  integrationDefinition: IntegrationDefinition;
 }
 
 export function Form({
   spec,
   workspaceId,
   integrationAccountNameDefault,
-  integrationDefinitionId,
+  integrationDefinition,
   onComplete,
 }: FormProps) {
   const form = useForm({
@@ -82,11 +83,13 @@ export function Form({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onSubmit = (values: any) => {
     createIntegrationAccount({
-      integrationDefinitionId,
+      integrationDefinitionId: integrationDefinition.integrationDefinitionId,
       workspaceId,
       config: values[getPropertyName(values.authType)],
       authType: values.authType,
       integrationAccountName: values.integrationAccountName,
+      syncEnabled: values.syncEnabled === 'Yes' ? true : false,
+      syncPeriod: values.syncPeriod,
     });
   };
 
@@ -103,7 +106,8 @@ export function Form({
 
           checkCredentials({
             workspaceId: workspaceId as string,
-            integrationDefinitionId,
+            integrationDefinitionId:
+              integrationDefinition.integrationDefinitionId,
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             config: values[getPropertyName(authType)],
             authType,
@@ -161,7 +165,7 @@ export function Form({
 }
 
 export function NewIntegrationForm({
-  integrationDefinitionId,
+  integrationDefinition,
   workspaceId,
   integrationAccountNameDefault,
   onComplete,
@@ -171,7 +175,7 @@ export function NewIntegrationForm({
     isLoading,
     error,
   } = useGetIntegrationDefinitionSpecQuery({
-    integrationDefinitionId,
+    integrationDefinitionId: integrationDefinition.integrationDefinitionId,
     workspaceId: workspaceId as string,
   });
 
@@ -200,7 +204,7 @@ export function NewIntegrationForm({
       spec={integrationDefinitionSpec as any}
       workspaceId={workspaceId as string}
       onComplete={onComplete}
-      integrationDefinitionId={integrationDefinitionId}
+      integrationDefinition={integrationDefinition}
       integrationAccountNameDefault={integrationAccountNameDefault}
     />
   );

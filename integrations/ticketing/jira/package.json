@@ -1,6 +1,6 @@
 {
   "name": "@poozle/jira",
-  "version": "0.1.4",
+  "version": "0.1.8",
   "description": "jira extension for Poozle",
   "exports": {
     ".": {
@@ -48,8 +48,9 @@
   },
   "dependencies": {
     "@poozle/engine-edk": "^0.2.13",
-    "@poozle/engine-idk": "^0.1.8",
-    "axios": "^1.4.0"
+    "@poozle/engine-idk": "^0.1.29",
+    "axios": "^1.4.0",
+    "dayjs": "^1.11.9"
   },
   "browserslist": {
     "production": [

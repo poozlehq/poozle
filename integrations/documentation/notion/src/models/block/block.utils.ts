@@ -3,33 +3,9 @@
 import { Block, BlockType, Content, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
+import { BlockWithRaw, SingleBlockResponse } from './block.interface';
+
 export const BASE_URL = 'https://api.notion.com/v1';
-
-export interface SingleBlockResponse {
-  object: string;
-  id: string;
-  parent: Record<string, string>;
-  created_time: string;
-  last_edited_time: string;
-  created_by: Record<string, string>;
-  last_edited_by: Record<string, string>;
-  has_children: boolean;
-  archived: boolean;
-  type: BlockType;
-
-  // TODO (harshith): fix the types
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-  children?: SingleBlockResponse[];
-}
-
-export interface BlockResponse {
-  blocks: SingleBlockResponse[];
-  meta: {
-    has_more: boolean;
-    next_cursor: string;
-  };
-}
 
 export function convertUpdateBody(data: Block) {
   return {
@@ -72,6 +48,7 @@ export function convertAppendBody(data: Block[]) {
 export async function fetchBlockChildren(
   block: SingleBlockResponse,
   headers: AxiosHeaders,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> {
   const childUrl = `${BASE_URL}/blocks/${block.id.replace(/-/g, '')}/children`;
 
@@ -115,11 +92,7 @@ export async function fetchBlockChildren(
   };
 }
 
-export async function fetchPageBlocks(
-  url: string,
-  headers: AxiosHeaders,
-  params: Params,
-): Promise<BlockResponse> {
+export async function fetchPageBlocks(url: string, headers: AxiosHeaders, params: Params) {
   const limit = params.queryParams?.limit ? parseInt(params.queryParams?.limit.toString()) : 10;
 
   const final_params = {
@@ -257,7 +230,7 @@ export function extractChildrenData(data: SingleBlockResponse): Block[] {
   }));
 }
 
-export function extractBlockData(data: SingleBlockResponse): Block {
+export function extractBlockData(data: SingleBlockResponse): BlockWithRaw {
   const content = extractContent(data);
 
   let children: Block[] = [];
@@ -266,7 +239,12 @@ export function extractBlockData(data: SingleBlockResponse): Block {
     children = extractChildrenData(data);
   } else {
     children = data.children
-      ? data.children?.map((data: SingleBlockResponse) => extractBlockData(data))
+      ? data.children?.map((data: SingleBlockResponse) => {
+          const childrenData = extractBlockData(data);
+          delete childrenData['raw'];
+
+          return childrenData;
+        })
       : [];
   }
 
@@ -276,6 +254,9 @@ export function extractBlockData(data: SingleBlockResponse): Block {
     block_type: data.type,
     content,
     children,
+
+    // Raw
+    raw: data,
   };
 
   return block_data;

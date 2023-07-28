@@ -5,7 +5,7 @@ import { ApiProperty } from '@nestjs/swagger';
 export class Meta {
   limit: number;
   cursors: {
-    before: string;
+    previous: string;
     current: string;
     next: string;
   };

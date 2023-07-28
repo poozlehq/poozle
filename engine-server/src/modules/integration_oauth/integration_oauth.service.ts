@@ -23,6 +23,11 @@ export class IntegrationOAuthService {
       where: {
         workspaceId: integrationOAuthRequestWorkspaceIdBody.workspaceId,
       },
+      orderBy: [
+        {
+          updatedAt: 'asc',
+        },
+      ],
       include: {
         integrationDefinition: true,
       },
@@ -40,6 +45,11 @@ export class IntegrationOAuthService {
             integrationOAuthRequestIdBody.integrationOAuthAppId,
           workspaceId,
         },
+        orderBy: [
+          {
+            updatedAt: 'asc',
+          },
+        ],
         include: {
           integrationDefinition: true,
         },

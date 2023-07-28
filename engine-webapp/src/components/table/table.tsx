@@ -1,5 +1,5 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
-import { Table as MTable, TableProps, Text } from '@mantine/core';
+import { Group, Table as MTable, TableProps, Text } from '@mantine/core';
 
 import styles from './table.module.scss';
 
@@ -51,7 +51,13 @@ export function Table<TableDataType>({
         </tr>
       </thead>
 
-      <tbody>{rows}</tbody>
+      {rows.length > 0 && <tbody>{rows}</tbody>}
+
+      {rows.length === 0 && (
+        <tbody>
+          <Group p="md">No data found</Group>
+        </tbody>
+      )}
     </MTable>
   );
 }

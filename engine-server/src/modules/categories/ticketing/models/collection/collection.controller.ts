@@ -3,12 +3,10 @@
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
-import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
-import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
 
@@ -19,6 +17,7 @@ import {
   TicketingCollectionResponse,
   TicketingCollectionsResponse,
 } from './collection.interface';
+import { CollectionService } from './collection.service';
 
 @Controller({
   version: '1',
@@ -26,20 +25,18 @@ import {
 })
 @ApiTags('Ticketing')
 export class CollectionController {
+  constructor(private collectionService: CollectionService) {}
+
   @Get()
   @UseGuards(new AuthGuard())
   async getCollections(
-    @Query() query: CollectionQueryParams = defaultQueryParams,
+    @Query() query: CollectionQueryParams,
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingCollectionsResponse> {
-    const collectionResponse = await getDataFromAccount(
+    const collectionResponse = await this.collectionService.getCollections(
       integrationAccount,
-      '/collections',
-      Method.GET,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
-      {},
+      query,
     );
 
     return collectionResponse;
@@ -53,12 +50,9 @@ export class CollectionController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingCollectionResponse> {
-    const collectionResponse = await getDataFromAccount(
+    const collectionResponse = await this.collectionService.getCollection(
       integrationAccount,
-      `/collections/${params.collection_id}`,
-      Method.GET,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       params,
     );
 
