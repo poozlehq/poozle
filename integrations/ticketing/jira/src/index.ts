@@ -58,7 +58,7 @@ class JiraIntegration extends BaseIntegration {
 
     try {
       const response = await axios({
-        url: `https://${getBaseUrl(config)}/project`,
+        url: `${getBaseUrl(config)}/project`,
         headers,
       });
 
