@@ -13,7 +13,7 @@ export class TicketsPath extends BasePath {
     headers: AxiosHeaders,
     { queryParams, pathParams }: FetchTicketsParams,
   ) {
-    const page = queryParams.cursor ? parseInt(queryParams.cursor) : 1;
+    const page = queryParams.cursor ? parseInt(queryParams.cursor) : 0;
     const startAt = page * (queryParams.limit ? queryParams.limit : 10);
     const since = queryParams.since
       ? `AND updatedDate > '${formatDateForSince(queryParams.since)}'`

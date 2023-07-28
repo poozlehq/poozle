@@ -17,7 +17,6 @@ import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
-import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
 
@@ -105,7 +104,7 @@ export class TicketsController {
       `/tickets/${params.ticket_id}`,
       Method.PATCH,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       params,
       updateTicketBody,
     );
@@ -127,7 +126,7 @@ export class TicketsController {
       `/tickets`,
       Method.POST,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
+      query,
       params,
       createTicketBody,
     );

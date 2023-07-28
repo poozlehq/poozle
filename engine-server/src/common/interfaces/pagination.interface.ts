@@ -24,5 +24,5 @@ export class PaginationParams {
   @IsNumber()
   @IsOptional()
   @Transform(({ value }) => parseInt(value))
-  limit: number;
+  limit = 10;
 }

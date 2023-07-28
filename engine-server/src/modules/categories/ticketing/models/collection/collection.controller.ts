@@ -7,7 +7,6 @@ import { IntegrationType } from '@prisma/client';
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
-import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
 
@@ -31,7 +30,7 @@ export class CollectionController {
   @Get()
   @UseGuards(new AuthGuard())
   async getCollections(
-    @Query() query: CollectionQueryParams = defaultQueryParams,
+    @Query() query: CollectionQueryParams,
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingCollectionsResponse> {

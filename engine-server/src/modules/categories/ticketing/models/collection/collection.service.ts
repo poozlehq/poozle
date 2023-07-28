@@ -6,7 +6,6 @@ import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
-import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 import {
   applyDateFilter,
   getBaseQuery,
@@ -142,7 +141,6 @@ export class CollectionService {
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       {
-        ...defaultQueryParams,
         limit: query.limit,
         cursor: query.cursor,
         raw: query.raw,
