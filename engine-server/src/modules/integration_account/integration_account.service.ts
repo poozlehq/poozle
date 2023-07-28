@@ -5,6 +5,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { CheckResponse, Config } from '@poozle/engine-idk';
 import { IntegrationType } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
@@ -30,6 +31,7 @@ export class IntegrationAccountService {
     private prismaService: PrismaService,
     private integrationDefinitionService: IntegrationDefinitionService,
     private syncService: SyncService,
+    private configService: ConfigService,
   ) {}
 
   async checkForIntegrationCredentails(
@@ -105,9 +107,11 @@ export class IntegrationAccountService {
           },
         });
 
-      if (integrationAccount.syncEnabled) {
-        await this.syncService.createScheduleIfNotExist(integrationAccount);
-        await this.syncService.runInitialSync(integrationAccount);
+      if (this.configService.get('TEMPORAL_ADDRESS')) {
+        if (integrationAccount.syncEnabled) {
+          await this.syncService.createScheduleIfNotExist(integrationAccount);
+          await this.syncService.runInitialSync(integrationAccount);
+        }
       }
 
       return integrationAccount;
@@ -170,12 +174,14 @@ export class IntegrationAccountService {
       integrationAccountRequestIdBody,
     );
 
-    const status = await this.syncService.deleteSyncSchedule(
-      integrationAccount,
-    );
+    if (this.configService.get('TEMPORAL_ADDRESS')) {
+      const status = await this.syncService.deleteSyncSchedule(
+        integrationAccount,
+      );
 
-    if (!status) {
-      throw new BadRequestException('Deleting scheduling failed');
+      if (!status) {
+        throw new BadRequestException('Deleting scheduling failed');
+      }
     }
 
     return await this.prismaService.integrationAccount.delete({
@@ -315,10 +321,12 @@ export class IntegrationAccountService {
         },
       });
 
-    if (integrationAccount.syncEnabled) {
-      await this.syncService.updateSchedule(integrationAccount);
-    } else {
-      await this.syncService.deleteSyncSchedule(integrationAccount);
+    if (this.configService.get('TEMPORAL_ADDRESS')) {
+      if (integrationAccount.syncEnabled) {
+        await this.syncService.updateSchedule(integrationAccount);
+      } else {
+        await this.syncService.deleteSyncSchedule(integrationAccount);
+      }
     }
 
     return integrationAccount;

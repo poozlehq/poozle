@@ -43,9 +43,11 @@ async function bootstrap() {
   const nestConfig = configService.get<NestConfig>('nest');
   const corsConfig = configService.get<CorsConfig>('cors');
 
-  // Check for schedules at start of the application
-  const integrationAccountService = app.get(IntegrationAccountService);
-  integrationAccountService.init();
+  // Check for schedules at start of the application if temporal address is present
+  if (configService.get('TEMPORAL_ADDRESS')) {
+    const integrationAccountService = app.get(IntegrationAccountService);
+    integrationAccountService.init();
+  }
 
   // Cors
   if (corsConfig.enabled) {
