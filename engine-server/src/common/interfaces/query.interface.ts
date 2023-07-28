@@ -46,7 +46,7 @@ export class QueryParams extends PaginationParams {
   @Transform(({ value }) => {
     return value === 'true' || value === 'True' || value === true;
   })
-  raw?: boolean;
+  raw = false;
 }
 
 export class JustRawParams {
@@ -61,7 +61,7 @@ export class JustRawParams {
   @Transform(({ value }) => {
     return value === 'true' || value === 'True' || value === true;
   })
-  raw?: boolean;
+  raw = false;
 }
 
 export enum DIRECTION_ENUM {

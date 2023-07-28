@@ -43,10 +43,14 @@ export async function runCloudQuerySync(
   integrationAccountId: string,
 ): Promise<void> {
   try {
-    const options: ExecSyncOptionsWithStringEncoding = { encoding: 'utf-8', stdio: 'pipe' };
+    const options: ExecSyncOptionsWithStringEncoding = {
+      encoding: 'utf-8',
+      stdio: 'pipe',
+      cwd: '/app',
+    };
 
     const result = execSync(
-      `cloudquery sync ${process.env.CONFIG_PATH}/${integrationAccountId}/config.yaml --log-file-name ${process.env.CONFIG_PATH}/${integrationAccountId}/cloudquery.log`,
+      `./cloudquery sync ${process.env.CONFIG_PATH}/${integrationAccountId}/config.yaml --log-level error --log-file-name ${process.env.CONFIG_PATH}/${integrationAccountId}/cloudquery.log`,
       options,
     );
 

@@ -1,6 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class PaginationParams {
@@ -15,12 +16,13 @@ export class PaginationParams {
   cursor?: string;
 
   @ApiProperty({
-    name: 'cursor',
+    name: 'limit',
     type: 'number',
     description:
       'Number of results to return. Minimum 1, Maximum 200, Default 10',
   })
   @IsNumber()
   @IsOptional()
-  limit?: number;
+  @Transform(({ value }) => parseInt(value))
+  limit: number;
 }

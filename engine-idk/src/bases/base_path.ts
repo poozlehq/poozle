@@ -30,14 +30,14 @@ export class BasePath {
   }
 
   async baseRun(method: string, headers: AxiosHeaders, params: Params, config: Config) {
-    const responseFromRun: any = await this.run(method, headers, params, config);
-
-    // if this is a request directly to the integration
-    if (params.proxy) {
-      return responseFromRun;
-    }
-
     try {
+      const responseFromRun: any = await this.run(method, headers, params, config);
+
+      // if this is a request directly to the integration
+      if (params.proxy) {
+        return responseFromRun;
+      }
+
       const response: any = {
         data: responseFromRun.data,
       };

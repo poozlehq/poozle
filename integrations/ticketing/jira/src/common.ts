@@ -1,5 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import dayjs from 'dayjs';
+
 export interface Meta {
   previous: string;
   next: string;
@@ -17,4 +19,8 @@ export function getMetaParams(data: any[], limit: number, page: number) {
 
 export function convertTimestampToTZFormat(date: string) {
   return new Date(date).toISOString();
+}
+
+export function formatDateForSince(date: string) {
+  return dayjs(new Date(date)).format('YYYY-MM-DD');
 }

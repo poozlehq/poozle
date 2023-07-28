@@ -23,6 +23,7 @@ export interface FetchTicketsParams {
   queryParams: {
     limit: number;
     cursor?: string;
+    since?: string;
   };
 
   pathParams: {

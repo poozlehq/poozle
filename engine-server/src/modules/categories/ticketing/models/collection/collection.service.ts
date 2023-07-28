@@ -18,6 +18,7 @@ import { pagination } from 'common/utils';
 import {
   COLLECTION_KEYS,
   CollectionQueryParams,
+  GetCollectionQueryParams,
   PathParamsWithCollectionId,
 } from './collection.interface';
 
@@ -38,7 +39,7 @@ export class CollectionService {
 
   async getCollection(
     integrationAccount: IntegrationAccount,
-    query: CollectionQueryParams,
+    query: GetCollectionQueryParams,
     params: PathParamsWithCollectionId,
   ) {
     if (query.realtime) {
@@ -99,7 +100,7 @@ export class CollectionService {
 
   async getCollectionFromDb(
     integrationAccount: IntegrationAccount,
-    query: CollectionQueryParams,
+    query: GetCollectionQueryParams,
     params: PathParamsWithCollectionId,
   ) {
     return await getObjectFromDb(
@@ -116,7 +117,7 @@ export class CollectionService {
 
   async getCollectionForRealtime(
     integrationAccount: IntegrationAccount,
-    query: CollectionQueryParams,
+    query: GetCollectionQueryParams,
     params: PathParamsWithCollectionId,
   ) {
     const collectionResponse = await getDataFromAccount(

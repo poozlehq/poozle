@@ -17,16 +17,15 @@ export class CommentsPath extends BasePath {
   async fetchComments(
     url: string,
     headers: AxiosHeaders,
-    params: GetCommentsParams,
+    { queryParams, pathParams }: GetCommentsParams,
   ): Promise<CommentsResponse> {
-    const page =
-      typeof params.queryParams?.cursor === 'string' ? parseInt(params.queryParams?.cursor) : 1;
+    const page = typeof queryParams?.cursor === 'string' ? parseInt(queryParams?.cursor) : 1;
 
     const response = await axios({
       url,
       headers,
       params: {
-        maxResults: params.queryParams.limit,
+        maxResults: queryParams.limit,
         startAt: page,
       },
     });
@@ -34,9 +33,9 @@ export class CommentsPath extends BasePath {
     return {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: response.data.comments.map((data: any) =>
-        convertComments(data, params.pathParams.ticket_id as string | null),
+        convertComments(data, pathParams.ticket_id as string | null),
       ),
-      meta: getMetaParams(response.data, params.queryParams.limit, page),
+      meta: getMetaParams(response.data, queryParams.limit, page),
     };
   }
 

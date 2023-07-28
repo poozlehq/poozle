@@ -68,6 +68,18 @@ export class SyncService {
     }
   }
 
+  async scheduleExists(integrationAccount: IntegrationAccount) {
+    const scheduleId = `${DEFAULT_QUEUE}.${integrationAccount.integrationAccountId}`;
+
+    try {
+      await this.client?.schedule.getHandle(scheduleId).describe();
+      return true;
+    } catch (e) {
+      // If we are hear that means schedule is not there
+      return false;
+    }
+  }
+
   async createSchedule(integrationAccount: IntegrationAccount) {
     const scheduleId = `${DEFAULT_QUEUE}.${integrationAccount.integrationAccountId}`;
     const { interval, offset } = getInterval(
@@ -118,11 +130,21 @@ export class SyncService {
     }
 
     try {
-      const scheduleId = `${DEFAULT_QUEUE}.${integrationAccount.integrationAccountId}`;
+      /**
+       * Create the schedule if it doesn't exist
+       */
+      const exists = await this.scheduleExists(integrationAccount);
 
-      const scheduleHandle = this.client?.schedule.getHandle(scheduleId);
+      if (exists) {
+        const scheduleId = `${DEFAULT_QUEUE}.${integrationAccount.integrationAccountId}`;
 
-      await scheduleHandle?.update(updateFunction);
+        const scheduleHandle = this.client?.schedule.getHandle(scheduleId);
+
+        await scheduleHandle?.update(updateFunction);
+      } else {
+        await this.createSchedule(integrationAccount);
+        await this.runInitialSync(integrationAccount);
+      }
     } catch (e) {
       console.log(e);
     }

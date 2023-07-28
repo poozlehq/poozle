@@ -2,24 +2,31 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { getMetaParams } from 'common';
+import { formatDateForSince, getMetaParams } from 'common';
 
 import { CreateTicketParams, FetchTicketsParams } from './ticket.interface';
 import { convertTicket, JIRATicketBody } from './ticket.utils';
 
 export class TicketsPath extends BasePath {
-  async fetchTickets(url: string, headers: AxiosHeaders, params: FetchTicketsParams) {
-    const page = params.queryParams.cursor ? parseInt(params.queryParams.cursor) : 1;
-    const startAt = page * (params.queryParams.limit ? params.queryParams.limit : 10);
+  async fetchTickets(
+    url: string,
+    headers: AxiosHeaders,
+    { queryParams, pathParams }: FetchTicketsParams,
+  ) {
+    const page = queryParams.cursor ? parseInt(queryParams.cursor) : 1;
+    const startAt = page * (queryParams.limit ? queryParams.limit : 10);
+    const since = queryParams.since
+      ? `AND updatedDate > '${formatDateForSince(queryParams.since)}'`
+      : '';
 
     const final_params = {
-      maxResults: params.queryParams.limit,
+      maxResults: queryParams.limit,
       startAt,
     };
 
     try {
       const response = await axios({
-        url,
+        url: `${url}${since}`,
         headers,
         params: final_params,
       });
@@ -27,9 +34,9 @@ export class TicketsPath extends BasePath {
       return {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         data: response.data.issues.map((data: any) =>
-          convertTicket(data, params.pathParams?.collection_id as string | null),
+          convertTicket(data, pathParams?.collection_id as string | null),
         ),
-        meta: getMetaParams(response.data.issues, params.queryParams.limit, page),
+        meta: getMetaParams(response.data.issues, queryParams.limit, page),
       };
     } catch (e) {
       throw new Error(e);

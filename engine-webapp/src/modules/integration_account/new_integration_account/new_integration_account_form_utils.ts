@@ -62,7 +62,7 @@ export function getInitialValues(
   initialValues['authType'] = Object.keys(spec.auth_specification)[0];
 
   initialValues['syncEnabled'] = false;
-  initialValues['syncPeriod'] = '';
+  initialValues['syncPeriod'] = undefined;
 
   return initialValues;
 }

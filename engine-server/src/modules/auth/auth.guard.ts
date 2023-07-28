@@ -35,6 +35,16 @@ export class AuthGuard implements CanActivate {
     let err = undefined;
     const resp = ctx.getResponse();
     const request = ctx.getRequest();
+
+    // this for users to call from their APIs
+    let jwt = request.headers['authorization'];
+    jwt = jwt === undefined ? undefined : jwt.split('Bearer ')[1];
+
+    // This is to allow API calls from temporal workflows
+    if (jwt && jwt === process.env.MASTER_TOKEN) {
+      return true;
+    }
+
     try {
       const session = await Session.getSession(request, resp, {
         sessionRequired: false,

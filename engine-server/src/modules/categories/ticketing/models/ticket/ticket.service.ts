@@ -6,7 +6,6 @@ import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
-import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 import {
   applyDateFilter,
   getBaseQuery,
@@ -148,7 +147,6 @@ export class TicketService {
       '/tickets',
       Method.GET,
       {
-        ...defaultQueryParams,
         limit: query.limit,
         cursor: query.cursor,
         raw: query.raw,

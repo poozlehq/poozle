@@ -32,8 +32,6 @@ export interface GetCommentsParams {
   queryParams: {
     limit: number;
     cursor?: string;
-
-    since?: string;
   };
 
   pathParams: {

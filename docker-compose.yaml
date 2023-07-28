@@ -21,6 +21,9 @@ services:
     container_name: poozle-server
     depends_on:
       - db
+      - temporal
+      - worker
+      - supertokens
     restart: unless-stopped
     networks:
       - poozle
@@ -35,6 +38,8 @@ services:
       - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
       - PORT=${PORT}
       - SUPERTOKEN_CONNECTION_URI=${SUPERTOKEN_CONNECTION_URI}
+      - MASTER_TOKEN=${TOKEN}
+      - TEMPORAL_ADDRESS=${TEMPORAL_ADDRESS}
 
   webapp:
     image: poozlehq/engine-webapp:${ENGINE_VERSION}
@@ -63,7 +68,7 @@ services:
       - DB_SCHEMA=${DB_SCHEMA}
       - CONFIG_PATH=${CONFIG_PATH}
       - TOKEN=${TOKEN}
-      - FRONTEND_HOST=${FRONTEND_HOST}
+      - BACKEND_URL=${BACKEND_URL}
 
   temporal:
     image: temporalio/auto-setup:${TEMPORAL_VERSION}
@@ -81,18 +86,18 @@ services:
     networks:
       - poozle
 
-  # temporal-ui:
-  #   container_name: temporal-ui
-  #   depends_on:
-  #     - temporal
-  #   environment:
-  #     - TEMPORAL_ADDRESS=temporal:7233
-  #     - TEMPORAL_CORS_ORIGINS=http://localhost:3000
-  #   image: temporalio/ui:${TEMPORAL_UI_VERSION}
-  #   networks:
-  #     - poozle
-  #   ports:
-  #     - 8080:8080
+  temporal-ui:
+    container_name: temporal-ui
+    depends_on:
+      - temporal
+    environment:
+      - TEMPORAL_ADDRESS=${TEMPORAL_ADDRESS}
+      - TEMPORAL_CORS_ORIGINS=http://localhost:3000
+    image: temporalio/ui:${TEMPORAL_UI_VERSION}
+    networks:
+      - poozle
+    ports:
+      - 8080:8080
 
   supertokens:
     image: registry.supertokens.io/supertokens/supertokens-postgresql:5.0

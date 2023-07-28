@@ -18,7 +18,13 @@ interface IntegrationDefinition {
 function getTables(integrationDefinitionType: string) {
   switch (integrationDefinitionType) {
     case 'ticketing':
-      return ['ticketing_collection', 'ticketing_ticket'];
+      return [
+        'ticketing_collection',
+        'ticketing_ticket',
+        'ticketing_user',
+        'ticketing_team',
+        'ticketing_tag',
+      ];
 
     default:
       return ['ticketing_collection', 'ticketing_ticket'];
@@ -37,7 +43,7 @@ function generateSource(
       name: `${integrationDefinitionType}-${integrationAccount.integrationAccountName}`,
       registry: 'github',
       path: `poozlehq/${integrationDefinitionType}`,
-      version: 'v0.1.1',
+      version: 'v0.1.2',
       concurrency: 10000,
       tables: getTables(integrationDefinitionType),
       destinations: ['postgresql'],
@@ -51,7 +57,7 @@ function generateSource(
         integration_account_id: integrationAccount.integrationAccountId,
         uid: 'github',
         start_date: '2023-01-01T00:00:00Z',
-        url: `${process.env.FRONTEND_HOST}/api/v1/${integrationDefinitionType}`,
+        url: `${process.env.BACKEND_URL}/v1/${integrationDefinitionType}`,
       },
     },
   });
@@ -112,6 +118,7 @@ export async function saveConfig(knex: Knex, integrationAccountId: string) {
   if (existsSync(folder)) {
     rmdirSync(folder, { recursive: true });
   }
-  mkdirSync(folder);
+
+  mkdirSync(folder, { recursive: true });
   writeFileSync(`${folder}/config.yaml`, config);
 }

@@ -2,9 +2,6 @@
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
-import { defaultQueryParams } from 'common/interfaces/defaults.constants';
-import { QueryParams } from 'common/interfaces/query.interface';
-
 import { runIntegrationCommand } from './integration_run_utils';
 
 export const enum Method {
@@ -18,7 +15,8 @@ export async function getDataFromAccount(
   integrationAccount: IntegrationAccount,
   path: string,
   method: Method,
-  queryParams: QueryParams = defaultQueryParams,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  queryParams: any,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   pathParams: any,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
