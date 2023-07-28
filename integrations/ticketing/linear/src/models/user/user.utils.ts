@@ -8,8 +8,6 @@ export function convertUser(data: any): User {
     id: data.id,
     name: data.name,
     avatar: data.avatarUrl,
-
-    // Extra field
     email_address: data.email,
   };
 }

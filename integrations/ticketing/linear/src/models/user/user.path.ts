@@ -1,28 +1,30 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params } from '@poozle/engine-idk';
+import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 import { BASE_URL } from 'common';
 
-import { UserResponse } from './user.interface';
+import { UserParams, UserResponse } from './user.interface';
 import { convertUser } from './user.utils';
 
 export class UserPath extends BasePath {
-  async fetchSingleUser(headers: AxiosHeaders, params: Params): Promise<UserResponse> {
+  async fetchSingleUser(headers: AxiosHeaders, params: UserParams): Promise<UserResponse> {
+    const id = params.user_id;
     const response = await axios({
       url: `${BASE_URL}`,
       headers,
       data: {
         query: `
-            query Me {
-                  viewer {
-                      id
-                      name
-                      email
-                      avatarUrl
-                  }
-            }
+            query fetchSingleUser($id: String!) {
+                        user(id: $id) {
+                                id
+                                name
+                            }
+                    }
           `,
+        variables: {
+          id,
+        },
       },
     });
     return { data: convertUser(response.data) };
@@ -31,7 +33,7 @@ export class UserPath extends BasePath {
   async run(
     method: string,
     headers: AxiosHeaders,
-    params: Params,
+    params: UserParams,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     _config: Config,
   ) {

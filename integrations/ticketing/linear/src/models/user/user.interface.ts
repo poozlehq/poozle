@@ -12,6 +12,13 @@ export interface UsersResponse {
 
 export interface UserResponse {
   data: User;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  raw: any;
+}
+
+export interface UserParams {
+  user_id: string;
+}
+
+export interface UserConnection {
+  status: boolean;
+  data: User[];
 }
