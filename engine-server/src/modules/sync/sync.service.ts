@@ -27,14 +27,15 @@ export class SyncService {
   }
 
   async init() {
-    const connection = await Connection.connect({
-      address: process.env['TEMPORAL_ADDRESS'] || 'localhost:7233',
-    });
-    const client = new Client({
-      connection,
-    });
-
-    this.client = client;
+    if (process.env.TEMPORAL_ADDRESS) {
+      const connection = await Connection.connect({
+        address: process.env['TEMPORAL_ADDRESS'] || 'localhost:7233',
+      });
+      const client = new Client({
+        connection,
+      });
+      this.client = client;
+    }
   }
 
   async initiate(integrationAccounts: IntegrationAccount[]) {
