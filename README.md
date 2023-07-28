@@ -21,7 +21,7 @@
 </div>
 
 <p align="center">
-    <em>Poozle is an open-source Plaid for ticketing SAAS tools
+    <em>Poozle is an open-source Plaid for Ticketing SAAS tools
 </em>
 </p>
 
