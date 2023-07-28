@@ -21,6 +21,7 @@ import { UserPath } from 'models/user/user.path';
 import { UsersPath } from 'models/user/users.path';
 
 import spec from './spec';
+import { getBaseUrl } from 'common';
 
 class JiraIntegration extends BaseIntegration {
   async spec(): SpecificationResponse {
@@ -57,7 +58,7 @@ class JiraIntegration extends BaseIntegration {
 
     try {
       const response = await axios({
-        url: `https://${config.jira_domain}.atlassian.net/rest/api/2/project`,
+        url: `https://${getBaseUrl(config)}/project`,
         headers,
       });
 

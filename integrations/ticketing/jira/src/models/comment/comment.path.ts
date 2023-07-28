@@ -2,6 +2,7 @@
 
 import { BasePath, Config, UpdateCommentBody } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { getBaseUrl } from 'common';
 
 import { CommentResponse, GetCommentParams, UpdateCommentParams } from './comment.interface';
 import { convertComments } from './comments.utils';
@@ -37,8 +38,7 @@ export class CommentPath extends BasePath {
     params: GetCommentParams | UpdateCommentParams,
     config: Config,
   ) {
-    const BASE_URL = `https://${config.jira_domain}.atlassian.net`;
-    const url = `${BASE_URL}/rest/api/2/issue/${params.pathParams.ticket_id}/comment/${params.pathParams.comment_id}`;
+    const url = `${getBaseUrl(config)}/issue/${params.pathParams.ticket_id}/comment/${params.pathParams.comment_id}`;
     switch (method) {
       case 'GET':
         return this.fetchSingleComment(url, headers, params);

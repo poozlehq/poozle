@@ -2,7 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { formatDateForSince, getMetaParams } from 'common';
+import { formatDateForSince, getBaseUrl, getMetaParams } from 'common';
 
 import { CreateTicketParams, FetchTicketsParams } from './ticket.interface';
 import { convertTicket, JIRATicketBody } from './ticket.utils';
@@ -14,7 +14,7 @@ export class TicketsPath extends BasePath {
     { queryParams, pathParams }: FetchTicketsParams,
   ) {
     const page = queryParams.cursor ? parseInt(queryParams.cursor) : 0;
-    const startAt = page * (queryParams.limit ? queryParams.limit : 10);
+    const startAt = page * queryParams.limit;
     const since = queryParams.since
       ? `AND updatedDate > '${formatDateForSince(queryParams.since)}'`
       : '';
@@ -36,7 +36,7 @@ export class TicketsPath extends BasePath {
         data: response.data.issues.map((data: any) =>
           convertTicket(data, pathParams?.collection_id as string | null),
         ),
-        meta: getMetaParams(response.data.issues, queryParams.limit, page),
+        meta: getMetaParams(response.data.issues, queryParams.limit as number, page),
       };
     } catch (e) {
       throw new Error(e);
@@ -93,16 +93,15 @@ export class TicketsPath extends BasePath {
     params: FetchTicketsParams | CreateTicketParams,
     config: Config,
   ) {
-    const BASE_URL = `https://${config.jira_domain}.atlassian.net`;
     let url = '';
 
     switch (method) {
       case 'GET':
-        url = `${BASE_URL}/rest/api/2/search?jql=project=${params.pathParams.collection_id}`;
+        url = `${getBaseUrl(config)}/search?jql=project=${params.pathParams.collection_id}`;
         return this.fetchTickets(url, headers, params);
 
       case 'POST':
-        url = `${BASE_URL}/rest/api/2/issue`;
+        url = `${getBaseUrl(config)}/rest/api/2/issue`;
         return this.createTickets(url, headers, params as CreateTicketParams);
 
       default:

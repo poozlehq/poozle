@@ -5,7 +5,7 @@ import { CollectionWithRaw } from './collection.interface';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function convertCollection(data: any): CollectionWithRaw {
   return {
-    id: data.id,
+    id: data.key,
     name: data.name,
     type: data.projectTypeKey,
 

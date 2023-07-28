@@ -2,7 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { getMetaParams } from 'common';
+import { getBaseUrl, getMetaParams } from 'common';
 
 import { GetUsersParams } from './user.interface';
 import { convertUser } from './user.utils';
@@ -32,12 +32,11 @@ export class UsersPath extends BasePath {
   }
 
   async run(method: string, headers: AxiosHeaders, params: GetUsersParams, config: Config) {
-    const BASE_URL = `https://${config.jira_domain}.atlassian.net`;
     let url = '';
 
     switch (method) {
       case 'GET':
-        url = `${BASE_URL}/rest/api/2/users/search`;
+        url = `${getBaseUrl(config)}/users/search`;
         return this.fetchUsers(url, headers, params);
 
       default:

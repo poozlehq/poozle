@@ -1,5 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { Config } from '@poozle/engine-idk';
 import dayjs from 'dayjs';
 
 export interface Meta {
@@ -23,4 +24,8 @@ export function convertTimestampToTZFormat(date: string) {
 
 export function formatDateForSince(date: string) {
   return dayjs(new Date(date)).format('YYYY-MM-DD');
+}
+
+export function getBaseUrl(config: Config){
+  return `https://${config.jira_domain}/rest/api/2`;
 }

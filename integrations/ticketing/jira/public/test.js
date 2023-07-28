@@ -18,7 +18,7 @@ async function run() {
         raw: true,
       },
       pathParams: {
-        collection_id: '10006',
+        ticket_id: '',
       },
     },
   });

@@ -16,9 +16,9 @@ export const ticketMappings = {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function convertTicket(data: any, collection_id: string | null): TicketWithRaw {
   return {
-    id: data.id,
+    id: data.key,
     name: data.fields.summary,
-    collection_id: collection_id ? collection_id : data.fields.project.id,
+    collection_id: collection_id ? collection_id : data.fields.project.key,
     description: data.fields.description,
     status: data.fields.status.name,
     created_at: convertTimestampToTZFormat(data.fields.created),

@@ -2,6 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { getBaseUrl } from 'common';
 
 import { FetchTicketParams, UpdateTicketParams } from './ticket.interface';
 import { convertTicket, JIRATicketBody } from './ticket.utils';
@@ -63,8 +64,7 @@ export class TicketPath extends BasePath {
     params: FetchTicketParams | UpdateTicketParams,
     config: Config,
   ) {
-    const BASE_URL = `https://${config.jira_domain}.atlassian.net`;
-    const url = `${BASE_URL}/rest/api/2/issue/${params.pathParams?.ticket_id}`;
+    const url = `${getBaseUrl(config)}/issue/${params.pathParams?.ticket_id}`;
 
     switch (method) {
       case 'GET':

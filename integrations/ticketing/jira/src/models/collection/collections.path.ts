@@ -2,14 +2,16 @@
 
 import { BasePath, Collection, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { getMetaParams } from 'common';
+import { getBaseUrl, getMetaParams } from 'common';
 
 import { FetchCollectionsParams } from './collection.interface';
 import { convertCollection } from './collection.utils';
 
 function paginate(array: Collection[], page_size: number, page_number: number) {
   // human-readable page numbers usually start with 1, so we reduce 1 in the first argument
-  return array.slice((page_number - 1) * page_size, page_number * page_size);
+  array.slice((page_number - 1) * page_size, page_number * page_size);
+
+  return array;
 }
 
 export class CollectionsPath extends BasePath {
@@ -24,7 +26,7 @@ export class CollectionsPath extends BasePath {
     const data = paginate(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       response.data.map((data: any) => convertCollection(data)),
-      params.queryParams?.limit as number,
+      params.queryParams.limit as number,
       page,
     );
 
@@ -35,8 +37,7 @@ export class CollectionsPath extends BasePath {
   }
 
   async run(method: string, headers: AxiosHeaders, params: FetchCollectionsParams, config: Config) {
-    const BASE_URL = `https://${config.jira_domain}.atlassian.net`;
-    const url = `${BASE_URL}/rest/api/2/project`;
+    const url = `${getBaseUrl(config)}/project`;
     switch (method) {
       case 'GET':
         return this.fetchCollections(url, headers, params);

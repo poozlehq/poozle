@@ -5,7 +5,7 @@ import { BasePath, Config, CreateCommentBody } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
 import { convertComments } from './comments.utils';
-import { getMetaParams } from 'common';
+import { getBaseUrl, getMetaParams } from 'common';
 import {
   CommentResponse,
   CommentsResponse,
@@ -57,8 +57,7 @@ export class CommentsPath extends BasePath {
     params: GetCommentsParams | CreateCommentParams,
     config: Config,
   ) {
-    const BASE_URL = `https://${config.jira_domain}.atlassian.net`;
-    const url = `${BASE_URL}/rest/api/2/issue/${params.pathParams?.ticket_id}/comment`;
+    const url = `${getBaseUrl(config)}/issue/${params.pathParams?.ticket_id}/comment`;
     switch (method) {
       case 'GET':
         return this.fetchComments(url, headers, params as GetCommentsParams);

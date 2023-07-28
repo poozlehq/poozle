@@ -15,12 +15,7 @@ export default {
             type: 'string',
             title: 'Api Key',
             description: 'Enter the API Key',
-          },
-          jira_domain: {
-            type: 'string',
-            title: 'Jira Domain',
-            description: 'Enter the subdomain for Jira',
-          },
+          }
         },
       },
     },
@@ -54,6 +49,18 @@ export default {
             title: 'Scope',
             description: 'Enter the Scope',
           },
+        },
+      },
+    },
+  },
+  other_inputs: {
+    input_specification: {
+      type: 'object',
+      properties: {
+        jira_domain: {
+          type: 'string',
+          title: 'Jira Domain',
+          description: 'Enter the subdomain for Jira. example: abc.atlassian.net',
         },
       },
     },
