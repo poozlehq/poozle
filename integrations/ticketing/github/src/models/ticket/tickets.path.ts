@@ -24,7 +24,7 @@ export class TicketsPath extends BasePath {
 
     const final_params = {
       per_page: limit,
-      since: params.queryParams?.since,
+      since: params.queryParams?.created_after,
       page,
     };
 
