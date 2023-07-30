@@ -30,7 +30,7 @@ export async function getAccessToken(url: string, data: Record<string, string>) 
     },
   });
 
-  return response.data.access_token;
+  return response.data;
 }
 
 export async function interpolateHeaders(
@@ -40,7 +40,9 @@ export async function interpolateHeaders(
   const headers: Record<string, string> = {};
 
   Object.keys(headersDefault).forEach((key) => {
-    headers[key] = interpolateString(headersDefault[key], replacers);
+    headers[key] = headersDefault[key]
+      ? interpolateString(headersDefault[key], replacers)
+      : headersDefault[key];
   });
 
   return headers;

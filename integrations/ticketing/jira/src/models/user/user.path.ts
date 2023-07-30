@@ -23,10 +23,11 @@ export class UserPath extends BasePath {
 
   async run(method: string, headers: AxiosHeaders, params: GetUserParams, config: Config) {
     let url = '';
+    const baseURL = await getBaseUrl(config, headers);
 
     switch (method) {
       case 'GET':
-        url = `${getBaseUrl(config)}/user?accountId=${params.pathParams?.user_id}`;
+        url = `${baseURL}/user?accountId=${params.pathParams?.user_id}`;
         return this.fetchSingleUser(url, headers);
 
       default:

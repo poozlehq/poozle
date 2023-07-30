@@ -17,6 +17,7 @@ export interface AuthSpecification extends GenericInputSpecification {
   token_params?: Record<string, string>;
   refresh_params?: Record<string, string>;
   scope_seperator?: string;
+  default_scopes?: string[];
 
   headers?: Record<string, string>;
 }
@@ -37,7 +38,7 @@ export interface Specification {
 }
 export type SpecificationResponse = Promise<Specification>;
 
-export type AuthHeaderResponse = Promise<Record<string, string | number | boolean>>;
+export type AuthHeaderResponse = Promise<Record<string, string>>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Spec = Record<string, any>;
@@ -60,12 +61,18 @@ export interface BaseIntegrationInterface {
   spec(): SpecificationResponse;
   // Check if passed config is valid
   check(config: Config): CheckResponse;
-  // Return Auth headers to send to be sent in the query
+  // Return Config with to send to be sent in the query
   authHeaders(config: Config): AuthHeaderResponse;
   // Return all paths part of this integration
   // TODO (harshith): Return part type
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   paths(): any[];
   // return reponse from a path
-  run(path: string, method: string, config: Config, params: Params): RunResponse;
+  run(
+    path: string,
+    method: string,
+    config: Config,
+    headers: Record<string, string>,
+    params: Params,
+  ): RunResponse;
 }

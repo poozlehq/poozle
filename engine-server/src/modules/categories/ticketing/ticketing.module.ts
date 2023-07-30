@@ -4,6 +4,7 @@ import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { PrismaModule, PrismaService } from 'nestjs-prisma';
 
+import { DataModule } from 'modules/data/data.module';
 import { IntegrationAccountModule } from 'modules/integration_account/integration_account.module';
 
 import { CollectionController } from './models/collection/collection.controller';
@@ -16,7 +17,7 @@ import { TicketsController } from './models/ticket/tickets.controller';
 import { UsersController } from './models/users/users.controller';
 
 @Module({
-  imports: [PrismaModule, HttpModule, IntegrationAccountModule],
+  imports: [PrismaModule, HttpModule, IntegrationAccountModule, DataModule],
   controllers: [
     CollectionController,
     UsersController,

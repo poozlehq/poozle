@@ -284,6 +284,7 @@ export class OAuthCallbackService {
         `${sessionRecord.redirectURL}?success=true&integrationName=${integrationOAuth.integrationDefinition.name}`,
       );
     } catch (e) {
+      console.log(e);
       res.redirect(
         `${sessionRecord.redirectURL}?success=false&error=${e.message}`,
       );

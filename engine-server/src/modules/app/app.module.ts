@@ -7,11 +7,11 @@ import { PrismaModule } from 'nestjs-prisma';
 import config from 'common/configs/config';
 import { loggingMiddleware } from 'common/middleware/logging.middleware';
 
-import { AnalyticsModule } from 'modules/analytics/analytics.module';
 import { AuthModule } from 'modules/auth/auth.module';
 import { DocumentationModule } from 'modules/categories/documentation/documentation.module';
 import { MailModule } from 'modules/categories/mail/mail.module';
 import { TicketingModule } from 'modules/categories/ticketing/ticketing.module';
+import { DataModule } from 'modules/data/data.module';
 import { IntegrationAccountModule } from 'modules/integration_account/integration_account.module';
 import { IntegrationDefinitionModule } from 'modules/integration_definition/integration_definition.module';
 import { IntegrationOAuthModule } from 'modules/integration_oauth/integration_oauth.module';
@@ -36,13 +36,13 @@ import { AppService } from './app.service';
     AuthModule.forRoot(),
     UserModule,
     WorkspaceModule,
-    AnalyticsModule,
     IntegrationAccountModule,
     IntegrationDefinitionModule,
     IntegrationOAuthModule,
     OAuthCallbackModule,
     LinkModule,
     SyncModule,
+    DataModule,
     // Categories and their modules
     TicketingModule,
     MailModule,

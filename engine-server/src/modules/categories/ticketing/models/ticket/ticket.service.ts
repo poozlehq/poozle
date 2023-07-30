@@ -2,7 +2,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Injectable } from '@nestjs/common';
-import { Method, getDataFromAccount } from 'shared/integration_account.utils';
+import { Method } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
@@ -14,20 +14,28 @@ import {
 } from 'common/knex';
 import { pagination } from 'common/utils';
 
+import { DataService } from 'modules/data/data.service';
+
 import {
+  CommonTicketQueryParams,
+  CreateTicketBody,
   GetTicketsQueryParams,
   ListTicketsQueryParams,
   PathParamsWithCollectionId,
   PathParamsWithTicketId,
   TICKET_KEYS,
   Ticket,
+  TicketingTicketResponse,
   TicketingTicketsResponse,
+  UpdateTicketBody,
 } from './tickets.interface';
 
 const DATABASE_NAME = 'ticketing_ticket';
 
 @Injectable()
 export class TicketService {
+  constructor(private dataService: DataService) {}
+
   async getTickets(
     integrationAccount: IntegrationAccount,
     query: ListTicketsQueryParams,
@@ -142,7 +150,7 @@ export class TicketService {
     query: GetTicketsQueryParams,
     params: PathParamsWithCollectionId,
   ) {
-    const ticketsResponse = await getDataFromAccount(
+    const ticketsResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       '/tickets',
       Method.GET,
@@ -164,7 +172,7 @@ export class TicketService {
     query: ListTicketsQueryParams,
     params: PathParamsWithTicketId,
   ) {
-    const ticketResponse = await getDataFromAccount(
+    const ticketResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       `/tickets/${params.ticket_id}`,
       Method.GET,
@@ -172,6 +180,46 @@ export class TicketService {
       { raw: query.raw },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       params as any,
+    );
+
+    return ticketResponse;
+  }
+
+  async patchTicket(
+    query: CommonTicketQueryParams,
+
+    params: PathParamsWithTicketId,
+    updateTicketBody: UpdateTicketBody,
+
+    integrationAccount: IntegrationAccount,
+  ): Promise<TicketingTicketResponse> {
+    const ticketResponse = await this.dataService.getDataFromAccount(
+      integrationAccount,
+      `/tickets/${params.ticket_id}`,
+      Method.PATCH,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      query,
+      params,
+      updateTicketBody,
+    );
+
+    return ticketResponse;
+  }
+
+  async createTicket(
+    query: CommonTicketQueryParams,
+    params: PathParamsWithCollectionId,
+    createTicketBody: CreateTicketBody,
+    integrationAccount: IntegrationAccount,
+  ): Promise<TicketingTicketResponse> {
+    const ticketResponse = await this.dataService.getDataFromAccount(
+      integrationAccount,
+      `/tickets`,
+      Method.POST,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      query,
+      params,
+      createTicketBody,
     );
 
     return ticketResponse;

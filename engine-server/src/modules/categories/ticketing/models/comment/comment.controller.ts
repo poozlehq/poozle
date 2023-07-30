@@ -13,13 +13,14 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
-import { Method, getDataFromAccount } from 'shared/integration_account.utils';
+import { Method } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
+import { DataService } from 'modules/data/data.service';
 
 import {
   CommentQueryParams,
@@ -38,6 +39,8 @@ import {
 })
 @ApiTags('Ticketing')
 export class CommentController {
+  constructor(private dataService: DataService) {}
+
   @Get(':collection_id/tickets/:ticket_id/comments')
   @UseGuards(new AuthGuard())
   async getComments(
@@ -47,7 +50,7 @@ export class CommentController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingCommentsResponse> {
-    const commentsResponse = await getDataFromAccount(
+    const commentsResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       '/comments',
       Method.GET,
@@ -67,7 +70,7 @@ export class CommentController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingCommentResponse> {
-    const commentResponse = await getDataFromAccount(
+    const commentResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       `/comments/${params.comment_id}`,
       Method.GET,
@@ -88,7 +91,7 @@ export class CommentController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingCommentResponse> {
-    const commentResponse = await getDataFromAccount(
+    const commentResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       `/comments/${params.comment_id}`,
       Method.PATCH,
@@ -110,7 +113,7 @@ export class CommentController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingCommentResponse> {
-    const commentResponse = await getDataFromAccount(
+    const commentResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       `/comments`,
       Method.POST,

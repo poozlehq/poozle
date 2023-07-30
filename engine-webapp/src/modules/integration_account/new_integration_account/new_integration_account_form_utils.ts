@@ -61,8 +61,5 @@ export function getInitialValues(
   // eslint-disable-next-line prefer-destructuring
   initialValues['authType'] = Object.keys(spec.auth_specification)[0];
 
-  initialValues['syncEnabled'] = false;
-  initialValues['syncPeriod'] = undefined;
-
   return initialValues;
 }

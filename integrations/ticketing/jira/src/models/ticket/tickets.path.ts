@@ -94,14 +94,15 @@ export class TicketsPath extends BasePath {
     config: Config,
   ) {
     let url = '';
+    const baseURL = await getBaseUrl(config, headers);
 
     switch (method) {
       case 'GET':
-        url = `${getBaseUrl(config)}/search?jql=project=${params.pathParams.collection_id}`;
+        url = `${baseURL}/search?jql=project=${params.pathParams.collection_id}`;
         return this.fetchTickets(url, headers, params);
 
       case 'POST':
-        url = `${getBaseUrl(config)}/rest/api/2/issue`;
+        url = `${baseURL}/rest/api/2/issue`;
         return this.createTickets(url, headers, params as CreateTicketParams);
 
       default:

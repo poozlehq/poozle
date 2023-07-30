@@ -27,7 +27,11 @@ export function UpdateOAuthApp() {
     query: { integrationOAuthAppId, workspaceId },
   } = useRouter();
 
-  const { isLoading, data: integrationOAuthApp } = useGetIntegrationOAuthQuery({
+  const {
+    isLoading,
+    data: integrationOAuthApp,
+    refetch,
+  } = useGetIntegrationOAuthQuery({
     integrationOAuthAppId: integrationOAuthAppId as string,
     workspaceId: workspaceId as string,
   });
@@ -35,6 +39,7 @@ export function UpdateOAuthApp() {
   const { mutate: updateIntegrationOAuthApp, isLoading: updateLoading } =
     useUpdateIntegrationOAuthAppMutation({
       onSuccess: (data) => {
+        refetch();
         notifications.show({
           icon: <IconCheck />,
           title: 'Status',

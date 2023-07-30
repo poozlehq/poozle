@@ -13,13 +13,14 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
-import { Method, getDataFromAccount } from 'shared/integration_account.utils';
+import { Method } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
+import { DataService } from 'modules/data/data.service';
 
 import {
   TeamQueryParams,
@@ -37,6 +38,8 @@ import {
 })
 @ApiTags('Ticketing')
 export class TeamController {
+  constructor(private dataService: DataService) {}
+
   @Get()
   @UseGuards(new AuthGuard())
   async getTeams(
@@ -45,7 +48,7 @@ export class TeamController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingTeamsResponse> {
-    const teamsResponse = await getDataFromAccount(
+    const teamsResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       '/teams',
       Method.GET,
@@ -65,7 +68,7 @@ export class TeamController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingTeamResponse> {
-    const teamResponse = await getDataFromAccount(
+    const teamResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       `/teams/${params.team_name}`,
       Method.GET,
@@ -86,7 +89,7 @@ export class TeamController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingTeamResponse> {
-    const teamResponse = await getDataFromAccount(
+    const teamResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       `/teams/${params.team_name}`,
       Method.PATCH,
@@ -106,7 +109,7 @@ export class TeamController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingTeamResponse> {
-    const teamResponse = await getDataFromAccount(
+    const teamResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       `/teams`,
       Method.POST,
