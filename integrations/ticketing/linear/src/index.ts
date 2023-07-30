@@ -61,43 +61,25 @@ class LinearIntegration extends BaseIntegration {
       /**
        * PROXY API calls to the third party directly
        */
-      new ProxyPath(/^\/?proxy$/g, ['POST']),
+      new ProxyPath(/^\/?proxy$/g, ['GET', 'POST', 'PATCH', 'DELETE']),
 
       /**
-       * TODO: Link to the documentation of the APIS this is mapping to
+       * This paths get the projects from github
        */
-      new CollectionsPath(/^\/?collections$/g, 'POST'),
-      new CollectionPath(/^\/?collections+/g, 'POST'),
+      new CollectionsPath(/^\/?collections$/g, 'GET'),
+      new CollectionPath(/^\/?collections+/g, 'GET'),
 
       /**
-       * TODO: Link to the documentation of the APIS this is mapping to
+       * These map to tickets
        */
-      new CommentsPath(/^\/?comments$/g, ['POST']),
-      new CommentPath(/^\/?comments+/g, ['POST']),
+      new TicketsPath(/^\/?tickets$/g, ['GET', 'POST']),
+      new TicketPath(/^\/?tickets+/g, ['GET', 'PATCH']),
 
-      /**
-       * TODO: Link to the documentation of the APIS this is mapping to
-       */
-      new TagsPath(/^\/?tags$/g, ['POST']),
-      new TagPath(/^\/?tags+/g, ['POST']),
+      new CommentsPath(/^\/?comments$/g, ['GET', 'POST']),
+      new CommentPath(/^\/?comments+/g, ['GET', 'PATCH']),
 
-      /**
-       * TODO: Link to the documentation of the APIS this is mapping to
-       */
-      new TeamsPath(/^\/?teams$/g, ['POST']),
-      new TeamPath(/^\/?teams+/g, ['POST']),
-
-      /**
-       * TODO: Link to the documentation of the APIS this is mapping to
-       */
-      new TicketsPath(/^\/?tickets$/g, ['POST']),
-      new TicketPath(/^\/?tickets+/g, ['POST']),
-
-      /**
-       * TODO: Link to the documentation of the APIS this is mapping to
-       */
-      new UsersPath(/^\/?users$/g, ['QUERY']),
-      new UserPath(/^\/?users+/g, ['QUERY', 'MUTATION']),
+      new UsersPath(/^\/?users$/g, 'GET'),
+      new UserPath(/^\/?users+/g, 'GET'),
     ];
   }
 }
