@@ -43,7 +43,7 @@ export class BaseIntegration implements BaseIntegrationInterface {
 
   async authHeaders(config: Config): AuthHeaderResponse {
     try {
-      let token = '';
+      let token: Record<string, string> = {};
       let headers = {};
 
       if (config.authType === 'OAuth2') {
@@ -56,7 +56,9 @@ export class BaseIntegration implements BaseIntegrationInterface {
         );
         headers = {
           ...headers,
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token.access_token}`,
+          'refresh-token': token.refresh_token,
+          expiry: token.expires_in,
         };
       } else {
         const type = config.authType;
@@ -66,7 +68,7 @@ export class BaseIntegration implements BaseIntegrationInterface {
       }
 
       return interpolateHeaders(headers ? headers : {}, {
-        token,
+        token: token.access_token,
         ...config,
       });
     } catch (e) {
@@ -79,13 +81,18 @@ export class BaseIntegration implements BaseIntegrationInterface {
     return [];
   }
 
-  async run(path: string, method: string, config: Config, params: Params): RunResponse {
+  async run(
+    path: string,
+    method: string,
+    config: Config,
+    headers: Record<string, string> | undefined,
+    params: Params,
+  ): RunResponse {
     const paths = this.paths();
 
     const pathToRun: BasePath | undefined = paths.find((p) => p.isPath(path, method));
 
     if (pathToRun) {
-      const headers = await this.authHeaders(config);
       return await pathToRun.baseRun(method, headers as AxiosHeaders, params, config);
     }
 
@@ -108,12 +115,24 @@ export class BaseIntegration implements BaseIntegrationInterface {
 
       case 'RUN':
         if (allParams?.params?.proxy) {
-          return await this.run('/proxy', allParams.method, allParams.config, allParams.params);
+          return await this.run(
+            '/proxy',
+            allParams.method,
+            allParams.config,
+            allParams.headers,
+            allParams.params,
+          );
         }
-        return await this.run(allParams.path, allParams.method, allParams.config, allParams.params);
+        return await this.run(
+          allParams.path,
+          allParams.method,
+          allParams.config,
+          allParams.headers,
+          allParams.params,
+        );
 
       default:
-        return { status: false, error: 'Comamnd not found' };
+        return { status: false, error: 'Command not found' };
     }
   }
 }

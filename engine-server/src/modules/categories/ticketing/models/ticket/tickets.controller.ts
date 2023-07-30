@@ -12,7 +12,6 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
-import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
@@ -99,14 +98,11 @@ export class TicketsController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingTicketResponse> {
-    const ticketResponse = await getDataFromAccount(
-      integrationAccount,
-      `/tickets/${params.ticket_id}`,
-      Method.PATCH,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ticketResponse = await this.ticketService.patchTicket(
       query,
       params,
       updateTicketBody,
+      integrationAccount,
     );
 
     return ticketResponse;
@@ -121,14 +117,11 @@ export class TicketsController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingTicketResponse> {
-    const ticketResponse = await getDataFromAccount(
-      integrationAccount,
-      `/tickets`,
-      Method.POST,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ticketResponse = await this.ticketService.createTicket(
       query,
       params,
       createTicketBody,
+      integrationAccount,
     );
 
     return ticketResponse;

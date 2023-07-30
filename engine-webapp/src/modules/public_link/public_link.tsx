@@ -161,7 +161,7 @@ export function PublicLink({
         Object.keys(connectedAccounts).length > 0 && (
           <div>
             <Alert color="green" m="md">
-              You already have{' '}
+              You have{' '}
               {Object.keys(connectedAccounts).map((account: any) => (
                 <>
                   <b>

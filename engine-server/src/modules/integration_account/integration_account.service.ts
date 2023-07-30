@@ -9,11 +9,9 @@ import { ConfigService } from '@nestjs/config';
 import { CheckResponse, Config } from '@poozle/engine-idk';
 import { IntegrationType } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
-import {
-  checkIntegrationCredentials,
-  runProxyIntegrationCommand,
-} from 'shared/integration_run_utils';
+import { runProxyIntegrationCommand } from 'shared/integration_run_utils';
 
+import { DataService } from 'modules/data/data.service';
 import { IntegrationDefinitionService } from 'modules/integration_definition/integration_definition.service';
 import { SyncService } from 'modules/sync/sync.service';
 
@@ -32,6 +30,7 @@ export class IntegrationAccountService {
     private integrationDefinitionService: IntegrationDefinitionService,
     private syncService: SyncService,
     private configService: ConfigService,
+    private dataService: DataService,
   ) {}
 
   async checkForIntegrationCredentails(
@@ -48,7 +47,7 @@ export class IntegrationAccountService {
         workspaceId,
       );
 
-    return await checkIntegrationCredentials(
+    return await this.dataService.checkIntegrationCredentials(
       integrationDefinition.sourceUrl,
       config,
       authType,
@@ -105,7 +104,13 @@ export class IntegrationAccountService {
             syncPeriod,
             accountIdentifier,
           },
+          include: {
+            integrationDefinition: true,
+          },
         });
+
+      // Specific to JIRA where refresh token is expired after one use
+      await this.dataService.getHeaders(integrationAccount);
 
       if (this.configService.get('TEMPORAL_ADDRESS')) {
         if (integrationAccount.syncEnabled) {
@@ -129,7 +134,7 @@ export class IntegrationAccountService {
     linkId: string,
     accountIdentifier?: string,
   ) {
-    const { status } = await this.checkForIntegrationCredentails(
+    const { status, error } = await this.checkForIntegrationCredentails(
       integrationDefinitionId,
       config,
       authType,
@@ -137,20 +142,29 @@ export class IntegrationAccountService {
     );
 
     if (status) {
-      return await this.prismaService.integrationAccount.create({
-        data: {
-          integrationAccountName,
-          integrationDefinitionId,
-          workspaceId,
-          integrationConfiguration: config,
-          authType,
-          linkId,
-          accountIdentifier,
-        },
-      });
+      const integrationAccount =
+        await this.prismaService.integrationAccount.create({
+          data: {
+            integrationAccountName,
+            integrationDefinitionId,
+            workspaceId,
+            integrationConfiguration: config,
+            authType,
+            linkId,
+            accountIdentifier,
+          },
+          include: {
+            integrationDefinition: true,
+          },
+        });
+
+      // Specific to JIRA where refresh token is expired after one use
+      await this.dataService.getHeaders(integrationAccount);
+
+      return integrationAccount;
     }
 
-    throw new BadRequestException('Not a valid credentials');
+    throw new BadRequestException(error || 'Not a valid credentials');
   }
 
   async getIntegrationAccountWithId(

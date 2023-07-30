@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp/entities';
 import { Link } from '@@generated/link/entities';
 import { Specification } from '@poozle/engine-idk';
 
@@ -80,4 +81,36 @@ export function getConnectedAccounts(link: Link) {
   });
 
   return integrationDefinitions;
+}
+
+export function getSpec(
+  oAuthApp: IntegrationOAuthApp,
+  initialSpec: Specification,
+  preferOAuth: boolean,
+) {
+  let spec = initialSpec;
+
+  if (!oAuthApp) {
+    const currentSpecification = initialSpec.auth_specification;
+    delete currentSpecification['OAuth2'];
+
+    spec = {
+      ...initialSpec,
+      auth_specification: currentSpecification,
+    };
+  }
+
+  if (
+    oAuthApp &&
+    Object.keys(spec.auth_specification).includes('OAuth2') &&
+    preferOAuth
+  ) {
+    const currentSpecification = initialSpec.auth_specification['OAuth2'];
+    spec = {
+      ...initialSpec,
+      auth_specification: { OAuth2: currentSpecification },
+    };
+  }
+
+  return spec;
 }

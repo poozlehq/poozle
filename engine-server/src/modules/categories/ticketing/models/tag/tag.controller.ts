@@ -13,13 +13,14 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
-import { Method, getDataFromAccount } from 'shared/integration_account.utils';
+import { Method } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
+import { DataService } from 'modules/data/data.service';
 
 import {
   TagQueryParams,
@@ -38,6 +39,8 @@ import {
 })
 @ApiTags('Ticketing')
 export class TagController {
+  constructor(private dataService: DataService) {}
+
   @Get(':collection_id/tags')
   @UseGuards(new AuthGuard())
   async getTags(
@@ -47,7 +50,7 @@ export class TagController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingTagsResponse> {
-    const tagsResponse = await getDataFromAccount(
+    const tagsResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       '/tags',
       Method.GET,
@@ -67,7 +70,7 @@ export class TagController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingTagResponse> {
-    const tagResponse = await getDataFromAccount(
+    const tagResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       `/tags/${params.tag_name}`,
       Method.GET,
@@ -88,7 +91,7 @@ export class TagController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingTagResponse> {
-    const tagResponse = await getDataFromAccount(
+    const tagResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       `/tags/${params.tag_name}`,
       Method.PATCH,
@@ -110,7 +113,7 @@ export class TagController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingTagResponse> {
-    const tagResponse = await getDataFromAccount(
+    const tagResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       `/tags`,
       Method.POST,

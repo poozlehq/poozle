@@ -22,7 +22,11 @@ import { useGetIntegrationDefinitionSpecQuery } from 'services/integration_defin
 
 import { Loader } from 'components';
 
-import { getAllProperties, getValidateObject } from './public_link_utils';
+import {
+  getAllProperties,
+  getSpec,
+  getValidateObject,
+} from './public_link_utils';
 
 interface NewIntegrationFormProps {
   integrationDefinition: IntegrationDefinition;
@@ -67,7 +71,7 @@ export function Form({
   accountIdentifier,
   onComplete,
 }: FormProps) {
-  let spec = initialSpec;
+  const spec = getSpec(oAuthApp, initialSpec, preferOAuth);
 
   const [errorMessage, setErrorMessage] = React.useState(undefined);
   const initialValues = getInitialValues(spec, integrationAccountNameDefault);
@@ -76,7 +80,13 @@ export function Form({
 
   const onlyOAuthSupport =
     Object.keys(spec.auth_specification).includes('OAuth2') &&
-    Object.keys(spec.auth_specification).length === 1;
+    Object.keys(spec.auth_specification).length === 1 &&
+    !spec.other_inputs;
+
+  const preferOAuthAppWithNoInputs = preferOAuth && !spec.other_inputs;
+
+  const redirectToOAuth =
+    oAuthApp && (onlyOAuthSupport || preferOAuthAppWithNoInputs);
 
   const form = useForm({
     initialValues: getInitialValues(spec, integrationAccountNameDefault),
@@ -94,7 +104,7 @@ export function Form({
     });
 
   React.useEffect(() => {
-    if (oAuthApp && (onlyOAuthSupport || preferOAuth)) {
+    if (redirectToOAuth) {
       createRedirectURL({
         config: {},
         linkId,
@@ -108,23 +118,13 @@ export function Form({
     }
   }, []);
 
-  if (oAuthApp && (onlyOAuthSupport || preferOAuth)) {
+  if (redirectToOAuth) {
     return (
       <Group align="vertical" position="center" pt="lg" pb="lg">
         <Loader height={50} />
         <Text> Redirecting... </Text>
       </Group>
     );
-  }
-
-  if (!oAuthApp) {
-    const currentSpecification = initialSpec.auth_specification;
-    delete currentSpecification['OAuth2'];
-
-    spec = {
-      ...initialSpec,
-      auth_specification: currentSpecification,
-    };
   }
 
   const { mutate: createIntegrationAccount, isLoading: createIsLoading } =
@@ -148,7 +148,7 @@ export function Form({
   const onSubmit = (values: any) => {
     if (values.authType === 'OAuth2') {
       createRedirectURL({
-        config: values['OAuth2'],
+        config: values['oauth2'],
         linkId,
         accountIdentifier: accountIdentifier as string,
         integrationAccountName: values.integrationAccountName,
@@ -179,20 +179,23 @@ export function Form({
           onSubmit(values);
         })}
       >
-        <Select
-          pb="md"
-          data={Object.keys(spec.auth_specification)}
-          label="Choose authentication type"
-          placeholder="Choose authentication type"
-          disabled={createIsLoading}
-          {...form.getInputProps('authType')}
-        />
+        {Object.keys(spec.auth_specification).length > 1 && (
+          <Select
+            pb="md"
+            data={Object.keys(spec.auth_specification)}
+            label="Choose authentication type"
+            placeholder="Choose authentication type"
+            disabled={createIsLoading}
+            {...form.getInputProps('authType')}
+          />
+        )}
 
         {properties.map((property) => (
           <TextInput
             key={property.key}
             pb="md"
             label={property.title}
+            description={property.description}
             placeholder={`Enter ${property.title}`}
             disabled={createIsLoading}
             {...form.getInputProps(

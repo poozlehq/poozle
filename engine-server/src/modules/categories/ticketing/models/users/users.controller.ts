@@ -3,13 +3,14 @@
 import { Controller, Get, Query, Param, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
-import { Method, getDataFromAccount } from 'shared/integration_account.utils';
+import { Method } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
+import { DataService } from 'modules/data/data.service';
 
 import {
   PathParams,
@@ -27,6 +28,8 @@ import {
 @ApiTags('Ticketing')
 @UseGuards(new AuthGuard())
 export class UsersController {
+  constructor(private dataService: DataService) {}
+
   @Get(':collection_id/users/:user_id')
   async getUserId(
     @Query() query: GetUserParams,
@@ -35,7 +38,7 @@ export class UsersController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingUserResponse> {
-    const userResponse = await getDataFromAccount(
+    const userResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       `/users/${params.user_id}`,
       Method.GET,
@@ -56,7 +59,7 @@ export class UsersController {
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingUsersResponse> {
-    const userResponse = await getDataFromAccount(
+    const userResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       '/users',
       Method.GET,

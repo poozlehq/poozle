@@ -9,6 +9,7 @@ import {
   interpolateString,
 } from '@poozle/engine-idk';
 import axios from 'axios';
+import { getBaseUrl } from 'common';
 import { ProxyPath } from 'proxy';
 
 import { CollectionPath } from 'models/collection/collection.path';
@@ -21,7 +22,6 @@ import { UserPath } from 'models/user/user.path';
 import { UsersPath } from 'models/user/users.path';
 
 import spec from './spec';
-import { getBaseUrl } from 'common';
 
 class JiraIntegration extends BaseIntegration {
   async spec(): SpecificationResponse {
@@ -37,9 +37,13 @@ class JiraIntegration extends BaseIntegration {
           interpolateString(specification.token_url as string, config),
           config,
         );
+
         const headers = {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token.access_token}`,
+          'refresh-token': token.refresh_token,
+          expiry: token.expires_in,
         };
+
         return headers;
       }
 
@@ -49,16 +53,19 @@ class JiraIntegration extends BaseIntegration {
         )}`,
       };
     } catch (err) {
+      console.log(err);
       return {};
     }
   }
 
   async check(config: Config): CheckResponse {
-    const headers = await this.authHeaders(config);
+    const headers = (await this.authHeaders(config)) as Record<string, string>;
 
     try {
+      const baseURL = await getBaseUrl(config, headers);
+
       const response = await axios({
-        url: `https://${getBaseUrl(config)}/project`,
+        url: `${baseURL}/project`,
         headers,
       });
 

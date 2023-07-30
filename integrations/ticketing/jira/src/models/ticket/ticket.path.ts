@@ -64,7 +64,9 @@ export class TicketPath extends BasePath {
     params: FetchTicketParams | UpdateTicketParams,
     config: Config,
   ) {
-    const url = `${getBaseUrl(config)}/issue/${params.pathParams?.ticket_id}`;
+    const baseURL = await getBaseUrl(config, headers);
+
+    const url = `${baseURL}/issue/${params.pathParams?.ticket_id}`;
 
     switch (method) {
       case 'GET':
