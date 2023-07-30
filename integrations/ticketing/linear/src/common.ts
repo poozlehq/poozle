@@ -7,3 +7,11 @@ export interface Meta {
   next: string;
   current: string;
 }
+
+export function getMetaParams(data: any[], limit: number, page: number) {
+  return {
+    previous: (page > 1 ? page - 1 : '').toString(),
+    current: page.toString(),
+    next: data.length === limit ? (page + 1).toString() : '',
+  };
+}

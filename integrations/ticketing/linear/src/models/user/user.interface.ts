@@ -3,6 +3,11 @@
 import { User } from '@poozle/engine-idk';
 import { Meta } from 'common';
 
+export interface LinearUser extends User {
+  url: string;
+  created_at: string;
+}
+
 export interface UsersResponse {
   data: User[];
   meta: Meta;
@@ -19,6 +24,5 @@ export interface UserParams {
 }
 
 export interface UserConnection {
-  status: boolean;
-  data: User[];
+  data: LinearUser[];
 }

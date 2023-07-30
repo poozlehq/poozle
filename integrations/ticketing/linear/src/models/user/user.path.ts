@@ -19,6 +19,10 @@ export class UserPath extends BasePath {
                         user(id: $id) {
                                 id
                                 name
+                                email
+                                url
+                                avatarUrl
+                                created
                             }
                     }
           `,
@@ -38,7 +42,7 @@ export class UserPath extends BasePath {
     _config: Config,
   ) {
     switch (method) {
-      case 'GET':
+      case 'POST':
         return this.fetchSingleUser(headers, params);
 
       default:
