@@ -33,10 +33,11 @@ export class UsersPath extends BasePath {
 
   async run(method: string, headers: AxiosHeaders, params: GetUsersParams, config: Config) {
     let url = '';
+    const baseURL = await getBaseUrl(config, headers);
 
     switch (method) {
       case 'GET':
-        url = `${getBaseUrl(config)}/users/search`;
+        url = `${baseURL}/users/search`;
         return this.fetchUsers(url, headers, params);
 
       default:

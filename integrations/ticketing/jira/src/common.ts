@@ -1,6 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Config } from '@poozle/engine-idk';
+import axios from 'axios';
 import dayjs from 'dayjs';
 
 export interface Meta {
@@ -26,6 +27,20 @@ export function formatDateForSince(date: string) {
   return dayjs(new Date(date)).format('YYYY-MM-DD');
 }
 
-export function getBaseUrl(config: Config){
+export async function getBaseUrl(config: Config, headers: Record<string, string>): Promise<string> {
+  if (config.authType === 'OAuth2') {
+    const response = await axios.get('https://api.atlassian.com/oauth/token/accessible-resources', {
+      headers: {
+        Authorization: headers['Authorization'],
+      },
+    });
+
+    const cloudId = response.data.find(
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (resource: any) => resource.url === `https://${config.jira_domain}`,
+    ).id;
+    return `https://api.atlassian.com/ex/jira/${cloudId}/rest/api/2`;
+  }
+
   return `https://${config.jira_domain}/rest/api/2`;
 }

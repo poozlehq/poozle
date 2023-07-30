@@ -17,7 +17,8 @@ export class CollectionPath extends BasePath {
   }
 
   async run(_method: string, headers: AxiosHeaders, params: Params, config: Config) {
-    const url = `${getBaseUrl(config)}/project/${params.pathParams?.collection_id}`;
+    const baseURL = await getBaseUrl(config, headers);
+    const url = `${baseURL}/project/${params.pathParams?.collection_id}`;
 
     return this.fetchSingleCollection(url, headers);
   }

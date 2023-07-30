@@ -37,7 +37,9 @@ export class CollectionsPath extends BasePath {
   }
 
   async run(method: string, headers: AxiosHeaders, params: FetchCollectionsParams, config: Config) {
-    const url = `${getBaseUrl(config)}/project`;
+    const baseURL = await getBaseUrl(config, headers);
+
+    const url = `${baseURL}/project`;
     switch (method) {
       case 'GET':
         return this.fetchCollections(url, headers, params);

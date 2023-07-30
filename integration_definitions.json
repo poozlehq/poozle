@@ -3,36 +3,36 @@
     "name": "Github",
     "key": "github",
     "icon": "github.svg",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "releaseStage": "ALPHA",
-    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/github/0.1.6/index.js",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/github/0.1.7/index.js",
     "integrationType": "TICKETING"
   },
   {
     "name": "Jira",
     "key": "jira",
     "icon": "jira.svg",
-    "version": "0.1.8",
+    "version": "0.1.9",
     "releaseStage": "ALPHA",
-    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/jira/0.1.8/index.js",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/jira/0.1.9/index.js",
     "integrationType": "TICKETING"
   },
   {
     "name": "Gmail",
     "key": "gmail",
     "icon": "gmail.svg",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "releaseStage": "ALPHA",
-    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/mail/gmail/0.1.5/index.js",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/mail/gmail/0.1.6/index.js",
     "integrationType": "MAIL"
   },
   {
     "name": "Notion",
     "key": "notion",
     "icon": "notion.svg",
-    "version": "0.1.8",
+    "version": "0.1.10",
     "releaseStage": "ALPHA",
-    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/documentation/notion/0.1.8/index.js",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/documentation/notion/0.1.10/index.js",
     "integrationType": "DOCUMENTATION"
   },
   {

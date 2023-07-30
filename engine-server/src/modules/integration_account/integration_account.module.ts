@@ -10,6 +10,7 @@ import { SyncModule } from 'modules/sync/sync.module';
 
 import { IntegrationAccountController } from './integration_account.controller';
 import { IntegrationAccountService } from './integration_account.service';
+import { DataModule } from 'modules/data/data.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { IntegrationAccountService } from './integration_account.service';
     IntegrationDefinitionModule,
     LinkModule,
     SyncModule,
+    DataModule,
   ],
   controllers: [IntegrationAccountController],
   providers: [PrismaService, IntegrationAccountService],

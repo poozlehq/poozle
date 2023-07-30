@@ -2,7 +2,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Injectable } from '@nestjs/common';
-import { Method, getDataFromAccount } from 'shared/integration_account.utils';
+import { Method } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
@@ -13,6 +13,8 @@ import {
   getObjectFromDb,
 } from 'common/knex';
 import { pagination } from 'common/utils';
+
+import { DataService } from 'modules/data/data.service';
 
 import {
   COLLECTION_KEYS,
@@ -25,6 +27,8 @@ const DATABASE_NAME = 'ticketing_collection';
 
 @Injectable()
 export class CollectionService {
+  constructor(private dataService: DataService) {}
+
   async getCollections(
     integrationAccount: IntegrationAccount,
     query: CollectionQueryParams,
@@ -119,7 +123,7 @@ export class CollectionService {
     query: GetCollectionQueryParams,
     params: PathParamsWithCollectionId,
   ) {
-    const collectionResponse = await getDataFromAccount(
+    const collectionResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       `/collections/${params.collection_id}`,
       Method.GET,
@@ -135,7 +139,7 @@ export class CollectionService {
     integrationAccount: IntegrationAccount,
     query: CollectionQueryParams,
   ) {
-    const collectionResponse = await getDataFromAccount(
+    const collectionResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
       '/collections',
       Method.GET,

@@ -38,7 +38,9 @@ export class CommentPath extends BasePath {
     params: GetCommentParams | UpdateCommentParams,
     config: Config,
   ) {
-    const url = `${getBaseUrl(config)}/issue/${params.pathParams.ticket_id}/comment/${params.pathParams.comment_id}`;
+    const baseURL = await getBaseUrl(config, headers);
+
+    const url = `${baseURL}/issue/${params.pathParams.ticket_id}/comment/${params.pathParams.comment_id}`;
     switch (method) {
       case 'GET':
         return this.fetchSingleComment(url, headers, params);

@@ -57,7 +57,9 @@ export class CommentsPath extends BasePath {
     params: GetCommentsParams | CreateCommentParams,
     config: Config,
   ) {
-    const url = `${getBaseUrl(config)}/issue/${params.pathParams?.ticket_id}/comment`;
+    const baseURL = await getBaseUrl(config, headers);
+
+    const url = `${baseURL}/issue/${params.pathParams?.ticket_id}/comment`;
     switch (method) {
       case 'GET':
         return this.fetchComments(url, headers, params as GetCommentsParams);
