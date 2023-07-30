@@ -21,7 +21,7 @@ export interface GetTicketsParams {
   queryParams: {
     limit: number;
     cursor: string;
-    created_at?: string;
+    created_after?: string;
   };
 
   pathParams: {

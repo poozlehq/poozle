@@ -15,8 +15,8 @@ export class TicketsPath extends BasePath {
   ) {
     const page = queryParams.cursor ? parseInt(queryParams.cursor) : 0;
     const startAt = page * queryParams.limit;
-    const since = queryParams.since
-      ? `AND updatedDate > '${formatDateForSince(queryParams.since)}'`
+    const since = queryParams.created_after
+      ? ` AND updatedDate>"${formatDateForSince(queryParams.created_after)}"`
       : '';
 
     const final_params = {
@@ -24,23 +24,19 @@ export class TicketsPath extends BasePath {
       startAt,
     };
 
-    try {
-      const response = await axios({
-        url: `${url}${since}`,
-        headers,
-        params: final_params,
-      });
+    const response = await axios({
+      url: `${url}${since}`,
+      headers,
+      params: final_params,
+    });
 
-      return {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        data: response.data.issues.map((data: any) =>
-          convertTicket(data, pathParams?.collection_id as string | null),
-        ),
-        meta: getMetaParams(response.data.issues, queryParams.limit as number, page),
-      };
-    } catch (e) {
-      throw new Error(e);
-    }
+    return {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data: response.data.issues.map((data: any) =>
+        convertTicket(data, pathParams?.collection_id as string | null),
+      ),
+      meta: getMetaParams(response.data.issues, queryParams.limit as number, page),
+    };
   }
 
   async createTickets(url: string, headers: AxiosHeaders, params: CreateTicketParams) {
