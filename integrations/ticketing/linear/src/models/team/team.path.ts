@@ -1,11 +1,11 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, convertToRequestBody, Team} from '@poozle/engine-idk';
+import { BasePath, Config, Params} from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 import { BASE_URL } from 'common';
 
 import { TeamParams, TeamResponse } from './team.interface';
-import { convertTeam, teamMapping } from './team.utils';
+import { convertTeam } from './team.utils';
 
 export class TeamPath extends BasePath {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -31,14 +31,14 @@ export class TeamPath extends BasePath {
     return { data: convertTeam(response.data) };
   }
 
-  async updateTeam(headers: AxiosHeaders, params: Params): Promise<TeamResponse> {
-     /**
-     * TODO: You need to call the respective API return the data as expected by the type.
-     * You can check the github integration for reference.
-     */
-  }
+  // async updateTeam(headers: AxiosHeaders, params: Params): Promise<TeamResponse> {
+  //    /**
+  //    * TODO: You need to call the respective API return the data as expected by the type.
+  //    * You can check the github integration for reference.
+  //    */
+  // }
 
-  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
+  async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
     switch (method) {
       case 'GET':
         return this.getTeam(headers, params as TeamParams);

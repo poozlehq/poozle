@@ -42,7 +42,7 @@ export class UserPath extends BasePath {
     _config: Config,
   ) {
     switch (method) {
-      case 'POST':
+      case 'GET':
         return this.fetchSingleUser(headers, params);
 
       default:

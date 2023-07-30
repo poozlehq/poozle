@@ -96,8 +96,8 @@ class LinearIntegration extends BaseIntegration {
       /**
        * TODO: Link to the documentation of the APIS this is mapping to
        */
-      new UsersPath(/^\/?users$/g, 'POST'),
-      new UserPath(/^\/?users+/g, 'POST'),
+      new UsersPath(/^\/?users$/g, ['QUERY']),
+      new UserPath(/^\/?users+/g, ['QUERY', 'MUTATION']),
     ];
   }
 }

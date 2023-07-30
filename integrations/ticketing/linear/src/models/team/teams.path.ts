@@ -1,14 +1,18 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, convertToRequestBody } from '@poozle/engine-idk';
+import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 import { BASE_URL, getMetaParams } from 'common';
 
-import { TeamResponse, TeamsResponse, GetTeamsParams } from './team.interface';
-import { convertTeam, teamMapping } from './team.utils';
+import { TeamsResponse, GetTeamsParams } from './team.interface';
+import { convertTeam } from './team.utils';
 
 export class TeamsPath extends BasePath {
-  async getTeams(headers: AxiosHeaders, params: GetTeamsParams): Promise<TeamsResponse> {
+  async getTeams(
+    headers: AxiosHeaders,
+    params: GetTeamsParams,
+    _config: Config,
+  ): Promise<TeamsResponse> {
     const page = params.queryParams?.cursor ? parseInt(params.queryParams?.cursor) : 1;
     const response = await axios({
       url: `${BASE_URL}`,
@@ -34,20 +38,10 @@ export class TeamsPath extends BasePath {
     };
   }
 
-  async createTeams(headers: AxiosHeaders, params: Params, config: Config): Promise<TeamResponse> {
-     /**
-     * TODO: You need to call the respective API return the data as expected by the type.
-     * You can check the github integration for reference.
-     */
-  }
-
   async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
     switch (method) {
       case 'GET':
-        return this.getTeams(headers, params as GetTeamsParams);
-
-      case 'POST':
-        return this.createTeams(headers, params, config);
+        return this.getTeams(headers, params as GetTeamsParams, config);
 
       default:
         throw new Error('Method not found');

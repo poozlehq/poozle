@@ -1,40 +1,32 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Ticket } from '@poozle/engine-idk';
+import { LinearIssue } from './ticket.interface';
+import { convertUser } from '../user/user.utils';
 
-export function convertTicket(data: any, collection_id: string | null): Ticket {
-  // return {
-  //   id: data.number,
-  //   name: data.title,
-  //   collection_id: collection_id ? collection_id : '',
-  //   description: data.body,
-  //   status: data.state,
-  //   created_at: data.created_at,
-  //   updated_at: data.updated_at,
-  //   created_by: data.user.login,
-  //   type: data.pull_request ? 'pull_request' : 'issue',
-  //   assignees: data.assignees.map((ass: any) => ({
-  //     id: ass.id,
-  //     username: ass.login,
-  //   })),
-  //   ticket_url: data.url,
-  //   tags: data.labels.map((lab: any) => ({
-  //     id: lab.id,
-  //     name: lab.name,
-  //   })),
-
-  //   // Extra fields
-  //   parent_id: '',
-  //   priority: '',
-  //   due_date: '',
-  //   completed_at: '',
-  // };
-
-  /** 
-   * TODO: The above is a mapping we used in Github. But you need to
-   * write mapping specific to the current integration
-  */
+export function convertTicket(data: any): LinearIssue {
+  return {
+    id: data.number,
+    name: data.title,
+    description: data.description,
+    status: data.state,
+    created_at: data.createdAt,
+    updated_at: data.updatedAt,
+    created_by: data.creator,
+    type: data.pull_request ? 'pull_request' : 'issue',
+    assignee: convertUser(data.assignee),
+    ticket_url: data.url,
+    tags: data.labels.map((lab: any) => ({
+      id: lab.id,
+      name: lab.name,
+    })),
+    estimate: parseFloat(data.estimate),
+    archived_at: data.archivedAt,
+    parent_id: '',
+    priority: data.priority,
+    due_date: data.dueDate,
+    completed_at: data.completedAt,
+  };
 }
 
 export const ticketMappings = {
