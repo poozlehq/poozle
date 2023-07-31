@@ -11,17 +11,20 @@ import { Loader } from 'components';
 
 import { PublicLink } from './public_link';
 import styles from './public_link.module.scss';
+import { getIntegrationDefinitions } from './public_link_utils';
 
 interface PublicLinkLayoutProps {
   linkId: string;
   accountIdentifier?: string;
   redirectURL?: string;
   onClose: () => void;
+  integrationKeys: string[];
 }
 
 export function PublicLinkLayout({
   linkId,
   accountIdentifier,
+  integrationKeys,
   redirectURL,
   onClose,
 }: PublicLinkLayoutProps) {
@@ -76,7 +79,10 @@ export function PublicLinkLayout({
                 link={linkDetails}
                 closed={closed}
                 close={onClose}
-                integrationsDefinitions={linkDetails.integrationDefinitions}
+                integrationsDefinitions={getIntegrationDefinitions(
+                  linkDetails.integrationDefinitions,
+                  integrationKeys,
+                )}
                 accountIdentifier={accountIdentifier}
                 redirectURL={redirectURL}
               />

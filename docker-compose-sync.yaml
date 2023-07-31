@@ -1,0 +1,107 @@
+version: "3.8"
+
+services:
+  db:
+    image: "postgres:latest"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    ports:
+      - 5432:5432
+    networks:
+      - poozle
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  server:
+    image: poozlehq/engine-server:${ENGINE_VERSION}
+    platform: linux/amd64
+    container_name: poozle-server
+    depends_on:
+      - db
+      - worker
+      - temporal
+      - supertokens
+    restart: unless-stopped
+    networks:
+      - poozle
+    environment:
+      - ENGINE_VERSION=${ENGINE_VERSION}
+      - DATABASE_URL=${DATABASE_URL}
+      - SYNC_DATABASE_URL=${SYNC_DATABASE_URL}
+      - FRONTEND_HOST=${FRONTEND_HOST}
+      - PUBLIC_FRONTEND_HOST=${PUBLIC_FRONTEND_HOST}
+      - BACKEND_HOST=${BACKEND_HOST}
+      - JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET}
+      - JWT_REFRESH_SECRET=${JWT_REFRESH_SECRET}
+      - PORT=${PORT}
+      - SUPERTOKEN_CONNECTION_URI=${SUPERTOKEN_CONNECTION_URI}
+      - MASTER_TOKEN=${TOKEN}
+      - TEMPORAL_ADDRESS=${TEMPORAL_ADDRESS}
+
+  webapp:
+    image: poozlehq/engine-webapp:${ENGINE_VERSION}
+    platform: linux/amd64
+    container_name: poozle-webapp
+    restart: unless-stopped
+    networks:
+      - poozle
+    environment:
+      - BACKEND_URL=${BACKEND_URL}
+      - NEXT_PUBLIC_BASE_HOST=${PUBLIC_FRONTEND_HOST}
+      - NEXT_PUBLIC_VERSION=${ENGINE_VERSION}
+    ports:
+      - 8000:3000
+
+  worker:
+    image: poozlehq/engine-worker:${ENGINE_VERSION}
+    platform: linux/amd64
+    container_name: poozle-worker
+    restart: unless-stopped
+    networks:
+      - poozle
+    environment:
+      - DATABASE_URL=${SYNC_DATABASE_URL}
+      - TEMPORAL_ADDRESS=${TEMPORAL_ADDRESS}
+      - DB_SCHEMA=${DB_SCHEMA}
+      - CONFIG_PATH=${CONFIG_PATH}
+      - TOKEN=${TOKEN}
+      - BACKEND_URL=${BACKEND_URL}
+
+  temporal:
+    image: temporalio/auto-setup:${TEMPORAL_VERSION}
+    container_name: temporal
+    depends_on:
+      - db
+    environment:
+      - DB=postgresql
+      - DB_PORT=${DB_PORT}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PWD=${POSTGRES_PASSWORD}
+      - POSTGRES_SEEDS=${DB_HOST}
+    ports:
+      - 7233:7233
+    networks:
+      - poozle
+
+  supertokens:
+    image: registry.supertokens.io/supertokens/supertokens-postgresql:5.0
+    depends_on:
+      - db
+    environment:
+      POSTGRESQL_CONNECTION_URI: ${SUPERTOKEN_DATABASE_URL}
+    ports:
+      - 3567:3567
+    networks:
+      - poozle
+    restart: unless-stopped
+
+networks:
+  app_network:
+    driver: bridge
+  poozle: {}
+
+volumes:
+  postgres-data:

@@ -16,12 +16,10 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
-import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
-import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
 
@@ -34,6 +32,7 @@ import {
   CreatePageBody,
   UpdatePageBody,
 } from './block.interface';
+import { BlockService } from './block.service';
 
 @Controller({
   version: '1',
@@ -52,6 +51,8 @@ import {
 })
 @UseGuards(new AuthGuard())
 export class BlockController {
+  constructor(private blockService: BlockService) {}
+
   /**
    * Get all the block for a specific parent_id
    */
@@ -63,17 +64,7 @@ export class BlockController {
     @GetIntegrationAccount(IntegrationType.DOCUMENTATION)
     integrationAccount: IntegrationAccount,
   ): Promise<BlocksResponse> {
-    const blocksResponse = await getDataFromAccount(
-      integrationAccount,
-      `/blocks`,
-      Method.GET,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      params as any,
-    );
-
-    return blocksResponse;
+    return this.blockService.getBlocks(query, params, integrationAccount);
   }
 
   /**
@@ -89,18 +80,12 @@ export class BlockController {
     @GetIntegrationAccount(IntegrationType.DOCUMENTATION)
     integrationAccount: IntegrationAccount,
   ): Promise<BlocksResponse> {
-    const blocksResponse = await getDataFromAccount(
-      integrationAccount,
-      `/blocks`,
-      Method.POST,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      params as any,
+    return this.blockService.createBlocks(
+      query,
+      params,
       createPageBody,
+      integrationAccount,
     );
-
-    return blocksResponse;
   }
 
   /**
@@ -116,17 +101,11 @@ export class BlockController {
     @GetIntegrationAccount(IntegrationType.DOCUMENTATION)
     integrationAccount: IntegrationAccount,
   ): Promise<BlocksResponse> {
-    const blocksResponse = await getDataFromAccount(
-      integrationAccount,
-      `/blocks/${params.block_id}`,
-      Method.PATCH,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      params as any,
+    return this.blockService.updateBlock(
+      query,
+      params,
       updatePageBody,
+      integrationAccount,
     );
-
-    return blocksResponse;
   }
 }

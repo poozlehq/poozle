@@ -46,7 +46,11 @@ export function PublicLink({
   redirectURL,
   accountIdentifier,
 }: PublicLinkInterface) {
-  const [selectedDefinitionId, setDefinitionId] = React.useState(undefined);
+  const [selectedDefinitionId, setDefinitionId] = React.useState(
+    integrationsDefinitions.length === 1
+      ? integrationsDefinitions[0].integrationDefinitionId
+      : undefined,
+  );
 
   const { data: oAuthApps, isLoading: oAuthAppsLoading } =
     useGetIntegrationOAuthAppsJustIds({
@@ -95,6 +99,14 @@ export function PublicLink({
           </ActionIcon>
         </Group>
         <Divider className={styles.divider} mb="lg" />
+
+        <Group position="center" mb="xl">
+          <IntegrationIcon
+            icon={integrationDefinition.icon}
+            width={40}
+            height={40}
+          />
+        </Group>
 
         <NewIntegrationForm
           integrationDefinition={integrationDefinition}
