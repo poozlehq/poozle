@@ -56,7 +56,7 @@ export class TicketService {
     query: ListTicketsQueryParams,
     params: PathParamsWithCollectionId,
   ) {
-    if (query.realtime) {
+    if (query.realtime || !integrationAccount.syncEnabled) {
       return await this.getTicketsForRealtime(
         integrationAccount,
         query,
@@ -72,7 +72,7 @@ export class TicketService {
     query: GetTicketsQueryParams,
     params: PathParamsWithTicketId,
   ) {
-    if (query.realtime) {
+    if (query.realtime || !integrationAccount.syncEnabled) {
       return await this.getTicketForRealtime(integrationAccount, query, params);
     }
 

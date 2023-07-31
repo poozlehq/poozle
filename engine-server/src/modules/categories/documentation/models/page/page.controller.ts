@@ -15,12 +15,10 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
-import { Method, getDataFromAccount } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
-import { defaultQueryParams } from 'common/interfaces/defaults.constants';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
 
@@ -32,6 +30,7 @@ import {
   CommonPageQueryParams,
   CreatePageBody,
 } from './page.interface';
+import { PageService } from './page.service';
 
 @Controller({
   version: '1',
@@ -50,6 +49,8 @@ import {
   description: 'Not authorised',
 })
 export class PageController {
+  constructor(private pageService: PageService) {}
+
   /**
    * Get all pages
    */
@@ -59,41 +60,21 @@ export class PageController {
     @GetIntegrationAccount(IntegrationType.DOCUMENTATION)
     integrationAccount: IntegrationAccount,
   ): Promise<PagesResponse> {
-    const pageResponse = await getDataFromAccount(
-      integrationAccount,
-      '/pages',
-      Method.GET,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      {},
-    );
-
-    return pageResponse;
+    return this.pageService.getPages(query, integrationAccount);
   }
 
   /**
    * Get a single page
    */
   @Get('pages/:page_id')
-  async getPageeId(
+  async getPageId(
     @Query() query: CommonPageQueryParams,
     @Param()
     params: PathParamsWithPageId,
     @GetIntegrationAccount(IntegrationType.DOCUMENTATION)
     integrationAccount: IntegrationAccount,
   ): Promise<PageResponse> {
-    const pageResponse = await getDataFromAccount(
-      integrationAccount,
-      `/pages/${params.page_id}`,
-      Method.GET,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      params as any,
-    );
-
-    return pageResponse;
+    return this.pageService.getPageId(query, params, integrationAccount);
   }
 
   /**
@@ -106,16 +87,10 @@ export class PageController {
     @GetIntegrationAccount(IntegrationType.DOCUMENTATION)
     integrationAccount: IntegrationAccount,
   ): Promise<PageResponse> {
-    const pageResponse = await getDataFromAccount(
-      integrationAccount,
-      `/pages`,
-      Method.POST,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      { ...defaultQueryParams, ...(query as any) },
-      {},
+    return this.pageService.createPage(
+      query,
       createPageBody,
+      integrationAccount,
     );
-
-    return pageResponse;
   }
 }

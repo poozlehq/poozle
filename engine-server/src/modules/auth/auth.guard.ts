@@ -61,7 +61,7 @@ export class AuthGuard implements CanActivate {
         jwt = jwt === undefined ? undefined : jwt.split('Bearer ')[1];
         if (jwt === undefined) {
           throw new UnauthorizedException({
-            message: 'unauthorised',
+            message: 'Unauthorised',
           });
         } else {
           const publicKey = await getKey(jwt);
@@ -71,12 +71,12 @@ export class AuthGuard implements CanActivate {
             const response: any = verify(jwt, publicKey, {});
             if (response.source !== 'microservice') {
               throw new UnauthorizedException({
-                message: 'unauthorised',
+                message: 'Unauthorised',
               });
             }
           } catch (e) {
             throw new UnauthorizedException({
-              message: 'unauthorised',
+              message: 'Unauthorised',
             });
           }
         }
@@ -93,7 +93,9 @@ export class AuthGuard implements CanActivate {
         throw err;
       }
     } catch (err) {
-      throw err;
+      throw new UnauthorizedException({
+        message: 'Unauthorised',
+      });
     }
 
     return true;
