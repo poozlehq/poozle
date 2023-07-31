@@ -38,10 +38,11 @@ const confluenceType: ConfluenceType = {
   codeBlock: BlockType.code,
   mediaSingle: BlockType.file,
   orderedList: BlockType.numbered_list_item,
-  extension: BlockType.unsupported,
+  extension: BlockType.extension,
   table: BlockType.table,
-  table_row: BlockType.table_row,
-  table_header: BlockType.table_header,
+  tableRow: BlockType.table_row,
+  tableHeader: BlockType.table_header,
+  tableCell: BlockType.table_cell,
   inlineCard: BlockType.inline_card,
   text: BlockType.text,
   blockCard: BlockType.block_card,
@@ -170,259 +171,6 @@ export async function fetchPageBlocks(
   };
 }
 
-// const orderedList = {
-//   type: 'orderedList',
-//   attrs: {
-//     order: 1,
-//   },
-//   content: [
-//     {
-//       type: 'listItem',
-//       content: [
-//         {
-//           type: 'paragraph',
-//           content: [
-//             {
-//               text: 'numbered list 1',
-//               type: 'text',
-//             },
-//           ],
-//         },
-//         {
-//           type: 'orderedList',
-//           attrs: {
-//             order: 1,
-//           },
-//           content: [
-//             {
-//               type: 'listItem',
-//               content: [
-//                 {
-//                   type: 'paragraph',
-//                   content: [
-//                     {
-//                       text: 'numbered list 1.1',
-//                       type: 'text',
-//                     },
-//                   ],
-//                 },
-//               ],
-//             },
-//             {
-//               type: 'listItem',
-//               content: [
-//                 {
-//                   type: 'paragraph',
-//                   content: [
-//                     {
-//                       text: 'numbered list 1.2',
-//                       type: 'text',
-//                     },
-//                   ],
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//     {
-//       type: 'listItem',
-//       content: [
-//         {
-//           type: 'paragraph',
-//           content: [
-//             {
-//               text: 'numbered list 2',
-//               type: 'text',
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//     {
-//       type: 'listItem',
-//       content: [
-//         {
-//           type: 'paragraph',
-//           content: [
-//             {
-//               text: 'numbered list 3',
-//               type: 'text',
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//   ],
-// };
-
-// const image = {
-//   type: 'mediaSingle',
-//   attrs: {
-//     layout: 'center',
-//     width: 50.0,
-//   },
-//   content: [
-//     {
-//       type: 'media',
-//       attrs: {
-//         __fileSize: 89330,
-//         __fileMimeType: 'image/png',
-//         width: 335,
-//         id: '2a0dbbad-dd0c-42a5-b775-42544a853882',
-//         collection: 'contentId-621838349',
-//         type: 'file',
-//         __fileName: 'Screenshot 2023-07-21 at 12.36.18 AM.png',
-//         height: 380,
-//       },
-//     },
-//   ],
-// };
-
-// const video = {
-//   type: 'mediaSingle',
-//   attrs: {
-//     layout: 'center',
-//   },
-//   content: [
-//     {
-//       type: 'media',
-//       attrs: {
-//         __fileMimeType: 'application/octet-stream',
-//         width: 1920,
-//         id: 'UNKNOWN_MEDIA_ID',
-//         collection: '',
-//         type: 'file',
-//         height: 1080,
-//       },
-//     },
-//   ],
-// };
-
-// const tableData = {
-//   type: 'table',
-//   attrs: {
-//     layout: 'default',
-//     localId: 'a12d2a24-b966-4247-a81b-b9b352086158',
-//   },
-//   content: [
-//     {
-//       type: 'tableRow',
-//       content: [
-//         {
-//           type: 'tableHeader',
-//           attrs: {
-//             colspan: 1,
-//             rowspan: 1,
-//           },
-//           content: [
-//             {
-//               type: 'paragraph',
-//               content: [
-//                 {
-//                   text: 'col1row1',
-//                   type: 'text',
-//                   marks: [
-//                     {
-//                       type: 'strong',
-//                     },
-//                   ],
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//         {
-//           type: 'tableHeader',
-//           attrs: {
-//             colspan: 1,
-//             rowspan: 1,
-//           },
-//           content: [
-//             {
-//               type: 'paragraph',
-//               content: [
-//                 {
-//                   text: 'col2row1',
-//                   type: 'text',
-//                   marks: [
-//                     {
-//                       type: 'strong',
-//                     },
-//                   ],
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//     {
-//       type: 'tableRow',
-//       content: [
-//         {
-//           type: 'tableCell',
-//           attrs: {
-//             colspan: 1,
-//             rowspan: 1,
-//           },
-//           content: [
-//             {
-//               type: 'paragraph',
-//               content: [
-//                 {
-//                   text: 'col1row2',
-//                   type: 'text',
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//         {
-//           type: 'tableCell',
-//           attrs: {
-//             colspan: 1,
-//             rowspan: 1,
-//           },
-//           content: [
-//             {
-//               type: 'paragraph',
-//               content: [
-//                 {
-//                   text: 'col2row2',
-//                   type: 'text',
-//                 },
-//               ],
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//   ],
-// };
-
-// export interface Content {
-//   annotations: {
-//     bold: string;
-//     italic: string;
-//     strikethrough: string;
-//     underline: string;
-//     code: string;
-//     color: string;
-//   };
-//   plain_text: string;
-//   href: string;
-// }
-
-// export interface Block {
-//   id: string;
-//   parent_id: string;
-//   block_type: BlockType;
-//   content: Content[];
-//   children: Block[];
-// }
-
 export function getBlockData(data: any): Block[] {
   const type = confluenceType[data.type as keyof ConfluenceType];
 
@@ -444,21 +192,44 @@ export function getBlockData(data: any): Block[] {
       });
 
     case BlockType.table:
+    case BlockType.table_row:
       return [
         {
           id: '',
           parent_id: '',
           block_type: type,
           content: [],
-          children:
-            data.content?.flatMap(
-              (item: any) =>
-                item.content?.map((tableContent: any) => getBlockData(tableContent)) || [],
-            ) || [],
+          children: data.content?.map((item: any) => getBlockData(item)).flat() || [],
+        },
+      ];
+
+    case BlockType.table_header:
+    case BlockType.table_cell:
+      const tableCellContent = data.content
+        .map((tableItem: any) => extractContent(tableItem).flat())
+        .flat();
+      return [
+        {
+          id: '',
+          parent_id: '',
+          block_type: type,
+          content: tableCellContent,
+          children: [],
         },
       ];
 
     case BlockType.toggle:
+      return [
+        {
+          id: '',
+          parent_id: '',
+          block_type: type,
+          content: extractContent(data),
+          children: data.content?.map((item: any) => getBlockData(item)).flat() || [],
+        },
+      ];
+
+    case BlockType.extension:
       return [
         {
           id: '',
@@ -564,6 +335,22 @@ export function extractContent(data: any): Content[] {
         }) || []
       );
 
+    case BlockType.unsupported:
+      return [
+        {
+          annotations: {
+            bold: null as string | null,
+            italic: null as string | null,
+            strikethrough: null as string | null,
+            underline: null as string | null,
+            code: null as string | null,
+            color: null as string | null,
+          },
+          plain_text: data.attrs.parameters.macroMetadata.title,
+          href: null as string | null,
+        },
+      ] as Content[];
+
     default:
       return [];
   }
@@ -611,81 +398,4 @@ export function getAnnotationsAndLinks(data: any) {
     });
   }
   return { annotations, link };
-}
-
-export function extractChildrenData(data: SingleBlockResponse): Block[] {
-  if (data.type === BlockType.table_row) {
-    const cells = data[data.type].cells ? data[data.type].cells : [];
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return cells.map((cell: any) => ({
-      id: data.id,
-      parent_id: data.parent?.type ? data.parent[data.parent.type] : '',
-      block_type: BlockType.table_cell,
-      content: [
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ...cell?.map((richtext: any) => ({
-          annotations: {
-            bold: richtext.annotations.bold ?? '',
-            italic: richtext.annotations.italic ?? '',
-            strikethrough: richtext.annotations.strikethrough ?? '',
-            underline: richtext.annotations.underline ?? '',
-            code: richtext.annotations.code ?? '',
-            color: richtext.annotations.color ?? '',
-          },
-          plain_text: richtext.plain_text,
-          href: richtext.href,
-        })),
-      ],
-      children: [],
-    })) as Block[];
-  }
-
-  const caption = data[data.type].caption ? data[data.type].caption : [];
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return caption.map((richtext: any) => ({
-    id: data.id,
-    parent_id: data.parent?.type ? data.parent[data.parent.type] : '',
-    block_type: BlockType.bookmark_text,
-    content: [
-      {
-        annotations: {
-          bold: richtext.annotations.bold ?? '',
-          italic: richtext.annotations.italic ?? '',
-          strikethrough: richtext.annotations.strikethrough ?? '',
-          underline: richtext.annotations.underline ?? '',
-          code: richtext.annotations.code ?? '',
-          color: richtext.annotations.color ?? '',
-        },
-        plain_text: richtext.plain_text,
-        href: richtext.href,
-      },
-    ],
-    children: [],
-  }));
-}
-
-export function extractBlockData(data: SingleBlockResponse): Block {
-  const content = extractContent(data);
-
-  let children: Block[] = [];
-
-  if (data.type === BlockType.table_row || data.type === BlockType.bookmark) {
-    children = extractChildrenData(data);
-  } else {
-    children = data.children
-      ? data.children?.map((data: SingleBlockResponse) => extractBlockData(data))
-      : [];
-  }
-
-  const block_data = {
-    id: data.id,
-    parent_id: data.parent?.type ? data.parent[data.parent.type] : '',
-    block_type: data.type,
-    content,
-    children,
-  };
-
-  return block_data;
 }

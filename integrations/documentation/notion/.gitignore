@@ -27,6 +27,6 @@ lerna-debug.log*
 .yarn/build-state.yml
 .pnp.*
 
-notion/
+confluence/
 
 node_modules/

@@ -30,7 +30,7 @@ export enum BlockType {
   callout = 'callout',
   child_database = 'child_database',
   child_page = 'child_page',
-  code= 'code',
+  code = 'code',
   column = 'column',
   column_list = 'column_list',
   divider = 'divider',

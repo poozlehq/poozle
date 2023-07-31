@@ -3,22 +3,18 @@
 const { main } = require('../confluence/index');
 
 async function run() {
-  const response = await main('CHECK', {
-    path: '/collections',
+  const response = await main('RUN', {
+    path: '/blocks/621838349',
     method: 'GET',
-    config: {},
     params: {
-      queryParams: {
-        limit: 5,
-        raw: true,
-      },
-      pathParams: {
-        ticket_id: '',
-      },
+      queryParams: { raw: true },
+      pathParams: {},
+      requestBody: {},
     },
+    config: {},
   });
 
-  console.log(response);
+  console.log(JSON.stringify(response));
 }
 
 run();

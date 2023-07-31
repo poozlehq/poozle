@@ -1,6 +1,13 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BaseIntegration, CheckResponse, Config, getAccessToken, interpolateString, SpecificationResponse } from '@poozle/engine-idk';
+import {
+  BaseIntegration,
+  CheckResponse,
+  Config,
+  getAccessToken,
+  interpolateString,
+  SpecificationResponse,
+} from '@poozle/engine-idk';
 import axios from 'axios';
 import { ProxyPath } from 'proxy';
 
@@ -70,7 +77,7 @@ class NotionIntegration extends BaseIntegration {
        * 2. Updating the blocks
        * 3. Creating a block
        */
-      new BlocksPath(/^\/?blocks+/g, ['GET', 'POST', 'PATCH']),
+      new BlocksPath(/^\/?blocks+/g, ['GET']),
 
       /**
        * Pages.
@@ -78,7 +85,7 @@ class NotionIntegration extends BaseIntegration {
        * 2. Create Page
        * Matches /pages
        */
-      new PagesPath(/^\/?pages$/g, ['GET', 'POST']),
+      new PagesPath(/^\/?pages$/g, ['GET']),
 
       /**
        * Get a page
@@ -95,30 +102,7 @@ export async function main(command: string, allParams: any) {
 
   const response = await integration.runCommand(command, allParams);
 
-
-  console.log(JSON.stringify(response))
   return response;
 }
 
 export default main;
-
-
-main('RUN', {
-  path: '/blocks/621838349',
-  method: 'GET',
-  params: {
-    queryParams: { raw: false },
-    pathParams: { parent_id: '621838349', label_name: 'new bug'},
-    requestBody: {
-      name: "new bug",
-      description: 'this is updated from unified',
-      color: '0f0ff0'
-    }
-  },
-  config: {
-    email_id: 'aditya@velocity.in',
-    confluence_domain: 'gelocity.atlassian.net',
-    api_key: 'ATATT3xFfGF0M4-QmAZ2P8Ii_tQNBZuUAw2IqVidamf37BXE5hRSKA9NIiZZ5AbRZTalQ9cSBP6HnlA2o2yhOCjy47Q-aGBFNLBDP0LiTkTAV-INW2QYwfEZAu51Ij6QhYx_NaEJFwzVHTQhtH5baagbj_KrFjBm-GUuduaPto38vHdoyJzGO-0=7BDDB83D',
-    authType: 'Api Key',
-  },
-})

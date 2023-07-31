@@ -51,37 +51,12 @@ export class PagesPath extends BasePath {
     };
   }
 
-  async createPage(url: string, headers: AxiosHeaders, params: Params) {
-    const body = {
-      parent: { page_id: params.requestBody?.parent_id },
-      properties: {
-        title: [
-          {
-            text: {
-              content: params.requestBody?.title,
-            },
-          },
-        ],
-      },
-    };
-
-    const response = await axios.post(url, body, { headers });
-
-    return {
-      data: convertPages(response.data),
-    };
-  }
-
   async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
     let url = '';
     switch (method) {
       case 'GET':
         url = `${BASE_URL}/search`;
         return this.fetchData(url, headers, params);
-
-      case 'POST':
-        url = `${BASE_URL}/pages`;
-        return this.createPage(url, headers, params);
 
       default:
         return [];
