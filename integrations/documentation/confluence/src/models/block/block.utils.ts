@@ -160,25 +160,6 @@ function createBlock(type: BlockType, content: Content[], children: Block[]): Bl
   } as Block;
 }
 
-// let id = 1;
-
-// export function processBlock(block: Block, raw: any, childId?: number): Block {
-//   let newBlock = {
-//     ...block,
-//     ...(raw ? { raw } : {}),
-//     id: childId ? `${id}_${childId}` : (id++).toString(),
-//   };
-//   if (newBlock.children) {
-//     let childId = 1;
-//     newBlock.children = newBlock.children.map((child: any) => {
-//       let newChild = processBlock(child, null, childId++);
-//       newChild.parent_id = newBlock.id.toString();
-//       return newChild;
-//     });
-//   }
-//   return newBlock;
-// }
-
 let id = 1;
 
 export function processBlock(block: Block, raw: any, childId?: number, parentId?: string): Block {
@@ -188,7 +169,8 @@ export function processBlock(block: Block, raw: any, childId?: number, parentId?
     ...block,
     ...(raw ? { raw } : {}),
     id: newBlockId,
-  };
+    parent_id: parentId ?? null,
+  } as Block;
 
   if (newBlock.children) {
     let childId = 1;
@@ -295,8 +277,8 @@ export function extractContent(data: any): Content[] {
               case BlockType.inline_card:
                 return createContent(null, dataContent.attrs.url);
 
-              // case CBlockType.date:
-              //   return createContent(dataContent.attrs.timestamp, null);
+              case BlockType.date:
+                return createContent(dataContent.attrs.timestamp, null);
 
               default:
                 return [];
@@ -305,7 +287,7 @@ export function extractContent(data: any): Content[] {
         : [];
 
     case BlockType.block_card:
-      return [createContent(null, data.attrs.href)];
+      return [createContent(null, data.attrs.url)];
 
     case BlockType.file:
       return 'content' in data

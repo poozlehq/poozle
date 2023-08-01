@@ -22,29 +22,11 @@ export class BlocksPath extends BasePath {
     const dataContent = JSON.parse(response.data.body.atlas_doc_format.value).content;
 
     let blockData: Block[] = [];
-    // let id = 1;
-    // dataContent.forEach((content: any) => {
-    //   const blocks = getBlockData(content);
-    //   const blocksWithRaw = blocks.map((block) => {
-    //     let newBlock = { ...block, raw: content, id: (id++).toString() };
-    //     if (newBlock.children) {
-    //       let childId = 1;
-    //       newBlock.children = newBlock.children.map((child) => {
-    //         return {
-    //           ...child,
-    //           id: `${newBlock.id}_${childId++}`,
-    //           parent_id: newBlock.id.toString(),
-    //         };
-    //       });
-    //     }
-    //     return newBlock;
-    //   });
-    //   blockData = [...blockData, ...blocksWithRaw];
-    // });
-
     dataContent.forEach((content: any) => {
       const blocks = getBlockData(content);
-      const blocksWithRaw = blocks.map((block) => processBlock(block, content));
+      const blocksWithRaw = blocks.map((block) =>
+        processBlock(block, content, undefined, block_id),
+      );
       blockData = [...blockData, ...blocksWithRaw];
     });
 
