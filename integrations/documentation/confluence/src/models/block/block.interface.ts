@@ -45,20 +45,33 @@ export interface UpdateBlockParams {
   requestBody: Block;
 }
 
-export interface SingleBlockResponse {
-  object: string;
-  id: string;
-  parent: Record<string, string>;
-  created_time: string;
-  last_edited_time: string;
-  created_by: Record<string, string>;
-  last_edited_by: Record<string, string>;
-  has_children: boolean;
-  archived: boolean;
-  type: BlockType;
-
-  // TODO (harshith): fix the types
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-  children?: SingleBlockResponse[];
+export interface ConfluenceType {
+  [key: string]: BlockType;
 }
+export const confluenceType: ConfluenceType = {
+  paragraph: BlockType.paragraph,
+  bulletList: BlockType.bulleted_list_item,
+  codeBlock: BlockType.code,
+  mediaSingle: BlockType.file,
+  orderedList: BlockType.numbered_list_item,
+  extension: BlockType.unsupported,
+  table: BlockType.table,
+  tableRow: BlockType.table_row,
+  tableHeader: BlockType.table_header,
+  tableCell: BlockType.table_cell,
+  inlineCard: BlockType.inline_card,
+  text: BlockType.text,
+  blockCard: BlockType.block_card,
+  listItem: BlockType.list_item,
+  nestedExpand: BlockType.toggle,
+  expand: BlockType.toggle,
+  heading: BlockType.heading_1,
+  heading_1: BlockType.heading_1,
+  heading_2: BlockType.heading_2,
+  heading_3: BlockType.heading_3,
+  heading_4: BlockType.heading_4,
+  heading_5: BlockType.heading_5,
+  heading_6: BlockType.heading_6,
+  date: BlockType.date,
+  blockquote: BlockType.quote,
+};

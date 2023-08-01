@@ -3,8 +3,10 @@
 
 import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { getBaseUrl } from 'common';
+import { PageParams } from './page.interface';
 
-import { BASE_URL, convertBlockPage } from './pages.utils';
+import { convertPage } from './pages.utils';
 
 export class PagePath extends BasePath {
   async fetchSinglePage(url: string, headers: AxiosHeaders, _params: Params) {
@@ -13,15 +15,14 @@ export class PagePath extends BasePath {
       headers,
     });
 
-
     return {
-      data: convertBlockPage(response.data),
-      raw: response.data,
+      data: convertPage(response.data),
     };
   }
 
-  async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
-    const url = `${BASE_URL}/blocks/${params.pathParams?.page_id}`;
+  async run(method: string, headers: AxiosHeaders, params: PageParams, config: Config) {
+    const BASE_URL = await getBaseUrl(config, headers);
+    const url = `${BASE_URL}/pages/${params.pathParams?.page_id}`;
 
     switch (method) {
       case 'GET':

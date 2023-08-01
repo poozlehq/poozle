@@ -7,14 +7,20 @@ async function run() {
     path: '/blocks/621838349',
     method: 'GET',
     params: {
-      queryParams: { raw: true },
-      pathParams: {},
-      requestBody: {},
+      queryParams: {
+        raw: false,
+      },
+      pathParams: { parent_id: '621838349', page_id: '621838349' },
     },
-    config: {},
+    config: {
+      email_id: '',
+      confluence_domain: '',
+      api_key: '',
+      authType: 'Api Key',
+    },
   });
 
-  console.log(JSON.stringify(response));
+  console.log(response);
 }
 
 run();

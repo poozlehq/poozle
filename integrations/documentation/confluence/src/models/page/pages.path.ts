@@ -1,61 +1,53 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params } from '@poozle/engine-idk';
+import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { getBaseUrl, getMetaParams } from 'common';
+import { PagesParams } from './page.interface';
 
 // import { BASE_URL, convertBlock, convertPage, fetchPageBlocks } from './pages.utils';
-import { BASE_URL, convertPages } from './pages.utils';
+import { convertPage } from './pages.utils';
 
 export class PagesPath extends BasePath {
-  async fetchData(url: string, headers: AxiosHeaders, params: Params) {
-    const limit = params.queryParams?.limit ? parseInt(params.queryParams?.limit.toString()) : 10;
-    const pagesResponse = await axios.post(
+  async fetchData(url: string, headers: AxiosHeaders, params: PagesParams) {
+    const cursor = params.queryParams?.cursor ?? '';
+    const finalParams = {
+      limit: params.queryParams?.limit,
+      ...(params.queryParams?.title ? { title: params.queryParams?.title } : {}),
+      ...(cursor ? { cursor } : {}),
+      ...(params.queryParams?.direction === 'asc'
+        ? { sort: params.queryParams?.sort === 'created_at' ? 'created-date' : 'modified-date' }
+        : {
+            sort: params.queryParams?.sort === 'created_at' ? '-created-date' : '-modified-date',
+          }),
+    };
+
+    console.log(finalParams);
+    const pagesResponse = await axios({
       url,
-      {
-        query: params.queryParams?.title ?? '',
-        filter: {
-          value: 'page',
-          property: 'object',
-        },
-        page_size: limit,
-        ...(params.queryParams?.cursor ? { start_cursor: params.queryParams?.cursor } : {}),
-        ...(params.queryParams?.direction === 'asc'
-          ? {
-              sort: {
-                direction: 'ascending',
-                timestamp:
-                  params.queryParams?.sort === 'created_at' ? 'created_time' : 'last_edited_time',
-              },
-            }
-          : {
-              sort: {
-                direction: 'descending',
-                timestamp:
-                  params.queryParams?.sort === 'created_at' ? 'created_time' : 'last_edited_time',
-              },
-            }),
-      },
-      { headers },
-    );
+      headers,
+      params: finalParams,
+    });
+
+    console.log(pagesResponse.data);
 
     return {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: pagesResponse.data.results?.map((data: any) => {
-        return convertPages(data);
+        return convertPage(data);
       }),
-      raw: pagesResponse.data.results,
-      meta: {
-        next_cursor: pagesResponse.data.has_more ? pagesResponse.data.next_cursor : '',
-      },
+      meta: getMetaParams(pagesResponse.data, cursor),
     };
   }
 
-  async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
+  async run(method: string, headers: AxiosHeaders, params: PagesParams, config: Config) {
     let url = '';
+    const BASE_URL = await getBaseUrl(config, headers);
+    console.log(BASE_URL);
     switch (method) {
       case 'GET':
-        url = `${BASE_URL}/search`;
+        url = `${BASE_URL}/pages`;
         return this.fetchData(url, headers, params);
 
       default:

@@ -2,6 +2,7 @@
 
 import { Block, BlockType, Content, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { ConfluenceType, confluenceType } from './block.interface';
 
 export interface SingleBlockResponse {
   object: string;
@@ -28,28 +29,6 @@ export interface BlockResponse {
     next_cursor: string;
   };
 }
-
-interface ConfluenceType {
-  [key: string]: BlockType; // Map type strings to BlockType
-}
-const confluenceType: ConfluenceType = {
-  paragraph: BlockType.paragraph,
-  bulletList: BlockType.bulleted_list_item,
-  codeBlock: BlockType.code,
-  mediaSingle: BlockType.file,
-  orderedList: BlockType.numbered_list_item,
-  extension: BlockType.extension,
-  table: BlockType.table,
-  tableRow: BlockType.table_row,
-  tableHeader: BlockType.table_header,
-  tableCell: BlockType.table_cell,
-  inlineCard: BlockType.inline_card,
-  text: BlockType.text,
-  blockCard: BlockType.block_card,
-  listItem: BlockType.list_item,
-  nestedExpand: BlockType.toggle,
-  expand: BlockType.toggle,
-};
 
 export function convertUpdateBody(data: Block) {
   return {
@@ -171,89 +150,123 @@ export async function fetchPageBlocks(
   };
 }
 
+function createBlock(type: BlockType, content: Content[], children: Block[]): Block {
+  return {
+    id: '',
+    parent_id: '',
+    block_type: type,
+    content,
+    children,
+  } as Block;
+}
+
+// let id = 1;
+
+// export function processBlock(block: Block, raw: any, childId?: number): Block {
+//   let newBlock = {
+//     ...block,
+//     ...(raw ? { raw } : {}),
+//     id: childId ? `${id}_${childId}` : (id++).toString(),
+//   };
+//   if (newBlock.children) {
+//     let childId = 1;
+//     newBlock.children = newBlock.children.map((child: any) => {
+//       let newChild = processBlock(child, null, childId++);
+//       newChild.parent_id = newBlock.id.toString();
+//       return newChild;
+//     });
+//   }
+//   return newBlock;
+// }
+
+let id = 1;
+
+export function processBlock(block: Block, raw: any, childId?: number, parentId?: string): Block {
+  let newBlockId = childId ? `${parentId}_${childId}` : (id++).toString();
+
+  let newBlock = {
+    ...block,
+    ...(raw ? { raw } : {}),
+    id: newBlockId,
+  };
+
+  if (newBlock.children) {
+    let childId = 1;
+    newBlock.children = newBlock.children.map((child: any) => {
+      let newChild = processBlock(child, null, childId++, newBlockId);
+      newChild.parent_id = newBlock.id.toString();
+      return newChild;
+    });
+  }
+
+  return newBlock;
+}
+
 export function getBlockData(data: any): Block[] {
   const type = confluenceType[data.type as keyof ConfluenceType];
-
+  let blockContent: Content[];
+  let blockChildren: Block[];
   switch (type) {
     case BlockType.numbered_list_item:
     case BlockType.bulleted_list_item:
       return data.content.map((item: any) => {
-        return {
-          id: '',
-          parent_id: '',
-          block_type: type,
-          content: item.content ? extractContent(item.content[0]) : [],
-          children:
-            item.content
-              ?.slice(1)
-              ?.map((item: any) => getBlockData(item))
-              .flat() || [],
-        };
+        blockContent = item.content ? extractContent(item.content[0]) : [];
+        blockChildren =
+          item.content
+            ?.slice(1)
+            ?.map((item: any) => getBlockData(item))
+            .flat() || [];
+        return createBlock(type, blockContent, blockChildren);
       });
 
     case BlockType.table:
     case BlockType.table_row:
-      return [
-        {
-          id: '',
-          parent_id: '',
-          block_type: type,
-          content: [],
-          children: data.content?.map((item: any) => getBlockData(item)).flat() || [],
-        },
-      ];
+      blockChildren = data.content?.map((item: any) => getBlockData(item)).flat() || [];
+      return [createBlock(type, [], blockChildren)];
 
     case BlockType.table_header:
     case BlockType.table_cell:
-      const tableCellContent = data.content
-        .map((tableItem: any) => extractContent(tableItem).flat())
-        .flat();
-      return [
-        {
-          id: '',
-          parent_id: '',
-          block_type: type,
-          content: tableCellContent,
-          children: [],
-        },
-      ];
+      blockContent = data.content.map((tableItem: any) => extractContent(tableItem).flat()).flat();
+      return [createBlock(type, blockContent, [])];
 
     case BlockType.toggle:
-      return [
-        {
-          id: '',
-          parent_id: '',
-          block_type: type,
-          content: extractContent(data),
-          children: data.content?.map((item: any) => getBlockData(item)).flat() || [],
-        },
-      ];
+      blockContent = extractContent(data);
+      blockChildren = data.content?.map((item: any) => getBlockData(item)).flat() || [];
+      return [createBlock(type, blockContent, blockChildren)];
 
-    case BlockType.extension:
-      return [
-        {
-          id: '',
-          parent_id: '',
-          block_type: type,
-          content: extractContent(data),
-          children: data.content?.map((item: any) => getBlockData(item)).flat() || [],
-        },
-      ];
+    case BlockType.heading_1:
+      const headingType =
+        confluenceType[`${data.type}_${data.attrs.level}` as keyof ConfluenceType];
+
+      return [createBlock(headingType, extractContent(data), [])];
+
+    case BlockType.unsupported:
+      blockChildren = data.content?.map((item: any) => getBlockData(item)).flat() || [];
+      return [createBlock(type, extractContent(data), blockChildren)];
+
+    case BlockType.quote:
+      blockContent = data.content?.map((item: any) => extractContent(item)).flat() || [];
+      return [createBlock(type, blockContent, [])];
 
     default:
-      console.log(data);
-      const content = extractContent(data);
-
-      return [
-        {
-          id: '',
-          parent_id: '',
-          block_type: data.type,
-          content,
-          children: [],
-        },
-      ];
+      blockContent = extractContent(data);
+      return [createBlock(type, blockContent, [])];
   }
+}
+
+function createContent(plain_text: string | null, href: string | null): Content {
+  return {
+    annotations: {
+      bold: null as string | null,
+      italic: null as string | null,
+      strikethrough: null as string | null,
+      underline: null as string | null,
+      code: null as string | null,
+      color: null as string | null,
+    },
+    plain_text: plain_text,
+    href: href,
+  } as Content;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -266,6 +279,7 @@ export function extractContent(data: any): Content[] {
     case BlockType.list_item:
     case BlockType.table_header:
     case BlockType.table_cell:
+    case BlockType.heading_1:
       return 'content' in data
         ? data.content?.map((dataContent: any) => {
             const dataContentType = confluenceType[dataContent.type as keyof ConfluenceType];
@@ -279,9 +293,10 @@ export function extractContent(data: any): Content[] {
                 };
 
               case BlockType.inline_card:
-                return {
-                  href: dataContent.attrs.url,
-                };
+                return createContent(null, dataContent.attrs.url);
+
+              // case CBlockType.date:
+              //   return createContent(dataContent.attrs.timestamp, null);
 
               default:
                 return [];
@@ -290,25 +305,17 @@ export function extractContent(data: any): Content[] {
         : [];
 
     case BlockType.block_card:
-      return [
-        {
-          href: data.attrs.href,
-        },
-      ] as Content[];
+      return [createContent(null, data.attrs.href)];
 
     case BlockType.file:
       return 'content' in data
         ? data.content?.map((media: any) => {
-            return { plain_text: media.attrs.__fileName } as Content;
+            return createContent(media.attrs.__fileName, null);
           })
         : [];
 
     case BlockType.toggle:
-      return [
-        {
-          plain_text: data.attrs.title,
-        } as Content,
-      ];
+      return [createContent(data.attrs.title, null)];
 
     case BlockType.numbered_list_item:
     case BlockType.bulleted_list_item:
