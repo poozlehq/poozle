@@ -3,6 +3,9 @@ $width: 420px;
 .container {
   width: $width;
   margin: var(--mantine-spacing-xl);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .title {
