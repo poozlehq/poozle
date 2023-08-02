@@ -61,6 +61,7 @@ export function Signup(): ReactElement {
             label="Name"
             placeholder="Elon Musk"
             required
+            align='center'
             {...form.getInputProps('name')}
           />
           <TextInput
@@ -68,6 +69,7 @@ export function Signup(): ReactElement {
             placeholder="elon@poozle.dev"
             mt="md"
             required
+            align='center'
             {...form.getInputProps('email')}
           />
           <PasswordInput
