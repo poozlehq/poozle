@@ -4,8 +4,13 @@ import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 import { BASE_URL, getMetaParams } from 'common';
 
-import {CreateTicketParams, GetTicketsParams, TicketResponse, TicketsResponse} from './ticket.interface';
-import { convertTicket } from './ticket.utils';
+import {
+  CreateTicketParams,
+  GetTicketsParams,
+  TicketsResponse,
+  UpdateTicketResponse,
+} from './ticket.interface';
+import { convertTicket, convertUpdateTicket } from './ticket.utils';
 
 export class TicketsPath extends BasePath {
   async fetchData(headers: AxiosHeaders, params: GetTicketsParams): Promise<TicketsResponse> {
@@ -61,14 +66,43 @@ export class TicketsPath extends BasePath {
     }
   }
 
+  async createTicket(
+    headers: AxiosHeaders,
+    params: CreateTicketParams,
+  ): Promise<UpdateTicketResponse> {
+    try {
+      const issueCreateInput = params.requestBody;
+      const response = await axios({
+        url: `${BASE_URL}`,
+        headers,
+        data: {
+          query: `
+            mutation IssueCreate($input: IssueCreateInput!) {
+              issueCreate(input: $input) {
+                lastSyncId
+                success
+              }
+            }
+          `,
+          variables: {
+            input: issueCreateInput,
+          },
+        },
+      });
+      return convertUpdateTicket(response.data);
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
 
   async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
     switch (method) {
       case 'GET':
         return this.fetchData(headers, params as GetTicketsParams);
 
-      // case 'POST':
-      //   return this.createTicket(headers, params as CreateTicketParams);
+      case 'POST':
+        await this.createTicket(headers, params as CreateTicketParams);
+        return this.fetchData(headers, params as GetTicketsParams);
 
       default:
         throw new Error('Method not found');

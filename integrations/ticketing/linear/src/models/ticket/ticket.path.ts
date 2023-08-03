@@ -38,6 +38,8 @@ export class TicketPath extends BasePath {
   async patchTicket(headers: AxiosHeaders, params: UpdateTicketParams): Promise<TicketResponse> {
     try {
       const id = params.pathParams?.ticket_id;
+      const title = params.requestBody.name;
+      const description = params.requestBody.description;
       const response = await axios({
         url: `${BASE_URL}`,
         headers,
@@ -53,6 +55,8 @@ export class TicketPath extends BasePath {
           `,
           variables: {
             id,
+            title,
+            description,
           },
         },
       });

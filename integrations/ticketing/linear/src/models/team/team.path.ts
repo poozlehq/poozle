@@ -17,7 +17,7 @@ export class TeamPath extends BasePath {
         headers,
         data: {
           query: `
-            query ExampleQuery($teamId: String!) {
+            query Team($teamId: String!) {
               team(id: $teamId) {
                 id 
                 name
@@ -55,12 +55,6 @@ export class TeamPath extends BasePath {
               teamUpdate(input: $input, id: $teamUpdateId) {
                 success
                 lastSyncId
-                team {
-                  id
-                  name
-                  description
-                  members
-                }
               }
             }
           `,
@@ -82,7 +76,8 @@ export class TeamPath extends BasePath {
         return this.getTeam(headers, params as TeamParams);
 
       case 'PATCH':
-        return this.updateTeam(headers, params as UpdateTeamParams);
+        await this.updateTeam(headers, params as UpdateTeamParams);
+        return this.getTeam(headers, params as TeamParams);
 
       default:
         throw new Error('Method not found');

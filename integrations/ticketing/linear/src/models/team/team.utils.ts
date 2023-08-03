@@ -15,7 +15,6 @@ export function convertTeam(data: any): Team {
 
 export function convertUpdateTeam(data: any): UpdateTeamResponse {
   return {
-    team: convertTeam(data.team),
     status: data.success,
     lastSyncId: data.lastSyncId,
   };

@@ -40,3 +40,8 @@ export interface CreateTicketParams {
     collection_id: string;
   };
 }
+
+export interface UpdateTicketResponse {
+  status: string;
+  lastSyncId: number;
+}

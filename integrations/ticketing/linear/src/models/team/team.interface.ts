@@ -44,7 +44,6 @@ export interface UpdateTeamParams {
 }
 
 export interface UpdateTeamResponse {
-  team: Team;
   status: string;
   lastSyncId: number;
 }

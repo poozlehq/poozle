@@ -3,8 +3,7 @@
 
 import { Ticket } from '@poozle/engine-idk';
 
-import { UpdateTeamResponse } from '../team/team.interface';
-import { convertTeam } from '../team/team.utils';
+import { UpdateTicketResponse } from './ticket.interface';
 
 export function convertTicket(data: any): Ticket {
   return {
@@ -42,9 +41,8 @@ export const ticketMappings = {
   status: 'state',
 };
 
-export function convertUpdateTicket(data: any): UpdateTeamResponse {
+export function convertUpdateTicket(data: any): UpdateTicketResponse {
   return {
-    team: convertTeam(data.team),
     status: data.success,
     lastSyncId: data.lastSyncId,
   };
