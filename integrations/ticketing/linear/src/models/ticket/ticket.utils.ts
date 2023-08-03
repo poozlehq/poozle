@@ -3,6 +3,9 @@
 
 import { Ticket } from '@poozle/engine-idk';
 
+import { UpdateTeamResponse } from '../team/team.interface';
+import { convertTeam } from '../team/team.utils';
+
 export function convertTicket(data: any): Ticket {
   return {
     id: data.number,
@@ -38,3 +41,11 @@ export const ticketMappings = {
   tags: 'label',
   status: 'state',
 };
+
+export function convertUpdateTicket(data: any): UpdateTeamResponse {
+  return {
+    team: convertTeam(data.team),
+    status: data.success,
+    lastSyncId: data.lastSyncId,
+  };
+}

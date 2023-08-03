@@ -4,7 +4,7 @@ import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 import { BASE_URL, getMetaParams } from 'common';
 
-import { GetTicketsParams, TicketResponse, TicketsResponse } from './ticket.interface';
+import {CreateTicketParams, GetTicketsParams, TicketResponse, TicketsResponse} from './ticket.interface';
 import { convertTicket } from './ticket.utils';
 
 export class TicketsPath extends BasePath {
@@ -23,6 +23,20 @@ export class TicketsPath extends BasePath {
                   title
                   description
                   createdAt
+                  state {
+                    name
+                  }
+                  url
+                  parent {
+                    id
+                  }
+                  priority
+                  dueDate
+                  completedAt
+                  assignee {
+                    id
+                    name
+                  }
                 }
                 pageInfo {
                   hasNextPage
@@ -47,15 +61,14 @@ export class TicketsPath extends BasePath {
     }
   }
 
-  async createTicket(headers: AxiosHeaders, params: Params): Promise<TicketResponse> {}
 
-  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
+  async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
     switch (method) {
       case 'GET':
-        return this.fetchData(headers, params);
+        return this.fetchData(headers, params as GetTicketsParams);
 
-      case 'POST':
-        return this.createTicket(headers, params);
+      // case 'POST':
+      //   return this.createTicket(headers, params as CreateTicketParams);
 
       default:
         throw new Error('Method not found');

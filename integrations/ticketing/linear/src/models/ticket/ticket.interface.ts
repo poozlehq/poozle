@@ -1,6 +1,6 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Ticket } from '@poozle/engine-idk';
+import { CreateTicketBody, Ticket, UpdateTicketBody } from '@poozle/engine-idk';
 import { Meta } from 'common';
 
 export interface TicketsResponse {
@@ -10,8 +10,6 @@ export interface TicketsResponse {
 
 export interface TicketResponse {
   data: Ticket;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  raw: any;
 }
 
 export interface GetTicketsParams {
@@ -20,6 +18,23 @@ export interface GetTicketsParams {
     cursor: string;
     created_after?: string;
   };
+
+  pathParams: {
+    collection_id: string;
+  };
+}
+
+export interface UpdateTicketParams {
+  requestBody: UpdateTicketBody;
+
+  pathParams: {
+    ticket_id: string;
+    collection_id: string;
+  };
+}
+
+export interface CreateTicketParams {
+  requestBody: CreateTicketBody;
 
   pathParams: {
     collection_id: string;
