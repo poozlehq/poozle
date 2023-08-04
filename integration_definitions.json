@@ -3,9 +3,9 @@
     "name": "Github",
     "key": "github",
     "icon": "github.svg",
-    "version": "0.1.7",
+    "version": "0.1.9",
     "releaseStage": "ALPHA",
-    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/github/0.1.7/index.js",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/github/0.1.9/index.js",
     "integrationType": "TICKETING"
   },
   {
