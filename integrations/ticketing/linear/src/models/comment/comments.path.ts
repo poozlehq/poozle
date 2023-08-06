@@ -4,7 +4,7 @@ import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 import { BASE_URL, getMetaParams } from 'common';
 
-import { CreateCommentResponse, CommentsResponse } from './comment.interface';
+import { MutateCommentResponse, CommentsResponse } from './comment.interface';
 import { convertComment } from './comment.utils';
 
 export class CommentsPath extends BasePath {
@@ -48,7 +48,7 @@ export class CommentsPath extends BasePath {
     }
   }
 
-  async createComment(headers: AxiosHeaders, params: Params): Promise<CreateCommentResponse> {
+  async createComment(headers: AxiosHeaders, params: Params): Promise<MutateCommentResponse> {
     try {
       const input = params;
       const response = await axios({
