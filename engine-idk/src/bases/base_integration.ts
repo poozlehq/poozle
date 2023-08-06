@@ -57,8 +57,8 @@ export class BaseIntegration implements BaseIntegrationInterface {
         headers = {
           ...headers,
           Authorization: `Bearer ${token.access_token}`,
-          'refresh-token': token.refresh_token,
-          expiry: token.expires_in,
+          'refresh-token': token.refresh_token ?? '',
+          expiry: `${token.expires_in}`,
         };
       } else {
         const type = config.authType;
@@ -93,7 +93,13 @@ export class BaseIntegration implements BaseIntegrationInterface {
     const pathToRun: BasePath | undefined = paths.find((p) => p.isPath(path, method));
 
     if (pathToRun) {
-      return await pathToRun.baseRun(method, headers as AxiosHeaders, params, config);
+      let parsedHeaders = headers;
+
+      if (!headers) {
+        parsedHeaders = await this.authHeaders(config);
+      }
+
+      return await pathToRun.baseRun(method, parsedHeaders as AxiosHeaders, params, config);
     }
 
     return {
