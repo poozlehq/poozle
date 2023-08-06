@@ -148,6 +148,8 @@ export class CollectionService {
         limit: query.limit,
         cursor: query.cursor,
         raw: query.raw,
+        created_after: query.created_after,
+        created_before: query.created_before,
       },
       {},
     );

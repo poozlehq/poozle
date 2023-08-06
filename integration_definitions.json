@@ -43,5 +43,14 @@
     "releaseStage": "ALPHA",
     "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/storage/google_drive/0.1.1/index.js",
     "integrationType": "STORAGE"
+  },
+  {
+    "name": "Google Calendar",
+    "key": "google_calendar",
+    "icon": "google_calendar.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/calendar/google_calendar/0.1.0/index.js",
+    "integrationType": "CALENDAR"
   }
 ]

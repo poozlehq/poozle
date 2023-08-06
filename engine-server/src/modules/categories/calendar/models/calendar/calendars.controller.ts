@@ -39,17 +39,17 @@ import {
   description: 'Not authorised',
 })
 export class CalendarController {
-  @Post('freebusy')
+  @Post('free-busy')
   async freebusy(
     @Query() query: CommonMessageQueryParams,
 
     @Body() FreeBusyBody: FreeBusyBody,
-    @GetIntegrationAccount(IntegrationType.MAIL)
+    @GetIntegrationAccount(IntegrationType.CALENDAR)
     integrationAccount: IntegrationAccount,
   ): Promise<FreeBusyResponse> {
     const freeBusyResponse = await getDataFromAccount(
       integrationAccount,
-      `/freebusy`,
+      `/free-busy`,
       Method.POST,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { ...defaultQueryParams, ...(query as any) },
@@ -65,7 +65,7 @@ export class CalendarController {
     @Query() query: CommonMessageQueryParams,
 
     @Body() AvailablityBody: FreeBusyBody,
-    @GetIntegrationAccount(IntegrationType.MAIL)
+    @GetIntegrationAccount(IntegrationType.CALENDAR)
     integrationAccount: IntegrationAccount,
   ): Promise<FreeBusyResponse> {
     const availabilityResponse = await getDataFromAccount(
