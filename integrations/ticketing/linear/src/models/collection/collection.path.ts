@@ -12,14 +12,19 @@ export class CollectionPath extends BasePath {
     headers: AxiosHeaders,
     params: Params,
   ): Promise<CollectionResponse> {
-      
-    /**
-     * TODO: You need to call the respective API return the data as expected by the type.
-     * You can check the github integration for reference.
-     */
+    try {
+      const response = await axios({
+        url,
+        headers,
+      });
+
+      return { data: convertCollection(response.data) };
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 
-  async run(_method: string, headers: AxiosHeaders, params: Params, config: Config) {
+  async run(_method: string, headers: AxiosHeaders, params: Params, _config: Config) {
 
     return this.fetchSingleCollection( headers, params);
   }
