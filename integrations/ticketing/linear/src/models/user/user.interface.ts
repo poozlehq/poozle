@@ -8,7 +8,7 @@ export interface UserWithRaw extends User {
   raw: any;
 }
 export interface UsersResponse {
-  data: User[];
+  data: UserWithRaw[];
   meta: Meta;
 }
 

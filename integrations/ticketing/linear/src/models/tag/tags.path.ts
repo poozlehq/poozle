@@ -1,35 +1,91 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { BasePath, Config, Params, convertToRequestBody } from '@poozle/engine-idk';
+import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL } from 'common';
+import { BASE_URL, getMetaParams } from 'common';
 
-import { TagResponse, TagsResponse } from './tag.interface';
-import { convertTag, tagMapping } from './tag.utils';
+import { IssueLabelCreateParams, TagCreateResponse, TagsResponse } from './tag.interface';
+import { convertTag } from './tag.utils';
 
 export class TagsPath extends BasePath {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getTags(headers: AxiosHeaders, params: Params): Promise<TagsResponse> {
-     /**
-     * TODO: You need to call the respective API return the data as expected by the type.
-     * You can check the github integration for reference.
-     */
+    try {
+      const page = params.queryParams?.cursor ? parseInt(<string>params.queryParams?.cursor) : 1;
+      const response = await axios({
+        url: `${BASE_URL}`,
+        headers,
+        data: {
+          query: `
+            query getIssueLabels {
+              issueLabels {
+                nodes {
+                  id
+                  createdAt
+                  description
+                  name
+                }
+              }
+            }
+          `,
+        },
+      });
+      const issueLabelList: object[] = response.data.data.issueLabels.nodes;
+      return {
+        data: issueLabelList.map(convertTag),
+        meta: getMetaParams(response.data, <number>params.queryParams?.cursor, page),
+      };
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 
-  async createTag(headers: AxiosHeaders, params: Params): Promise<TagResponse> {
-    /**
-     * TODO: You need to call the respective API return the data as expected by the type.
-     * You can check the github integration for reference.
-     */
+  async createTag(
+    headers: AxiosHeaders,
+    params: IssueLabelCreateParams,
+  ): Promise<TagCreateResponse> {
+    try {
+      const input = params;
+      const response = await axios({
+        url: `${BASE_URL}`,
+        headers,
+        data: {
+          query: `
+            mutation IssueLabelCreate($input: IssueLabelCreateInput!) {
+              issueLabelCreate(input: $input) {
+                lastSyncId
+                issueLabel {
+                  id
+                  createdAt
+                  description
+                  name
+                }
+                success
+              }
+            }
+          `,
+          variables: {
+            input,
+          },
+        },
+      });
+      return {
+        success: response.data.success,
+        lastSyncId: response.data.lastSyncId,
+        tag: convertTag(response.data.issueLabel),
+      };
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 
-  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
+  async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
     switch (method) {
       case 'GET':
         return this.getTags(headers, params);
 
       case 'POST':
-        return this.createTag(headers, params);
+        return this.createTag(headers, params as IssueLabelCreateParams);
 
       default:
         throw new Error('Method not found');
