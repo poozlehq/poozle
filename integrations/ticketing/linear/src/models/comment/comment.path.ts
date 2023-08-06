@@ -2,39 +2,104 @@
 
 import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL } from 'common';
 
-import { CommentResponse } from './comment.interface';
+import { CommentResponse, MutateCommentResponse, UpdateCommentParams } from './comment.interface';
 import { convertComment } from './comment.utils';
+import { BASE_URL } from '../../common';
 
 export class CommentPath extends BasePath {
   async fetchSingleComment(
     headers: AxiosHeaders,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _params: Params,
+    params: Params,
   ): Promise<CommentResponse> {
-     /**
-     * TODO: You need to call the respective API return the data as expected by the type.
-     * You can check the github integration for reference.
-     */
+    try {
+      const id = params.pathParams?.comment_id;
+      const response = await axios({
+        url: `${BASE_URL}`,
+        headers,
+        data: {
+          query: `
+            query Query($commentId: String!) {
+              comment(id: $commentId) {
+                id
+                createdAt
+                updatedAt
+                archivedAt
+                body
+                issue {
+                  id
+                }
+                parent {
+                  id
+                }
+                user {
+                  id
+                }
+                editedAt
+                bodyData
+                reactionData
+                url
+              }
+            }
+          `,
+          variables: {
+            id,
+          },
+        },
+      });
+      return { data: convertComment(response.data) };
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 
-  async patchComment(headers: AxiosHeaders, params: Params): Promise<CommentResponse> {
-     /**
-     * TODO: You need to call the respective API return the data as expected by the type.
-     * You can check the github integration for reference.
-     */
+  async patchComment(
+    headers: AxiosHeaders,
+    params: UpdateCommentParams,
+  ): Promise<MutateCommentResponse> {
+    try {
+      const id = params.pathParams?.comment_id;
+      const input = params.requestBody;
+      const response = await axios({
+        url: `${BASE_URL}`,
+        headers,
+        data: {
+          query: `
+            mutation Mutation($input: CommentUpdateInput!, $commentUpdateId: String!) {
+              commentUpdate(input: $input, id: $commentUpdateId) {
+                lastsyncId
+                success
+                comment {
+                  id
+                }
+              }
+            }
+          `,
+          variables: {
+            id,
+            input,
+          },
+        },
+      });
+      return {
+        lastSyncId: response.data.lastSyncId,
+        success: response.data.success,
+        data: convertComment(response.data),
+      };
+    } catch (e) {
+      throw new Error(e);
+    }
   }
 
-  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
-
+  async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
     switch (method) {
       case 'GET':
         return this.fetchSingleComment(headers, params);
 
       case 'PATCH':
-        await this.patchComment( headers, params);
-        return this.fetchSingleComment( headers, params);
+        await this.patchComment(headers, params as UpdateCommentParams);
+        return this.fetchSingleComment(headers, params);
 
       default:
         throw new Error('Method not found');
