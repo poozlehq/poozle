@@ -56,12 +56,10 @@ export interface CalenderListResponse {
 }
 
 export interface BusyType {
-  busy: [
-    {
-      start: string;
-      end: string;
-    },
-  ];
+  busy: {
+    start: string;
+    end: string;
+  }[];
 }
 
 export interface FreeBusyCalendar {

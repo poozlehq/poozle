@@ -35,7 +35,7 @@ export class FreeBusyPath extends BasePath {
   async run(method: string, headers: AxiosHeaders, params: FreeBusyParams, _config: Config) {
     let url = '';
     switch (method) {
-      case 'GET':
+      case 'POST':
         url = `${BASE_URL}/freeBusy`;
         return this.fetchFreeBusy(url, headers, params);
 

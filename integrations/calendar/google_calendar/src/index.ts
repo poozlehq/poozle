@@ -23,7 +23,7 @@ class GoogleCalendarIntegration extends BaseIntegration {
        * Read and send calendars
        */
       new FreeBusyPath(/^\/?free-busy$/g, ['POST']),
-      new AvailablePath(/^\/?available$/g, ['POST']),
+      new AvailablePath(/^\/?availability$/g, ['POST']),
     ];
   }
 }

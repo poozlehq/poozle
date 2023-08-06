@@ -48,21 +48,32 @@ export function convertFreeBusy(
   });
 
   const freeBusyArray: FreeBusy[] = [];
-
+  console.log(data.calendars);
   Object.entries(data.calendars).forEach(([id, calendar]) => {
     const busyCalendar = calendar as BusyType;
     const matchedCalendar = calendars.find((calendar) => calendar.id === id);
 
-    busyCalendar.busy.forEach((timeslot) => {
+    if (busyCalendar.busy.length === 0) {
       freeBusyArray.push({
         id,
         description: matchedCalendar ? matchedCalendar.description : '',
         timezone: params.requestBody.timezone,
-        start_time: timeslot.start,
-        end_time: timeslot.end,
-        status: StatusType.busy,
+        start_time: params.requestBody.start_time,
+        end_time: params.requestBody.end_time,
+        status: StatusType.free,
       });
-    });
+    } else {
+      busyCalendar.busy.forEach((timeslot) => {
+        freeBusyArray.push({
+          id,
+          description: matchedCalendar ? matchedCalendar.description : '',
+          timezone: params.requestBody.timezone,
+          start_time: timeslot.start,
+          end_time: timeslot.end,
+          status: StatusType.busy,
+        });
+      });
+    }
   });
 
   return freeBusyArray;

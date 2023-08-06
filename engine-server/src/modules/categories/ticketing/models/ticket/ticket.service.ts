@@ -158,6 +158,8 @@ export class TicketService {
         limit: query.limit,
         cursor: query.cursor,
         raw: query.raw,
+        created_after: query.created_after,
+        created_before: query.created_before,
       },
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
