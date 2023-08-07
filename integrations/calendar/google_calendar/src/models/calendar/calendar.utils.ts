@@ -48,7 +48,6 @@ export function convertFreeBusy(
   });
 
   const freeBusyArray: FreeBusy[] = [];
-  console.log(data.calendars);
   Object.entries(data.calendars).forEach(([id, calendar]) => {
     const busyCalendar = calendar as BusyType;
     const matchedCalendar = calendars.find((calendar) => calendar.id === id);
