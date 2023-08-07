@@ -20,6 +20,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { CheckResponse } from '@poozle/engine-idk';
+import { Method } from 'axios';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
@@ -194,7 +195,7 @@ export class IntegrationAccountController {
     return await this.integrationAccountService.runProxyCommand(
       integrationAccountIdRequestIdBody.integrationAccountId,
       body,
-      request.method,
+      request.method as Method,
       integrationAccountIdRequestIdBody['0'],
       query,
     );

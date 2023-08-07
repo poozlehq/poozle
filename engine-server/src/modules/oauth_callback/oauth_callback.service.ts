@@ -71,6 +71,7 @@ export class OAuthCallbackService {
     redirectURL: string,
     linkId?: string,
     accountIdentifier?: string,
+    integrationKeys?: string,
   ) {
     if (!integrationAccountName || !redirectURL) {
       throw new BadRequestException({
@@ -127,13 +128,18 @@ export class OAuthCallbackService {
         redirectURL,
         linkId,
         accountIdentifier,
+        integrationKeys,
       };
+
+      let scopes = integrationOAuth.scopes.split(',');
+
+      if (template.default_scopes) {
+        scopes = scopes.concat(template.default_scopes);
+      }
 
       const authorizationUri = simpleOAuthClient.authorizeURL({
         redirect_uri: CALLBACK_URL,
-        scope: integrationOAuth.scopes
-          .split(',')
-          .join(template.scope_separator || ' '),
+        scope: scopes.join(template.scope_separator || ' '),
         state: uniqueId,
         ...additionalAuthParams,
       });
@@ -222,6 +228,13 @@ export class OAuthCallbackService {
       ).toString('base64')}`;
     }
 
+    const accountIdentifier = sessionRecord.accountIdentifier
+      ? `&accountIdentifier=${sessionRecord.accountIdentifier}`
+      : '';
+    const integrationKeys = sessionRecord.integrationKeys
+      ? `&integrationKeys=${sessionRecord.integrationKeys}`
+      : '';
+
     try {
       const simpleOAuthClient = new simpleOauth2.AuthorizationCode(
         getSimpleOAuth2ClientConfig(
@@ -281,12 +294,11 @@ export class OAuthCallbackService {
       );
 
       res.redirect(
-        `${sessionRecord.redirectURL}?success=true&integrationName=${integrationOAuth.integrationDefinition.name}`,
+        `${sessionRecord.redirectURL}?success=true&integrationName=${integrationOAuth.integrationDefinition.name}${accountIdentifier}${integrationKeys}`,
       );
     } catch (e) {
-      console.log(e);
       res.redirect(
-        `${sessionRecord.redirectURL}?success=false&error=${e.message}`,
+        `${sessionRecord.redirectURL}?success=false&error=${e.message}${accountIdentifier}${integrationKeys}`,
       );
     }
   }

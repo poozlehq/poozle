@@ -15,6 +15,7 @@ export interface SessionRecord {
   redirectURL: string;
   linkId?: string;
   accountIdentifier?: string;
+  integrationKeys?: string;
 }
 
 export class BodyInterface {
@@ -34,6 +35,10 @@ export class BodyInterface {
   @IsString()
   @IsOptional()
   linkId?: string;
+
+  @IsString()
+  @IsOptional()
+  integrationKeys?: string;
 
   @IsString()
   @IsOptional()

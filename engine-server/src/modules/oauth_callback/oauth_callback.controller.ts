@@ -51,6 +51,7 @@ export class OAuthCallbackController {
       body.redirectURL,
       body.linkId,
       body.accountIdentifier,
+      body.integrationKeys,
     );
   }
 

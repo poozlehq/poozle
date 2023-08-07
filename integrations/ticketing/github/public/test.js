@@ -3,7 +3,7 @@
 const { main } = require('../github/index');
 
 async function run() {
-  const response = await main('SPEC', {});
+  const response = await main('RUN', {});
 
   console.log(response);
 }

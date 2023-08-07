@@ -16,6 +16,61 @@ export class DataService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   credentials: Record<string, Record<string, string>> = {};
 
+  async proxyIntegrationCommand(
+    integrationAccount: IntegrationAccount,
+    path: string,
+    method: Method,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    params: Record<string, any>,
+  ) {
+    return await this.runProxyIntegrationCommand(
+      integrationAccount,
+      path,
+      method,
+      params,
+    );
+  }
+
+  async getDataFromAccount(
+    integrationAccount: IntegrationAccount,
+    path: string,
+    method: Method,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    queryParams: any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    pathParams: any,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    requestBody?: any,
+  ) {
+    return await this.runIntegrationCommand(integrationAccount, path, method, {
+      queryParams,
+      pathParams,
+      requestBody,
+    });
+  }
+
+  async checkIntegrationCredentials(
+    integrationSourceUrl: string,
+    config: Config,
+    authType: string,
+  ): CheckResponse {
+    const integrationSource = await loadRemoteModule(integrationSourceUrl);
+
+    const response = await integrationSource.default('CHECK', {
+      config: {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ...config,
+        authType,
+      },
+    });
+
+    return response;
+  }
+
+  /**
+   * Header utils
+   */
+
   async getHeaders(integrationAccount: IntegrationAccount) {
     const integrationSource = await loadRemoteModule(
       integrationAccount.integrationDefinition.sourceUrl,
@@ -42,7 +97,7 @@ export class DataService {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     integrationSource: any,
   ) {
-    const headers = await await integrationSource.default('HEADERS', {
+    const headers = await integrationSource.default('HEADERS', {
       config: {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ...(integrationAccount.integrationConfiguration as any),
@@ -72,43 +127,18 @@ export class DataService {
         delete headers['refresh-token'];
         delete headers['expiry'];
       }
-
-      return headers;
     }
+    return headers;
   }
 
-  async getDataFromAccount(
-    integrationAccount: IntegrationAccount,
-    path: string,
-    method: Method,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    queryParams: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    pathParams: any,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    requestBody?: any,
-  ) {
-    return await this.runIntegrationCommand(
-      integrationAccount,
-      path,
-      method,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      integrationAccount.integrationConfiguration as any,
-      integrationAccount.authType,
-      {
-        queryParams,
-        pathParams,
-        requestBody,
-      },
-    );
-  }
+  /**
+   * Direct commands to integration
+   */
 
   async runIntegrationCommand(
     integrationAccount: IntegrationAccount,
     path: string,
     method: string,
-    config: Config,
-    authType: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     params: Record<string, any>,
   ) {
@@ -120,8 +150,9 @@ export class DataService {
 
     return await integrationSource.default('RUN', {
       config: {
-        ...config,
-        authType,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        ...(integrationAccount.integrationConfiguration as any),
+        authType: integrationAccount.authType,
       },
       headers,
       path,
@@ -130,21 +161,49 @@ export class DataService {
     });
   }
 
-  async checkIntegrationCredentials(
-    integrationSourceUrl: string,
-    config: Config,
-    authType: string,
-  ): CheckResponse {
-    const integrationSource = await loadRemoteModule(integrationSourceUrl);
+  async runProxyIntegrationCommand(
+    integrationAccount: IntegrationAccount,
+    path: string,
+    method: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    params: Record<string, any>,
+  ) {
+    const integrationSource = await loadRemoteModule(
+      integrationAccount.integrationDefinition.sourceUrl,
+    );
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const finalParams: any = {
+      proxy: true,
+    };
+    const headers = await this.getHeaders(integrationAccount);
 
-    const response = await integrationSource.default('CHECK', {
-      config: {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ...config,
-        authType,
-      },
-    });
+    if (method === 'POST' || method === 'PATCH' || method === 'PUT') {
+      finalParams['requestBody'] = params.requestBody;
+    }
 
-    return response;
+    try {
+      const response = await integrationSource.default('RUN', {
+        config: {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ...(integrationAccount.integrationConfiguration as any),
+          authType: integrationAccount.authType,
+        },
+        headers,
+        path: '',
+        method,
+        params: {
+          proxy: true,
+          url: path,
+        },
+      });
+
+      if (response.error) {
+        return { data: {}, error: response.error.message };
+      }
+
+      return { data: response };
+    } catch (e) {
+      return e;
+    }
   }
 }

@@ -17,6 +17,7 @@ export function PublicLinkWrapper() {
     error: errorFromServer,
     integrationName,
     accountIdentifier,
+    integrationKeys,
     redirectURL,
   } = query;
 
@@ -56,6 +57,9 @@ export function PublicLinkWrapper() {
       accountIdentifier={accountIdentifier as string}
       redirectURL={redirectURL as string}
       onClose={() => setClosed(true)}
+      integrationKeys={
+        integrationKeys ? (integrationKeys as string).split(',') : []
+      }
     />
   );
 }
