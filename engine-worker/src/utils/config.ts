@@ -56,7 +56,7 @@ function generateSource(
         workspace_id: integrationAccount.workspaceId,
         integration_account_id: integrationAccount.integrationAccountId,
         uid: 'github',
-        start_date: '2020-01-01T00:00:00Z',
+        start_date: '2023-01-01T00:00:00Z',
         url: `${process.env.BACKEND_URL}/v1/${integrationDefinitionType}`,
       },
     },
