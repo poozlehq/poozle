@@ -16,6 +16,7 @@ import { PagePath } from 'models/page/page.path';
 import { PagesPath } from 'models/page/pages.path';
 
 import spec from './spec';
+import { getBaseUrl } from 'common';
 
 class NotionIntegration extends BaseIntegration {
   async spec(): SpecificationResponse {
@@ -50,9 +51,10 @@ class NotionIntegration extends BaseIntegration {
   async check(config: Config): CheckResponse {
     try {
       const headers = await this.authHeaders(config);
+      const baseURL = await getBaseUrl(config, headers);
 
       await axios({
-        url: `https://${config.jira_domain}.atlassian.net/wiki/rest/api/content?limit=1`,
+        url: `${baseURL}/pages?limit=1`,
         headers,
       });
 
