@@ -33,7 +33,9 @@ class NotionIntegration extends BaseIntegration {
           config,
         );
         const headers = {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token.access_token}`,
+          'refresh-token': token.refresh_token,
+          expiry: token.expires_in,
         };
         return headers;
       }
@@ -50,7 +52,7 @@ class NotionIntegration extends BaseIntegration {
 
   async check(config: Config): CheckResponse {
     try {
-      const headers = await this.authHeaders(config);
+      const headers = (await this.authHeaders(config)) as Record<string, string>;
       const baseURL = await getBaseUrl(config, headers);
 
       await axios({

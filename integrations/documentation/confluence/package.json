@@ -1,6 +1,6 @@
 {
   "name": "@poozle/confluence",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "confluence extension for Poozle",
   "exports": {
     ".": {
@@ -47,7 +47,7 @@
     "access": "public"
   },
   "dependencies": {
-    "@poozle/engine-idk": "^0.1.43",
+    "@poozle/engine-idk": "^0.1.44",
     "axios": "^1.4.0"
   },
   "browserslist": {

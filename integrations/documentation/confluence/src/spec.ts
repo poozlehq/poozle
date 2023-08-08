@@ -22,6 +22,7 @@ export default {
     OAuth2: {
       authorization_url: 'https://auth.atlassian.com/authorize',
       token_url: 'https://auth.atlassian.com/oauth/token',
+      default_scopes: ['offline_access'],
       authorization_params: {
         audience: 'api.atlassian.com',
         prompt: 'consent',
@@ -58,7 +59,7 @@ export default {
       type: 'object',
       properties: {
         confluence_domain: {
-          type: 'string', 
+          type: 'string',
           title: 'Confluence Domain',
           description: 'Enter the subdomain for Confluence',
         },

@@ -1,34 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Block, BlockType, Content, Params } from '@poozle/engine-idk';
-import axios, { AxiosHeaders } from 'axios';
+import { Block, BlockType, Content } from '@poozle/engine-idk';
 import { ConfluenceType, confluenceType } from './block.interface';
-
-export interface SingleBlockResponse {
-  object: string;
-  id: string;
-  parent: Record<string, string>;
-  created_time: string;
-  last_edited_time: string;
-  created_by: Record<string, string>;
-  last_edited_by: Record<string, string>;
-  has_children: boolean;
-  archived: boolean;
-  type: BlockType;
-
-  // TODO (harshith): fix the types
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any;
-  children?: SingleBlockResponse[];
-}
-
-export interface BlockResponse {
-  blocks: SingleBlockResponse[];
-  meta: {
-    has_more: boolean;
-    next_cursor: string;
-  };
-}
 
 export function convertUpdateBody(data: Block) {
   return {
@@ -68,88 +41,6 @@ export function convertAppendBody(data: Block[]) {
   };
 }
 
-export async function fetchBlockChildren(
-  block: SingleBlockResponse,
-  headers: AxiosHeaders,
-): Promise<any> {
-  const childUrl = `sdfa/blocks/${block.id.replace(/-/g, '')}/children`;
-
-  const params = {
-    page_size: 100,
-  };
-
-  const response = await axios({ url: childUrl, headers, params });
-  let results = response.data.results;
-  let has_more = response.data.has_more;
-  let next_cursor = response.data.has_more ? response.data.next_cursor : '';
-
-  while (has_more) {
-    const next_response = await axios({
-      url: childUrl,
-      headers,
-      params: {
-        start_cursor: next_cursor,
-      },
-    });
-
-    results = results.concat(next_response.data.results);
-
-    has_more = next_response.data.has_more;
-    next_cursor = next_response.data.has_more ? next_response.data.next_cursor : '';
-  }
-
-  results = await Promise.all(
-    results?.map(async (block: SingleBlockResponse) => {
-      if (block.has_children) {
-        const children = await fetchBlockChildren(block, headers);
-        return { ...block, children: children.blocks };
-      }
-
-      return block;
-    }),
-  );
-
-  return {
-    blocks: results,
-  };
-}
-
-export async function fetchPageBlocks(
-  url: string,
-  headers: AxiosHeaders,
-  params: Params,
-): Promise<BlockResponse> {
-  const limit = params.queryParams?.limit ? parseInt(params.queryParams?.limit.toString()) : 10;
-
-  const final_params = {
-    page_size: limit,
-    ...(params.queryParams?.cursor ? { start_cursor: params.queryParams?.cursor } : {}),
-  };
-
-  const response = await axios({ url, headers, params: final_params });
-  let results = response.data.results;
-
-  results = await Promise.all(
-    results?.map(async (block: SingleBlockResponse) => {
-      if (block.has_children) {
-        const children = await fetchBlockChildren(block, headers);
-
-        return { ...block, children: children.blocks };
-      }
-
-      return block;
-    }),
-  );
-
-  return {
-    blocks: results,
-    meta: {
-      has_more: response.data.has_more,
-      next_cursor: response.data.has_more ? response.data.next_cursor : '',
-    },
-  };
-}
-
 function createBlock(type: BlockType, content: Content[], children: Block[]): Block {
   return {
     id: '',
@@ -160,6 +51,7 @@ function createBlock(type: BlockType, content: Content[], children: Block[]): Bl
   } as Block;
 }
 
+// This is for generating id
 let id = 1;
 
 export function processBlock(block: Block, raw: any, childId?: number, parentId?: string): Block {
@@ -292,7 +184,7 @@ export function extractContent(data: any): Content[] {
     case BlockType.file:
       return 'content' in data
         ? data.content?.map((media: any) => {
-            return createContent(media.attrs.__fileName, null);
+            return createContent(media.attrs.id ?? null, null);
           })
         : [];
 

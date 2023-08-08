@@ -23,14 +23,11 @@ export class PagesPath extends BasePath {
           }),
     };
 
-    console.log(finalParams);
     const pagesResponse = await axios({
       url,
       headers,
       params: finalParams,
     });
-
-    console.log(pagesResponse.data);
 
     return {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -44,7 +41,6 @@ export class PagesPath extends BasePath {
   async run(method: string, headers: AxiosHeaders, params: PagesParams, config: Config) {
     let url = '';
     const BASE_URL = await getBaseUrl(config, headers);
-    console.log(BASE_URL);
     switch (method) {
       case 'GET':
         url = `${BASE_URL}/pages`;

@@ -32,7 +32,7 @@ export async function getBaseUrl(config: Config, headers: Record<string, string>
 
     const cloudId = response.data.find(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (resource: any) => resource.url === `https://${config.jira_domain}`,
+      (resource: any) => resource.url === `https://${config.confluence_domain}`,
     ).id;
     return `https://api.atlassian.com/ex/confluence/${cloudId}/wiki/api/v2`;
   }

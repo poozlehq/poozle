@@ -57,9 +57,9 @@
     "name": "Confluence",
     "key": "confluence",
     "icon": "confluence.svg",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "releaseStage": "ALPHA",
-    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/documentation/confluence/0.1.0/index.js",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/documentation/confluence/0.1.1/index.js",
     "integrationType": "DOCUMENTATION"
   }
 ]
