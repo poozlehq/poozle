@@ -61,5 +61,6 @@
     "releaseStage": "ALPHA",
     "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/documentation/confluence/0.1.1/index.js",
     "integrationType": "DOCUMENTATION"
+
   }
 ]
