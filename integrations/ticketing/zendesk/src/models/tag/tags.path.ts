@@ -2,7 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL, getPageMeta } from 'common';
+import { getBaseUrl, getPageMeta } from 'common';
 
 import { GetTeamsParams, TagsResponse } from './tag.interface';
 import { convertTag } from './tag.utils';
@@ -29,8 +29,9 @@ export class TagsPath extends BasePath {
     };
   }
 
-  async run(method: string, headers: AxiosHeaders, params: GetTeamsParams, _config: Config) {
-    const url = `${BASE_URL}/tag`;
+  async run(method: string, headers: AxiosHeaders, params: GetTeamsParams, config: Config) {
+    const BASE_URL = getBaseUrl(config);
+    const url = `${BASE_URL}/tags`;
     switch (method) {
       case 'GET':
         return this.getTags(url, headers, params);

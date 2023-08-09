@@ -14,6 +14,7 @@ export interface Ticket {
   id: string;
   parent_id: string;
   collection_id: string;
+  organization_id: string;
   type: string;
   name: string;
   description: string;
@@ -37,6 +38,9 @@ export interface CreateTicketBody {
   tags: TicketTag[];
   created_by: string;
   type: string;
+  account_id: string;
+  priority: string;
+  status: string;
 }
 
 export interface UpdateTicketBody {

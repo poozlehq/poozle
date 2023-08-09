@@ -2,7 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL, getPageMeta } from 'common';
+import { getBaseUrl, getPageMeta } from 'common';
 
 import { AccountsResponse, CreateAccountParams, GetAccountsParams } from './account.interface';
 import { convertAccount } from './account.utils';
@@ -41,8 +41,9 @@ export class AccountsPath extends BasePath {
     method: string,
     headers: AxiosHeaders,
     params: GetAccountsParams | CreateAccountParams,
-    _config: Config,
+    config: Config,
   ) {
+    const BASE_URL = getBaseUrl(config);
     const url = `${BASE_URL}/organizations`;
     switch (method) {
       case 'GET':

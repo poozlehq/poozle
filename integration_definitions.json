@@ -61,6 +61,14 @@
     "releaseStage": "ALPHA",
     "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/documentation/confluence/0.1.1/index.js",
     "integrationType": "DOCUMENTATION"
-
+  },
+  {
+    "name": "Zendesk",
+    "key": "zendesk",
+    "icon": "zendesk.svg",
+    "version": "0.1.0",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/zendesk/0.1.0/index.js",
+    "integrationType": "TICKETING"
   }
 ]

@@ -2,7 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL, getMetaParams } from 'common';
+import { convertDatetime, getBaseUrl, getMetaParams } from 'common';
 
 import {
   CreateTicketParams,
@@ -24,7 +24,7 @@ export class TicketsPath extends BasePath {
         ? {
             start_time: params.queryParams.cursor
               ? params.queryParams.cursor
-              : params.queryParams.created_after,
+              : convertDatetime(params.queryParams.created_after),
           }
         : {}),
     };
@@ -58,8 +58,9 @@ export class TicketsPath extends BasePath {
     method: string,
     headers: AxiosHeaders,
     params: GetTicketsParams | CreateTicketParams,
-    _config: Config,
+    config: Config,
   ) {
+    const BASE_URL = getBaseUrl(config);
     let url = `${BASE_URL}/tickets`;
 
     switch (method) {

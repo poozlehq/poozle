@@ -1,24 +1,24 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 export default {
-  'Api-Key': {
-    input_specification: {
-      type: 'object',
-      properties: {
-        email_id: {
-          type: 'string',
-          title: 'Email ID',
-          description: 'Enter the Email ID',
-        },
-        api_key: {
-          type: 'string',
-          title: 'Api Key',
-          description: 'Enter the API Key',
+  auth_specification: {
+    'Api-Key': {
+      input_specification: {
+        type: 'object',
+        properties: {
+          email_id: {
+            type: 'string',
+            title: 'Email ID',
+            description: 'Enter the Email ID',
+          },
+          api_key: {
+            type: 'string',
+            title: 'Api Key',
+            description: 'Enter the API Key',
+          },
         },
       },
     },
-  },
-  auth_specification: {
     OAuth2: {
       token_url: 'https://${zendesk_domain}/oauth/authorizations/new',
       authorization_url: 'https://${zendesk_domain}/oauth/tokens',

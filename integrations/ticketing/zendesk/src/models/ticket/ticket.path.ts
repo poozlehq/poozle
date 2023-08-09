@@ -2,7 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL } from 'common';
+import { getBaseUrl } from 'common';
 
 import { GetTicketParams, TicketResponse, UpdateTicketParams } from './ticket.interface';
 import { convertCreateUpdateBody, convertTicket } from './ticket.utils';
@@ -19,7 +19,7 @@ export class TicketPath extends BasePath {
     });
 
     return {
-      data: convertTicket(response.data),
+      data: convertTicket(response.data.ticket),
     };
   }
 
@@ -41,8 +41,9 @@ export class TicketPath extends BasePath {
     method: string,
     headers: AxiosHeaders,
     params: GetTicketParams | UpdateTicketParams,
-    _config: Config,
+    config: Config,
   ) {
+    const BASE_URL = getBaseUrl(config);
     const url = `${BASE_URL}/tickets/${params.pathParams.ticket_id}`;
 
     switch (method) {

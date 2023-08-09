@@ -2,7 +2,7 @@
 
 import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL, getPageMeta } from 'common';
+import { getBaseUrl, getPageMeta } from 'common';
 
 import { TeamResponse, TeamsResponse } from './team.interface';
 import { convertTeam } from './team.utils';
@@ -34,7 +34,8 @@ export class TeamsPath extends BasePath {
     return { data: convertTeam(response.data.group) };
   }
 
-  async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
+  async run(method: string, headers: AxiosHeaders, params: Params, config: Config) {
+    const BASE_URL = getBaseUrl(config);
     const url = `${BASE_URL}/groups`;
     switch (method) {
       case 'GET':

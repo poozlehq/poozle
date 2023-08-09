@@ -50,7 +50,7 @@ class ZendeskIntegration extends BaseIntegration {
       }
 
       return {
-        Authorization: `Basic ${Buffer.from(`${config.email_id}:${config.api_key}`).toString(
+        Authorization: `Basic ${Buffer.from(`${config.email_id}/token:${config.api_key}`).toString(
           'base64',
         )}`,
       };

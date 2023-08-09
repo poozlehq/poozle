@@ -2,7 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL } from 'common';
+import { getBaseUrl } from 'common';
 
 import { AccountResponse, GetAccountParams, updateAccountParams } from './account.interface';
 import { convertAccount } from './account.utils';
@@ -37,8 +37,9 @@ export class AccountPath extends BasePath {
     method: string,
     headers: AxiosHeaders,
     params: GetAccountParams | updateAccountParams,
-    _config: Config,
+    config: Config,
   ) {
+    const BASE_URL = getBaseUrl(config);
     const url = `${BASE_URL}/organizations/${params.pathParams.account_id}`;
 
     switch (method) {

@@ -2,7 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL, getPageMeta } from 'common';
+import { getBaseUrl, getPageMeta } from 'common';
 
 import { CommentsResponse, CreateCommentsParams, GetCommentsParams } from './comment.interface';
 import { convertComment } from './comment.utils';
@@ -20,7 +20,6 @@ export class CommentsPath extends BasePath {
       per_page: params.queryParams?.limit ?? 10,
       page,
     };
-
     const response = await axios({
       url,
       headers,
@@ -28,7 +27,7 @@ export class CommentsPath extends BasePath {
     });
 
     return {
-      data: response.data.comments.map((comment: any) =>
+      data: response.data.comments?.map((comment: any) =>
         convertComment(comment, params.pathParams.ticket_id),
       ),
       meta: getPageMeta(response.data, page.toString()),
@@ -51,11 +50,12 @@ export class CommentsPath extends BasePath {
     method: string,
     headers: AxiosHeaders,
     params: GetCommentsParams | CreateCommentsParams,
-    _config: Config,
+    config: Config,
   ) {
+    const BASE_URL = getBaseUrl(config);
     let url = `${BASE_URL}/tickets/${params.pathParams.ticket_id}/comments`;
     switch (method) {
-      case 'GET' && params.pathParams?.ticket_id:
+      case 'GET':
         return this.fetchData(url, headers, params as GetCommentsParams);
 
       case 'POST':

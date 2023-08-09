@@ -22,7 +22,7 @@ export function convertTicket(data: any): TicketWithRaw {
       },
     ],
     ticket_url: data.url,
-    tags: data.tags.map((lab: any) => ({
+    tags: data.tags?.map((lab: any) => ({
       id: '',
       name: lab.name,
     })),
@@ -42,7 +42,7 @@ export function convertCreateUpdateBody(data: createBody) {
   return {
     ticket: {
       subject: data.name,
-      organization_id: data.organization_id,
+      organization_id: data.account_id,
       status: data.status,
       ...(data.tags
         ? {

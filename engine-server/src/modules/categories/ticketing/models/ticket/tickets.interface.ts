@@ -116,6 +116,18 @@ export class CreateTicketBody {
   @IsOptional()
   @IsString()
   type: string;
+
+  @IsOptional()
+  @IsString()
+  account_id: string;
+
+  @IsOptional()
+  @IsString()
+  priority: string;
+
+  @IsOptional()
+  @IsString()
+  status: string;
 }
 
 export class UpdateTicketBody {

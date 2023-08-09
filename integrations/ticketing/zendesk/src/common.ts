@@ -2,8 +2,6 @@
 
 import { Config } from '@poozle/engine-idk';
 
-export const BASE_URL = 'GIVE_BASE_URL';
-
 export interface Meta {
   previous: string;
   next: string;
@@ -14,11 +12,11 @@ export function getMetaParams(data: any, current_page: string): Meta {
   return {
     previous: '',
     current: current_page,
-    next: data.end_time.toString() ?? '',
+    next: !data.end_of_stream ? data.end_time.toString() : '',
   };
 }
 
-export function convertEpoc(epochTime: string) {
+export function convertEpoch(epochTime: string) {
   const date = new Date(Number(epochTime));
   return date.toISOString();
 }
@@ -39,14 +37,6 @@ function getPage(pageUrl: string, param: string) {
 }
 
 export function getPageMeta(data: any, current_page: string): Meta {
-  return {
-    previous: data.previous_page ? getPage(data.previous_page, 'page') : '',
-    current: current_page,
-    next: data.previous_page ? getPage(data.next_page, 'page') : '',
-  };
-}
-
-export function getCommentMeta(data: any, current_page: string): Meta {
   return {
     previous: data.previous_page ? getPage(data.previous_page, 'page') : '',
     current: current_page,

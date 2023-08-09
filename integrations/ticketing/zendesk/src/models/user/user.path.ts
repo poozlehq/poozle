@@ -2,7 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL } from 'common';
+import { getBaseUrl } from 'common';
 
 import { GetUserParams, UserResponse } from './user.interface';
 import { convertUser } from './user.utils';
@@ -23,7 +23,8 @@ export class UserPath extends BasePath {
     };
   }
 
-  async run(method: string, headers: AxiosHeaders, params: GetUserParams, _config: Config) {
+  async run(method: string, headers: AxiosHeaders, params: GetUserParams, config: Config) {
+    const BASE_URL = getBaseUrl(config);
     switch (method) {
       case 'GET':
         const url = `${BASE_URL}/users/${params.pathParams.user_id}`;

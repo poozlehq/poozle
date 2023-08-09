@@ -22,7 +22,7 @@ export interface GetTicketsParams {
   queryParams: {
     limit: number;
     cursor?: string;
-    created_after?: string;
+    created_after: string;
   };
 
   pathParams: {
@@ -38,7 +38,7 @@ export interface GetTicketParams {
 }
 
 export interface createBody extends CreateTicketBody {
-  organization_id: string;
+  account_id: string;
   priority: string;
   status: string;
 }
@@ -47,7 +47,7 @@ export interface CreateTicketParams {
   requestBody: createBody;
 
   pathParams: {
-    organization_id: string;
+    account_id: string;
   };
 }
 
@@ -55,7 +55,7 @@ export interface UpdateTicketParams {
   requestBody: createBody;
 
   pathParams: {
-    organization_id: string;
+    account_id: string;
     ticket_id: string;
   };
 }

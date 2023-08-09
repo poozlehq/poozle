@@ -2,7 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL, getMetaParams } from 'common';
+import { getBaseUrl, getMetaParams } from 'common';
 
 import { GetUsersParams, UsersResponse } from './user.interface';
 import { convertUser } from './user.utils';
@@ -12,7 +12,6 @@ export class UsersPath extends BasePath {
     url: string,
     headers: AxiosHeaders,
     params: GetUsersParams,
-    _config: Config,
   ): Promise<UsersResponse> {
     const final_params = {
       per_page: params.queryParams.limit,
@@ -37,10 +36,11 @@ export class UsersPath extends BasePath {
   }
 
   async run(method: string, headers: AxiosHeaders, params: GetUsersParams, config: Config) {
+    const BASE_URL = getBaseUrl(config);
     switch (method) {
       case 'GET':
         const url = `${BASE_URL}/incremental/users`;
-        return this.getUsers(url, headers, params, config);
+        return this.getUsers(url, headers, params);
 
       default:
         throw new Error('Method not found');
