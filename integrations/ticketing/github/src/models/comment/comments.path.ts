@@ -70,17 +70,17 @@ export class CommentsPath extends BasePath {
     let url = '';
     switch (method) {
       case 'GET':
-      case params.pathParams?.collection_id:
-      case params.pathParams?.ticket_id:
-        url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues/${params.pathParams?.ticket_id}/comments`;
+      case params.queryParams?.collection_id:
+      case params.queryParams?.ticket_id:
+        url = `${BASE_URL}/repos/${config.org}/${params.queryParams?.collection_id}/issues/${params.queryParams?.ticket_id}/comments`;
         return this.fetchData(url, headers, params as GetCommentsParams);
 
       case 'POST':
-        url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues/${params.pathParams?.ticket_id}/comments`;
+        url = `${BASE_URL}/repos/${config.org}/${params.queryParams?.collection_id}/issues/${params.queryParams?.ticket_id}/comments`;
         return this.createComment(url, headers, params as CreateCommentParams);
 
       default:
-        url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues/comments`;
+        url = `${BASE_URL}/repos/${config.org}/${params.queryParams?.collection_id}/issues/comments`;
         return this.fetchData(url, headers, params as GetCommentsParams);
     }
   }

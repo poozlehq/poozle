@@ -21,21 +21,16 @@ export interface GetCommentsParams {
     limit: number;
     cursor?: string;
     created_after?: string;
-  };
-
-  pathParams: {
-    organization_id: string;
     ticket_id: string;
   };
+
+  pathParams: {};
 }
 
 export interface CreateCommentsParams {
-  queryParams: {};
+  queryParams: { ticket_id: string };
 
-  pathParams: {
-    organization_id: string;
-    ticket_id: string;
-  };
+  pathParams: {};
 
   requestBody: CreateCommentBody;
 }

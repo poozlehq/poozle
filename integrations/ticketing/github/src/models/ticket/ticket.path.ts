@@ -33,7 +33,7 @@ export class TicketPath extends BasePath {
     const response = await axios.patch(url, createBody, { headers });
 
     return {
-      data: convertTicket(response.data, params.pathParams?.collection_id as string | null),
+      data: convertTicket(response.data, params.queryParams?.collection_id as string | null),
     };
   }
 
@@ -43,7 +43,7 @@ export class TicketPath extends BasePath {
     params: UpdateTicketParams | GetTicketParams,
     config: Config,
   ) {
-    const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues/${params.pathParams?.ticket_id}`;
+    const url = `${BASE_URL}/repos/${config.org}/${params.queryParams?.collection_id}/issues/${params.pathParams?.ticket_id}`;
 
     switch (method) {
       case 'GET':

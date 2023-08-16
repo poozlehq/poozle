@@ -17,6 +17,7 @@ import { TicketsController } from './models/ticket/tickets.controller';
 import { UsersController } from './models/users/users.controller';
 import { AccountController } from './models/account/account.controller';
 import { AccountService } from './models/account/account.service';
+import { CommentService } from './models/comment/comment.service';
 
 @Module({
   imports: [PrismaModule, HttpModule, IntegrationAccountModule, DataModule],
@@ -29,7 +30,13 @@ import { AccountService } from './models/account/account.service';
     CommentController,
     TagController,
   ],
-  providers: [PrismaService, CollectionService, TicketService, AccountService],
+  providers: [
+    PrismaService,
+    CollectionService,
+    TicketService,
+    AccountService,
+    CommentService,
+  ],
   exports: [],
 })
 export class TicketingModule {}

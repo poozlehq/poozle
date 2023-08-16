@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@poozle/engine-edk": "^0.2.13",
-    "@poozle/engine-idk": "^0.1.36",
+    "@poozle/engine-idk": "^0.1.44",
     "axios": "^1.4.0",
     "dayjs": "^1.11.9"
   },

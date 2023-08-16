@@ -49,7 +49,7 @@ export class TagsPath extends BasePath {
     params: GetTagsParams | CreateTagParams,
     config: Config,
   ) {
-    const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/labels`;
+    const url = `${BASE_URL}/repos/${config.org}/${params.queryParams?.collection_id}/labels`;
     switch (method) {
       case 'GET':
         return this.getTags(url, headers, params as GetTagsParams);

@@ -28,7 +28,7 @@ export class CommentsPath extends BasePath {
 
     return {
       data: response.data.comments?.map((comment: any) =>
-        convertComment(comment, params.pathParams.ticket_id),
+        convertComment(comment, params.queryParams.ticket_id),
       ),
       meta: getPageMeta(response.data, page.toString()),
     };
@@ -42,7 +42,7 @@ export class CommentsPath extends BasePath {
     const response = await axios.put(url, { comments: params.requestBody }, { headers });
 
     return response.data.events.map((comment: any) =>
-      convertComment(comment, params.pathParams.ticket_id),
+      convertComment(comment, params.queryParams.ticket_id),
     );
   }
 
@@ -53,13 +53,13 @@ export class CommentsPath extends BasePath {
     config: Config,
   ) {
     const BASE_URL = getBaseUrl(config);
-    let url = `${BASE_URL}/tickets/${params.pathParams.ticket_id}/comments`;
+    let url = `${BASE_URL}/tickets/${params.queryParams.ticket_id}/comments`;
     switch (method) {
       case 'GET':
         return this.fetchData(url, headers, params as GetCommentsParams);
 
       case 'POST':
-        url = `${BASE_URL}/tickets/${params.pathParams.ticket_id}`;
+        url = `${BASE_URL}/tickets/${params.queryParams.ticket_id}`;
         return this.createComment(url, headers, params as CreateCommentsParams);
 
       default:

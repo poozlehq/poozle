@@ -26,7 +26,6 @@ export interface GetTicketsParams {
   };
 
   pathParams: {
-    organization_id: string;
     ticket_id: string;
   };
 }
@@ -46,16 +45,13 @@ export interface createBody extends CreateTicketBody {
 export interface CreateTicketParams {
   requestBody: createBody;
 
-  pathParams: {
-    account_id: string;
-  };
+  pathParams: {};
 }
 
 export interface UpdateTicketParams {
   requestBody: createBody;
 
   pathParams: {
-    account_id: string;
     ticket_id: string;
   };
 }

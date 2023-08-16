@@ -16,7 +16,7 @@ export class TicketPath extends BasePath {
       });
 
       return {
-        data: convertTicket(response.data, params.pathParams.collection_id),
+        data: convertTicket(response.data, params.queryParams.collection_id),
       };
     } catch (e) {
       throw new Error(e);
@@ -54,7 +54,7 @@ export class TicketPath extends BasePath {
     const response = await axios.put(url, cleanedCreateBody, { headers });
 
     return {
-      data: convertTicket(response.data, params.pathParams.collection_id),
+      data: convertTicket(response.data, params.queryParams.collection_id),
     };
   }
 

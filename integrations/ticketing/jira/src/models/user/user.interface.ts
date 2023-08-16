@@ -21,16 +21,17 @@ export interface GetUsersParams {
   queryParams: {
     limit: number;
     cursor: string;
-  };
-
-  pathParams: {
     collection_id: string;
   };
+
+  pathParams: {};
 }
 
 export interface GetUserParams {
-  pathParams: {
+  queryParams: {
     collection_id: string;
+  };
+  pathParams: {
     user_id: string;
   };
 }

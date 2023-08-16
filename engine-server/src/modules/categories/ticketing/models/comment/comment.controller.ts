@@ -13,25 +13,23 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { IntegrationType } from '@prisma/client';
-import { Method } from 'shared/integration_account.utils';
 
 import { IntegrationAccount } from '@@generated/integrationAccount/entities';
 
 import { GetIntegrationAccount } from 'common/decorators/integration_account.decorator';
 
 import { AuthGuard } from 'modules/auth/auth.guard';
-import { DataService } from 'modules/data/data.service';
 
 import {
-  CommentQueryParams,
-  CommonCommentQueryParams,
-  PathParams,
   PathParamsWithCommentId,
   TicketingCommentResponse,
   TicketingCommentsResponse,
   UpdateCommentBody,
   CreateCommentBody,
+  GetCommentsQueryParams,
+  CommentQueryParams,
 } from './comment.interface';
+import { CommentService } from './comment.service';
 
 @Controller({
   version: '1',
@@ -39,42 +37,34 @@ import {
 })
 @ApiTags('Ticketing')
 export class CommentController {
-  constructor(private dataService: DataService) {}
+  // constructor(private dataService: DataService) {}
+  constructor(private commentService: CommentService) {}
 
-  @Get(':collection_id/tickets/:ticket_id/comments')
+  @Get('comments')
   @UseGuards(new AuthGuard())
   async getComments(
-    @Query() query: CommentQueryParams,
-    @Param()
-    params: PathParams,
+    @Query() query: GetCommentsQueryParams,
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingCommentsResponse> {
-    const commentsResponse = await this.dataService.getDataFromAccount(
+    const commentsResponse = await this.commentService.getComments(
       integrationAccount,
-      '/comments',
-      Method.GET,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       query,
-      params,
     );
 
     return commentsResponse;
   }
 
-  @Get(':collection_id/tickets/:ticket_id/comments/:comment_id')
+  @Get('comments/:comment_id')
   async getComment(
-    @Query() query: CommonCommentQueryParams,
+    @Query() query: GetCommentsQueryParams,
     @Param()
     params: PathParamsWithCommentId,
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingCommentResponse> {
-    const commentResponse = await this.dataService.getDataFromAccount(
+    const commentResponse = await this.commentService.getComment(
       integrationAccount,
-      `/comments/${params.comment_id}`,
-      Method.GET,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       query,
       params,
     );
@@ -82,47 +72,37 @@ export class CommentController {
     return commentResponse;
   }
 
-  @Patch(':collection_id/tickets/:ticket_id/comments/:comment_id')
+  @Patch('comments/:comment_id')
   async patchComment(
-    @Query() query: CommonCommentQueryParams,
+    @Query() query: CommentQueryParams,
     @Param()
     params: PathParamsWithCommentId,
     @Body() updateCommentBody: UpdateCommentBody,
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingCommentResponse> {
-    const commentResponse = await this.dataService.getDataFromAccount(
+    return this.commentService.pathComment(
       integrationAccount,
-      `/comments/${params.comment_id}`,
-      Method.PATCH,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      query,
       params,
+      query,
       updateCommentBody,
     );
-
-    return commentResponse;
   }
 
-  @Post(':collection_id/tickets/:ticket_id/comments')
+  @Post('comments')
   async createComment(
-    @Query() query: CommonCommentQueryParams,
+    @Query() query: CommentQueryParams,
     @Param()
-    params: PathParams,
+    params: PathParamsWithCommentId,
     @Body() createCommentBody: CreateCommentBody,
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingCommentResponse> {
-    const commentResponse = await this.dataService.getDataFromAccount(
+    return this.commentService.createComment(
       integrationAccount,
-      `/comments`,
-      Method.POST,
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      query,
       params,
+      query,
       createCommentBody,
     );
-
-    return commentResponse;
   }
 }

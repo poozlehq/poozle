@@ -21,31 +21,35 @@ export interface GetTagsParams {
   queryParams: {
     limit: number;
     cursor: string;
-  };
-
-  pathParams: {
     collection_id: string;
   };
+
+  pathParams: {};
 }
 
 export interface GetTagParams {
-  pathParams: {
+  queryParams: {
     collection_id: string;
+  };
+  pathParams: {
+    tag_name: string;
   };
 }
 
 export interface CreateTagParams {
   requestBody: CreateTagBody;
-
-  pathParams: {
+  queryParams: {
     collection_id: string;
   };
+  pathParams: {};
 }
 
 export interface UpdateTagParams {
   requestBody: UpdateTagBody;
-
-  pathParams: {
+  queryParams: {
     collection_id: string;
+  };
+  pathParams: {
+    tag_name: string;
   };
 }

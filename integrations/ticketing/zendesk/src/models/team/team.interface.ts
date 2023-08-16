@@ -32,7 +32,6 @@ export interface GetTeamsParams {
 export interface GetTeamParams {
   queryParams: {};
   pathParams: {
-    organization_id: string;
     team_id: string;
   };
 }

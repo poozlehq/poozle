@@ -30,7 +30,7 @@ import {
 export class UsersController {
   constructor(private dataService: DataService) {}
 
-  @Get(':collection_id/users/:user_id')
+  @Get('users/:user_id')
   async getUserId(
     @Query() query: GetUserParams,
     @Param()
@@ -51,7 +51,7 @@ export class UsersController {
     return userResponse;
   }
 
-  @Get(':collection_id/users')
+  @Get('users')
   async getUsers(
     @Query() query: ListUserParams,
     @Param()

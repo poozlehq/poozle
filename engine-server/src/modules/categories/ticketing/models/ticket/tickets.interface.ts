@@ -13,6 +13,9 @@ export class ListTicketsQueryParams extends QueryParams {
     return value === 'true' || value === 'True' || value === true;
   })
   realtime?: boolean = false;
+
+  @IsString()
+  collection_id: string;
 }
 
 export class GetTicketsQueryParams extends QueryParams {
@@ -22,19 +25,16 @@ export class GetTicketsQueryParams extends QueryParams {
     return value === 'true' || value === 'True' || value === true;
   })
   realtime?: boolean = false;
+
+  @IsString()
+  collection_id: string;
 }
 
 export class CommonTicketQueryParams extends JustRawParams {}
 
-export class PathParamsWithCollectionId {
-  @IsString()
-  collection_id: string;
-}
+export class PathParamsWithCollectionId {}
 
 export class PathParamsWithTicketId {
-  @IsString()
-  collection_id: string;
-
   @IsString()
   ticket_id: string;
 }

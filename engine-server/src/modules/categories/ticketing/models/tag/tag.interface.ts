@@ -25,17 +25,11 @@ export class TicketingTagResponse {
   data: Tag;
 }
 
-export class PathParams {
-  @IsString()
-  collection_id: string;
-}
+export class PathParams {}
 
 export class PathParamsWithTagId {
   @IsString()
   tag_name: string;
-
-  @IsString()
-  collection_id: string;
 }
 
 export class UpdateTagBody {
