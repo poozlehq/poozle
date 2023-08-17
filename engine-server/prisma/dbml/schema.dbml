@@ -138,6 +138,7 @@ Enum IntegrationType {
   ACCOUNTING
   ATS
   STORAGE
+  PAYMENTS
 }
 
 Ref: Workspace.userId > User.userId

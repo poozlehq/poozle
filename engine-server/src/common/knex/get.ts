@@ -16,6 +16,7 @@ export function getBaseQuery<T>(
   where: Record<string, string>,
   SELECT_KEYS: string[],
   raw: boolean,
+  join?: Record<string, string | string[]>,
 ) {
   const knex = Knex({
     client: 'pg',
@@ -24,11 +25,28 @@ export function getBaseQuery<T>(
     },
   });
 
-  const query = knex
+  let query = knex
     .withSchema(workspaceName)
     .table<T>(table)
     .select(getSelectKeys(SELECT_KEYS, raw))
     .where(where);
+
+  if (join) {
+    const joinSelectedKeys = join.selectedKeys as string[];
+    query = query
+      .leftJoin(
+        join.tableName as string,
+        `${join.tableName}.${join.joinColumn}`,
+        `${table}.${join.sourceColumn}`,
+      )
+      .select(
+        knex.raw(
+          `json_build_object(${joinSelectedKeys
+            .map((key: any) => `'${key}', ${join.tableName}.${key}`)
+            .join(', ')}) as ${join.selectedColumnName}`,
+        ),
+      );
+  }
 
   return query;
 }

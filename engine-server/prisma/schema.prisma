@@ -174,4 +174,5 @@ enum IntegrationType {
   ACCOUNTING
   ATS
   STORAGE
+  PAYMENTS
 }
