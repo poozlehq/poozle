@@ -44,10 +44,10 @@ function extractOutcome(chargeData: any): Outcome {
 export function convertCharge(data: any): ChargeWithRaw {
   return {
     id: data.id,
-    amount: data.amount.toString(),
-    amount_refunded: data.amount_refunded.toString(),
+    amount: data.amount?.toString(),
+    amount_refunded: data.amount_refunded?.toString(),
     application: data.application,
-    application_fee_amount: data.application_fee_amount.toString(),
+    application_fee_amount: data.application_fee_amount?.toString(),
     billing_details: extractBillingDetails(data.billing_details),
     captured: data.captured,
     created_at: convertToDateTime(data.created),

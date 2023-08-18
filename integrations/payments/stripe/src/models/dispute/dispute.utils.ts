@@ -36,7 +36,7 @@ function extractEvidence(data: any): Evidence {
     due_by: convertToDateTime(data.evidence_details.due_by),
     has_evidence: data.evidence_details.has_evidence,
     past_due: data.evidence_details.past_due,
-    submission_count: data.evidence_details.submission_count.toString(),
+    submission_count: data.evidence_details.submission_count?.toString(),
   };
 }
 
@@ -44,7 +44,7 @@ function extractEvidence(data: any): Evidence {
 export function convertDispute(data: any): DisputeWithRaw {
   return {
     id: data.id,
-    amount: data.amount.toString(),
+    amount: data.amount?.toString(),
     charge_id: data.charge,
     currency: data.currency,
     evidence: extractEvidence(data),

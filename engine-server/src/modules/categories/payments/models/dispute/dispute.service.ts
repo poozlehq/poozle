@@ -35,9 +35,9 @@ export class DisputeService {
     integrationAccount: IntegrationAccount,
     query: DisputeQueryParams,
   ) {
-    // if (query.realtime || !integrationAccount.syncEnabled) {
-    //   return await this.getDisputesForRealtime(integrationAccount, query);
-    // }
+    if (query.realtime || !integrationAccount.syncEnabled) {
+      return await this.getDisputesForRealtime(integrationAccount, query);
+    }
 
     return await this.getDisputesFromDb(integrationAccount, query);
   }

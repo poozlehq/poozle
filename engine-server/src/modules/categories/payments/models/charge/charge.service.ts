@@ -33,9 +33,9 @@ export class ChargeService {
     integrationAccount: IntegrationAccount,
     query: ChargeQueryParams,
   ) {
-    // if (query.realtime || !integrationAccount.syncEnabled) {
-    //   return await this.getChargesForRealtime(integrationAccount, query);
-    // }
+    if (query.realtime || !integrationAccount.syncEnabled) {
+      return await this.getChargesForRealtime(integrationAccount, query);
+    }
 
     return await this.getChargesFromDb(integrationAccount, query);
   }
