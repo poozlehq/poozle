@@ -25,7 +25,13 @@
 </em>
 </p>
 
-Poozle is building an integration infrastructure for ticketing SAAS tools. AI Companies need to extract their customers' data tools tools like Gtihub, Jira, Notion, Zendesk, Salesforce etc. Hence in the journey companies end up building their own integration infrastructure. Poozle provides a single API for the same that enables companies to integrate multiple of these tools at once. We do the hard work of integrating and smoothing them and exposing developers to a clean and unified interface. We aim to make it easy for companies to build new integrations.
+Poozle is building an integration infrastructure for ticketing SAAS tools. AI Companies need to extract their customers' data tools like Gtihub, Jira, Notion, Zendesk, Salesforce etc. Hence in the journey companies end up building their own integration infrastructure. Poozle provides a single API for the same that enables companies to integrate multiple of these tools at once. We do the hard work of integrating and smoothing them and exposing developers to a clean and unified interface. We aim to make it easy for companies to build new integrations.
+
+
+## One Data model
+Don't muck with data transformations and API quirks. Common Models provide normalized, constantly synced data for each category of integrations.
+![Group 58](https://github.com/poozlehq/engine/assets/17528887/8f0661d8-8368-413f-8dc5-dd6e42a48707)
+
 
 ## Features
 * Managed Authentication
