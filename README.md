@@ -51,7 +51,7 @@ Poozle is building an integration infrastructure for ticketing SAAS tools. AI Co
 ## Getting Started 🚀
 Try Poozle in 10 minutes with the [Quickstart](https://docs.poozle.dev/quickstart) 🚀.
 
-## 5+ pre-configured Integrations, easily add your own
+## 20+ pre-configured Integrations, easily add your own
 
 Poozle works with **any** API and use-case. Adding [Integration](https://docs.poozle.dev/guides/build_new_integration) is easy and we already have the main APIs covered.
 
