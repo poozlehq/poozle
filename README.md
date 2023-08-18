@@ -30,7 +30,8 @@ Poozle is building an integration infrastructure for ticketing SAAS tools. AI Co
 
 ## One Data model
 Don't muck with data transformations and API quirks. Common Models provide normalized, constantly synced data for each category of integrations.
-![Group 58](https://github.com/poozlehq/engine/assets/17528887/8f0661d8-8368-413f-8dc5-dd6e42a48707)
+
+![One Model](https://github.com/poozlehq/engine/assets/17528887/a43c7e92-a74f-44eb-8906-e3a2502fcced)
 
 
 ## Features
