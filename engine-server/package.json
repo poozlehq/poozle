@@ -13,10 +13,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/poozlehq/engine.git"
+    "url": "https://github.com/poozlehq/poozle.git"
   },
   "bugs": {
-    "url": "https://github.com/poozlehq/engine/issues"
+    "url": "https://github.com/poozlehq/poozle/issues"
   },
   "scripts": {
     "prebuild": "rimraf dist",

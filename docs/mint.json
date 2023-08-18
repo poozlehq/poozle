@@ -19,7 +19,7 @@
   ],
   "topbarCtaButton": {
     "type": "github",
-    "url": "https://github.com/poozlehq/engine"
+    "url": "https://github.com/poozlehq/poozle"
   },
   "primaryTab": {
     "name": "Get Started"
@@ -170,7 +170,7 @@
   ],
   "footerSocials": {
     "twitter": "https://twitter.com/poozlehq",
-    "github": "https://github.com/poozlehq/engine",
+    "github": "https://github.com/poozlehq/poozle",
     "linkedin": "https://www.linkedin.com/company/poozle",
     "website": "http://poozle.dev"
   },
