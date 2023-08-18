@@ -2,7 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL, convertToEpoch, getMetaParams } from 'common';
+import { BASE_URL, convertToEpoch, getMetaParams, RateLimitError } from 'common';
 
 import { GetDisputesParams, DisputesResponse } from './dispute.interface';
 import { convertDispute } from './dispute.utils';
@@ -26,6 +26,10 @@ export class DisputesPath extends BasePath {
       headers,
       params: final_params,
     });
+
+    if (response.status === 429) {
+      throw new RateLimitError();
+    }
 
     return {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any

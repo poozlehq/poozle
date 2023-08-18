@@ -2,7 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL } from 'common';
+import { BASE_URL, RateLimitError } from 'common';
 
 import { GetDisputeParams, DisputeResponse } from './dispute.interface';
 import { convertDispute } from './dispute.utils';
@@ -17,6 +17,9 @@ export class DisputePath extends BasePath {
       url,
       headers,
     });
+    if (response.status === 429) {
+      throw new RateLimitError();
+    }
 
     return { data: convertDispute(response.data) };
   }

@@ -10,7 +10,8 @@ export interface ChargeWithRaw extends Charge {
 
 export interface ChargesResponse {
   data: ChargeWithRaw[];
-  meta: Meta;
+  meta?: Meta;
+  error?: any;
 }
 
 export interface ChargeResponse {

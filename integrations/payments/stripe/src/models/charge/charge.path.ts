@@ -2,7 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL } from 'common';
+import { BASE_URL, RateLimitError } from 'common';
 
 import { ChargeResponse, GetChargeParams } from './charge.interface';
 import { convertCharge } from './charge.utils';
@@ -13,6 +13,9 @@ export class ChargePath extends BasePath {
       url,
       headers,
     });
+    if (response.status === 429) {
+      throw new RateLimitError();
+    }
 
     return { data: convertCharge(response.data) };
   }

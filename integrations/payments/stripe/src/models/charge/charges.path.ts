@@ -2,7 +2,7 @@
 
 import { BasePath, Config } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
-import { BASE_URL, convertToEpoch, getMetaParams } from 'common';
+import { BASE_URL, convertToEpoch, getMetaParams, RateLimitError } from 'common';
 
 import { ChargesResponse, GetChargesParams } from './charge.interface';
 import { convertCharge } from './charge.utils';
@@ -27,6 +27,9 @@ export class ChargesPath extends BasePath {
       params: final_params,
     });
 
+    if (response.status === 429) {
+      throw new RateLimitError();
+    }
     return {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: response.data.data.map((data: any) => convertCharge(data)),

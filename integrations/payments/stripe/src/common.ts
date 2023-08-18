@@ -26,3 +26,12 @@ export function convertToEpoch(datetime: string) {
   const date = new Date(datetime);
   return date.getTime() / 1000;
 }
+
+export class RateLimitError extends Error {
+  tryAfter: string;
+  constructor(tryAfter = '120') {
+    super('Rate limit exceeded');
+    this.name = 'RateLimitError';
+    this.tryAfter = tryAfter;
+  }
+}
