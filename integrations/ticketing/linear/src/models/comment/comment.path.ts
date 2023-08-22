@@ -15,10 +15,9 @@ export class CommentPath extends BasePath {
   ): Promise<CommentResponse> {
     try {
       const id = params.pathParams?.comment_id;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
+      const response = await axios.post(
+        BASE_URL,
+        {
           query: `
             query Query($commentId: String!) {
               comment(id: $commentId) {
@@ -47,7 +46,8 @@ export class CommentPath extends BasePath {
             id,
           },
         },
-      });
+        { headers },
+      );
       return { data: convertComment(response.data) };
     } catch (e) {
       throw new Error(e);
@@ -61,10 +61,9 @@ export class CommentPath extends BasePath {
     try {
       const id = params.pathParams?.comment_id;
       const input = params.requestBody;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
+      const response = await axios.post(
+        BASE_URL,
+        {
           query: `
             mutation Mutation($input: CommentUpdateInput!, $commentUpdateId: String!) {
               commentUpdate(input: $input, id: $commentUpdateId) {
@@ -81,7 +80,8 @@ export class CommentPath extends BasePath {
             input,
           },
         },
-      });
+        { headers },
+      );
       return {
         lastSyncId: response.data.lastSyncId,
         success: response.data.success,

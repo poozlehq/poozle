@@ -12,10 +12,9 @@ export class TagsPath extends BasePath {
   async getTags(headers: AxiosHeaders, params: Params): Promise<TagsResponse> {
     try {
       const page = params.queryParams?.cursor ? parseInt(<string>params.queryParams?.cursor) : 1;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
+      const response = await axios.post(
+        BASE_URL,
+        {
           query: `
             query getIssueLabels {
               issueLabels {
@@ -29,7 +28,8 @@ export class TagsPath extends BasePath {
             }
           `,
         },
-      });
+        { headers },
+      );
       const issueLabelList: object[] = response.data.data.issueLabels.nodes;
       return {
         data: issueLabelList.map(convertTag),
@@ -46,10 +46,9 @@ export class TagsPath extends BasePath {
   ): Promise<TagCreateResponse> {
     try {
       const input = params;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
+      const response = await axios.post(
+        BASE_URL,
+        {
           query: `
             mutation IssueLabelCreate($input: IssueLabelCreateInput!) {
               issueLabelCreate(input: $input) {
@@ -68,7 +67,8 @@ export class TagsPath extends BasePath {
             input,
           },
         },
-      });
+        { headers },
+      );
       return {
         success: response.data.success,
         lastSyncId: response.data.lastSyncId,

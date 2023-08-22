@@ -11,10 +11,9 @@ export class TeamsPath extends BasePath {
   async getTeams(headers: AxiosHeaders, params: GetTeamsParams): Promise<TeamsResponse> {
     try {
       const page = params.queryParams?.cursor ? parseInt(params.queryParams?.cursor) : 1;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
+      const response = await axios.post(
+        BASE_URL,
+        {
           query: `
             teams {
               nodes {
@@ -31,7 +30,8 @@ export class TeamsPath extends BasePath {
             }
           `,
         },
-      });
+        { headers },
+      );
       const teamsList: object[] = response.data.data.users.nodes;
       return {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

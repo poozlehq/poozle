@@ -1,7 +1,8 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Collection } from '@poozle/engine-idk';
-import { Meta } from 'common';
+
+import { Meta } from '../../common';
 
 export interface CollectionWithRaw extends Collection {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -10,6 +11,11 @@ export interface CollectionWithRaw extends Collection {
 
 export interface CollectionResponse {
   data: CollectionWithRaw;
+}
+
+export interface CollectionsResponse {
+  data: CollectionWithRaw[];
+  meta: Meta;
 }
 
 export interface GetCollectionsParams {

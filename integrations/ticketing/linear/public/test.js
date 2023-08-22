@@ -3,17 +3,22 @@
 const { main } = require('../linear/index');
 
 async function run() {
+  // const response = await main('SPEC', {})
+
   const response = await main('RUN', {
     config: {
       authType: 'Api Key',
       api_key: '',
     },
-    path: '/collections',
+    path: '/users',
     method: 'GET',
+
     params: {
-      queryParams: {},
+      queryParams: {
+        // user_id: ""
+      },
     },
-  });
+  })
 
   console.log(response);
 }

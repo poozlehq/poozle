@@ -11,12 +11,10 @@ export class UserPath extends BasePath {
   async fetchSingleUser(headers: AxiosHeaders, params: GetUserParams): Promise<UserResponse> {
     try {
       const id = params.pathParams?.user_id;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
-          query: `
-            query fetchSingleUser($id: String!) {
+      const response = await axios.post(
+        BASE_URL,
+        {
+          query: `query fetchSingleUser($id: String!) {
                         user(id: $id) {
                                 id
                                 name
@@ -25,13 +23,13 @@ export class UserPath extends BasePath {
                                 avatarUrl
                                 created
                             }
-                    }
-          `,
+                    }`,
           variables: {
             id,
           },
         },
-      });
+        { headers },
+      );
       return { data: convertUser(response.data) };
     } catch (e) {
       throw new Error(e);

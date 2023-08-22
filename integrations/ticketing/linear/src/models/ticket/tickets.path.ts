@@ -16,10 +16,9 @@ export class TicketsPath extends BasePath {
   async fetchData(headers: AxiosHeaders, params: GetTicketsParams): Promise<TicketsResponse> {
     try {
       const page = params.queryParams?.cursor ? parseInt(params.queryParams?.cursor) : 1;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
+      const response = await axios.post(
+        BASE_URL,
+        {
           query: `
             query Ticket($page: Int) {
               issues(first: $page ) {
@@ -54,7 +53,8 @@ export class TicketsPath extends BasePath {
             page,
           },
         },
-      });
+        { headers },
+      );
       const ticketsList: object[] = response.data.data.issues.nodes;
       return {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -72,10 +72,9 @@ export class TicketsPath extends BasePath {
   ): Promise<UpdateTicketResponse> {
     try {
       const issueCreateInput = params.requestBody;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
+      const response = await axios.post(
+        BASE_URL,
+        {
           query: `
             mutation IssueCreate($input: IssueCreateInput!) {
               issueCreate(input: $input) {
@@ -88,7 +87,10 @@ export class TicketsPath extends BasePath {
             input: issueCreateInput,
           },
         },
-      });
+        {
+          headers,
+        },
+      );
       return convertUpdateTicket(response.data);
     } catch (e) {
       throw new Error(e);

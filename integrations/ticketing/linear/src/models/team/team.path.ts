@@ -12,10 +12,9 @@ export class TeamPath extends BasePath {
   async getTeam(headers: AxiosHeaders, params: TeamParams): Promise<TeamResponse> {
     try {
       const id = params.pathParams.team_id;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
+      const response = await axios.post(
+        BASE_URL,
+        {
           query: `
             query Team($teamId: String!) {
               team(id: $teamId) {
@@ -35,7 +34,8 @@ export class TeamPath extends BasePath {
             id,
           },
         },
-      });
+        { headers },
+      );
       return { data: convertTeam(response.data) };
     } catch (e) {
       throw new Error(e);

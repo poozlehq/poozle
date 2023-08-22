@@ -15,12 +15,10 @@ export class UsersPath extends BasePath {
   ): Promise<UsersResponse> {
     try {
       const page = params.queryParams?.cursor ? parseInt(params.queryParams?.cursor) : 1;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
-          query: `
-            query Users(first: $page) {
+      const response = await axios.post(
+        BASE_URL,
+        {
+          query: `query Users(first: $page) {
               users {
                 nodes {
                   name
@@ -29,13 +27,15 @@ export class UsersPath extends BasePath {
                   createdAt
                 }
               } 
-            }
-          `,
+            }`,
           variables: {
             page,
           },
         },
-      });
+        {
+          headers,
+        },
+      );
       const usersList: object[] = response.data.data.users.nodes;
       return {
         meta: getMetaParams(response.data, params.queryParams?.limit, page),

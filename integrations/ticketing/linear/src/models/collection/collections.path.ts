@@ -16,10 +16,9 @@ export class CollectionsPath extends BasePath {
   ): Promise<CollectionsResponse> {
     try {
       const page = params.queryParams?.cursor ? parseInt(<string>params.queryParams?.cursor) : 1;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
+      const response = await axios.post(
+        BASE_URL,
+        {
           query: `
             query Projects {
               projects {
@@ -59,7 +58,8 @@ export class CollectionsPath extends BasePath {
             }
           `,
         },
-      });
+        { headers },
+      );
       return {
         meta: getMetaParams(response.data, <number>params.queryParams?.cursor, page),
         data: response.data.nodes.map(convertCollection),

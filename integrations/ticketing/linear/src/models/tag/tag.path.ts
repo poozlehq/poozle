@@ -12,10 +12,9 @@ export class TagPath extends BasePath {
   async getTag(headers: AxiosHeaders, params: GetTagParams): Promise<TagResponse> {
     try {
       const id = params.pathParams?.tag_id;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
+      const response = await axios.post(
+        BASE_URL,
+        {
           query: `
             query IssueLabel($issueLabelId: String!) {
               issueLabel(id: $issueLabelId) {
@@ -30,7 +29,8 @@ export class TagPath extends BasePath {
             id,
           },
         },
-      });
+        { headers },
+      );
       return { data: convertTag(response.data) };
     } catch (e) {
       throw new Error(e);
@@ -40,10 +40,9 @@ export class TagPath extends BasePath {
   async updateTag(headers: AxiosHeaders, params: IssueLabelUpdateParams): Promise<TagResponse> {
     try {
       const input = params.pathParams?.tag_id;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
+      const response = await axios.post(
+        BASE_URL,
+        {
           query: `
             mutation IssueLabelUpdate($input: IssueLabelUpdateInput!, $issueLabelUpdateId: String!) {
               issueLabelUpdate(input: $input, id: $issueLabelUpdateId) {
@@ -62,7 +61,8 @@ export class TagPath extends BasePath {
             input,
           },
         },
-      });
+        { headers },
+      );
       return { data: convertTag(response.data) };
     } catch (e) {
       throw new Error(e);

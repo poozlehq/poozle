@@ -15,10 +15,9 @@ export class CommentsPath extends BasePath {
   ): Promise<CommentsResponse> {
     try {
       const page = params.queryParams?.cursor ? parseInt(<string>params.queryParams?.cursor) : 1;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
+      const response = await axios.post(
+        BASE_URL,
+        {
           query: `
             query Query {
               comments {
@@ -38,7 +37,8 @@ export class CommentsPath extends BasePath {
             }
           `,
         },
-      });
+        { headers },
+      );
       return {
         meta: getMetaParams(response.data, <number>params.queryParams?.cursor, page),
         data: response.data.map(convertComment),
@@ -51,10 +51,9 @@ export class CommentsPath extends BasePath {
   async createComment(headers: AxiosHeaders, params: Params): Promise<MutateCommentResponse> {
     try {
       const input = params;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
+      const response = await axios.post(
+        BASE_URL,
+        {
           query: `
             mutation Mutation($input: CommentCreateInput!) {
               commentCreate(input: $input) {
@@ -70,7 +69,8 @@ export class CommentsPath extends BasePath {
             input,
           },
         },
-      });
+        { headers },
+      );
       return {
         success: response.data.success,
         lastSyncId: response.data.lastSyncId,

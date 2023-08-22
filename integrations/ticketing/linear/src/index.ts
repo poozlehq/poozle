@@ -32,6 +32,7 @@ class LinearIntegration extends BaseIntegration {
       await axios({
         url: BASE_URL,
         headers,
+        method: 'POST',
         data: {
           query: `
             query Me {

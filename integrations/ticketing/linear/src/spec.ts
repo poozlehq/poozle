@@ -24,6 +24,7 @@ export default {
       scope_separator: ',',
       authorization_params: {
         prompt: 'consent',
+        response_type: 'code',
       },
       input_specification: {
         type: 'object',

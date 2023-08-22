@@ -14,10 +14,9 @@ export class CollectionPath extends BasePath {
   ): Promise<CollectionResponse> {
     try {
       const id = params.pathParams?.collection_id;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
+      const response = await axios.post(
+        BASE_URL,
+        {
           query: `
             query Projects {
               projects {
@@ -60,7 +59,8 @@ export class CollectionPath extends BasePath {
             id,
           },
         },
-      });
+        { headers },
+      );
       return {
         data: convertCollection(response.data),
       };

@@ -11,24 +11,24 @@ export class TicketPath extends BasePath {
   async fetchSingleTicket(headers: AxiosHeaders, params: Params): Promise<TicketResponse> {
     try {
       const id = params.pathParams?.ticket_id;
-      const response = await axios({
-        url: `${BASE_URL}`,
-        headers,
-        data: {
-          query: `
-            query ExampleQuery($id: String!) {
+      const response = await axios.post(
+        BASE_URL,
+        {
+          query: `query ExampleQuery($id: String!) {
               issue(id: $id) {
                 id
                 title
                 description
               }
-            }
-          `,
+            }`,
           variables: {
             id,
           },
         },
-      });
+        {
+          headers,
+        },
+      );
       return { data: convertTicket(response.data) };
     } catch (e) {
       throw new Error(e);
