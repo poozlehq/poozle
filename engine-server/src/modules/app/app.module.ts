@@ -23,6 +23,7 @@ import { WorkspaceModule } from 'modules/workspace/workspace.module';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { CalendarModule } from 'modules/categories/calendar/calendar.module';
 
 @Module({
   imports: [
@@ -47,6 +48,7 @@ import { AppService } from './app.service';
     TicketingModule,
     MailModule,
     DocumentationModule,
+    CalendarModule,
   ],
   controllers: [AppController],
   providers: [AppService],

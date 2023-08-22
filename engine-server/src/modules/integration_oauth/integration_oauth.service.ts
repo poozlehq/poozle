@@ -58,7 +58,6 @@ export class IntegrationOAuthService {
 
     return {
       ...integrationOAuthApps[0],
-      clientSecret: '',
     };
   }
 

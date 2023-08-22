@@ -8,8 +8,8 @@ import {
 import { ConfigService } from '@nestjs/config';
 import { CheckResponse, Config } from '@poozle/engine-idk';
 import { IntegrationType } from '@prisma/client';
+import { Method } from 'axios';
 import { PrismaService } from 'nestjs-prisma';
-import { runProxyIntegrationCommand } from 'shared/integration_run_utils';
 
 import { DataService } from 'modules/data/data.service';
 import { IntegrationDefinitionService } from 'modules/integration_definition/integration_definition.service';
@@ -368,7 +368,7 @@ export class IntegrationAccountService {
     integrationAccountId: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     body: any,
-    method: string,
+    method: Method,
     path: string,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     queryParams: any,
@@ -383,12 +383,10 @@ export class IntegrationAccountService {
         },
       });
 
-    return await runProxyIntegrationCommand(
-      integrationAccount.integrationDefinition.sourceUrl,
+    return await this.dataService.proxyIntegrationCommand(
+      integrationAccount,
       path,
       method,
-      integrationAccount.integrationConfiguration as Config,
-      integrationAccount.authType,
       {
         requestBody: body.postBody,
         queryParams,

@@ -33,7 +33,7 @@ export class CollectionService {
     integrationAccount: IntegrationAccount,
     query: CollectionQueryParams,
   ) {
-    if (query.realtime) {
+    if (query.realtime || !integrationAccount.syncEnabled) {
       return await this.getCollectionsForRealtime(integrationAccount, query);
     }
 
@@ -45,7 +45,7 @@ export class CollectionService {
     query: GetCollectionQueryParams,
     params: PathParamsWithCollectionId,
   ) {
-    if (query.realtime) {
+    if (query.realtime || !integrationAccount.syncEnabled) {
       return await this.getCollectionForRealtime(
         integrationAccount,
         query,
@@ -148,6 +148,8 @@ export class CollectionService {
         limit: query.limit,
         cursor: query.cursor,
         raw: query.raw,
+        created_after: query.created_after,
+        created_before: query.created_before,
       },
       {},
     );

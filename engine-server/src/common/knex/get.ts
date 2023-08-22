@@ -43,7 +43,7 @@ export async function getObjectFromDb(
   const knex = Knex({
     client: 'pg',
     connection: {
-      connectionString: process.env.DATABASE_URL,
+      connectionString: process.env.SYNC_DATABASE_URL,
     },
   });
 

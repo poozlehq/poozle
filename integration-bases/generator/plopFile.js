@@ -18,7 +18,7 @@ Your ${integrationName} integration has been created at .${path.resolve(
 Follow the TODOs in the generated module to implement your integration. 
 
 Questions, comments, or concerns? Let us know in our github:
-https://github.com/poozlehq/engine/discussions
+https://github.com/poozlehq/poozle/discussions
 
 We're always happy to provide any support!
 

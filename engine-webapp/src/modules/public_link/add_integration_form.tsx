@@ -152,7 +152,9 @@ export function Form({
         linkId,
         accountIdentifier: accountIdentifier as string,
         integrationAccountName: values.integrationAccountName,
-        redirectURL: `${publicRuntimeConfig.NEXT_PUBLIC_BASE_HOST}/link/${linkId}`,
+        redirectURL: redirectURL
+          ? (redirectURL as string)
+          : `${publicRuntimeConfig.NEXT_PUBLIC_BASE_HOST}/link/${linkId}`,
         integrationOAuthAppId: oAuthApp.integrationOAuthAppId,
       });
     } else {

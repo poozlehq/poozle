@@ -104,6 +104,7 @@ export function UpdateOAuthApp() {
                   update
                   initialValues={{
                     clientId: integrationOAuthApp.clientId,
+                    clientSecret: integrationOAuthApp.clientSecret,
                     scopes: integrationOAuthApp.scopes,
                     integrationOAuthAppName:
                       integrationOAuthApp.integrationOAuthAppName,

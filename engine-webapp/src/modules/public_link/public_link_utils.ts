@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+import { IntegrationDefinition } from '@@generated/integrationDefinition/entities';
 import { IntegrationOAuthApp } from '@@generated/integrationOAuthApp/entities';
 import { Link } from '@@generated/link/entities';
 import { Specification } from '@poozle/engine-idk';
@@ -113,4 +114,17 @@ export function getSpec(
   }
 
   return spec;
+}
+
+export function getIntegrationDefinitions(
+  integrationDefinitions: IntegrationDefinition[],
+  integrationKeys: string[],
+) {
+  if (integrationKeys.length > 0) {
+    return integrationDefinitions.filter((id) =>
+      integrationKeys.includes(id.key),
+    );
+  }
+
+  return integrationDefinitions;
 }

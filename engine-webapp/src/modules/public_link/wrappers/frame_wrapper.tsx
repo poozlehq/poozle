@@ -58,6 +58,7 @@ export function FrameLinkWrapper() {
       accountIdentifier={state.accountIdentifier}
       redirectURL={state.redirectURL}
       onClose={onClose}
+      integrationKeys={[]}
     />
   );
 }

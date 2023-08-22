@@ -56,7 +56,7 @@ export class TicketService {
     query: ListTicketsQueryParams,
     params: PathParamsWithCollectionId,
   ) {
-    if (query.realtime) {
+    if (query.realtime || !integrationAccount.syncEnabled) {
       return await this.getTicketsForRealtime(
         integrationAccount,
         query,
@@ -72,7 +72,7 @@ export class TicketService {
     query: GetTicketsQueryParams,
     params: PathParamsWithTicketId,
   ) {
-    if (query.realtime) {
+    if (query.realtime || !integrationAccount.syncEnabled) {
       return await this.getTicketForRealtime(integrationAccount, query, params);
     }
 
@@ -158,6 +158,8 @@ export class TicketService {
         limit: query.limit,
         cursor: query.cursor,
         raw: query.raw,
+        created_after: query.created_after,
+        created_before: query.created_before,
       },
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
