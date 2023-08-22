@@ -2,10 +2,10 @@
 
 import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
+import { BASE_URL, getMetaParams } from 'common';
 
 import { CollectionsResponse } from './collection.interface';
-import {BASE_URL, getMetaParams} from "../../common";
-import {convertCollection} from "./collection.utils";
+import { convertCollection } from './collection.utils';
 
 export class CollectionsPath extends BasePath {
   async run(
@@ -63,7 +63,6 @@ export class CollectionsPath extends BasePath {
       return {
         meta: getMetaParams(response.data, <number>params.queryParams?.cursor, page),
         data: response.data.nodes.map(convertCollection),
-        raw: response.data.nodes,
       };
     } catch (e) {
       throw new Error(e);

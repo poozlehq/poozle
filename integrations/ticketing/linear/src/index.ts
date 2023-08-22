@@ -18,6 +18,7 @@ import {UserPath} from 'models/user/user.path';
 import {UsersPath} from 'models/user/users.path';
 
 import spec from './spec';
+import { BASE_URL } from 'common';
 
 class LinearIntegration extends BaseIntegration {
   async spec(): SpecificationResponse {
@@ -29,7 +30,7 @@ class LinearIntegration extends BaseIntegration {
       const headers = await this.authHeaders(config);
 
       await axios({
-        url: 'https://api.linear.app/graphql',
+        url: BASE_URL,
         headers,
         data: {
           query: `
