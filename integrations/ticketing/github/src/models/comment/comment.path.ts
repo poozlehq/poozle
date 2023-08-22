@@ -34,7 +34,7 @@ export class CommentPath extends BasePath {
     params: GetCommentParams | UpdateCommentParams,
     config: Config,
   ) {
-    const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues/comments/${params.pathParams?.comment_id}`;
+    const url = `${BASE_URL}/repos/${config.org}/${params.queryParams?.collection_id}/issues/comments/${params.pathParams?.comment_id}`;
 
     switch (method) {
       case 'GET':

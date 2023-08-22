@@ -18,7 +18,7 @@ export class CommentPath extends BasePath {
       headers,
     });
 
-    return { data: convertComments(response.data, params.pathParams.ticket_id) };
+    return { data: convertComments(response.data, params.queryParams.ticket_id) };
   }
 
   async updateComment(
@@ -29,7 +29,7 @@ export class CommentPath extends BasePath {
     const updateBody: UpdateCommentBody = params.requestBody as UpdateCommentBody;
     const response = await axios.put(url, updateBody, { headers });
 
-    return { data: convertComments(response.data, params.pathParams?.ticket_id) };
+    return { data: convertComments(response.data, params.queryParams?.ticket_id) };
   }
 
   async run(
@@ -40,7 +40,7 @@ export class CommentPath extends BasePath {
   ) {
     const baseURL = await getBaseUrl(config, headers);
 
-    const url = `${baseURL}/issue/${params.pathParams.ticket_id}/comment/${params.pathParams.comment_id}`;
+    const url = `${baseURL}/issue/${params.queryParams.ticket_id}/comment/${params.pathParams.comment_id}`;
     switch (method) {
       case 'GET':
         return this.fetchSingleComment(url, headers, params);

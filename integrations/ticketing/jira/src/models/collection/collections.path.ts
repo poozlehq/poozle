@@ -9,9 +9,7 @@ import { convertCollection } from './collection.utils';
 
 function paginate(array: Collection[], page_size: number, page_number: number) {
   // human-readable page numbers usually start with 1, so we reduce 1 in the first argument
-  array.slice((page_number - 1) * page_size, page_number * page_size);
-
-  return array;
+  return array.slice((page_number - 1) * page_size, page_number * page_size);
 }
 
 export class CollectionsPath extends BasePath {

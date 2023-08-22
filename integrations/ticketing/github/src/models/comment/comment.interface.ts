@@ -20,39 +20,42 @@ export interface GetCommentsParams {
   queryParams: {
     limit: number;
     cursor: string;
-
     created_after?: string;
-  };
-
-  pathParams: {
     collection_id: string;
     ticket_id: string;
   };
+
+  pathParams: {};
 }
 
 export interface GetCommentParams {
-  pathParams: {
+  queryParams: {
     collection_id: string;
     ticket_id: string;
+  };
+  pathParams: {
     comment_id: string;
   };
 }
 
 export interface CreateCommentParams {
   requestBody: CreateCommentBody;
-
-  pathParams: {
+  queryParams: {
     collection_id: string;
     ticket_id: string;
   };
+
+  pathParams: {};
 }
 
 export interface UpdateCommentParams {
   requestBody: UpdateCommentBody;
+  queryParams: {
+    collection_id: string;
+    ticket_id: string;
+  };
 
   pathParams: {
     comment_id: string;
-    collection_id: string;
-    ticket_id: string;
   };
 }

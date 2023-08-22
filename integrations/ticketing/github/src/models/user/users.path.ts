@@ -21,7 +21,7 @@ export class UsersPath extends BasePath {
     };
 
     const response = await axios({
-      url: `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/assignees`,
+      url: `${BASE_URL}/repos/${config.org}/${params.queryParams?.collection_id}/assignees`,
       headers,
       params: final_params,
     });

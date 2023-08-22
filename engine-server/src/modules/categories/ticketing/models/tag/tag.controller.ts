@@ -41,7 +41,7 @@ import {
 export class TagController {
   constructor(private dataService: DataService) {}
 
-  @Get(':collection_id/tags')
+  @Get('tags')
   @UseGuards(new AuthGuard())
   async getTags(
     @Query() query: TagQueryParams,
@@ -62,7 +62,7 @@ export class TagController {
     return tagsResponse;
   }
 
-  @Get(':collection_id/tags/:tag_id')
+  @Get('tags/:tag_id')
   async getTag(
     @Query() query: CommonTagQueryParams,
     @Param()
@@ -82,7 +82,7 @@ export class TagController {
     return tagResponse;
   }
 
-  @Patch(':collection_id/tags/:tag_id')
+  @Patch('tags/:tag_id')
   async patchTag(
     @Query() query: CommonTagQueryParams,
     @Param()
@@ -104,7 +104,7 @@ export class TagController {
     return tagResponse;
   }
 
-  @Post(':collection_id/tags')
+  @Post('tags')
   async createTag(
     @Query() query: CommonTagQueryParams,
     @Param()

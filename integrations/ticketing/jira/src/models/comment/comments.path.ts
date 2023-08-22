@@ -17,7 +17,7 @@ export class CommentsPath extends BasePath {
   async fetchComments(
     url: string,
     headers: AxiosHeaders,
-    { queryParams, pathParams }: GetCommentsParams,
+    { queryParams }: GetCommentsParams,
   ): Promise<CommentsResponse> {
     const page = typeof queryParams?.cursor === 'string' ? parseInt(queryParams?.cursor) : 1;
 
@@ -26,14 +26,14 @@ export class CommentsPath extends BasePath {
       headers,
       params: {
         maxResults: queryParams.limit,
-        startAt: page,
+        startAt: page - 1,
       },
     });
 
     return {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: response.data.comments.map((data: any) =>
-        convertComments(data, pathParams.ticket_id as string | null),
+        convertComments(data, queryParams.ticket_id as string | null),
       ),
       meta: getMetaParams(response.data, queryParams.limit, page),
     };
@@ -48,7 +48,7 @@ export class CommentsPath extends BasePath {
 
     const response = await axios.post(url, createBody, { headers });
 
-    return { data: convertComments(response.data, params.pathParams?.ticket_id) };
+    return { data: convertComments(response.data, params.queryParams?.ticket_id) };
   }
 
   async run(
@@ -59,7 +59,7 @@ export class CommentsPath extends BasePath {
   ) {
     const baseURL = await getBaseUrl(config, headers);
 
-    const url = `${baseURL}/issue/${params.pathParams?.ticket_id}/comment`;
+    const url = `${baseURL}/issue/${params.queryParams?.ticket_id}/comment`;
     switch (method) {
       case 'GET':
         return this.fetchComments(url, headers, params as GetCommentsParams);

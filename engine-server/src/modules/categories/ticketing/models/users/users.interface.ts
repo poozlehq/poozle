@@ -8,15 +8,9 @@ import { Meta } from 'common/interfaces/response.interface';
 export class ListUserParams extends QueryParams {}
 export class GetUserParams extends JustRawParams {}
 
-export class PathParams {
-  @IsString()
-  collection_id: string;
-}
+export class PathParams {}
 
 export class PathParamsWithUserId {
-  @IsString()
-  collection_id: string;
-
   @IsString()
   user_id: string;
 }

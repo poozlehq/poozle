@@ -3,18 +3,23 @@
 const { main } = require('../jira/index');
 
 async function run() {
-  const response = await main('CHECK', {
-    path: '/collections',
+  const response = await main('RUN', {
+    path: '/users',
     method: 'GET',
-    config: {},
+    config: {
+      api_key: '',
+      email_id: '',
+      authType: '',
+      jira_domain: '',
+    },
     params: {
       queryParams: {
         limit: 5,
-        raw: true,
-      },
-      pathParams: {
+        raw: false,
+        collection_id: '',
         ticket_id: '',
       },
+      pathParams: { comment_id: '' },
     },
   });
 

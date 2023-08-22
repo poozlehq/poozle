@@ -42,37 +42,20 @@ export class TicketsController {
   constructor(private ticketService: TicketService) {}
 
   @Get('tickets')
-  async getTickets(
-    @Query() query: ListTicketsQueryParams,
-    @GetIntegrationAccount(IntegrationType.TICKETING)
-    integrationAccount: IntegrationAccount,
-  ): Promise<TicketingTicketsResponse> {
-    const ticketsResponse = await this.ticketService.getTickets(
-      integrationAccount,
-      query,
-    );
-
-    return ticketsResponse;
-  }
-
-  @Get(':collection_id/tickets')
   async getCollectionTickets(
     @Query() query: ListTicketsQueryParams,
-    @Param()
-    params: PathParamsWithCollectionId,
     @GetIntegrationAccount(IntegrationType.TICKETING)
     integrationAccount: IntegrationAccount,
   ): Promise<TicketingTicketsResponse> {
     const ticketsResponse = await this.ticketService.getCollectionTickets(
       integrationAccount,
       query,
-      params,
     );
 
     return ticketsResponse;
   }
 
-  @Get(':collection_id/tickets/:ticket_id')
+  @Get('tickets/:ticket_id')
   async getTicketId(
     @Query() query: GetTicketsQueryParams,
     @Param()
@@ -89,7 +72,7 @@ export class TicketsController {
     return ticketResponse;
   }
 
-  @Patch(':collection_id/tickets/:ticket_id')
+  @Patch('tickets/:ticket_id')
   async patchTicket(
     @Query() query: CommonTicketQueryParams,
     @Param()
@@ -108,7 +91,7 @@ export class TicketsController {
     return ticketResponse;
   }
 
-  @Post(':collection_id/tickets')
+  @Post('tickets')
   async createTicket(
     @Query() query: CommonTicketQueryParams,
     @Param()

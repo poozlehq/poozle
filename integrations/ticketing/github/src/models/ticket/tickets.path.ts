@@ -40,7 +40,7 @@ export class TicketsPath extends BasePath {
     return {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: responseData.map((data: any) =>
-        convertTicket(data, params.pathParams?.collection_id as string | null),
+        convertTicket(data, params.queryParams?.collection_id as string | null),
       ),
 
       meta: getMetaParams(response.data, limit, page),
@@ -60,7 +60,7 @@ export class TicketsPath extends BasePath {
     const response = await axios.post(url, createBody, { headers });
 
     return {
-      data: convertTicket(response.data, params.pathParams?.collection_id as string | null),
+      data: convertTicket(response.data, params.queryParams?.collection_id as string | null),
     };
   }
 
@@ -70,7 +70,7 @@ export class TicketsPath extends BasePath {
     params: GetTicketsParams | CreateTicketParams,
     config: Config,
   ) {
-    const url = `${BASE_URL}/repos/${config.org}/${params.pathParams?.collection_id}/issues`;
+    const url = `${BASE_URL}/repos/${config.org}/${params.queryParams?.collection_id}/issues`;
 
     switch (method) {
       case 'GET':

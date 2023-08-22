@@ -15,10 +15,14 @@ import { TeamController } from './models/team/team.controller';
 import { TicketService } from './models/ticket/ticket.service';
 import { TicketsController } from './models/ticket/tickets.controller';
 import { UsersController } from './models/users/users.controller';
+import { AccountController } from './models/account/account.controller';
+import { AccountService } from './models/account/account.service';
+import { CommentService } from './models/comment/comment.service';
 
 @Module({
   imports: [PrismaModule, HttpModule, IntegrationAccountModule, DataModule],
   controllers: [
+    AccountController,
     CollectionController,
     UsersController,
     TeamController,
@@ -26,7 +30,13 @@ import { UsersController } from './models/users/users.controller';
     CommentController,
     TagController,
   ],
-  providers: [PrismaService, CollectionService, TicketService],
+  providers: [
+    PrismaService,
+    CollectionService,
+    TicketService,
+    AccountService,
+    CommentService,
+  ],
   exports: [],
 })
 export class TicketingModule {}

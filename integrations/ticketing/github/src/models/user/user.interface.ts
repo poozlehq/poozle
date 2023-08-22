@@ -21,11 +21,10 @@ export interface GetUsersParams {
   queryParams: {
     limit: number;
     cursor: string;
-  };
-
-  pathParams: {
     collection_id: string;
   };
+
+  pathParams: {};
 }
 
 export interface GetUserParams {

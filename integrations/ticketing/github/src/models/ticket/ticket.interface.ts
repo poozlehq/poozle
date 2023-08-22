@@ -22,33 +22,37 @@ export interface GetTicketsParams {
     limit: number;
     cursor: string;
     created_after?: string;
-  };
-
-  pathParams: {
     collection_id: string;
   };
+
+  pathParams: {};
 }
 
 export interface GetTicketParams {
-  pathParams: {
+  queryParams: {
     collection_id: string;
+  };
+  pathParams: {
     ticket_id: string;
   };
 }
 
 export interface CreateTicketParams {
   requestBody: CreateTicketBody;
-
-  pathParams: {
+  queryParams: {
     collection_id: string;
   };
+
+  pathParams: {};
 }
 
 export interface UpdateTicketParams {
   requestBody: UpdateTicketBody;
+  queryParams: {
+    collection_id: string;
+  };
 
   pathParams: {
     ticket_id: string;
-    collection_id: string;
   };
 }

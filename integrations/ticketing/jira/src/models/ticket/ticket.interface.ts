@@ -9,8 +9,10 @@ export interface TicketWithRaw extends Ticket {
 
 /* eslint-disable notice/notice */
 export interface FetchTicketParams {
-  pathParams: {
+  queryParams: {
     collection_id: string;
+  };
+  pathParams: {
     ticket_id: string;
   };
 }
@@ -24,21 +26,19 @@ export interface FetchTicketsParams {
     limit: number;
     cursor?: string;
     created_after?: string;
-  };
-
-  pathParams: {
     collection_id: string;
   };
+
+  pathParams: {};
 }
 
 export interface CreateTicketParams {
   queryParams: {
     limit: number;
     cursor?: string;
+    collection_id: string;
   };
 
   requestBody: CreateTicketBody;
-  pathParams: {
-    collection_id: string;
-  };
+  pathParams: {};
 }

@@ -18,8 +18,10 @@ export interface CommentResponse {
 }
 
 export interface GetCommentParams {
-  pathParams: {
+  queryParams: {
     ticket_id: string;
+  };
+  pathParams: {
     comment_id: string;
   };
 }
@@ -32,16 +34,16 @@ export interface GetCommentsParams {
   queryParams: {
     limit: number;
     cursor?: string;
-  };
-
-  pathParams: {
     ticket_id: string;
   };
+
+  pathParams: {};
 }
 export interface CreateCommentParams {
   requestBody: CreateCommentBody;
 
-  pathParams: {
+  queryParams: {
     ticket_id: string;
   };
+  pathParams: {};
 }

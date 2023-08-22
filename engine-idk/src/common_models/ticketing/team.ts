@@ -10,6 +10,8 @@ export interface Team {
   name: string;
   description: string;
   members: Member[];
+  created_at: string;
+  updated_at: string;
 }
 
 export interface CreateTeamBody {

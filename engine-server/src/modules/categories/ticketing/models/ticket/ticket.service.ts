@@ -36,35 +36,15 @@ const DATABASE_NAME = 'ticketing_ticket';
 export class TicketService {
   constructor(private dataService: DataService) {}
 
-  async getTickets(
-    integrationAccount: IntegrationAccount,
-    query: ListTicketsQueryParams,
-  ) {
-    return await this.getListFromDb(
-      integrationAccount.workspaceName,
-      DATABASE_NAME,
-      {
-        integration_account_id: integrationAccount.integrationAccountId,
-      },
-      TICKET_KEYS,
-      query,
-    );
-  }
-
   async getCollectionTickets(
     integrationAccount: IntegrationAccount,
     query: ListTicketsQueryParams,
-    params: PathParamsWithCollectionId,
   ) {
     if (query.realtime || !integrationAccount.syncEnabled) {
-      return await this.getTicketsForRealtime(
-        integrationAccount,
-        query,
-        params,
-      );
+      return await this.getTicketsForRealtime(integrationAccount, query);
     }
 
-    return await this.getTicketsFromDb(integrationAccount, query, params);
+    return await this.getTicketsFromDb(integrationAccount, query);
   }
 
   async getTicket(
@@ -113,14 +93,13 @@ export class TicketService {
   async getTicketsFromDb(
     integrationAccount: IntegrationAccount,
     query: ListTicketsQueryParams,
-    params: PathParamsWithCollectionId,
   ) {
     return await this.getListFromDb(
       integrationAccount.workspaceName,
       DATABASE_NAME,
       {
         integration_account_id: integrationAccount.integrationAccountId,
-        collection_id: params.collection_id,
+        collection_id: query.collection_id,
       },
       TICKET_KEYS,
       query,
@@ -138,7 +117,6 @@ export class TicketService {
       {
         integration_account_id: integrationAccount.integrationAccountId,
         id: params.ticket_id,
-        collection_id: params.collection_id,
       },
       TICKET_KEYS,
       query.raw,
@@ -148,7 +126,6 @@ export class TicketService {
   async getTicketsForRealtime(
     integrationAccount: IntegrationAccount,
     query: GetTicketsQueryParams,
-    params: PathParamsWithCollectionId,
   ) {
     const ticketsResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
@@ -160,10 +137,11 @@ export class TicketService {
         raw: query.raw,
         created_after: query.created_after,
         created_before: query.created_before,
+        collection_id: query.collection_id,
       },
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      params as any,
+      {} as any,
     );
 
     return ticketsResponse;
@@ -179,7 +157,7 @@ export class TicketService {
       `/tickets/${params.ticket_id}`,
       Method.GET,
 
-      { raw: query.raw },
+      { raw: query.raw, collection_id: query.collection_id },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       params as any,
     );
