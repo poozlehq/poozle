@@ -19,11 +19,6 @@ export interface CollectionWithRaw extends Collection {
   raw: any;
 }
 
-export interface CollectionsResponse {
-  data: CollectionWithRaw[];
-  meta: Meta;
-}
-
 export interface CollectionResponse {
   data: CollectionWithRaw;
 }
