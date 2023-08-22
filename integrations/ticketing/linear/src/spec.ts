@@ -14,8 +14,8 @@ export default {
         },
       },
       headers: {
-        Authorization: '${api_key}',
-        'User-Agent': 'Poozle',
+        Authorization: 'Bearer ${api_key}',
+        'Content-Type': 'application/json',
       },
     },
     OAuth2: {
