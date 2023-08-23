@@ -49,123 +49,223 @@
   "navigation": [
     {
       "group": "Get Started",
-      "pages": [ "introduction", "quickstart" ]
+      "pages": [
+        "introduction",
+        "quickstart"
+      ]
     },
     {
       "group": "Poozle Open Source (OSS)",
-      "pages": [ "oss/deploy-poozle" ]
+      "pages": [
+        "oss/deploy-poozle"
+      ]
     },
     {
       "group": "Contributing",
-      "pages": [ "contributing/create-new-integration", "contributing/code-of-conduct", "contributing/issues-prs" ]
+      "pages": [
+        "contributing/create-new-integration",
+        "contributing/code-of-conduct",
+        "contributing/issues-prs"
+      ]
     },
     {
       "group": "Understanding Poozle",
-      "pages": [ "understanding-poozle/protocol" ]
+      "pages": [
+        "understanding-poozle/protocol"
+      ]
     },
     {
       "group": "Overview",
-      "pages": [ "guides/overview" ]
+      "pages": [
+        "guides/overview"
+      ]
     },
     {
       "group": "Basics",
-      "pages": [ "guides/create_user", "guides/authentication" ]
+      "pages": [
+        "guides/create_user",
+        "guides/authentication"
+      ]
     },
     {
       "group": "Integrations",
-      "pages": [ "guides/build_new_integration" ]
+      "pages": [
+        "guides/build_new_integration"
+      ]
     },
     {
       "group": "Other",
-      "pages": [ "guides/create_integration_account", "guides/create_link", "guides/create_oauth" ]
+      "pages": [
+        "guides/create_integration_account",
+        "guides/create_link",
+        "guides/create_oauth"
+      ]
     },
     {
       "group": "API Documentation",
-      "pages": [ "api-reference/overview", "api-reference/authentication" ]
+      "pages": [
+        "api-reference/overview",
+        "api-reference/authentication"
+      ]
     },
     {
       "group": "User",
-      "pages": [ "api-reference/user/get" ]
+      "pages": [
+        "api-reference/user/get"
+      ]
     },
     {
       "group": "Integration Account",
-      "pages": [ "api-reference/integration_account/get_integration_accounts", "api-reference/integration_account/get_integration_account", "api-reference/integration_account/create_integration_account", "api-reference/integration_account/check", "api-reference/integration_account/delete_integration_account" ]
+      "pages": [
+        "api-reference/integration_account/get_integration_accounts",
+        "api-reference/integration_account/get_integration_account",
+        "api-reference/integration_account/create_integration_account",
+        "api-reference/integration_account/check",
+        "api-reference/integration_account/delete_integration_account"
+      ]
     },
     {
       "group": "Integration Definition",
-      "pages": [ "api-reference/integration_definition/get_integration_definitions", "api-reference/integration_definition/get_integration_definition", "api-reference/integration_definition/create_integration_definition", "api-reference/integration_definition/spec" ]
+      "pages": [
+        "api-reference/integration_definition/get_integration_definitions",
+        "api-reference/integration_definition/get_integration_definition",
+        "api-reference/integration_definition/create_integration_definition",
+        "api-reference/integration_definition/spec"
+      ]
     },
     {
       "group": "Link",
-      "pages": [ "api-reference/link/get_link", "api-reference/link/create_link" ]
+      "pages": [
+        "api-reference/link/get_link",
+        "api-reference/link/create_link"
+      ]
     },
     {
       "group": "OAuth",
-      "pages": [ "api-reference/oauth/get_oauths", "api-reference/oauth/get_oauth", "api-reference/oauth/create_oauth" ]
+      "pages": [
+        "api-reference/oauth/get_oauths",
+        "api-reference/oauth/get_oauth",
+        "api-reference/oauth/create_oauth"
+      ]
     },
     {
       "group": "Get Started",
-      "pages": [ "ticketing/overview" ]
+      "pages": [
+        "ticketing/overview"
+      ]
     },
     {
       "group": "Get Started",
-      "pages": [ "mail/overview" ]
+      "pages": [
+        "mail/overview"
+      ]
     },
     {
       "group": "Get Started",
-      "pages": [ "documentation/overview" ]
+      "pages": [
+        "documentation/overview"
+      ]
     },
     {
       "group": "Integrations",
-      "pages": [ "ticketing/integrations/github", "ticketing/integrations/jira" ]
+      "pages": [
+        "ticketing/integrations/github",
+        "ticketing/integrations/jira"
+      ]
     },
     {
       "group": "Integrations",
-      "pages": [ "mail/integrations/gmail" ]
+      "pages": [
+        "mail/integrations/gmail"
+      ]
     },
     {
       "group": "Integrations",
-      "pages": [ "documentation/integrations/notion" ]
+      "pages": [
+        "documentation/integrations/notion",
+        "documentation/integrations/confluence"
+      ]
     },
     {
       "group": "Collection",
-      "pages": [ "ticketing/collection/get_collections", "ticketing/collection/get_collection" ]
+      "pages": [
+        "ticketing/collection/get_collections",
+        "ticketing/collection/get_collection"
+      ]
     },
     {
       "group": "User",
-      "pages": [ "ticketing/user/get_users", "ticketing/user/get_user" ]
+      "pages": [
+        "ticketing/user/get_users",
+        "ticketing/user/get_user"
+      ]
     },
     {
       "group": "Ticket",
-      "pages": [ "ticketing/ticket/get_tickets", "ticketing/ticket/get_ticket", "ticketing/ticket/create_ticket", "ticketing/ticket/update_ticket" ]
+      "pages": [
+        "ticketing/ticket/get_tickets",
+        "ticketing/ticket/get_ticket",
+        "ticketing/ticket/create_ticket",
+        "ticketing/ticket/update_ticket"
+      ]
     },
     {
       "group": "Comment",
-      "pages": [ "ticketing/comment/get_comments", "ticketing/comment/get_comment", "ticketing/comment/create_comment", "ticketing/comment/update_comment" ]
+      "pages": [
+        "ticketing/comment/get_comments",
+        "ticketing/comment/get_comment",
+        "ticketing/comment/create_comment",
+        "ticketing/comment/update_comment"
+      ]
     },
     {
       "group": "Team",
-      "pages": [ "ticketing/team/get_teams", "ticketing/team/get_team", "ticketing/team/create_team", "ticketing/team/update_team" ]
+      "pages": [
+        "ticketing/team/get_teams",
+        "ticketing/team/get_team",
+        "ticketing/team/create_team",
+        "ticketing/team/update_team"
+      ]
     },
     {
       "group": "Tag",
-      "pages": [ "ticketing/tag/get_tags", "ticketing/tag/get_tag", "ticketing/tag/create_tag", "ticketing/tag/update_tag" ]
+      "pages": [
+        "ticketing/tag/get_tags",
+        "ticketing/tag/get_tag",
+        "ticketing/tag/create_tag",
+        "ticketing/tag/update_tag"
+      ]
     },
     {
       "group": "Message",
-      "pages": [ "mail/messages/get_messages", "mail/messages/get_message", "mail/messages/create_message" ]
+      "pages": [
+        "mail/messages/get_messages",
+        "mail/messages/get_message",
+        "mail/messages/create_message"
+      ]
     },
     {
       "group": "Threads",
-      "pages": [ "mail/threads/get_threads", "mail/threads/get_thread" ]
+      "pages": [
+        "mail/threads/get_threads",
+        "mail/threads/get_thread"
+      ]
     },
     {
       "group": "Pages",
-      "pages": [ "documentation/pages/get_pages", "documentation/pages/get_page", "documentation/pages/create_page" ]
+      "pages": [
+        "documentation/pages/get_pages",
+        "documentation/pages/get_page",
+        "documentation/pages/create_page"
+      ]
     },
     {
       "group": "Block",
-      "pages": [ "documentation/blocks/get_block", "documentation/blocks/update_block", "documentation/blocks/create_block" ]
+      "pages": [
+        "documentation/blocks/get_block",
+        "documentation/blocks/update_block",
+        "documentation/blocks/create_block"
+      ]
     }
   ],
   "footerSocials": {
@@ -181,5 +281,4 @@
       "method": "bearer"
     }
   }
-
 }
