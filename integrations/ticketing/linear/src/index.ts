@@ -92,8 +92,8 @@ class LinearIntegration extends BaseIntegration {
       /**
        * TODO: Link to the documentation of the APIS this is mapping to
        */
-      new TicketsPath(/^\/?tickets$/g, ['GET', 'POST']),
-      new TicketPath(/^\/?tickets+/g, ['GET', 'PATCH']),
+      new TicketsPath(/^\/?tickets$/g, ['GET']),
+      new TicketPath(/^\/?tickets+/g, ['GET', 'POST', 'PATCH']),
 
       /**
        * TODO: Link to the documentation of the APIS this is mapping to

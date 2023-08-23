@@ -44,6 +44,10 @@ export class UsersPath extends BasePath {
                   isMe
                   admin
                 }
+                pageInfo {
+                    endCursor
+                    hasNextPage
+                }
               } 
             }`,
         },

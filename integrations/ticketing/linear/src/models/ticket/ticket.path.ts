@@ -3,8 +3,13 @@
 import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 
-import { TicketResponse, UpdateTicketParams } from './ticket.interface';
-import { convertTicket } from './ticket.utils';
+import {
+  CreateTicketParams,
+  TicketResponse,
+  UpdateTicketParams,
+  UpdateTicketResponse,
+} from './ticket.interface';
+import { convertTicket, convertUpdateTicket } from './ticket.utils';
 import { BASE_URL } from '../../common';
 
 export class TicketPath extends BasePath {
@@ -66,10 +71,44 @@ export class TicketPath extends BasePath {
     }
   }
 
+  async createTicket(
+    headers: AxiosHeaders,
+    params: CreateTicketParams,
+  ): Promise<UpdateTicketResponse> {
+    try {
+      const issueCreateInput = params.requestBody;
+      const response = await axios.post(
+        BASE_URL,
+        {
+          query: `
+            mutation IssueCreate($input: IssueCreateInput!) {
+              issueCreate(input: $input) {
+                lastSyncId
+                success
+              }
+            }
+          `,
+          variables: {
+            input: issueCreateInput,
+          },
+        },
+        {
+          headers,
+        },
+      );
+      return convertUpdateTicket(response.data);
+    } catch (e) {
+      throw new Error(e);
+    }
+  }
+
   async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
     switch (method) {
       case 'GET':
         return this.fetchSingleTicket(headers, params);
+
+      case 'POST':
+        return this.createTicket(headers, params as CreateTicketParams);
 
       case 'PATCH':
         await this.patchTicket(headers, params as UpdateTicketParams);

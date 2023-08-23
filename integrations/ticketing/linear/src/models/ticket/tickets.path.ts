@@ -4,13 +4,8 @@ import { BasePath, Config, Params } from '@poozle/engine-idk';
 import axios, { AxiosHeaders } from 'axios';
 import { BASE_URL, getMetaParams } from 'common';
 
-import {
-  CreateTicketParams,
-  GetTicketsParams,
-  TicketsResponse,
-  UpdateTicketResponse,
-} from './ticket.interface';
-import { convertTicket, convertUpdateTicket } from './ticket.utils';
+import { GetTicketsParams, TicketsResponse } from './ticket.interface';
+import { convertTicket } from './ticket.utils';
 
 export class TicketsPath extends BasePath {
   async fetchData(headers: AxiosHeaders, params: GetTicketsParams): Promise<TicketsResponse> {
@@ -20,38 +15,61 @@ export class TicketsPath extends BasePath {
         BASE_URL,
         {
           query: `
-            query Ticket($page: Int) {
-              issues(first: $page ) {
+            query Issues {
+              issues {
                 nodes {
                   id
-                  title
-                  description
                   createdAt
-                  state {
-                    name
-                  }
-                  url
-                  parent {
-                    id
-                  }
+                  updatedAt
+                  archivedAt
+                  number
+                  title
                   priority
-                  dueDate
+                  estimate
+                  boardOrder
+                  sortOrder
+                  startedAt
                   completedAt
+                  startedTriageAt
+                  triagedAt
+                  canceledAt
+                  autoClosedAt
+                  autoArchivedAt
+                  dueDate
+                  slaStartedAt
+                  slaBreachesAt
+                  trashed
+                  snoozedUntilAt
                   assignee {
                     id
                     name
                   }
+                  state {
+                    name
+                  }
+                  identifier
+                  url
+                  branchName
+                  customerTicketCount
+                  labels {
+                    nodes {
+                      id
+                      name
+                    }
+                  }
+                  creator {
+                    name
+                  }
+                  description
+                  descriptionData
                 }
                 pageInfo {
-                  hasNextPage
-                  endCursor
+                   endCursor
+                   hasNextPage
                 }
               }
             }
           `,
-          variables: {
-            page,
-          },
         },
         { headers },
       );
@@ -66,44 +84,9 @@ export class TicketsPath extends BasePath {
     }
   }
 
-  async createTicket(
-    headers: AxiosHeaders,
-    params: CreateTicketParams,
-  ): Promise<UpdateTicketResponse> {
-    try {
-      const issueCreateInput = params.requestBody;
-      const response = await axios.post(
-        BASE_URL,
-        {
-          query: `
-            mutation IssueCreate($input: IssueCreateInput!) {
-              issueCreate(input: $input) {
-                lastSyncId
-                success
-              }
-            }
-          `,
-          variables: {
-            input: issueCreateInput,
-          },
-        },
-        {
-          headers,
-        },
-      );
-      return convertUpdateTicket(response.data);
-    } catch (e) {
-      throw new Error(e);
-    }
-  }
-
   async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
     switch (method) {
       case 'GET':
-        return this.fetchData(headers, params as GetTicketsParams);
-
-      case 'POST':
-        await this.createTicket(headers, params as CreateTicketParams);
         return this.fetchData(headers, params as GetTicketsParams);
 
       default:
