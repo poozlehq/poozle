@@ -19,11 +19,52 @@ export class TicketPath extends BasePath {
       const response = await axios.post(
         BASE_URL,
         {
-          query: `query ExampleQuery($id: String!) {
+          query: `query Issue($id: String!) {
               issue(id: $id) {
                 id
+                createdAt
+                updatedAt
+                archivedAt
+                number
                 title
+                priority
+                estimate
+                boardOrder
+                sortOrder
+                startedAt
+                completedAt
+                startedTriageAt
+                triagedAt
+                canceledAt
+                autoClosedAt
+                autoArchivedAt
+                dueDate
+                slaStartedAt
+                slaBreachesAt
+                trashed
+                snoozedUntilAt
+                assignee {
+                  id
+                  name
+                }
+                state {
+                  name
+                }
+                identifier
+                url
+                branchName
+                customerTicketCount
+                labels {
+                  nodes {
+                     id
+                     name
+                  }
+                }
                 description
+                descriptionData
+                creator {
+                  name
+                }
               }
             }`,
           variables: {
