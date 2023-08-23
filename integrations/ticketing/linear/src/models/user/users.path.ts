@@ -18,19 +18,34 @@ export class UsersPath extends BasePath {
       const response = await axios.post(
         BASE_URL,
         {
-          query: `query Users(first: $page) {
+          query: `query Users {
               users {
                 nodes {
-                  name
-                  email
-                  url
+                  id
                   createdAt
+                  updatedAt
+                  archivedAt
+                  name
+                  displayName
+                  email
+                  avatarUrl
+                  disableReason
+                  inviteHash
+                  calendarHash
+                  description
+                  statusEmoji
+                  statusLabel
+                  statusUntilAt
+                  timezone
+                  lastSeen
+                  guest
+                  active
+                  url
+                  isMe
+                  admin
                 }
               } 
             }`,
-          variables: {
-            page,
-          },
         },
         {
           headers,

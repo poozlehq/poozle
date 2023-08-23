@@ -14,11 +14,11 @@ export function convertTicket(data: any): Ticket {
     status: data.state.name,
     created_at: data.createdAt,
     updated_at: data.updatedAt,
-    created_by: data.user.login,
+    created_by: data.user.name,
     type: 'issue',
     assignees: data.assignees.map((ass: any) => ({
       id: ass.id,
-      username: ass.login,
+      username: ass.name,
     })),
     ticket_url: data.url,
     tags: data.labels.map((lab: any) => ({

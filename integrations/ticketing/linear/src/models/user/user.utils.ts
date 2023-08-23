@@ -5,12 +5,12 @@ import { UserWithRaw } from './user.interface';
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function convertUser(data: any): UserWithRaw {
   return {
-    id: data.login,
-    name: data.login,
-    avatar: data.avatar_url,
+    id: data.id,
+    name: data.name,
+    avatar: data.url,
 
     // Extra field
-    email_address: '',
+    email_address: data.email,
 
     // Raw
     raw: data,

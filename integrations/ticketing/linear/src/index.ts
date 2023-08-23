@@ -1,24 +1,24 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import {BaseIntegration, CheckResponse, Config, SpecificationResponse} from '@poozle/engine-idk';
+import { BaseIntegration, CheckResponse, Config, SpecificationResponse } from '@poozle/engine-idk';
 import axios from 'axios';
-import {ProxyPath} from 'proxy';
+import { BASE_URL } from 'common';
+import { ProxyPath } from 'proxy';
 
-import {CollectionPath} from 'models/collection/collection.path';
-import {CollectionsPath} from 'models/collection/collections.path';
-import {CommentPath} from 'models/comment/comment.path';
-import {CommentsPath} from 'models/comment/comments.path';
-import {TagPath} from 'models/tag/tag.path';
-import {TagsPath} from 'models/tag/tags.path';
-import {TeamPath} from 'models/team/team.path';
-import {TeamsPath} from 'models/team/teams.path';
-import {TicketPath} from 'models/ticket/ticket.path';
-import {TicketsPath} from 'models/ticket/tickets.path';
-import {UserPath} from 'models/user/user.path';
-import {UsersPath} from 'models/user/users.path';
+import { CollectionPath } from 'models/collection/collection.path';
+import { CollectionsPath } from 'models/collection/collections.path';
+import { CommentPath } from 'models/comment/comment.path';
+import { CommentsPath } from 'models/comment/comments.path';
+import { TagPath } from 'models/tag/tag.path';
+import { TagsPath } from 'models/tag/tags.path';
+import { TeamPath } from 'models/team/team.path';
+import { TeamsPath } from 'models/team/teams.path';
+import { TicketPath } from 'models/ticket/ticket.path';
+import { TicketsPath } from 'models/ticket/tickets.path';
+import { UserPath } from 'models/user/user.path';
+import { UsersPath } from 'models/user/users.path';
 
 import spec from './spec';
-import { BASE_URL } from 'common';
 
 class LinearIntegration extends BaseIntegration {
   async spec(): SpecificationResponse {
@@ -99,7 +99,7 @@ class LinearIntegration extends BaseIntegration {
        * TODO: Link to the documentation of the APIS this is mapping to
        */
       new UsersPath(/^\/?users$/g, 'GET'),
-      new UserPath(/^\/?users+/g, 'GET'),
+      new UserPath(/^\/?user+/g, 'GET'),
     ];
   }
 }

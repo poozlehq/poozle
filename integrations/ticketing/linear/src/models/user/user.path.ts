@@ -17,11 +17,27 @@ export class UserPath extends BasePath {
           query: `query fetchSingleUser($id: String!) {
                         user(id: $id) {
                                 id
+                                createdAt
+                                updatedAt
+                                archivedAt
                                 name
+                                displayName
                                 email
-                                url
                                 avatarUrl
-                                created
+                                disableReason
+                                inviteHash
+                                calendarHash
+                                description
+                                statusEmoji
+                                statusLabel
+                                statusUntilAt
+                                timezone
+                                lastSeen
+                                guest
+                                active
+                                url
+                                isMe
+                                admin
                             }
                     }`,
           variables: {
@@ -30,7 +46,7 @@ export class UserPath extends BasePath {
         },
         { headers },
       );
-      return { data: convertUser(response.data) };
+      return { data: convertUser(response.data.data.user) };
     } catch (e) {
       throw new Error(e);
     }
