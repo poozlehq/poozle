@@ -88,14 +88,6 @@
       ]
     },
     {
-      "group": "Models",
-      "pages": [
-        "models/ticketing",
-        "models/mail",
-        "models/documentation"
-      ]
-    },
-    {
       "group": "Contributing",
       "pages": [
         "contributing/create-new-integration",
