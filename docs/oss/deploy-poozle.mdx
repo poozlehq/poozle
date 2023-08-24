@@ -9,7 +9,7 @@ description: "Deploying Poozle Open-Source just takes 1 minute."
 
 ```bash
 git clone https://github.com/poozlehq/poozle.git
-cd engine
+cd poozle
 docker-compose up -d
 ```
 
@@ -20,10 +20,49 @@ docker exec -ti poozle-server sh
 yarn create-user
 ```
 
-<Note>You can create more users by following step 3 again.</Note>
+<Note>Password should contain alphanumeric and special characters</Note>
+
+```
+
+~$ yarn create-user
+yarn run v1.22.19
+$ ts-node prisma/seeds/user.ts
+Server is healthy!
+Enter email: manik@poozle.dev
+Enter password: #######
+Enter firstname: Manik
+Enter lastname: Aggarwal
+User created
+Done in 24.05s.
+
+```
+
+You should get user created as shown above.
+
+<Tip>You can create more users by following step 3 again.</Tip>
 
 4. You can now check poozle at `http://localhost:8000`
+
+## Connect your APIs
+
+<CardGroup cols={2}>
+  <Card title="Login" href="/connect-integrations/login" color="#68a063">
+    Login to Dashboard
+  </Card>
+  <Card
+    title="Connect Integrations"
+    href="/connect-integrations/api-key"
+    color="#68a063"
+  >
+    Link third-party platforms of end users to Poozle.{" "}
+  </Card>
+
+</CardGroup>
 
 ## FAQ
 
 If there are any questions that we couldn't answer here, we'd love to help you get started. [Join our Slack](https://join.slack.com/t/poozle-community/shared_invite/zt-1u4mz911h-FeWpOA82wA8kyrz3xg58xQ) and feel free to ask your questions in the #support channel.
+
+```
+
+```

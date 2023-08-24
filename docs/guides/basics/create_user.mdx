@@ -1,0 +1,29 @@
+---
+title: "Create User"
+---
+
+To create a new user for Poozle login you can follow the steps.
+
+```bash
+docker exec -ti poozle-server sh
+yarn create-user
+```
+
+<Note>Password should contain alphanumeric and special characters</Note>
+
+```
+
+~$ yarn create-user
+yarn run v1.22.19
+$ ts-node prisma/seeds/user.ts
+Server is healthy!
+Enter email: manik@poozle.dev
+Enter password: #######
+Enter firstname: Manik
+Enter lastname: Aggarwal
+User created
+Done in 24.05s.
+
+```
+
+You should get user created as shown above.

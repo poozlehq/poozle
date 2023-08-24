@@ -15,6 +15,10 @@
     {
       "name": "Signup",
       "url": "https://poozle.dev"
+    },
+    {
+      "name": "Join Us",
+      "url": "https://join.slack.com/t/poozle-community/shared_invite/zt-1u4mz911h-FeWpOA82wA8kyrz3xg58xQ"
     }
   ],
   "topbarCtaButton": {
@@ -30,20 +34,24 @@
       "url": "guides"
     },
     {
+      "name": "Integrations",
+      "url": "integrations"
+    },
+    {
       "name": "Common API Reference",
       "url": "api-reference"
     },
     {
       "name": "Ticketing",
-      "url": "ticketing"
+      "url": "models/ticketing"
     },
     {
       "name": "Mail",
-      "url": "mail"
+      "url": "models/mail"
     },
     {
       "name": "Documentation",
-      "url": "documentation"
+      "url": "models/documentation"
     }
   ],
   "navigation": [
@@ -55,9 +63,36 @@
       ]
     },
     {
+      "group": "Poozle Cloud",
+      "pages": [
+        "cloud/getting-started"
+      ]
+    },
+    {
       "group": "Poozle Open Source (OSS)",
       "pages": [
         "oss/deploy-poozle"
+      ]
+    },
+    {
+      "group": "Connect Integrations",
+      "pages": [
+        "connect-integrations/login",
+        {
+          "group": "Create Integration Account",
+          "pages": [
+            "connect-integrations/api-key",
+            "connect-integrations/oauth"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "Models",
+      "pages": [
+        "models/ticketing",
+        "models/mail",
+        "models/documentation"
       ]
     },
     {
@@ -83,22 +118,22 @@
     {
       "group": "Basics",
       "pages": [
-        "guides/create_user",
-        "guides/authentication"
+        "guides/basics/create_user",
+        "guides/basics/authentication",
+        "guides/basics/managed_syncs",
+        "guides/basics/webhooks"
       ]
     },
     {
       "group": "Integrations",
       "pages": [
-        "guides/build_new_integration"
+        "guides/integrations/build_new_integration"
       ]
     },
     {
-      "group": "Other",
+      "group": "Integration",
       "pages": [
-        "guides/create_integration_account",
-        "guides/create_link",
-        "guides/create_oauth"
+        "integrations/overview"
       ]
     },
     {
@@ -151,120 +186,120 @@
     {
       "group": "Get Started",
       "pages": [
-        "ticketing/overview"
+        "models/ticketing/overview"
       ]
     },
     {
       "group": "Get Started",
       "pages": [
-        "mail/overview"
+        "models/mail/overview"
       ]
     },
     {
       "group": "Get Started",
       "pages": [
-        "documentation/overview"
+        "models/documentation/overview"
       ]
     },
     {
       "group": "Integrations",
       "pages": [
-        "ticketing/integrations/github",
-        "ticketing/integrations/jira"
+        "models/ticketing/integrations/github",
+        "models/ticketing/integrations/jira"
       ]
     },
     {
       "group": "Integrations",
       "pages": [
-        "mail/integrations/gmail"
+        "models/mail/integrations/gmail"
       ]
     },
     {
       "group": "Integrations",
       "pages": [
-        "documentation/integrations/notion",
-        "documentation/integrations/confluence"
+        "models/documentation/integrations/notion",
+        "models/documentation/integrations/confluence"
       ]
     },
     {
       "group": "Collection",
       "pages": [
-        "ticketing/collection/get_collections",
-        "ticketing/collection/get_collection"
+        "models/ticketing/collection/get_collections",
+        "models/ticketing/collection/get_collection"
       ]
     },
     {
       "group": "User",
       "pages": [
-        "ticketing/user/get_users",
-        "ticketing/user/get_user"
+        "models/ticketing/user/get_users",
+        "models/ticketing/user/get_user"
       ]
     },
     {
       "group": "Ticket",
       "pages": [
-        "ticketing/ticket/get_tickets",
-        "ticketing/ticket/get_ticket",
-        "ticketing/ticket/create_ticket",
-        "ticketing/ticket/update_ticket"
+        "models/ticketing/ticket/get_tickets",
+        "models/ticketing/ticket/get_ticket",
+        "models/ticketing/ticket/create_ticket",
+        "models/ticketing/ticket/update_ticket"
       ]
     },
     {
       "group": "Comment",
       "pages": [
-        "ticketing/comment/get_comments",
-        "ticketing/comment/get_comment",
-        "ticketing/comment/create_comment",
-        "ticketing/comment/update_comment"
+        "models/ticketing/comment/get_comments",
+        "models/ticketing/comment/get_comment",
+        "models/ticketing/comment/create_comment",
+        "models/ticketing/comment/update_comment"
       ]
     },
     {
       "group": "Team",
       "pages": [
-        "ticketing/team/get_teams",
-        "ticketing/team/get_team",
-        "ticketing/team/create_team",
-        "ticketing/team/update_team"
+        "models/ticketing/team/get_teams",
+        "models/ticketing/team/get_team",
+        "models/ticketing/team/create_team",
+        "models/ticketing/team/update_team"
       ]
     },
     {
       "group": "Tag",
       "pages": [
-        "ticketing/tag/get_tags",
-        "ticketing/tag/get_tag",
-        "ticketing/tag/create_tag",
-        "ticketing/tag/update_tag"
+        "models/ticketing/tag/get_tags",
+        "models/ticketing/tag/get_tag",
+        "models/ticketing/tag/create_tag",
+        "models/ticketing/tag/update_tag"
       ]
     },
     {
       "group": "Message",
       "pages": [
-        "mail/messages/get_messages",
-        "mail/messages/get_message",
-        "mail/messages/create_message"
+        "models/mail/messages/get_messages",
+        "models/mail/messages/get_message",
+        "models/mail/messages/create_message"
       ]
     },
     {
       "group": "Threads",
       "pages": [
-        "mail/threads/get_threads",
-        "mail/threads/get_thread"
+        "models/mail/threads/get_threads",
+        "models/mail/threads/get_thread"
       ]
     },
     {
       "group": "Pages",
       "pages": [
-        "documentation/pages/get_pages",
-        "documentation/pages/get_page",
-        "documentation/pages/create_page"
+        "models/documentation/pages/get_pages",
+        "models/documentation/pages/get_page",
+        "models/documentation/pages/create_page"
       ]
     },
     {
       "group": "Block",
       "pages": [
-        "documentation/blocks/get_block",
-        "documentation/blocks/update_block",
-        "documentation/blocks/create_block"
+        "models/documentation/blocks/get_block",
+        "models/documentation/blocks/update_block",
+        "models/documentation/blocks/create_block"
       ]
     }
   ],
