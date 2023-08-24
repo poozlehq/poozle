@@ -15,6 +15,10 @@
     {
       "name": "Signup",
       "url": "https://poozle.dev"
+    },
+    {
+      "name": "Join Us",
+      "url": "https://join.slack.com/t/poozle-community/shared_invite/zt-1u4mz911h-FeWpOA82wA8kyrz3xg58xQ"
     }
   ],
   "topbarCtaButton": {
@@ -71,14 +75,14 @@
       ]
     },
     {
-      "group": "Connect Data",
+      "group": "Connect Integrations",
       "pages": [
-        "connect-data/login",
+        "connect-integrations/login",
         {
           "group": "Create Integration Account",
           "pages": [
-            "connect-data/api-key",
-            "connect-data/oauth"
+            "connect-integrations/api-key",
+            "connect-integrations/oauth"
           ]
         }
       ]
