@@ -62,7 +62,7 @@ export function convertCharge(data: any): ChargeWithRaw {
     paid: data.paid,
     payment_method: extractPaymentMethods(data.payment_method_details),
     email: data.receipt_email,
-    contact: data.receipt_number,
+    contact: data.billing_details.phone ?? null,
     status: data.status,
 
     // Raw
