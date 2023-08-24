@@ -1,0 +1,86 @@
+---
+title: Github
+description: This page contains the setup guide and reference information for the GitHub integration.
+---
+
+## Authentication Specification
+
+We support authentication based on API Key and OAuth2. We will be requiring below information.
+
+API Key
+
+1. API Key (api_key)
+2. Organisation identifier (org)
+
+OAuth2
+
+1. Client Id (client_id)
+2. Client Secret (client_secret)
+3. Scopes (scopes)
+4. Refresh Tokens (refresh_token)
+5. Organisation identifier (org)
+
+## Supported Models
+
+- [Collection](/ticketing/collection)
+- [User](/ticketing/user)
+- [Team](/ticketing/team)
+- [Ticket](/ticketing/ticket)
+- [Comment](/ticketing/comment)
+- [Tag](/ticketing/tag)
+
+# Mapping
+
+## Collection
+
+| Key             |    Value     |                    Description                     |
+| --------------- | :----------: | :------------------------------------------------: |
+| `id`            |     `id`     |               The ID of the project                |
+| `ticket_id`     | `issue_url`  | The ID of the ticket, extracted from the issue URL |
+| `body`          |    `body`    |            The body text of the project            |
+| `created_by_id` |  `user.id`   |     The ID of the user who created the project     |
+| `created_by`    | `user.login` |  The username of the user who created the project  |
+| `created_at`    | `created_at` |     The date and time the project was created      |
+| `updated_at`    | `updated_at` |   The date and time the project was last updated   |
+
+## User
+
+| Key      |    Value     |        Description         |
+| -------- | :----------: | :------------------------: |
+| `id`     |   `login`    |     The ID of the user     |
+| `name`   |   `login`    |    The name of the user    |
+| `avatar` | `avatar_url` | The avatar URL of the user |
+
+## Team
+
+| Key           |     Value     |         Description         |
+| ------------- | :-----------: | :-------------------------: |
+| `id`          |     `id`      |     The ID of the team      |
+| `name`        |    `name`     |    The name of the team     |
+| `description` | `description` | The description of the team |
+
+## Ticket
+
+| Key             |           Value           |                   Description                   |
+| --------------- | :-----------------------: | :---------------------------------------------: |
+| `id`            |         `number`          |              The ID of the ticket               |
+| `name`          |          `title`          |             The title of the ticket             |
+| `collection_id` | `collection_id(internal)` | The ID of the collection the ticket belongs to  |
+| `description`   |          `body`           |          The description of the ticket          |
+| `status`        |          `state`          |            The status of the ticket             |
+| `created_at`    |       `created_at`        |    The date and time the ticket was created     |
+| `updated_at`    |       `updated_at`        |  The date and time the ticket was last updated  |
+| `created_by`    |       `user.login`        | The username of the user who created the ticket |
+| `type`          |      `pull_request`       | The type of the ticket (pull request or issue)  |
+| `assignees`     |  `assignees(id, login)`   |           The assignees of the ticket           |
+| `ticket_url`    |           `url`           |              The URL of the ticket              |
+| `tags`          |    `labels(id, name)`     |             The tags of the ticket              |
+
+## Tag
+
+| Key           |     Value     |        Description         |
+| ------------- | :-----------: | :------------------------: |
+| `id`          |     `id`      |     The ID of the tag      |
+| `name`        |    `name`     |    The name of the tag     |
+| `description` | `description` | The description of the tag |
+| `color`       |    `color`    |    The color of the tag    |
