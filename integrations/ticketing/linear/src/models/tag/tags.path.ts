@@ -21,8 +21,24 @@ export class TagsPath extends BasePath {
                 nodes {
                   id
                   createdAt
-                  description
+                  updatedAt
+                  archivedAt
                   name
+                  description
+                  color
+                  organization {
+                    id
+                  }
+                  team {
+                    id
+                  }
+                  creator {
+                    name
+                  }
+                  parent {
+                    id
+                  }
+                  isGroup
                 }
               }
             }

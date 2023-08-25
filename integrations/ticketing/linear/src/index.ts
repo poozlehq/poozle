@@ -69,19 +69,19 @@ class LinearIntegration extends BaseIntegration {
        * TODO: Link to the documentation of the APIS this is mapping to
        */
       new CollectionsPath(/^\/?collections$/g, 'GET'),
-      new CollectionPath(/^\/?collections+/g, 'GET'),
+      new CollectionPath(/^\/?collection+/g, 'GET'),
 
       /**
        * TODO: Link to the documentation of the APIS this is mapping to
        */
       new CommentsPath(/^\/?comments$/g, ['GET', 'POST']),
-      new CommentPath(/^\/?comments+/g, ['GET', 'PATCH']),
+      new CommentPath(/^\/?comment+/g, ['GET', 'PATCH']),
 
       /**
        * TODO: Link to the documentation of the APIS this is mapping to
        */
       new TagsPath(/^\/?tags$/g, ['GET', 'POST']),
-      new TagPath(/^\/?tags+/g, ['GET', 'PATCH']),
+      new TagPath(/^\/?tag+/g, ['GET', 'PATCH']),
 
       /**
        * TODO: Link to the documentation of the APIS this is mapping to
@@ -93,7 +93,7 @@ class LinearIntegration extends BaseIntegration {
        * TODO: Link to the documentation of the APIS this is mapping to
        */
       new TicketsPath(/^\/?tickets$/g, ['GET']),
-      new TicketPath(/^\/?tickets+/g, ['GET', 'POST', 'PATCH']),
+      new TicketPath(/^\/?ticket+/g, ['GET', 'POST', 'PATCH']),
 
       /**
        * TODO: Link to the documentation of the APIS this is mapping to

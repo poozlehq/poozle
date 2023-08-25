@@ -75,7 +75,7 @@ export class TicketPath extends BasePath {
           headers,
         },
       );
-      return { data: convertTicket(response.data) };
+      return { data: convertTicket(response.data.data.issue) };
     } catch (e) {
       throw new Error(e);
     }
@@ -106,7 +106,7 @@ export class TicketPath extends BasePath {
           },
         },
       });
-      return { data: convertTicket(response.data) };
+      return { data: convertTicket(response.data.data.team) };
     } catch (e) {
       throw new Error(e);
     }

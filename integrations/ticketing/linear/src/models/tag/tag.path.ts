@@ -11,7 +11,7 @@ export class TagPath extends BasePath {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getTag(headers: AxiosHeaders, params: GetTagParams): Promise<TagResponse> {
     try {
-      const id = params.pathParams?.tag_id;
+      const issueLabelId = params.pathParams?.tag_id;
       const response = await axios.post(
         BASE_URL,
         {
@@ -19,19 +19,35 @@ export class TagPath extends BasePath {
             query IssueLabel($issueLabelId: String!) {
               issueLabel(id: $issueLabelId) {
                 id
+                createdAt
+                updatedAt
+                archivedAt
                 name
-                color
                 description
+                color
+                organization {
+                  id
+                }
+                team {
+                  id
+                }
+                creator {
+                  name
+                }
+                parent {
+                  id
+                }
+                isGroup
               }
             }
           `,
           variables: {
-            id,
+            issueLabelId,
           },
         },
         { headers },
       );
-      return { data: convertTag(response.data) };
+      return { data: convertTag(response.data.data.issueLabel) };
     } catch (e) {
       throw new Error(e);
     }
