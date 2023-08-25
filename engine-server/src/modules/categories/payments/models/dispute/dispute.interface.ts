@@ -1,8 +1,14 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
-import { Charge, Dispute, Evidence } from '@poozle/engine-idk';
+import {
+  Charge,
+  Dispute,
+  DisputeReason,
+  DisputeStatus,
+  Evidence,
+} from '@poozle/engine-idk';
 import { Transform } from 'class-transformer';
-import { IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsEnum, IsOptional, IsString } from 'class-validator';
 
 import { JustRawParams, QueryParams } from 'common/interfaces/query.interface';
 import { Meta } from 'common/interfaces/response.interface';
@@ -14,6 +20,16 @@ export class DisputeQueryParams extends QueryParams {
     return value === 'true' || value === 'True' || value === true;
   })
   realtime?: boolean = false;
+
+  @IsOptional()
+  @IsString()
+  @IsEnum(DisputeReason)
+  reason?: DisputeReason;
+
+  @IsOptional()
+  @IsString()
+  @IsEnum(DisputeStatus)
+  status?: DisputeStatus;
 }
 
 export class GetDisputeQueryParams extends JustRawParams {

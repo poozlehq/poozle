@@ -76,7 +76,7 @@ export class CollectionService {
       queryParams.raw,
     );
 
-    query = applyDateFilter(query, queryParams);
+    query = applyDateFilter(query, queryParams, DATABASE_NAME);
 
     const data = await query.limit(limit).offset(offset);
 

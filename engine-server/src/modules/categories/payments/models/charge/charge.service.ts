@@ -72,7 +72,7 @@ export class ChargeService {
       queryParams.raw,
     );
 
-    query = applyDateFilter(query, queryParams);
+    query = applyDateFilter(query, queryParams, DATABASE_NAME);
 
     // TODO (harshith): fix the knex builder
     const data = (await query.limit(limit).offset(offset)) as any[];

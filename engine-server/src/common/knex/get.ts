@@ -78,25 +78,45 @@ export async function getObjectFromDb(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function applyDateFilter(query: any, queryParams: any) {
+export function applyDateFilter(
+  query: any,
+  queryParams: any,
+  databaseName: string,
+) {
   // Conditionally apply the created_after filter if not null
   if (queryParams.created_after) {
-    query = query.where('created_at', '>=', queryParams.created_after);
+    query = query.where(
+      `${databaseName}.created_at`,
+      '>=',
+      queryParams.created_after,
+    );
   }
 
   // Conditionally apply the created_before filter if not null
   if (queryParams.created_before) {
-    query = query.where('created_at', '<=', queryParams.created_before);
+    query = query.where(
+      `${databaseName}.created_at`,
+      '<=',
+      queryParams.created_before,
+    );
   }
 
   // Conditionally apply the updated_after filter if not null
   if (queryParams.updated_after) {
-    query = query.where('updated_at', '>=', queryParams.updated_after);
+    query = query.where(
+      `${databaseName}.updated_at`,
+      '>=',
+      queryParams.updated_after,
+    );
   }
 
   // Conditionally apply the updated_before filter if not null
   if (queryParams.updated_before) {
-    query = query.where('updated_at', '<=', queryParams.updated_before);
+    query = query.where(
+      `${databaseName}.updated_at`,
+      '<=',
+      queryParams.updated_before,
+    );
   }
 
   return query;

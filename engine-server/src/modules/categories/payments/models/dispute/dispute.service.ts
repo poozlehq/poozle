@@ -35,9 +35,9 @@ export class DisputeService {
     integrationAccount: IntegrationAccount,
     query: DisputeQueryParams,
   ) {
-    if (query.realtime || !integrationAccount.syncEnabled) {
-      return await this.getDisputesForRealtime(integrationAccount, query);
-    }
+    // if (query.realtime || !integrationAccount.syncEnabled) {
+    //   return await this.getDisputesForRealtime(integrationAccount, query);
+    // }
 
     return await this.getDisputesFromDb(integrationAccount, query);
   }
@@ -92,7 +92,7 @@ export class DisputeService {
       joinTable,
     );
 
-    query = applyDateFilter(query, queryParams);
+    query = applyDateFilter(query, queryParams, DATABASE_NAME);
 
     // TODO (harshith): Pass knex builder T
     const data = (await query.limit(limit).offset(offset)) as any;
@@ -107,9 +107,13 @@ export class DisputeService {
     integrationAccount: IntegrationAccount,
     query: DisputeQueryParams,
   ) {
-    let where = {} as any;
-    where[`${DATABASE_NAME}.integration_account_id`] =
-      integrationAccount.integrationAccountId;
+    let where: Record<string, any> = {
+      [`${DATABASE_NAME}.integration_account_id`]:
+        integrationAccount.integrationAccountId,
+      ...(query.reason ? { [`${DATABASE_NAME}.reason`]: query.reason } : {}),
+      ...(query.status ? { [`${DATABASE_NAME}.status`]: query.status } : {}),
+    };
+
     return await this.getListFromDb(
       integrationAccount.workspaceName,
       DATABASE_NAME,

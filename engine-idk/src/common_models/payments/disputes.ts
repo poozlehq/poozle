@@ -46,3 +46,30 @@ export interface Evidence {
   past_due: boolean;
   submission_count: string;
 }
+
+export enum DisputeReason {
+  bank_cannot_process = 'bank_cannot_process',
+  check_returned = 'check_returned',
+  credit_not_processed = 'credit_not_processed',
+  customer_initiated = 'customer_initiated',
+  debit_not_authorized = 'debit_not_authorized',
+  duplicate = 'duplicate',
+  fraudulent = 'fraudulent',
+  general = 'general',
+  incorrect_account_details = 'incorrect_account_details',
+  insufficient_funds = 'insufficient_funds',
+  product_not_received = 'product_not_received',
+  product_unacceptable = 'product_unacceptable',
+  subscription_canceled = 'subscription_canceled',
+  unrecognize = 'unrecognize',
+}
+
+export enum DisputeStatus {
+  warning_needs_response = 'warning_needs_response',
+  warning_under_review = 'warning_under_review',
+  warning_closed = 'warning_closed',
+  needs_response = 'needs_response',
+  under_review = 'under_review',
+  won = 'won',
+  lost = 'lost',
+}
