@@ -1,15 +1,15 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
-import { Team } from '@poozle/engine-idk';
-
-import { UpdateTeamResponse } from './team.interface';
+import { TeamWithRaw, UpdateTeamResponse } from './team.interface';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function convertTeam(data: any): Team {
+export function convertTeam(data: any): TeamWithRaw {
   return {
     id: data.id,
     name: data.name,
     description: data.description,
-    members: [],
+    members: data.members.nodes,
+
+    raw: data,
   };
 }
 

@@ -87,7 +87,7 @@ class LinearIntegration extends BaseIntegration {
        * TODO: Link to the documentation of the APIS this is mapping to
        */
       new TeamsPath(/^\/?teams$/g, ['GET']),
-      new TeamPath(/^\/?teams+/g, ['GET', 'PATCH']),
+      new TeamPath(/^\/?team+/g, ['GET', 'PATCH']),
 
       /**
        * TODO: Link to the documentation of the APIS this is mapping to

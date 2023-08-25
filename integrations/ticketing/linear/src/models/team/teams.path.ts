@@ -15,24 +15,62 @@ export class TeamsPath extends BasePath {
         BASE_URL,
         {
           query: `
-            teams {
-              nodes {
-                id
-                name
-                description
-                members {
-                  nodes {
-                    id
-                    name
+            query Teams {
+              teams {
+                nodes {
+                  id
+                  createdAt
+                  updatedAt
+                  archivedAt
+                  name
+                  key
+                  description
+                  icon
+                  color
+                  cyclesEnabled
+                  cycleStartDay
+                  cycleDuration
+                  cycleCooldownTime
+                  cycleIssueAutoAssignStarted
+                  cycleIssueAutoAssignCompleted
+                  cycleLockToActive
+                  upcomingCycleCount
+                  timezone
+                  inviteHash
+                  issueEstimationType
+                  issueOrderingNoPriorityFirst
+                  issueEstimationAllowZero
+                  issueSortOrderDefaultToBottom
+                  issueEstimationExtended
+                  defaultIssueEstimate
+                  triageEnabled
+                  requirePriorityToLeaveTriage
+                  defaultTemplateForMembersId
+                  defaultTemplateForNonMembersId
+                  private
+                  groupIssueHistory
+                  slackNewIssue
+                  slackIssueComments
+                  slackIssueStatuses
+                  autoClosePeriod
+                  autoCloseStateId
+                  autoArchivePeriod
+                  cycleCalenderUrl
+                  issueCount
+                  members {
+                    nodes {
+                      id
+                      name
+                    }
                   }
                 }
-              }
+            }
             }
           `,
         },
         { headers },
       );
-      const teamsList: object[] = response.data.data.users.nodes;
+      const teamsList: object[] = response.data.data.teams.nodes;
       return {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         data: teamsList.map(convertTeam),

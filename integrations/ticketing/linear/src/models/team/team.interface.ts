@@ -9,7 +9,7 @@ export interface TeamWithRaw extends Team {
 }
 
 export interface TeamsResponse {
-  data: Team[];
+  data: TeamWithRaw[];
   meta: Meta;
 }
 

@@ -11,7 +11,7 @@ export class TeamPath extends BasePath {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async getTeam(headers: AxiosHeaders, params: TeamParams): Promise<TeamResponse> {
     try {
-      const id = params.pathParams.team_id;
+      const teamId = params.pathParams.team_id;
       const response = await axios.post(
         BASE_URL,
         {
@@ -31,12 +31,12 @@ export class TeamPath extends BasePath {
             }
           `,
           variables: {
-            id,
+            teamId,
           },
         },
         { headers },
       );
-      return { data: convertTeam(response.data) };
+      return { data: convertTeam(response.data.data.team) };
     } catch (e) {
       throw new Error(e);
     }
