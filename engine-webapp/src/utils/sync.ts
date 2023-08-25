@@ -18,6 +18,11 @@ export const SYNC_OPTIONS = {
   EVERY_DAY: 'every day',
 };
 
+export const SYNC_SUPPORTED_CATEGORIES: IntegrationType[] = [
+  IntegrationType.TICKETING,
+  IntegrationType.PAYMENTS,
+];
+
 export function isSyncEnabled(integrationType: IntegrationType): boolean {
-  return integrationType === IntegrationType.TICKETING;
+  return SYNC_SUPPORTED_CATEGORIES.includes(integrationType);
 }

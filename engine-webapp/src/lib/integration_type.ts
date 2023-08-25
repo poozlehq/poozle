@@ -7,6 +7,7 @@ export enum IntegrationType {
   TICKETING = 'TICKETING',
   MAIL = 'MAIL',
   DOCUMENTATION = 'DOCUMENTATION',
+  PAYMENTS = 'PAYMENTS',
 }
 
 export const IntegrationTypeSelectData: Record<IntegrationType, string> = {
@@ -16,4 +17,5 @@ export const IntegrationTypeSelectData: Record<IntegrationType, string> = {
   TICKETING: 'Ticketing',
   MAIL: 'Mail',
   DOCUMENTATION: 'Documentation',
+  PAYMENTS: 'Payments',
 };

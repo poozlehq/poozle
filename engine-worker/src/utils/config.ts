@@ -40,7 +40,7 @@ function generateSource(
 ): string {
   const integrationDefinitionType = integrationDefinition.integrationType.toLowerCase();
 
-  let syncStartDate = (() => {
+  const syncStartDate = (() => {
     let date;
     switch (integrationDefinitionType) {
       case 'ticketing':

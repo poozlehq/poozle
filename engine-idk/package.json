@@ -1,12 +1,12 @@
 {
   "name": "@poozle/engine-idk",
-  "version": "0.1.44",
+  "version": "0.1.45",
   "description": "Used to develop integrations for Poozle",
   "license": "MIT",
   "author": "Poozle <support@poozle.in>",
   "main": "./idk/index.js",
   "module": "./idk/index.esm.js",
-  "keywords": [],
+  "keywords": [ ],
   "scripts": {
     "build": "rollup -c",
     "lint": "eslint --ext js,ts,tsx src",
