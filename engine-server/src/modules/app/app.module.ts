@@ -24,6 +24,7 @@ import { WorkspaceModule } from 'modules/workspace/workspace.module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CalendarModule } from 'modules/categories/calendar/calendar.module';
+import { PaymentsModule } from 'modules/categories/payments/payment.module';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import { CalendarModule } from 'modules/categories/calendar/calendar.module';
     MailModule,
     DocumentationModule,
     CalendarModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

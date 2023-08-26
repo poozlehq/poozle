@@ -26,6 +26,9 @@ function getTables(integrationDefinitionType: string) {
         'ticketing_tag',
       ];
 
+    case 'payments':
+      return ['payments_charge', 'payments_dispute'];
+
     default:
       return ['ticketing_collection', 'ticketing_ticket'];
   }
@@ -37,13 +40,33 @@ function generateSource(
 ): string {
   const integrationDefinitionType = integrationDefinition.integrationType.toLowerCase();
 
+  const syncStartDate = (() => {
+    let date;
+    switch (integrationDefinitionType) {
+      case 'ticketing':
+        date = new Date();
+        date.setMonth(date.getMonth() - 3);
+        return date.toISOString();
+
+      case 'payments':
+        date = new Date();
+        date.setFullYear(date.getFullYear() - 2);
+        return date.toISOString();
+
+      default:
+        date = new Date();
+        date.setDate(date.getDate() - 10);
+        return date.toISOString();
+    }
+  })();
+
   return yaml.dump({
     kind: 'source',
     spec: {
       name: `${integrationDefinitionType}-${integrationAccount.integrationAccountName}`,
       registry: 'github',
-      path: `poozlehq/${integrationDefinitionType}`,
-      version: 'v0.1.2',
+      path: 'poozlehq/poozle',
+      version: 'v0.1.3',
       concurrency: 10000,
       tables: getTables(integrationDefinitionType),
       destinations: ['postgresql'],
@@ -56,7 +79,7 @@ function generateSource(
         workspace_id: integrationAccount.workspaceId,
         integration_account_id: integrationAccount.integrationAccountId,
         uid: 'github',
-        start_date: '2023-01-01T00:00:00Z',
+        start_date: syncStartDate,
         url: `${process.env.BACKEND_URL}/v1/${integrationDefinitionType}`,
       },
     },

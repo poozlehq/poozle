@@ -17,43 +17,39 @@ import { pagination } from 'common/utils';
 import { DataService } from 'modules/data/data.service';
 
 import {
-  COLLECTION_KEYS,
-  CollectionQueryParams,
-  GetCollectionQueryParams,
-  PathParamsWithCollectionId,
-} from './collection.interface';
+  CHARGE_KEYS,
+  ChargeQueryParams,
+  GetChargeQueryParams,
+  PathParamsWithChargeId,
+} from './charge.interface';
 
-const DATABASE_NAME = 'ticketing_collection';
+const DATABASE_NAME = 'payments_charge';
 
 @Injectable()
-export class CollectionService {
+export class ChargeService {
   constructor(private dataService: DataService) {}
 
-  async getCollections(
+  async getCharges(
     integrationAccount: IntegrationAccount,
-    query: CollectionQueryParams,
+    query: ChargeQueryParams,
   ) {
     if (query.realtime || !integrationAccount.syncEnabled) {
-      return await this.getCollectionsForRealtime(integrationAccount, query);
+      return await this.getChargesForRealtime(integrationAccount, query);
     }
 
-    return await this.getCollectionsFromDb(integrationAccount, query);
+    return await this.getChargesFromDb(integrationAccount, query);
   }
 
-  async getCollection(
+  async getCharge(
     integrationAccount: IntegrationAccount,
-    query: GetCollectionQueryParams,
-    params: PathParamsWithCollectionId,
+    query: GetChargeQueryParams,
+    params: PathParamsWithChargeId,
   ) {
     if (query.realtime || !integrationAccount.syncEnabled) {
-      return await this.getCollectionForRealtime(
-        integrationAccount,
-        query,
-        params,
-      );
+      return await this.getChargeForRealtime(integrationAccount, query, params);
     }
 
-    return await this.getCollectionFromDb(integrationAccount, query, params);
+    return await this.getChargeFromDb(integrationAccount, query, params);
   }
 
   async getListFromDb(
@@ -61,7 +57,7 @@ export class CollectionService {
     table: string,
     where: Record<string, string>,
     SELECT_KEYS: string[],
-    queryParams: CollectionQueryParams,
+    queryParams: ChargeQueryParams,
   ) {
     const { offset, limit, page } = pagination(
       queryParams.limit,
@@ -78,7 +74,8 @@ export class CollectionService {
 
     query = applyDateFilter(query, queryParams, DATABASE_NAME);
 
-    const data = await query.limit(limit).offset(offset);
+    // TODO (harshith): fix the knex builder
+    const data = (await query.limit(limit).offset(offset)) as any[];
 
     return {
       data,
@@ -86,9 +83,9 @@ export class CollectionService {
     };
   }
 
-  async getCollectionsFromDb(
+  async getChargesFromDb(
     integrationAccount: IntegrationAccount,
-    query: CollectionQueryParams,
+    query: ChargeQueryParams,
   ) {
     return await this.getListFromDb(
       integrationAccount.workspaceName,
@@ -96,52 +93,52 @@ export class CollectionService {
       {
         integration_account_id: integrationAccount.integrationAccountId,
       },
-      COLLECTION_KEYS,
+      CHARGE_KEYS,
       query,
     );
   }
 
-  async getCollectionFromDb(
+  async getChargeFromDb(
     integrationAccount: IntegrationAccount,
-    query: GetCollectionQueryParams,
-    params: PathParamsWithCollectionId,
+    query: GetChargeQueryParams,
+    params: PathParamsWithChargeId,
   ) {
     return await getObjectFromDb(
       integrationAccount.workspaceName,
       DATABASE_NAME,
       {
         integration_account_id: integrationAccount.integrationAccountId,
-        id: params.collection_id,
+        id: params.charge_id,
       },
-      COLLECTION_KEYS,
+      CHARGE_KEYS,
       query.raw,
     );
   }
 
-  async getCollectionForRealtime(
+  async getChargeForRealtime(
     integrationAccount: IntegrationAccount,
-    query: GetCollectionQueryParams,
-    params: PathParamsWithCollectionId,
+    query: GetChargeQueryParams,
+    params: PathParamsWithChargeId,
   ) {
-    const collectionResponse = await this.dataService.getDataFromAccount(
+    const chargeResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
-      `/collections/${params.collection_id}`,
+      `/charges/${params.charge_id}`,
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { raw: query.raw },
       params,
     );
 
-    return collectionResponse;
+    return chargeResponse;
   }
 
-  async getCollectionsForRealtime(
+  async getChargesForRealtime(
     integrationAccount: IntegrationAccount,
-    query: CollectionQueryParams,
+    query: ChargeQueryParams,
   ) {
-    const collectionResponse = await this.dataService.getDataFromAccount(
+    const chargeResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
-      '/collections',
+      '/charges',
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       {
@@ -154,6 +151,6 @@ export class CollectionService {
       {},
     );
 
-    return collectionResponse;
+    return chargeResponse;
   }
 }

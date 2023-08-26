@@ -16,6 +16,7 @@ export function getBaseQuery<T>(
   where: Record<string, string>,
   SELECT_KEYS: string[],
   raw: boolean,
+  join?: Record<string, string | string[]>,
 ) {
   const knex = Knex({
     client: 'pg',
@@ -24,11 +25,28 @@ export function getBaseQuery<T>(
     },
   });
 
-  const query = knex
+  let query = knex
     .withSchema(workspaceName)
     .table<T>(table)
     .select(getSelectKeys(SELECT_KEYS, raw))
     .where(where);
+
+  if (join) {
+    const joinSelectedKeys = join.selectedKeys as string[];
+    query = query
+      .leftJoin(
+        join.tableName as string,
+        `${join.tableName}.${join.joinColumn}`,
+        `${table}.${join.sourceColumn}`,
+      )
+      .select(
+        knex.raw(
+          `json_build_object(${joinSelectedKeys
+            .map((key: any) => `'${key}', ${join.tableName}.${key}`)
+            .join(', ')}) as ${join.selectedColumnName}`,
+        ),
+      );
+  }
 
   return query;
 }
@@ -60,25 +78,45 @@ export async function getObjectFromDb(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function applyDateFilter(query: any, queryParams: any) {
+export function applyDateFilter(
+  query: any,
+  queryParams: any,
+  databaseName: string,
+) {
   // Conditionally apply the created_after filter if not null
   if (queryParams.created_after) {
-    query = query.where('created_at', '>=', queryParams.created_after);
+    query = query.where(
+      `${databaseName}.created_at`,
+      '>=',
+      queryParams.created_after,
+    );
   }
 
   // Conditionally apply the created_before filter if not null
   if (queryParams.created_before) {
-    query = query.where('created_at', '<=', queryParams.created_before);
+    query = query.where(
+      `${databaseName}.created_at`,
+      '<=',
+      queryParams.created_before,
+    );
   }
 
   // Conditionally apply the updated_after filter if not null
   if (queryParams.updated_after) {
-    query = query.where('updated_at', '>=', queryParams.updated_after);
+    query = query.where(
+      `${databaseName}.updated_at`,
+      '>=',
+      queryParams.updated_after,
+    );
   }
 
   // Conditionally apply the updated_before filter if not null
   if (queryParams.updated_before) {
-    query = query.where('updated_at', '<=', queryParams.updated_before);
+    query = query.where(
+      `${databaseName}.updated_at`,
+      '<=',
+      queryParams.updated_before,
+    );
   }
 
   return query;

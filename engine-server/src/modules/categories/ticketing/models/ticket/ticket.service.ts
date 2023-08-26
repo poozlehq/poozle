@@ -99,7 +99,7 @@ export class TicketService {
       queryParams.raw,
     );
 
-    query = applyDateFilter(query, queryParams);
+    query = applyDateFilter(query, queryParams, DATABASE_NAME);
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const data = (await query.limit(limit).offset(offset)) as any[];

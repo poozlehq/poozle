@@ -960,10 +960,10 @@
   dependencies:
     axios "^1.3.2"
 
-"@poozle/engine-idk@^0.1.43":
-  version "0.1.43"
-  resolved "https://registry.yarnpkg.com/@poozle/engine-idk/-/engine-idk-0.1.43.tgz#7d50093bc9cd45d1903a29ea27baf530815ccfc8"
-  integrity sha512-ANDCgnjHV/pAoNqpXI3yh55gZpVsvYPlsmjD2S5LGAo2fOc7mpxF3girrNl5vmx6P62VEXsFB9kQRM1888vBSw==
+"@poozle/engine-idk@^0.1.45":
+  version "0.1.45"
+  resolved "https://registry.yarnpkg.com/@poozle/engine-idk/-/engine-idk-0.1.45.tgz#49812d4cb4e3e0284518b71e4dcd48718ad0b8ff"
+  integrity sha512-pFnxil8eDSWZPb5OSP4y2GQ1o4bhIvy0dgb23r0NrFWfAROjJlE+ZGECI1YOz6++uuP2kc8CKRGCdY4XsmSKLg==
   dependencies:
     axios "^1.3.2"
     qs "^6.11.2"

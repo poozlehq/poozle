@@ -22,6 +22,10 @@ import {
   IntegrationAccountRequestIdBody,
   UpdateIntegrationAccountBody,
 } from './integration_account.interface';
+import {
+  defaultSyncParams,
+  isSyncSupported,
+} from './integration_account.utils';
 
 @Injectable()
 export class IntegrationAccountService {
@@ -74,27 +78,31 @@ export class IntegrationAccountService {
       authType,
       workspaceId,
     );
+    const integrationDefinition =
+      await this.integrationDefinitionService.getIntegrationDefinitionWithId(
+        {
+          integrationDefinitionId,
+        },
+        workspaceId,
+      );
 
     if (syncEnabled) {
-      const integrationDefinition =
-        await this.integrationDefinitionService.getIntegrationDefinitionWithId(
-          {
-            integrationDefinitionId,
-          },
-          workspaceId,
-        );
-
-      if (integrationDefinition.integrationType !== IntegrationType.TICKETING) {
+      if (!isSyncSupported(integrationDefinition.integrationType)) {
         throw new BadRequestException(
-          'Sync currently is only supported to ticketing category',
+          `Sync currently is not supported for: ${integrationDefinition.integrationType}`,
         );
       }
     }
 
     if (status) {
+      const defaultSyncData = defaultSyncParams(
+        integrationDefinition.integrationType,
+      );
+
       const integrationAccount =
         await this.prismaService.integrationAccount.create({
           data: {
+            ...defaultSyncData,
             integrationAccountName,
             integrationDefinitionId,
             workspaceId,
@@ -140,11 +148,19 @@ export class IntegrationAccountService {
       authType,
       workspaceId,
     );
+    const integrationDefinition =
+      await this.integrationDefinitionService.getIntegrationDefinitionWithId(
+        {
+          integrationDefinitionId,
+        },
+        workspaceId,
+      );
 
     if (status) {
       const integrationAccount =
         await this.prismaService.integrationAccount.create({
           data: {
+            ...defaultSyncParams(integrationDefinition.integrationType),
             integrationAccountName,
             integrationDefinitionId,
             workspaceId,
@@ -160,6 +176,13 @@ export class IntegrationAccountService {
 
       // Specific to JIRA where refresh token is expired after one use
       await this.dataService.getHeaders(integrationAccount);
+
+      if (this.configService.get('TEMPORAL_ADDRESS')) {
+        if (integrationAccount.syncEnabled) {
+          await this.syncService.createScheduleIfNotExist(integrationAccount);
+          await this.syncService.runInitialSync(integrationAccount);
+        }
+      }
 
       return integrationAccount;
     }
@@ -188,7 +211,10 @@ export class IntegrationAccountService {
       integrationAccountRequestIdBody,
     );
 
-    if (this.configService.get('TEMPORAL_ADDRESS')) {
+    if (
+      this.configService.get('TEMPORAL_ADDRESS') &&
+      integrationAccount.syncEnabled
+    ) {
       const status = await this.syncService.deleteSyncSchedule(
         integrationAccount,
       );
@@ -313,14 +339,16 @@ export class IntegrationAccountService {
       });
 
       if (
-        integrationAccount.integrationDefinition.integrationType !==
-        IntegrationType.TICKETING
+        !isSyncSupported(
+          integrationAccount.integrationDefinition.integrationType,
+        )
       ) {
         throw new BadRequestException(
-          'Sync currently is only supported to ticketing category',
+          `Sync is not supported for integrations: ${integrationAccount.integrationDefinition.integrationType}`,
         );
       }
     }
+
     const integrationAccount =
       await this.prismaService.integrationAccount.update({
         data: {

@@ -61,6 +61,14 @@
     "releaseStage": "ALPHA",
     "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/documentation/confluence/0.1.1/index.js",
     "integrationType": "DOCUMENTATION"
-
+  },
+  {
+    "name": "Stripe",
+    "key": "stripe",
+    "icon": "stripe.svg",
+    "version": "0.1.1",
+    "releaseStage": "ALPHA",
+    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/payments/stripe/0.1.1/index.js",
+    "integrationType": "PAYMENTS"
   }
 ]

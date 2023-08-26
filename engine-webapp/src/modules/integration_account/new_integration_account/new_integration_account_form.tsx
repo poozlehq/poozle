@@ -88,8 +88,6 @@ export function Form({
       config: values[getPropertyName(values.authType)],
       authType: values.authType,
       integrationAccountName: values.integrationAccountName,
-      syncEnabled: values.syncEnabled === 'Yes' ? true : false,
-      syncPeriod: values.syncPeriod,
     });
   };
 

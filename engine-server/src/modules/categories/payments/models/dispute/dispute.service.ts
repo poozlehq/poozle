@@ -17,43 +17,45 @@ import { pagination } from 'common/utils';
 import { DataService } from 'modules/data/data.service';
 
 import {
-  COLLECTION_KEYS,
-  CollectionQueryParams,
-  GetCollectionQueryParams,
-  PathParamsWithCollectionId,
-} from './collection.interface';
+  DisputeQueryParams,
+  DISPUTE_KEYS,
+  GetDisputeQueryParams,
+  PathParamsWithDisputeId,
+} from './dispute.interface';
+import { CHARGE_KEYS } from '../charge/charge.interface';
+import { Dispute } from '@poozle/engine-idk';
 
-const DATABASE_NAME = 'ticketing_collection';
-
+const DATABASE_NAME = 'payments_dispute';
+const CHARGE_DATABASE_NAME = 'payments_charge';
 @Injectable()
-export class CollectionService {
+export class DisputeService {
   constructor(private dataService: DataService) {}
 
-  async getCollections(
+  async getDisputes(
     integrationAccount: IntegrationAccount,
-    query: CollectionQueryParams,
+    query: DisputeQueryParams,
   ) {
     if (query.realtime || !integrationAccount.syncEnabled) {
-      return await this.getCollectionsForRealtime(integrationAccount, query);
+      return await this.getDisputesForRealtime(integrationAccount, query);
     }
 
-    return await this.getCollectionsFromDb(integrationAccount, query);
+    return await this.getDisputesFromDb(integrationAccount, query);
   }
 
-  async getCollection(
+  async getDispute(
     integrationAccount: IntegrationAccount,
-    query: GetCollectionQueryParams,
-    params: PathParamsWithCollectionId,
+    query: GetDisputeQueryParams,
+    params: PathParamsWithDisputeId,
   ) {
     if (query.realtime || !integrationAccount.syncEnabled) {
-      return await this.getCollectionForRealtime(
+      return await this.getDisputeForRealtime(
         integrationAccount,
         query,
         params,
       );
     }
 
-    return await this.getCollectionFromDb(integrationAccount, query, params);
+    return await this.getDisputeFromDb(integrationAccount, query, params);
   }
 
   async getListFromDb(
@@ -61,24 +63,38 @@ export class CollectionService {
     table: string,
     where: Record<string, string>,
     SELECT_KEYS: string[],
-    queryParams: CollectionQueryParams,
+    queryParams: DisputeQueryParams,
   ) {
     const { offset, limit, page } = pagination(
       queryParams.limit,
       queryParams.cursor,
     );
 
-    let query = getBaseQuery(
+    const selectedKeys = SELECT_KEYS.map(
+      (key) => `${DATABASE_NAME}.${key} as ${key}`,
+    );
+
+    const joinTable = {
+      tableName: CHARGE_DATABASE_NAME,
+      joinColumn: 'id',
+      sourceColumn: 'charge_id',
+      selectedKeys: CHARGE_KEYS,
+      selectedColumnName: 'charge',
+    };
+
+    let query = getBaseQuery<Dispute>(
       workspaceName,
       table,
       where,
-      SELECT_KEYS,
+      selectedKeys,
       queryParams.raw,
+      joinTable,
     );
 
     query = applyDateFilter(query, queryParams, DATABASE_NAME);
 
-    const data = await query.limit(limit).offset(offset);
+    // TODO (harshith): Pass knex builder T
+    const data = (await query.limit(limit).offset(offset)) as any;
 
     return {
       data,
@@ -86,62 +102,67 @@ export class CollectionService {
     };
   }
 
-  async getCollectionsFromDb(
+  async getDisputesFromDb(
     integrationAccount: IntegrationAccount,
-    query: CollectionQueryParams,
+    query: DisputeQueryParams,
   ) {
+    let where: Record<string, any> = {
+      [`${DATABASE_NAME}.integration_account_id`]:
+        integrationAccount.integrationAccountId,
+      ...(query.reason ? { [`${DATABASE_NAME}.reason`]: query.reason } : {}),
+      ...(query.status ? { [`${DATABASE_NAME}.status`]: query.status } : {}),
+    };
+
     return await this.getListFromDb(
       integrationAccount.workspaceName,
       DATABASE_NAME,
-      {
-        integration_account_id: integrationAccount.integrationAccountId,
-      },
-      COLLECTION_KEYS,
+      where,
+      DISPUTE_KEYS,
       query,
     );
   }
 
-  async getCollectionFromDb(
+  async getDisputeFromDb(
     integrationAccount: IntegrationAccount,
-    query: GetCollectionQueryParams,
-    params: PathParamsWithCollectionId,
+    query: GetDisputeQueryParams,
+    params: PathParamsWithDisputeId,
   ) {
     return await getObjectFromDb(
       integrationAccount.workspaceName,
       DATABASE_NAME,
       {
         integration_account_id: integrationAccount.integrationAccountId,
-        id: params.collection_id,
+        id: params.dispute_id,
       },
-      COLLECTION_KEYS,
+      DISPUTE_KEYS,
       query.raw,
     );
   }
 
-  async getCollectionForRealtime(
+  async getDisputeForRealtime(
     integrationAccount: IntegrationAccount,
-    query: GetCollectionQueryParams,
-    params: PathParamsWithCollectionId,
+    query: GetDisputeQueryParams,
+    params: PathParamsWithDisputeId,
   ) {
-    const collectionResponse = await this.dataService.getDataFromAccount(
+    const disputeResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
-      `/collections/${params.collection_id}`,
+      `/disputes/${params.dispute_id}`,
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       { raw: query.raw },
       params,
     );
 
-    return collectionResponse;
+    return disputeResponse;
   }
 
-  async getCollectionsForRealtime(
+  async getDisputesForRealtime(
     integrationAccount: IntegrationAccount,
-    query: CollectionQueryParams,
+    query: DisputeQueryParams,
   ) {
-    const collectionResponse = await this.dataService.getDataFromAccount(
+    const disputeResponse = await this.dataService.getDataFromAccount(
       integrationAccount,
-      '/collections',
+      '/disputes',
       Method.GET,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       {
@@ -154,6 +175,6 @@ export class CollectionService {
       {},
     );
 
-    return collectionResponse;
+    return disputeResponse;
   }
 }

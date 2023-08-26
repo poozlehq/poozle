@@ -107,7 +107,7 @@ export class CreateIntegrationAccountBody extends WorkspaceIdRequestBody {
    */
   @IsOptional()
   @IsBoolean()
-  syncEnabled = false;
+  syncEnabled: boolean;
 
   /**
    * Enable sync for this account
