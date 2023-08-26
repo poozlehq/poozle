@@ -13,8 +13,14 @@ export function isSyncSupported(integrationType: IntegrationType): boolean {
   return SYNC_SUPPORTED_CATEGORIES.includes(integrationType);
 }
 
-export function defaultSyncParams(integrationType: IntegrationType) {
-  if (integrationType === IntegrationType.PAYMENTS) {
+export function syncParams(
+  integrationType: IntegrationType,
+  syncEnabled: boolean | undefined,
+) {
+  if (
+    typeof syncEnabled === 'undefined' &&
+    integrationType === IntegrationType.PAYMENTS
+  ) {
     return {
       syncEnabled: true,
       syncPeriod: SyncPeriod.EVERY_HALF_HOUR,
@@ -22,6 +28,6 @@ export function defaultSyncParams(integrationType: IntegrationType) {
   }
 
   return {
-    syncEnabled: false,
+    syncEnabled: !!syncEnabled,
   };
 }

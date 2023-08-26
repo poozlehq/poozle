@@ -22,10 +22,7 @@ import {
   IntegrationAccountRequestIdBody,
   UpdateIntegrationAccountBody,
 } from './integration_account.interface';
-import {
-  defaultSyncParams,
-  isSyncSupported,
-} from './integration_account.utils';
+import { isSyncSupported, syncParams } from './integration_account.utils';
 
 @Injectable()
 export class IntegrationAccountService {
@@ -69,7 +66,6 @@ export class IntegrationAccountService {
       workspaceId,
       accountIdentifier,
       syncEnabled,
-      syncPeriod,
     } = createIntegrationAccountBody;
 
     const { status } = await this.checkForIntegrationCredentails(
@@ -95,21 +91,24 @@ export class IntegrationAccountService {
     }
 
     if (status) {
-      const defaultSyncData = defaultSyncParams(
-        integrationDefinition.integrationType,
-      );
-
+      console.log({
+        ...syncParams(integrationDefinition.integrationType, syncEnabled),
+        integrationAccountName,
+        integrationDefinitionId,
+        workspaceId,
+        integrationConfiguration: config,
+        authType,
+        accountIdentifier,
+      });
       const integrationAccount =
         await this.prismaService.integrationAccount.create({
           data: {
-            ...defaultSyncData,
+            ...syncParams(integrationDefinition.integrationType, syncEnabled),
             integrationAccountName,
             integrationDefinitionId,
             workspaceId,
             integrationConfiguration: config,
             authType,
-            syncEnabled,
-            syncPeriod,
             accountIdentifier,
           },
           include: {
@@ -160,7 +159,7 @@ export class IntegrationAccountService {
       const integrationAccount =
         await this.prismaService.integrationAccount.create({
           data: {
-            ...defaultSyncParams(integrationDefinition.integrationType),
+            ...syncParams(integrationDefinition.integrationType, undefined),
             integrationAccountName,
             integrationDefinitionId,
             workspaceId,
