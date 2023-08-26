@@ -14,7 +14,7 @@ export class CommentsPath extends BasePath {
     params: Params,
   ): Promise<CommentsResponse> {
     try {
-      const page = params.queryParams?.cursor ? parseInt(<string>params.queryParams?.cursor) : 1;
+      const page = parseInt(<string>params.queryParams?.cursor) || 1;
       const response = await axios.post(
         BASE_URL,
         {
@@ -33,7 +33,6 @@ export class CommentsPath extends BasePath {
                   url
                 }
               }
-            }
             }
           `,
         },
@@ -83,7 +82,7 @@ export class CommentsPath extends BasePath {
 
   async run(method: string, headers: AxiosHeaders, params: Params, _config: Config) {
     switch (method) {
-      case 'GET' && params.pathParams?.ticket_id:
+      case 'GET':
         return this.fetchData(headers, params);
 
       case 'POST':
