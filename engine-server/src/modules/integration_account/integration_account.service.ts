@@ -148,11 +148,19 @@ export class IntegrationAccountService {
       authType,
       workspaceId,
     );
+    const integrationDefinition =
+      await this.integrationDefinitionService.getIntegrationDefinitionWithId(
+        {
+          integrationDefinitionId,
+        },
+        workspaceId,
+      );
 
     if (status) {
       const integrationAccount =
         await this.prismaService.integrationAccount.create({
           data: {
+            ...defaultSyncParams(integrationDefinition.integrationType),
             integrationAccountName,
             integrationDefinitionId,
             workspaceId,
@@ -168,6 +176,13 @@ export class IntegrationAccountService {
 
       // Specific to JIRA where refresh token is expired after one use
       await this.dataService.getHeaders(integrationAccount);
+
+      if (this.configService.get('TEMPORAL_ADDRESS')) {
+        if (integrationAccount.syncEnabled) {
+          await this.syncService.createScheduleIfNotExist(integrationAccount);
+          await this.syncService.runInitialSync(integrationAccount);
+        }
+      }
 
       return integrationAccount;
     }
@@ -196,7 +211,10 @@ export class IntegrationAccountService {
       integrationAccountRequestIdBody,
     );
 
-    if (this.configService.get('TEMPORAL_ADDRESS')) {
+    if (
+      this.configService.get('TEMPORAL_ADDRESS') &&
+      integrationAccount.syncEnabled
+    ) {
       const status = await this.syncService.deleteSyncSchedule(
         integrationAccount,
       );
