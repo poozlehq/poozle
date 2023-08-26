@@ -76,7 +76,7 @@ services:
     depends_on:
       - db
     environment:
-      - DB=${POSTGRES_DB}
+      - DB=postgresql
       - DB_PORT=${DB_PORT}
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PWD=${POSTGRES_PASSWORD}

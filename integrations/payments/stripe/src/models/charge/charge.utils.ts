@@ -48,7 +48,9 @@ export function convertCharge(data: any): ChargeWithRaw {
     amount_refunded: data.amount_refunded?.toString(),
     application: data.application,
     application_fee_amount: data.application_fee_amount?.toString(),
-    billing_details: extractBillingDetails(data.billing_details),
+    billing_details: data.billing_details
+      ? extractBillingDetails(data.billing_details)
+      : ({} as BillingDetails),
     captured: data.captured,
     created_at: convertToDateTime(data.created),
     currency: data.currency,
@@ -58,9 +60,11 @@ export function convertCharge(data: any): ChargeWithRaw {
     failure_message: data.failure_message,
     invoice: data.invoice,
     metadata: data.metadata,
-    outcome: extractOutcome(data.outcome),
+    outcome: data.outcome ? extractOutcome(data.outcome) : ({} as Outcome),
     paid: data.paid,
-    payment_method: extractPaymentMethods(data.payment_method_details),
+    payment_method: data.payment_method_details
+      ? extractPaymentMethods(data.payment_method_details)
+      : ({} as PaymentMethod),
     email: data.receipt_email,
     contact: data.billing_details.phone ?? null,
     status: data.status,

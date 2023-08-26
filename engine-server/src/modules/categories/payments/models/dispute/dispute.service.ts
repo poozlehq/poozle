@@ -35,9 +35,9 @@ export class DisputeService {
     integrationAccount: IntegrationAccount,
     query: DisputeQueryParams,
   ) {
-    // if (query.realtime || !integrationAccount.syncEnabled) {
-    //   return await this.getDisputesForRealtime(integrationAccount, query);
-    // }
+    if (query.realtime || !integrationAccount.syncEnabled) {
+      return await this.getDisputesForRealtime(integrationAccount, query);
+    }
 
     return await this.getDisputesFromDb(integrationAccount, query);
   }
@@ -59,7 +59,7 @@ export class DisputeService {
   }
 
   async getListFromDb(
-    _workspaceName: string,
+    workspaceName: string,
     table: string,
     where: Record<string, string>,
     SELECT_KEYS: string[],
@@ -83,8 +83,7 @@ export class DisputeService {
     };
 
     let query = getBaseQuery<Dispute>(
-      // workspaceName,
-      'cheer',
+      workspaceName,
       table,
       where,
       selectedKeys,

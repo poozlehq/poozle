@@ -14,6 +14,7 @@ const colorMap: Record<IntegrationTypeEnum, string> = {
   TICKETING: 'indigo',
   MAIL: 'purple',
   DOCUMENTATION: 'grape',
+  PAYMENTS: 'orange'
 };
 
 export function IntegrationType({ type }: IntegrationTypeProps) {
