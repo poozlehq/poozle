@@ -15,11 +15,11 @@ export interface Team {
 export interface CreateTeamBody {
   name: string;
   description: string;
-  memberts: Array<Exclude<Member, 'username'>>;
+  members: Array<Exclude<Member, 'username'>>;
 }
 
 export interface UpdateTeamBody {
   name: string;
   description: string;
-  memberts: Array<Exclude<Member, 'username'>>;
+  members: Array<Exclude<Member, 'username'>>;
 }
