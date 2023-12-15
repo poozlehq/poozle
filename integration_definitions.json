@@ -14,7 +14,7 @@
     "icon": "jira.svg",
     "version": "0.1.9",
     "releaseStage": "ALPHA",
-    "sourceUrl": "https://raw.githubusercontent.com/poozlehq/build-artifacts/main/ticketing/jira/0.1.9/index.js",
+    "sourceUrl": "https://raw.githubusercontent.com/levoai/build-artifacts/main/ticketing/jira/0.1.9.2/index.js",
     "integrationType": "TICKETING"
   },
   {
