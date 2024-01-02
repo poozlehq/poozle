@@ -1,6 +1,6 @@
-/* eslint-disable dot-location */
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
+/* eslint-disable dot-location */
 import { PrismaClient } from '@prisma/client';
 import axios from 'axios';
 import * as readline from 'readline-sync';

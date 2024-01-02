@@ -22,6 +22,7 @@ import { UserPath } from 'models/user/user.path';
 import { UsersPath } from 'models/user/users.path';
 
 import spec from './spec';
+import { TicketTypesPath } from 'models/ticket_types/ticket_types.path';
 
 class JiraIntegration extends BaseIntegration {
   async spec(): SpecificationResponse {
@@ -103,7 +104,8 @@ class JiraIntegration extends BaseIntegration {
 
       /**
        * These map to tickets
-       */
+      */
+      new TicketTypesPath(/^\/?tickets\/types$/g, 'GET'),
       new TicketsPath(/^\/?tickets$/g, ['GET', 'POST']),
       new TicketPath(/^\/?tickets+/g, ['GET', 'PATCH']),
 

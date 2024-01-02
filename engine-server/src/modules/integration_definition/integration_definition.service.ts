@@ -142,7 +142,7 @@ export class IntegrationDefinitionService {
     const {
       data: integrationDefinitionsResponse,
     }: { data: IntegrationDefinition[] } = await axios.get(
-      'https://raw.githubusercontent.com/levoai/poozle/main/integration_definitions.json',
+      'https://raw.githubusercontent.com/levoai/build-artifacts/main/integration_definitions.json',
     );
 
     const integrationDefinitions: Record<string, IntegrationDefinition> = {};
@@ -201,7 +201,7 @@ export class IntegrationDefinitionService {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const integrationDefinitionsResponse: any = await axios.get(
-      'https://raw.githubusercontent.com/poozlehq/poozle/main/integration_definitions.json',
+      'https://raw.githubusercontent.com/levoai/build-artifacts/main/integration_definitions.json',
     );
 
     const totalIntegrationDefinitions = integrationDefinitionsResponse.data;

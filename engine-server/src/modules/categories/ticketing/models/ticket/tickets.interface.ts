@@ -1,7 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Transform } from 'class-transformer';
-import { IsArray, IsBoolean, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsBoolean, IsObject, IsOptional, IsString } from 'class-validator';
 
 import { QueryParams, JustRawParams } from 'common/interfaces/query.interface';
 import { Meta } from 'common/interfaces/response.interface';
@@ -116,7 +116,13 @@ export class CreateTicketBody {
   @IsOptional()
   @IsString()
   type: string;
+
+  @IsOptional()
+  @IsObject()
+  custom_fields: Record<string, CustomFieldValue>;
 }
+
+export type CustomFieldValue = string | number | boolean | Date;
 
 export class UpdateTicketBody {
   @IsOptional()

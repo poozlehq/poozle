@@ -41,4 +41,6 @@ export interface CreateTicketParams {
   pathParams: {
     collection_id: string;
   };
+
+  customFields?: Record<string, unknown>;
 }

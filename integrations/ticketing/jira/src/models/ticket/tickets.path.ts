@@ -43,22 +43,31 @@ export class TicketsPath extends BasePath {
     try {
       const body = params.requestBody;
 
+      const collectionId = params.pathParams.collection_id as string;
+
       const createBody: JIRATicketBody = {
         fields: {
           project: {
-            id: params.pathParams.collection_id as string,
+            id: !Number.isNaN(Number(collectionId)) ? collectionId : undefined,
+            key: Number.isNaN(Number(collectionId)) ? collectionId : undefined,
           },
           summary: body.name,
           issuetype: {
-            name: body.type,
+            id: !Number.isNaN(Number(body.type)) ? body.type : undefined,
+            name: Number.isNaN(Number(body.type)) ? body.type : undefined,
           },
-          assignee: {
-            accountId: body.assignees[0].id,
-          },
-          reporter: {
-            name: body.created_by,
-          },
-          labels: body.tags.map((tag) => tag.name),
+          assignee: body.assignees?.[0]
+            ? {
+                accountId: body.assignees?.[0]?.id,
+              }
+            : undefined,
+          reporter: body.created_by
+            ? {
+                id: body.created_by,
+              }
+            : undefined,
+          labels: body.tags?.map((tag) => tag.name) || [],
+          ...(params.customFields || {}),
         },
       };
 
@@ -98,8 +107,12 @@ export class TicketsPath extends BasePath {
         return this.fetchTickets(url, headers, params);
 
       case 'POST':
-        url = `${baseURL}/rest/api/2/issue`;
-        return this.createTickets(url, headers, params as CreateTicketParams);
+        url = `${baseURL}/issue`;
+        const createTicketParams = params as CreateTicketParams;
+        if (config.custom_fields) {
+          createTicketParams.customFields = config.custom_fields;
+        }
+        return this.createTickets(url, headers, createTicketParams);
 
       default:
         throw new Error('Method not found');

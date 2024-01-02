@@ -50,16 +50,20 @@ export interface JIRATicketBody {
   fields: {
     project?: {
       id?: string;
+      key?: string;
     };
     summary?: string;
     issuetype?: {
       name?: string;
+      id?: string;
     };
     assignee?: {
       accountId?: string;
+      id?: string;
     };
     reporter?: {
       name?: string;
+      id?: string;
     };
     labels?: string[];
   };

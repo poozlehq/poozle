@@ -16,7 +16,7 @@ async function main() {
   });
 
   const integrationDefinitionsResponse: any = await axios.get(
-    'https://raw.githubusercontent.com/levoai/poozle/main/integration_definitions.json',
+    'https://raw.githubusercontent.com/levoai/build-artifacts/main/integration_definitions.json',
   );
 
   const totalIntegrationDefinitions = integrationDefinitionsResponse.data;

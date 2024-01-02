@@ -63,6 +63,11 @@ export default {
           title: 'Jira Domain',
           description: 'Enter the subdomain for Jira. example: abc.atlassian.net',
         },
+        custom_fields: {
+          type: 'object',
+          title: 'custom_fields',
+          description: 'Enter the custom fields',
+        },
       },
     },
   },

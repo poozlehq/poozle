@@ -224,6 +224,25 @@ export class TicketService {
       createTicketBody,
     );
 
+    console.log('ticketResponse: ', ticketResponse);
+
+    return ticketResponse;
+  }
+
+  async getTicketTypes(
+    query: CommonTicketQueryParams,
+    params: PathParamsWithCollectionId,
+    integrationAccount: IntegrationAccount,
+  ): Promise<{}> {
+    const ticketResponse = await this.dataService.getDataFromAccount(
+      integrationAccount,
+      `/tickets/types`,
+      Method.GET,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      query,
+      params,
+    );
+
     return ticketResponse;
   }
 }

@@ -42,6 +42,14 @@ export class AuthGuard implements CanActivate {
 
     // This is to allow API calls from temporal workflows
     if (jwt && jwt === process.env.MASTER_TOKEN) {
+      const userId = request.headers?.userId || request.query?.userId;
+      if (userId) {
+        request.session = Session.createNewSession(
+          request,
+          resp,
+          userId,
+        );
+      }
       return true;
     }
 

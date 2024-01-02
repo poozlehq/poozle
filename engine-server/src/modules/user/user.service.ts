@@ -1,7 +1,7 @@
 /** Copyright (c) 2023, Poozle, all rights reserved. **/
 
 import { Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { User, Workspace } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 import {
   uniqueNamesGenerator,
@@ -43,11 +43,17 @@ export class UserService {
     });
   }
 
-  async createUser(userId: string, userData: CreateUserInput): Promise<User> {
-    const randomName: string = uniqueNamesGenerator({
-      dictionaries: [adjectives, colors],
-      separator: '-',
-    }); // big_red
+  async createUser(
+    userId: string,
+    userData: CreateUserInput,
+    workspaceSlug?: string,
+  ): Promise<User & { workspace: Workspace }> {
+    if (!workspaceSlug) {
+      workspaceSlug = uniqueNamesGenerator({
+        dictionaries: [adjectives, colors],
+        separator: '-',
+      }); // big_red
+    }
 
     const user = await this.prisma.user.create({
       data: {
@@ -55,7 +61,8 @@ export class UserService {
         userId,
         Workspace: {
           create: {
-            slug: randomName,
+            workspaceId: workspaceSlug,
+            slug: workspaceSlug,
           },
         },
       },
@@ -68,7 +75,10 @@ export class UserService {
     await this.integrationDefinitionService.updateIntegrationDefinitions(
       workspace.workspaceId,
     );
-
-    return user;
+    
+    return {
+      ...user,
+      workspace,
+    };
   }
 }

@@ -11,7 +11,7 @@ import { AuthMiddleware } from './auth.middleware';
 import { SupertokensService } from './supertokens/supertokens.service';
 
 @Module({
-  providers: [SupertokensService],
+  providers: process.env.SUPERTOKEN_CONNECTION_URI ? [SupertokensService] : [],
   exports: [],
   controllers: [],
 })
@@ -22,7 +22,9 @@ export class AuthModule implements NestModule {
 
   static forRoot(): DynamicModule {
     return {
-      providers: [SupertokensService],
+      providers: process.env.SUPERTOKEN_CONNECTION_URI
+        ? [SupertokensService]
+        : [],
       exports: [],
       imports: [],
       module: AuthModule,

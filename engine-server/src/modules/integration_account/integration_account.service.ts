@@ -68,7 +68,7 @@ export class IntegrationAccountService {
       syncEnabled,
     } = createIntegrationAccountBody;
 
-    const { status } = await this.checkForIntegrationCredentails(
+    const { status, error } = await this.checkForIntegrationCredentails(
       integrationDefinitionId,
       config,
       authType,
@@ -81,6 +81,10 @@ export class IntegrationAccountService {
         },
         workspaceId,
       );
+
+    if (error) {
+      console.log("Check credentials error:", error);
+    }
 
     if (syncEnabled) {
       if (!isSyncSupported(integrationDefinition.integrationType)) {

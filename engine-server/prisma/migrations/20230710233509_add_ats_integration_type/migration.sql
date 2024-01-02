@@ -6,5 +6,4 @@
 -- the enum.
 
 
-ALTER TYPE "IntegrationType" ADD VALUE 'ACCOUNTING';
 ALTER TYPE "IntegrationType" ADD VALUE 'ATS';

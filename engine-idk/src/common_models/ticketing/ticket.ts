@@ -10,6 +10,9 @@ export interface TicketTag {
   name: string;
 }
 
+export type CustomFieldValue = string | number | boolean | Date;
+
+
 export interface Ticket {
   id: string;
   parent_id: string;
@@ -37,6 +40,7 @@ export interface CreateTicketBody {
   tags: TicketTag[];
   created_by: string;
   type: string;
+  custom_fields: Record<string, CustomFieldValue>;
 }
 
 export interface UpdateTicketBody {

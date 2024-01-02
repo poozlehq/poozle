@@ -1,6 +1,3 @@
--- AlterEnum
-ALTER TYPE "IntegrationType" ADD VALUE 'EMAIL';
-
 -- AlterTable
 ALTER TABLE "IntegrationAccount" ADD COLUMN     "integrationConnectLinkIntegrationConnectionLinkId" TEXT;
 

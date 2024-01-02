@@ -15,6 +15,7 @@ import { TeamController } from './models/team/team.controller';
 import { TicketService } from './models/ticket/ticket.service';
 import { TicketsController } from './models/ticket/tickets.controller';
 import { UsersController } from './models/users/users.controller';
+import { TicketTypesController } from './models/ticket_type/ticket_type.controller';
 
 @Module({
   imports: [PrismaModule, HttpModule, IntegrationAccountModule, DataModule],
@@ -23,6 +24,7 @@ import { UsersController } from './models/users/users.controller';
     UsersController,
     TeamController,
     TicketsController,
+    TicketTypesController,
     CommentController,
     TagController,
   ],
