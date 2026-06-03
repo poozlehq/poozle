@@ -1,0 +1,28 @@
+# Enforces a `release-note:` block in every PR description, and autofills
+# `release-note: NONE` for cleanup-style PRs (chore/refactor/test/docs/ci/build).
+#
+# Core logic lives in the levoai/internal-actions repo as a composite action:
+#   levoai/internal-actions/release-note-validator
+#
+# The action does TWO things in order:
+#   1. Auto-add `release-note: NONE` to PR body if title matches the cleanup prefix
+#   2. Verify the PR body contains a `release-note:` line, fail merge if missing
+
+name: "On-prem release-note: check and auto-fill bot"
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  validate:
+    name: "Validate release-note: line"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: levoai/internal-actions/release-note-validator@main
+        with:
+          pr-number: ${{ github.event.pull_request.number }}
+          pr-title:  ${{ github.event.pull_request.title }}
